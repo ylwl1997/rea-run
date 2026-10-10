@@ -17,6 +17,7 @@ const SHOWCASE_CORE: ShowcaseCase[] = [
     attributionEn: 'Independent rea.run write-up · target app is GPL-3.0 open source',
     attributionZh: 'rea.run 独立撰写 · 目标应用为 GPL-3.0 开源',
     tags: ['android', 'totp', 'gpl', 'authorized'],
+    relation: 'case-study',
     footnotes: [
       { label: 'Aegis Authenticator (GPL-3.0)', url: 'https://github.com/beemdevelopment/Aegis' },
       { label: 'RFC 6238 (TOTP)', url: 'https://datatracker.ietf.org/doc/html/rfc6238' },
@@ -64,6 +65,7 @@ const SHOWCASE_CORE: ShowcaseCase[] = [
     attributionEn: 'Independent rea.run orientation · CTF / authorized challenge framing',
     attributionZh: 'rea.run 独立定向说明 · CTF／授权题目语境',
     tags: ['ctf', 'challenge', 'authorized'],
+    relation: 'case-study',
     footnotes: [
       { label: 'DownUnderCTF (event site)', url: 'https://downunderctf.com/' },
     ],
@@ -110,6 +112,7 @@ const SHOWCASE_CORE: ShowcaseCase[] = [
     attributionEn: 'Independent rea.run write-up · community reconstruction on GitHub',
     attributionZh: 'rea.run 独立撰写 · 社区重建见 GitHub',
     tags: ['game', 'reconstruction', 'community'],
+    relation: 'case-study',
     footnotes: [
       { label: 'Community reconstruction · N0zoM1z0/dx-ball', url: 'https://github.com/N0zoM1z0/dx-ball' },
     ],
@@ -156,6 +159,7 @@ const SHOWCASE_CORE: ShowcaseCase[] = [
     attributionEn: 'Independent rea.run write-up · community reconstruction on GitHub',
     attributionZh: 'rea.run 独立撰写 · 社区重建见 GitHub',
     tags: ['game', 'reconstruction', 'community'],
+    relation: 'case-study',
     footnotes: [
       { label: 'Community reconstruction · N0zoM1z0/th04', url: 'https://github.com/N0zoM1z0/th04' },
     ],
@@ -202,6 +206,7 @@ const SHOWCASE_CORE: ShowcaseCase[] = [
     attributionEn: 'Independent rea.run teaching map · Electron / multi-process investigation pattern',
     attributionZh: 'rea.run 独立教学地图 · Electron／多进程调查模式',
     tags: ['electron', 'notes', 'intro'],
+    relation: 'writeup',
     footnotes: [
       { label: 'REA upstream repository', url: 'https://github.com/morluto/rea' },
     ],
@@ -248,6 +253,7 @@ const SHOWCASE_CORE: ShowcaseCase[] = [
     attributionEn: 'Independent rea.run summary · contrast with Microsoft’s open-source Calculator',
     attributionZh: 'rea.run 独立摘要 · 对照 Microsoft 开源 Calculator',
     tags: ['windows', 'native', 'opensource'],
+    relation: 'case-study',
     footnotes: [
       { label: 'Microsoft Calculator (open source)', url: 'https://github.com/microsoft/calculator' },
     ],
@@ -294,6 +300,7 @@ const SHOWCASE_CORE: ShowcaseCase[] = [
     attributionEn: 'Paraphrase of a community report on upstream GitHub Discussions',
     attributionZh: '改写自上游 GitHub Discussions 的社区报告',
     tags: ['web', 'black-box', 'windows', 'community'],
+    relation: 'case-study',
     footnotes: [
       {
         label: 'morluto/rea Discussions #1406 · @gold567200',

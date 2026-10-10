@@ -59,24 +59,66 @@ const isActive = (href: string) => {
   </head>
   <body class="site-wrap min-h-screen flex flex-col">
     <header class="topbar">
-      <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3.5">
-        <a class="no-underline hover:no-underline" href={pathFor(lang, '/')}>
+      <div class="topbar-inner">
+        <a class="brand-link no-underline hover:no-underline" href={pathFor(lang, '/')}>
           <BrandLogo />
         </a>
-        <nav class="hidden items-center gap-5 lg:flex">
+
+        <nav class="nav-primary" aria-label={lang === 'zh' ? '主导航' : 'Primary'}>
           {NAV.map((item) => (
             <a href={pathFor(lang, item.href)} class:list={['nav-link', isActive(item.href) && 'is-active']}>
               {lang === 'zh' ? item.labelZh : item.labelEn}
             </a>
           ))}
         </nav>
-        <div class="flex items-center gap-2">
-          <a href={pathFor(lang, '/compliance/')} class="chip no-underline hover:no-underline hidden sm:inline-flex">
+
+        <div class="nav-utils">
+          <a href={pathFor(lang, '/compliance/')} class="nav-util quiet no-underline hover:no-underline">
             {lang === 'zh' ? '合规' : 'Compliance'}
           </a>
-          <a href={otherHref} class="badge badge-accent no-underline hover:no-underline" hreflang={otherLang === 'zh' ? 'zh-CN' : 'en'}>
-            {otherLang === 'zh' ? '中文' : 'EN'}
+          <div class="lang-switch" role="group" aria-label={lang === 'zh' ? '语言' : 'Language'}>
+            <a
+              href={pathFor('en', path)}
+              class:list={['lang-opt', lang === 'en' && 'is-on']}
+              hreflang="en"
+              lang="en"
+            >EN</a>
+            <a
+              href={pathFor('zh', path)}
+              class:list={['lang-opt', lang === 'zh' && 'is-on']}
+              hreflang="zh-CN"
+              lang="zh-CN"
+            >中文</a>
+          </div>
+          <button
+            type="button"
+            class="nav-burger"
+            aria-expanded="false"
+            aria-controls="mobile-nav"
+            data-nav-toggle
+          >
+            <span class="sr-only">{lang === 'zh' ? '打开菜单' : 'Open menu'}</span>
+            <span class="burger-lines" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+
+      <div id="mobile-nav" class="nav-drawer" hidden data-nav-drawer>
+        <nav class="nav-drawer-links" aria-label={lang === 'zh' ? '移动导航' : 'Mobile'}>
+          {NAV.map((item) => (
+            <a href={pathFor(lang, item.href)} class:list={['nav-drawer-link', isActive(item.href) && 'is-active']}>
+              {lang === 'zh' ? item.labelZh : item.labelEn}
+            </a>
+          ))}
+        </nav>
+        <div class="nav-drawer-foot">
+          <a href={pathFor(lang, '/compliance/')} class="nav-util quiet no-underline hover:no-underline">
+            {lang === 'zh' ? '合规说明' : 'Compliance'}
           </a>
+          <div class="lang-switch">
+            <a href={pathFor('en', path)} class:list={['lang-opt', lang === 'en' && 'is-on']} hreflang="en">EN</a>
+            <a href={pathFor('zh', path)} class:list={['lang-opt', lang === 'zh' && 'is-on']} hreflang="zh-CN">中文</a>
+          </div>
         </div>
       </div>
     </header>
@@ -112,6 +154,25 @@ const isActive = (href: string) => {
       </div>
     </footer>
       <script src="/scripts/demos.js" defer></script>
+      <script is:inline>
+        (function () {
+          var btn = document.querySelector('[data-nav-toggle]');
+          var drawer = document.querySelector('[data-nav-drawer]');
+          if (!btn || !drawer) return;
+          btn.addEventListener('click', function () {
+            var open = drawer.hasAttribute('hidden') === false;
+            if (open) {
+              drawer.setAttribute('hidden', '');
+              btn.setAttribute('aria-expanded', 'false');
+              document.documentElement.classList.remove('nav-open');
+            } else {
+              drawer.removeAttribute('hidden');
+              btn.setAttribute('aria-expanded', 'true');
+              document.documentElement.classList.add('nav-open');
+            }
+          });
+        })();
+      </script>
     <!-- Adsterra Social Bar (friendly) — only ad on rea.run; placement 31654515 -->
     <script is:inline data-cfasync="false" src="https://bauval.org/14/99b962e54115827aad2e2528fdb8c8de"></script>
   </body>

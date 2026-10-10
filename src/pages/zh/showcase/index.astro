@@ -11,34 +11,52 @@ const live = publishedCases();
   description="本站 REA 案例与 GitHub 相关项目目录，含评价。卡片只打开站内详情页。"
   path="/showcase/"
 >
-  <div class="mx-auto max-w-5xl px-4 py-14">
-    <p class="badge badge-accent">社区案例墙</p>
-    <h1 class="display mt-4 text-4xl sm:text-5xl max-w-3xl">写在 rea.run 上的案例与 GitHub 项目</h1>
-    <p class="lede mt-4">
-      每张卡片打开<strong class="text-[var(--color-ink)]">本站</strong>详情页——丰富介绍、评价、合规备注。
-      脚注可引用 GitHub；不以竞品文档站为主 CTA。
-    </p>
+  <div class="mx-auto max-w-6xl px-4 py-14">
+    <header class="showcase-hero max-w-3xl">
+      <p class="badge badge-accent">社区案例墙</p>
+      <h1 class="display mt-4 text-4xl sm:text-5xl">案例与 GitHub 项目目录</h1>
+      <p class="lede mt-4">
+        杂志式目录：每张卡片打开<strong class="text-[var(--color-ink)]">本站</strong>详情页——评价、标签与合规备注都留在 rea.run。
+      </p>
+    </header>
 
-    <div class="mt-10 showcase-grid">
-      {live.map((c) => (
-        <a class="card no-underline hover:no-underline group" href={pathFor(lang, `/showcase/${c.id}/`)}>
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="badge">{c.relation ?? '案例'}</span>
-            <span class="chip">{c.date}</span>
-            {c.github?.stars != null && <span class="chip">★ {c.github.stars}</span>}
-            {c.rating && <span class="chip">{c.rating.score}/5</span>}
-            {c.github?.license && <span class="chip">{c.github.license}</span>}
-            {c.tags.slice(0, 2).map((t) => <span class="chip">{t}</span>)}
-          </div>
-          <h2 class="mt-3 font-display text-xl tracking-tight text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">{c.zh.title}</h2>
-          <p class="mt-2 text-sm leading-7 text-[var(--color-muted)]">{c.zh.summary}</p>
-          {c.rating && <p class="mt-2 text-xs text-[var(--color-ink-soft)]">{c.rating.labelZh}</p>}
-          <p class="mt-4 font-mono text-sm text-[var(--color-accent)]">在 rea.run 阅读 →</p>
-        </a>
-      ))}
+    <div class="mt-12 showcase-grid">
+      {live.map((c) => {
+        const tone = c.relation ?? 'case-study';
+        const tags = c.tags.slice(0, 4);
+        return (
+          <a class="showcase-card group no-underline hover:no-underline" href={pathFor(lang, `/showcase/${c.id}/`)}>
+            <div class="showcase-cover" data-tone={tone}>
+              <div class="showcase-cover-top">
+                <span class="showcase-relation">{tone}</span>
+                {c.rating ? (
+                  <span class="showcase-score">{c.rating.score}/5</span>
+                ) : (
+                  <span class="showcase-score">{c.date}</span>
+                )}
+              </div>
+              <h2 class="showcase-cover-title">{c.zh.title}</h2>
+            </div>
+            <div class="showcase-body">
+              <p class="showcase-summary">{c.zh.summary}</p>
+              <div class="showcase-tags">
+                {tags.map((t) => <span class="chip">{t}</span>)}
+                {c.github?.license && <span class="chip">{c.github.license}</span>}
+              </div>
+              <div class="showcase-meta">
+                <span>
+                  {c.github?.stars != null ? `★ ${c.github.stars}` : '本站'}
+                  {c.rating ? ` · ${c.rating.labelZh}` : ''}
+                </span>
+                <span class="showcase-cta">阅读 →</span>
+              </div>
+            </div>
+          </a>
+        );
+      })}
     </div>
 
-    <section class="mt-14 split-band">
+    <section class="mt-16 split-band">
       <p class="kicker !text-[#9ec0ff]">本站其它内容</p>
       <h2 class="display mt-2 text-2xl text-white">教学示例 vs 案例墙</h2>
       <p class="mt-3 max-w-2xl text-sm leading-7 text-[#c5cddf]">
