@@ -943,6 +943,10 @@ html.nav-open .burger-lines::after { top: 0; transform: rotate(-45deg); }
   border: 1px dashed color-mix(in oklab, var(--color-line) 80%, var(--color-accent));
   background:
     linear-gradient(180deg, color-mix(in oklab, var(--color-panel) 88%, white), color-mix(in oklab, var(--color-paper-2) 55%, var(--color-panel)));
+  overflow: visible;
+  height: auto;
+  min-height: 0;
+  grid-auto-rows: auto;
 }
 @media (min-width: 640px) {
   .try-tracks {
@@ -1141,11 +1145,36 @@ html.nav-open .burger-lines::after { top: 0; transform: rotate(-45deg); }
   box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-mint) 12%, transparent);
 }
 .authed-cta-panel {
+  display: block;
+  width: 100%;
   margin-top: 1rem;
-  padding: 1rem 1.1rem;
+  padding: 1.05rem 1.15rem 1.15rem;
   border-radius: var(--radius-md);
   border: 1px solid color-mix(in oklab, var(--color-mint) 30%, var(--color-line));
   background: color-mix(in oklab, var(--color-mint) 6%, var(--color-panel));
+  overflow: visible;
+  height: auto;
+  min-height: 0;
+  box-sizing: border-box;
+}
+.authed-cta-links {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.65rem;
+}
+.authed-cta-links .btn-secondary {
+  width: 100%;
+  justify-content: center;
+  white-space: normal;
+  text-align: center;
+  box-sizing: border-box;
+}
+/* CLI / try card must grow with signed-in panel */
+.card:has(.authed-cta-panel),
+.card:has(.try-tracks) {
+  overflow: visible;
+  height: auto;
 }
 
 
