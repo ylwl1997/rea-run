@@ -55,6 +55,12 @@ export const FAQ_LINKS: FaqLink[] = [
     zh: { title: 'MCP tools schema 体积与严格客户端', blurb: '巨大的 tools/list 与单 schema 上限的提供商。' },
   },
   {
+    href: '/faq/mcp-domain-split/',
+    priority: 'P1',
+    en: { title: 'MCP domain-split proxy', blurb: 'Filter REA tools/list by domain groups via a stdio proxy.' },
+    zh: { title: '按域拆分 MCP 代理', blurb: '用 stdio 过滤代理按域组裁剪 REA 的 tools/list。' },
+  },
+  {
     href: '/docs/linux-fedora/',
     priority: 'P2',
     en: { title: 'Linux / Fedora install notes', blurb: 'Node lines, Ghidra+JDK, browser executable, host quirks.' },

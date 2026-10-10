@@ -96,6 +96,74 @@ export const BLOG_POSTS: BlogPost[] = [
       ],
     },
   },
+  {
+    slug: 'community-week-rea-demos',
+    date: '2026-10-10',
+    en: {
+      title: 'Community week: what people tried with REA (authorized demos)',
+      description:
+        'Roundup of public tips and demos — calculator percent, DX-Ball Evidence, Node 22+ dry-run checklists — reframed for lawful, authorized targets only.',
+      h1: 'What people tried with REA this week (authorized demos)',
+      body: [
+        'Public threads this week mixed **explainer energy** with concrete tips. Here we keep the useful parts and drop crack framing: authorize the target first, prefer own/open/clean-room demos, and treat Evidence as the product.',
+        '**Setup checklist (ops).** Use Node **22+**, pin a `rea-agents` version you trust, run `setup --dry-run` before writing client configs, then reconnect the MCP host. Prefer absolute paths in the first question. Tip threads circulating mid-October 2026 (e.g. checklist posts on X) align with [/docs/install/](/docs/install/).',
+        '**Calculator % rewrite.** Several explainers used Windows Calculator’s percent behavior (`200+10%` → `220` vs naive `×10%`) as a teaching rewrite. That story already lives on this site as [windows-calculator-percent](/showcase/windows-calculator-percent/) — authorized teaching, not a retail crack.',
+        '**DX-Ball / Evidence narrative.** Community posts citing large Evidence suites and byte-match claims map to the existing [dx-ball](/showcase/dx-ball/) showcase. Read the Evidence + unknowns; do not treat social metrics as a substitute for your own verification.',
+        '**Agent + Ghidra/IDA framing.** “REA connects Claude/Cursor to Ghidra & IDA” is accurate **only** as bring-your-own engines on targets you may analyze. See [Ghidra MCP with REA](/blog/ghidra-mcp-with-rea/) and [/faq/legal-boundary/](/faq/legal-boundary/).',
+        '**New teaching layer.** For Electron/JS without native engines, start with [rea-playbook](/showcase/rea-playbook/) (Evidence → file:line → recreate on an in-repo demo).',
+        '**Sources (public).** X tips/explainers from mid-October 2026 (setup checklists, calculator %, DX-Ball Evidence, Ghidra/IDA connectors). We do not deep-link every viral post; we keep lawful teaching URLs on rea.run.',
+      ],
+    },
+    zh: {
+      title: '社区一周：人们用 REA 试了什么（授权演示）',
+      description:
+        '公开技巧与演示盘点——计算器百分号、DX-Ball Evidence、Node 22+ dry-run 清单——改写成仅限合法授权目标。',
+      h1: '本周人们用 REA 试了什么（授权演示）',
+      body: [
+        '本周公开帖子混着**讲解热情**与具体技巧。这里只留有用部分，去掉破解口径：先授权目标，优先自有／开源／清洁室演示，把 Evidence 当产品。',
+        '**安装清单（运维）。**用 Node **22+**，钉住可信的 `rea-agents` 版本，写客户端配置前先 `setup --dry-run`，再重连 MCP 宿主。首问优先绝对路径。2026 年 10 月中旬流传的清单帖与 [/zh/docs/install/](/zh/docs/install/) 一致。',
+        '**计算器 % 重写。**多篇讲解用 Windows 计算器百分号行为（`200+10%` → `220`，相对朴素 `×10%`）作教学重写。本站已有 [windows-calculator-percent](/zh/showcase/windows-calculator-percent/)——授权教学，不是零售破解。',
+        '**DX-Ball／Evidence 叙事。**引用大型 Evidence 套件与字节匹配声称的社区帖，对应已有 [dx-ball](/zh/showcase/dx-ball/) 案例。读 Evidence 与未知项；别把社交数据当成你自己的核验。',
+        '**智能体 + Ghidra／IDA 口径。**「REA 把 Claude／Cursor 接到 Ghidra 与 IDA」**仅**在自备引擎、且对你有权分析的目标时成立。见 [用 REA 接 Ghidra MCP](/zh/blog/ghidra-mcp-with-rea/) 与 [/zh/faq/legal-boundary/](/zh/faq/legal-boundary/)。',
+        '**新教学层。**不靠原生引擎的 Electron／JS，从 [rea-playbook](/zh/showcase/rea-playbook/) 开始（仓内演示上 Evidence → 文件:行号 → 重建）。',
+        '**来源（公开）。**2026 年 10 月中旬 X 上的技巧／讲解（安装清单、计算器 %、DX-Ball Evidence、Ghidra／IDA 连接）。我们不深链每条病毒帖；合法教学 URL 留在 rea.run。',
+      ],
+    },
+  },
+  {
+    slug: 'rea-agent-security-posture',
+    date: '2026-10-10',
+    en: {
+      title: 'REA agent security posture: setup surface, consent, disposable VMs',
+      description:
+        'How to think about REA as an agent-operated reverse-engineering MCP: setup trust, process capture is not a sandbox, dry-run, and untrusted binaries in disposable VMs.',
+      h1: 'REA agent security posture (operator view)',
+      body: [
+        'Third-party writeups in October 2026 framed REA less as a viral “reverse anything” slogan and more as an **agent-operated tool surface**: what `setup` writes, what MCP can see, and where humans must stay in the loop.',
+        '**Setup is a privileged surface.** `npx rea-agents setup` (and client registration) can write MCP configs and skill paths on the host. Prefer `--dry-run`, pin versions, and review diffs before applying. See [/docs/install/](/docs/install/) and [/docs/mcp-clients/](/docs/mcp-clients/).',
+        '**Process / file capture is not a sandbox.** Agent RE that can attach, dump, or read process memory inherits the host’s trust boundary. Treat untrusted binaries in a **disposable VM** or machine you can wipe. REA does not magically isolate malware.',
+        '**Consent and Evidence.** Ask for Evidence records and marked unknowns; keep send/write actions behind approval. Agents should not invent “permission” from a marketing page.',
+        '**Providers stay bring-your-own.** Ghidra/Hopper/IDA paths are yours to install and point at. Misconfigured JAVA_HOME / GHIDRA_INSTALL_DIR fails closed via `doctor` — that is a safety feature, not a bug.',
+        '**External framing (summarized).** Public security-oriented reviews (e.g. explainx.ai agent-security notes; OffSec-style deep dives on providers and consent) reinforce dry-run, pin, and VM hygiene. Footnote the originals; keep primary CTAs on rea.run docs, not competitor marketing sites.',
+        '**Next.** [/compliance/](/compliance/), [/faq/legal-boundary/](/faq/legal-boundary/), [agent RE with MCP](/blog/agent-reverse-engineering-mcp/).',
+      ],
+    },
+    zh: {
+      title: 'REA 智能体安全姿态：setup 面、同意、一次性虚拟机',
+      description:
+        '把 REA 当作智能体操作的逆向 MCP：setup 信任、进程捕获不是沙箱、dry-run，以及不信任二进制放一次性虚拟机。',
+      h1: 'REA 智能体安全姿态（运维视角）',
+      body: [
+        '2026 年 10 月的第三方文章较少把 REA 写成病毒式「逆向一切」口号，更多写成**智能体操作的工具面**：`setup` 写什么、MCP 能看到什么、人要守住哪里。',
+        '**Setup 是特权面。**`npx rea-agents setup`（以及客户端注册）可能在宿主写入 MCP 配置与 skill 路径。优先 `--dry-run`、钉版本、应用前审 diff。见 [/zh/docs/install/](/zh/docs/install/) 与 [/zh/docs/mcp-clients/](/zh/docs/mcp-clients/)。',
+        '**进程／文件捕获不是沙箱。**能附加、转储或读进程内存的智能体逆向，继承宿主信任边界。不信任二进制放进**一次性虚拟机**或可擦机器。REA 不会魔法隔离恶意软件。',
+        '**同意与 Evidence。**要求 Evidence 记录与标注的未知；发送／写入放在批准之后。智能体不能从介绍页发明「许可」。',
+        '**提供者仍自备。**Ghidra／Hopper／IDA 路径由你安装并指向。JAVA_HOME／GHIDRA_INSTALL_DIR 配错会经 `doctor` 失败关闭——这是安全特性，不是缺陷。',
+        '**外部口径（摘要）。**公开的安全向评论（如 explainx.ai 的智能体安全笔记；OffSec 风格对提供者与同意的深挖）强调 dry-run、钉版本与虚拟机卫生。脚注原文；主 CTA 留在 rea.run 文档，而非竞品营销站。',
+        '**下一步。**[/zh/compliance/](/zh/compliance/)、[/zh/faq/legal-boundary/](/zh/faq/legal-boundary/)、[用 MCP 做智能体逆向](/zh/blog/agent-reverse-engineering-mcp/)。',
+      ],
+    },
+  },
 ];
 
 export function getPost(slug: string) {
