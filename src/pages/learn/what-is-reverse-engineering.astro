@@ -1,55 +1,104 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { pathFor } from '../../lib/site';
+const puzzlePrompt =
+  'Use REA on /abs/path/to/our-job-runner. Why do retries wait 1s, 2s, 4s then stop? Cite the delay function. Do not modify files.';
 ---
 <BaseLayout
   lang="en"
   title="What is reverse engineering? | rea.run"
-  description="A community definition of reverse engineering for coding agents: evidence, authorization, and an original retry-backoff puzzle — not crack guides."
+  description="A builder's guide to reverse engineering with coding agents: evidence, authorization, and an interactive retry-backoff puzzle."
   path="/learn/what-is-reverse-engineering/"
 >
-  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
-    <p class="badge badge-accent">Learn</p>
-    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">What is reverse engineering?</h1>
-    <p class="lede mt-5 !max-w-none">
-      Reverse engineering means learning how software behaves by examining the artifact itself — binaries, scripts, packages — until you can explain a feature, change it under license, or rebuild a compatible piece.
-    </p>
-
-    <p class="mt-6 text-sm text-[var(--color-muted)]">Authorized targets only. <a class="quiet-link" href="/compliance/">Compliance</a></p>
-
-    <h2>Why agents change the workflow</h2>
-    <p>
-      A coding agent with local tools can gather Evidence faster: strings, symbols, decompilation (via engines you own), JS graphs.
-      You still own judgment — verifying citations, deciding patches, and refusing unauthorized targets.
-    </p>
-
-    <h2>Original puzzle: retry backoff</h2>
-    <p>
-      Suppose your team’s job runner waits <code>1s</code>, then <code>2s</code>, then <code>4s</code>, then stops.
-      The brochure says “smart retries.” Reverse engineering asks: <em>which function computes the delay, and what caps it?</em>
-    </p>
-    <div class="grid gap-4 sm:grid-cols-2 not-prose my-6">
-      <div class="card">
-        <p class="kicker">Before</p>
-        <p class="mt-2 text-sm text-[var(--color-ink-soft)] leading-6">You grep configs, sprinkle logs, and reconstruct exponential backoff by hand.</p>
-      </div>
-      <div class="card">
-        <p class="kicker">After (authorized path)</p>
-        <p class="mt-2 text-sm text-[var(--color-ink-soft)] leading-6">You point REA at code/binary you may inspect; the agent returns the delay rule with locations for you to verify.</p>
-      </div>
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <div class="max-w-3xl">
+      <p class="badge badge-accent">Learn</p>
+      <h1 class="display mt-4 text-[clamp(2.4rem,5vw,3.6rem)]">What is reverse engineering?</h1>
+      <p class="lede mt-5">
+        Learning how software behaves by examining the artifact itself — until you can explain a feature, change it under license, or rebuild a compatible piece.
+      </p>
+      <p class="mt-4 text-sm text-[var(--color-muted)]">
+        Authorized targets only. <a class="quiet-link" href={pathFor('en', '/compliance/')}>Compliance</a>
+      </p>
     </div>
-    <pre><code>› Use REA on /abs/path/to/our-job-runner. Why do retries wait 1s, 2s, 4s then stop? Cite the delay function. Do not modify files.</code></pre>
 
-    <h2>What good answers look like</h2>
-    <ul>
-      <li>Named functions / addresses and file paths</li>
-      <li>Clear unknowns (unresolved calls, stripped symbols)</li>
-      <li>No speculative “it probably uses AI” filler</li>
-    </ul>
+    <div class="mt-12 grid gap-4 md:grid-cols-3">
+      <div class="card reveal"><p class="kicker">01 · Observe</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">Inputs, outputs, timing, side effects — without trusting the brochure.</p></div>
+      <div class="card reveal delay-1"><p class="kicker">02 · Recover</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">Locate the code path that implements the rule; keep addresses and paths.</p></div>
+      <div class="card reveal delay-2"><p class="kicker">03 · Explain</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">Name the rule so a teammate (or future you) can verify and rebuild.</p></div>
+    </div>
 
-    <p class="mt-10 flex flex-wrap gap-3 not-prose">
+    <section class="mt-16 grid gap-8 lg:grid-cols-[1.05fr_0.95fr] items-start">
+      <div>
+        <p class="kicker">Why agents change the loop</p>
+        <h2 class="display mt-2 text-3xl">Evidence in, judgment stays human</h2>
+        <p class="mt-4 text-[var(--color-ink-soft)] leading-7">
+          A coding agent with local tools can gather strings, symbols, decompilation (via engines you own), and JS graphs faster than solo grepping.
+          You still verify citations, refuse unauthorized targets, and gate writes.
+        </p>
+        <ul class="mt-6 space-y-3 text-sm text-[var(--color-ink-soft)]">
+          <li class="rail">Ask for Evidence + unknowns — not vibes.</li>
+          <li class="rail">Prefer absolute paths to artifacts you may inspect.</li>
+          <li class="rail">Treat agent prose as a draft until you open the cited locations.</li>
+        </ul>
+      </div>
+      <div class="split-band">
+        <p class="kicker !text-[#9ec0ff]">Good answer shape</p>
+        <ul class="mt-4 space-y-3 text-sm text-[#d5dceb]">
+          <li>Named functions / addresses and file paths</li>
+          <li>Clear unresolved edges</li>
+          <li>No “it probably uses AI” filler</li>
+        </ul>
+        <a class="btn mt-6 !bg-[var(--color-paper)] !text-[var(--color-ink)] !shadow-[4px_4px_0_#c8432a]" href={pathFor('en', '/docs/install/')}>Install REA</a>
+      </div>
+    </section>
+
+    <section class="mt-16">
+      <p class="kicker">Original puzzle</p>
+      <h2 class="display mt-2 text-3xl max-w-3xl">Retry backoff: 1s → 2s → 4s → stop</h2>
+      <p class="lede mt-4">The brochure says “smart retries.” Reverse engineering asks which function computes the delay — and what caps it.</p>
+
+      <div class="demo-shell mt-8" data-backoff data-idle-log="Press play to watch sped-up exponential backoff (demo timing).">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p class="kicker">Backoff lab</p>
+            <p class="mt-1 text-sm text-[var(--color-muted)]">Micro-demo of the wait pattern — not a live REA session.</p>
+          </div>
+          <div class="flex gap-2">
+            <button type="button" class="demo-btn" data-backoff-play>Play</button>
+            <button type="button" class="demo-btn ghost" data-backoff-reset>Reset</button>
+          </div>
+        </div>
+        <div class="backoff-track mt-3" data-backoff-track><div class="backoff-fill" data-backoff-fill></div></div>
+        <div class="flex justify-between mt-2 font-mono text-[0.7rem] text-[var(--color-muted)]">
+          <span>1s</span><span>2s</span><span>4s</span><span>stop</span>
+        </div>
+        <div class="backoff-log" data-backoff-log></div>
+      </div>
+
+      <div class="demo-shell mt-5" data-demo-tabs>
+        <div class="demo-tabs" role="tablist" aria-label="Before and after">
+          <button type="button" class="demo-tab" role="tab" aria-controls="learn-before" aria-selected="true">Before · solo</button>
+          <button type="button" class="demo-tab" role="tab" aria-controls="learn-after" aria-selected="false">After · agent + REA</button>
+        </div>
+        <div class="mt-5" id="learn-before" data-panel>
+          <div class="step-row"><span class="step-index">01</span><div><strong>Find the scheduler</strong><p class="mt-1 text-sm text-[var(--color-muted)]">Grep configs and sprinkle logs.</p></div></div>
+          <div class="step-row"><span class="step-index">02</span><div><strong>Decode the delay</strong><p class="mt-1 text-sm text-[var(--color-muted)]">Linear, capped, or exponential?</p></div></div>
+          <div class="step-row"><span class="step-index">03</span><div><strong>Name the stop rule</strong><p class="mt-1 text-sm text-[var(--color-muted)]">Max attempts, max delay, or both?</p></div></div>
+        </div>
+        <div class="mt-5" id="learn-after" data-panel hidden>
+          <p class="text-sm leading-7 text-[var(--color-ink-soft)]">Point REA at code you may inspect; require the delay function with locations for you to verify.</p>
+          <div class="copy-row mt-4">
+            <div class="code-well" id="learn-puzzle-prompt"><span class="prompt">›</span> {puzzlePrompt}</div>
+            <button type="button" class="copy-btn" data-copy="#learn-puzzle-prompt" data-copied-label="Copied">Copy</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-16 flex flex-wrap gap-3">
       <a class="btn" href={pathFor('en', '/examples/')}>Browse examples</a>
-      <a class="btn-secondary" href={pathFor('en', '/docs/install/')}>Install REA</a>
-    </p>
-  </article>
+      <a class="btn-secondary" href={pathFor('en', '/showcase/')}>Community showcase</a>
+    </section>
+  </div>
 </BaseLayout>

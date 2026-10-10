@@ -31,6 +31,7 @@ export const NAV = [
   { href: '/', labelEn: 'Home', labelZh: '首页' },
   { href: '/learn/what-is-reverse-engineering/', labelEn: 'What is RE', labelZh: '什么是逆向' },
   { href: '/examples/', labelEn: 'Examples', labelZh: '示例' },
+  { href: '/showcase/', labelEn: 'Showcase', labelZh: '案例墙' },
   { href: '/docs/install/', labelEn: 'Install', labelZh: '安装' },
   { href: '/compare/', labelEn: 'Compare', labelZh: '对比' },
   { href: '/blog/', labelEn: 'Blog', labelZh: '博客' },
