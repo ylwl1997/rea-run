@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="en"
+  title="Search Console & Bing verification | rea.run"
+  description="How the PM/owner verifies rea.run in Google Search Console and Bing Webmaster Tools. No tokens invente — paste values into site config when ready."
+  path="/verify/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-12">
+    <h1 class="text-3xl font-semibold tracking-tight text-[var(--color-ink)]">Search verification (GSC / Bing)</h1>
+    <p class="mt-4">
+      Tokens are <strong>not</strong> invented by agents. The domain owner / PM must create properties in Google Search Console and Bing Webmaster Tools, then paste the verification values into
+      <code>src/lib/site.ts</code> (<code>gscVerification</code>, <code>bingVerification</code>) or add DNS TXT records in the Cloudflare dashboard for <code>rea.run</code>.
+    </p>
+
+    <h2>Preferred: DNS TXT (Cloudflare)</h2>
+    <ol>
+      <li>Open Cloudflare → zone <strong>rea.run</strong> → DNS.</li>
+      <li>In Google Search Console, add domain property <code>rea.run</code> and copy the TXT record Google shows.</li>
+      <li>In Bing Webmaster Tools, add the site and copy Bing’s TXT (or meta) instruction.</li>
+      <li>Create the TXT records exactly as shown. Do not reuse tokens from other domains (dotsbase, dshbase, Memoh, retatrutidecalc, etc.).</li>
+      <li>Click verify in GSC/Bing after DNS propagates.</li>
+    </ol>
+
+    <h2>Alternative: HTML meta tag</h2>
+    <ol>
+      <li>Choose URL-prefix property for <code>https://rea.run/</code>.</li>
+      <li>Copy the <code>content</code> value from the meta tag Google/Bing provide.</li>
+      <li>Set <code>SITE.gscVerification</code> / <code>SITE.bingVerification</code> in <code>src/lib/site.ts</code>, commit, deploy.</li>
+      <li>Confirm the live homepage HTML contains the meta tags, then verify.</li>
+    </ol>
+
+    <h2>After verification</h2>
+    <ul>
+      <li>Submit <a href="https://rea.run/sitemap-index.xml">https://rea.run/sitemap-index.xml</a> in both tools.</li>
+      <li>Optional: set <code>SITE.ga4Id</code> once a GA4 property exists (same: do not invent IDs).</li>
+      <li>Add the site to the SEO control dashboard when that workflow is ready (phase 0 “中控加站”).</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Do not</strong> commit API keys or paste secrets into chat. Meta verification strings are public by design once deployed; DNS TXT values should still be treated carefully and never shared from other zones.
+    </div>
+  </article>
+</BaseLayout>

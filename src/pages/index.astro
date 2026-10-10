@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE, pathFor } from '../lib/site';
+import { BLOG_POSTS } from '../data/blog';
+import { COMPARE_PAGES } from '../data/compare';
+const lang = 'en' as const;
+---
+<BaseLayout
+  lang={lang}
+  title={SITE.titleDefault}
+  description={SITE.descriptionDefault}
+  path="/"
+>
+  <section class="mx-auto max-w-5xl px-4 pb-8 pt-14">
+    <p class="badge mb-4">Community docs · not the upstream product</p>
+    <h1 class="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+      REA — Reverse Engineer Anything, explained for builders
+    </h1>
+    <p class="mt-5 max-w-2xl text-lg leading-8 text-[var(--color-muted)]">
+      Bilingual guides for the open-source <strong class="text-[var(--color-ink)]">REA</strong> MCP/CLI:
+      install, Ghidra wiring, agent workflows, and honest comparisons. Legal, authorized research only.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a class="btn" href={pathFor(lang, '/docs/install/')}>Install guide</a>
+      <a class="btn-secondary" href={SITE.upstreamRepo}>Upstream GitHub</a>
+      <a class="btn-secondary" href={SITE.upstreamDocs}>Official docs</a>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 py-8">
+    <div class="callout">
+      <strong>Compliance.</strong> Use REA only on software you are authorized to analyze.
+      This site publishes no crack, keygen, or DRM-circumvention material. See
+      <a href={pathFor(lang, '/compliance/')}>compliance</a>.
+    </div>
+  </section>
+
+  <section class="mx-auto grid max-w-5xl gap-4 px-4 py-6 sm:grid-cols-3">
+    <a class="card no-underline hover:border-[var(--color-accent)]" href={pathFor(lang, '/docs/install/')}>
+      <h2 class="text-base font-semibold text-[var(--color-ink)]">Docs · Install</h2>
+      <p class="mt-2 text-sm text-[var(--color-muted)]">Node requirements, <code>rea-agents</code> setup, MCP registration, Ghidra env vars.</p>
+    </a>
+    <a class="card no-underline hover:border-[var(--color-accent)]" href={pathFor(lang, '/blog/')}>
+      <h2 class="text-base font-semibold text-[var(--color-ink)]">Key terms</h2>
+      <p class="mt-2 text-sm text-[var(--color-muted)]">What REA means, Ghidra MCP, and agent reverse engineering with MCP.</p>
+    </a>
+    <a class="card no-underline hover:border-[var(--color-accent)]" href={pathFor(lang, '/compare/')}>
+      <h2 class="text-base font-semibold text-[var(--color-ink)]">Compare</h2>
+      <p class="mt-2 text-sm text-[var(--color-muted)]">REA vs Ghidra / IDA orientation; rea.run vs rea.tools — third-party labeled.</p>
+    </a>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 py-10">
+    <h2 class="text-xl font-semibold">Latest explainers</h2>
+    <ul class="mt-4 space-y-3">
+      {BLOG_POSTS.map((p) => (
+        <li>
+          <a class="font-medium no-underline hover:underline" href={pathFor(lang, `/blog/${p.slug}/`)}>{p.en.h1}</a>
+          <span class="ml-2 text-sm text-[var(--color-muted)]">{p.date}</span>
+        </li>
+      ))}
+    </ul>
+    <h2 class="mt-10 text-xl font-semibold">Comparisons</h2>
+    <ul class="mt-4 space-y-3">
+      {COMPARE_PAGES.map((p) => (
+        <li>
+          <a class="font-medium no-underline hover:underline" href={pathFor(lang, `/compare/${p.slug}/`)}>{p.en.h1}</a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { COMPARE_PAGES } from '../../data/compare';
+import { pathFor } from '../../lib/site';
+const lang = 'en' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="Compare REA — third-party orientation | rea.run"
+  description="Third-party labeled comparisons: REA vs Ghidra, REA vs IDA, and rea.run vs rea.tools."
+  path="/compare/"
+>
+  <div class="mx-auto max-w-3xl px-4 py-12">
+    <h1 class="text-3xl font-semibold tracking-tight">Compare</h1>
+    <p class="mt-3 text-[var(--color-muted)]">Orientation only. Verify against vendor and upstream docs. Not affiliate marketing.</p>
+    <ul class="mt-8 space-y-4">
+      {COMPARE_PAGES.map((p) => (
+        <li class="card">
+          <a class="text-lg font-semibold text-[var(--color-ink)] no-underline hover:underline" href={pathFor(lang, `/compare/${p.slug}/`)}>{p.en.h1}</a>
+          <p class="mt-2 text-sm text-[var(--color-muted)]">{p.en.description}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</BaseLayout>

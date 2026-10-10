@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE, pathFor } from '../../lib/site';
+import { BLOG_POSTS } from '../../data/blog';
+import { COMPARE_PAGES } from '../../data/compare';
+const lang = 'zh' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="rea.run — REA（Reverse Engineer Anything）中英社区指南"
+  description="REA 开源 MCP/CLI 的中英双语社区文档：安装、Ghidra、智能体逆向与对比。仅限合法授权研究。"
+  path="/"
+>
+  <section class="mx-auto max-w-5xl px-4 pb-8 pt-14">
+    <p class="badge mb-4">社区文档 · 非上游官网</p>
+    <h1 class="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
+      REA — 用中英双语讲清 Reverse Engineer Anything
+    </h1>
+    <p class="mt-5 max-w-2xl text-lg leading-8 text-[var(--color-muted)]">
+      面向开源 <strong class="text-[var(--color-ink)]">REA</strong> MCP/CLI 的安装、Ghidra 接线、智能体工作流与诚实对比。仅限合法、已授权研究。
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a class="btn" href={pathFor(lang, '/docs/install/')}>安装指南</a>
+      <a class="btn-secondary" href={SITE.upstreamRepo}>上游 GitHub</a>
+      <a class="btn-secondary" href={SITE.upstreamDocs}>官方文档</a>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 py-8">
+    <div class="callout">
+      <strong>合规。</strong>仅对你有权分析的软件使用 REA。本站不提供破解、注册机或规避 DRM 内容。见
+      <a href={pathFor(lang, '/compliance/')}>合规页</a>。
+    </div>
+  </section>
+
+  <section class="mx-auto grid max-w-5xl gap-4 px-4 py-6 sm:grid-cols-3">
+    <a class="card no-underline hover:border-[var(--color-accent)]" href={pathFor(lang, '/docs/install/')}>
+      <h2 class="text-base font-semibold text-[var(--color-ink)]">文档 · 安装</h2>
+      <p class="mt-2 text-sm text-[var(--color-muted)]">Node 要求、<code>rea-agents</code> setup、MCP 注册、Ghidra 环境变量。</p>
+    </a>
+    <a class="card no-underline hover:border-[var(--color-accent)]" href={pathFor(lang, '/blog/')}>
+      <h2 class="text-base font-semibold text-[var(--color-ink)]">关键术语</h2>
+      <p class="mt-2 text-sm text-[var(--color-muted)]">REA 释义、Ghidra MCP、用 MCP 做智能体逆向。</p>
+    </a>
+    <a class="card no-underline hover:border-[var(--color-accent)]" href={pathFor(lang, '/compare/')}>
+      <h2 class="text-base font-semibold text-[var(--color-ink)]">对比</h2>
+      <p class="mt-2 text-sm text-[var(--color-muted)]">REA 与 Ghidra / IDA；rea.run 与 rea.tools——均标注第三方。</p>
+    </a>
+  </section>
+
+  <section class="mx-auto max-w-5xl px-4 py-10">
+    <h2 class="text-xl font-semibold">最新释义</h2>
+    <ul class="mt-4 space-y-3">
+      {BLOG_POSTS.map((p) => (
+        <li>
+          <a class="font-medium no-underline hover:underline" href={pathFor(lang, `/blog/${p.slug}/`)}>{p.zh.h1}</a>
+          <span class="ml-2 text-sm text-[var(--color-muted)]">{p.date}</span>
+        </li>
+      ))}
+    </ul>
+    <h2 class="mt-10 text-xl font-semibold">对比页</h2>
+    <ul class="mt-4 space-y-3">
+      {COMPARE_PAGES.map((p) => (
+        <li>
+          <a class="font-medium no-underline hover:underline" href={pathFor(lang, `/compare/${p.slug}/`)}>{p.zh.h1}</a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</BaseLayout>

@@ -1,0 +1,96 @@
+---
+import '../styles/global.css';
+import { SITE, type Lang, pathFor, NAV } from '../lib/site';
+
+interface Props {
+  lang?: Lang;
+  title: string;
+  description: string;
+  path: string; // path without lang prefix, e.g. /docs/install/
+  noindex?: boolean;
+}
+const { lang = 'en', title, description, path, noindex = false } = Astro.props;
+const canonicalPath = pathFor(lang, path);
+const canonical = new URL(canonicalPath, SITE.url).href;
+const enUrl = new URL(pathFor('en', path), SITE.url).href;
+const zhUrl = new URL(pathFor('zh', path), SITE.url).href;
+const otherLang = lang === 'en' ? 'zh' : 'en';
+const otherHref = pathFor(otherLang, path);
+---
+<!doctype html>
+<html lang={lang === 'zh' ? 'zh-CN' : 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex,follow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="zh-CN" href={zhUrl} />
+    <link rel="alternate" hreflang="x-default" href={enUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    {SITE.gscVerification && <meta name="google-site-verification" content={SITE.gscVerification} />}
+    {SITE.bingVerification && <meta name="msvalidate.01" content={SITE.bingVerification} />}
+    {SITE.ga4Id && (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.ga4Id}`}></script>
+        <script is:inline define:vars={{ ga4Id: SITE.ga4Id }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', ga4Id);
+        </script>
+      </>
+    )}
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="min-h-screen flex flex-col">
+    <header class="border-b border-[var(--color-line)] bg-white/90 backdrop-blur sticky top-0 z-40">
+      <div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
+        <a href={pathFor(lang, '/')} class="no-underline font-semibold tracking-tight text-[var(--color-ink)]">
+          rea.run
+        </a>
+        <nav class="hidden items-center gap-4 text-sm sm:flex">
+          {NAV.map((item) => (
+            <a
+              href={pathFor(lang, item.href)}
+              class:list={[
+                'no-underline text-[var(--color-muted)] hover:text-[var(--color-ink)]',
+                path === item.href && 'text-[var(--color-ink)] font-medium',
+              ]}
+            >
+              {lang === 'zh' ? item.labelZh : item.labelEn}
+            </a>
+          ))}
+        </nav>
+        <a href={otherHref} class="badge no-underline" hreflang={otherLang === 'zh' ? 'zh-CN' : 'en'}>
+          {otherLang === 'zh' ? '中文' : 'EN'}
+        </a>
+      </div>
+    </header>
+
+    <main class="flex-1">
+      <slot />
+    </main>
+
+    <footer class="mt-16 border-t border-[var(--color-line)] bg-[var(--color-panel)]">
+      <div class="mx-auto max-w-5xl px-4 py-10 text-sm text-[var(--color-muted)] space-y-3">
+        <p>{lang === 'zh' ? SITE.disclaimerZh : SITE.disclaimer}</p>
+        <p class="flex flex-wrap gap-x-4 gap-y-2">
+          <a href={SITE.upstreamRepo}>Upstream GitHub</a>
+          <a href={SITE.upstreamDocs}>Official docs</a>
+          <a href={pathFor(lang, '/docs/install/')}>{lang === 'zh' ? '安装' : 'Install'}</a>
+          <a href={pathFor(lang, '/verify/')}>{lang === 'zh' ? '搜索验证' : 'Search verify'}</a>
+          <a href={pathFor(lang, '/compliance/')}>{lang === 'zh' ? '合规' : 'Compliance'}</a>
+        </p>
+        <p>© {new Date().getFullYear()} rea.run community</p>
+      </div>
+    </footer>
+  </body>
+</html>

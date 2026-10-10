@@ -1,0 +1,17 @@
+{
+  "name": "rea-run",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.6.0",
+    "@tailwindcss/vite": "^4.1.18",
+    "astro": "^5.18.2",
+    "tailwindcss": "^4.1.18"
+  }
+}

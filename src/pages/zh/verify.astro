@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="zh"
+  title="GSC / Bing 站点验证 | rea.run"
+  description="站长如何在 Google Search Console 与 Bing Webmaster Tools 验证 rea.run。不编造 token——有值后再写入站点配置。"
+  path="/verify/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-12">
+    <h1 class="text-3xl font-semibold tracking-tight text-[var(--color-ink)]">搜索验证（GSC / Bing）</h1>
+    <p class="mt-4">
+      Agent <strong>不会</strong>编造验证 token。域名所有者／PM 需在 Google Search Console 与 Bing Webmaster Tools 创建资源，再把验证值写入
+      <code>src/lib/site.ts</code>（<code>gscVerification</code>、<code>bingVerification</code>），或在 Cloudflare 控制台为 <code>rea.run</code> 添加 DNS TXT。
+    </p>
+
+    <h2>推荐：DNS TXT（Cloudflare）</h2>
+    <ol>
+      <li>打开 Cloudflare → 区域 <strong>rea.run</strong> → DNS。</li>
+      <li>在 GSC 添加域名资源 <code>rea.run</code>，复制 Google 给出的 TXT。</li>
+      <li>在 Bing 站长工具添加站点，复制 Bing 的 TXT（或 meta）说明。</li>
+      <li>按提示原样创建 TXT。不要复用其他域名（dotsbase、dshbase、Memoh、retatrutidecalc 等）的 token。</li>
+      <li>DNS 生效后在 GSC／Bing 点验证。</li>
+    </ol>
+
+    <h2>备选：HTML meta</h2>
+    <ol>
+      <li>使用网址前缀资源 <code>https://rea.run/</code>。</li>
+      <li>复制 Google／Bing 提供的 meta <code>content</code> 值。</li>
+      <li>写入 <code>SITE.gscVerification</code>／<code>SITE.bingVerification</code>，提交并部署。</li>
+      <li>确认线上首页 HTML 含对应 meta 后再点验证。</li>
+    </ol>
+
+    <h2>验证之后</h2>
+    <ul>
+      <li>在两边提交 <a href="https://rea.run/sitemap-index.xml">https://rea.run/sitemap-index.xml</a>。</li>
+      <li>可选：有 GA4 资源后再填 <code>SITE.ga4Id</code>（同样不要编造）。</li>
+      <li>中控加站按阶段 0 流程另行处理。</li>
+    </ul>
+  </article>
+</BaseLayout>
