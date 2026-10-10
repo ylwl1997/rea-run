@@ -8,6 +8,7 @@ const toc = [
   { id: 'cli', label: 'Optional CLI' },
   { id: 'ghidra', label: 'Ghidra (BYO)' },
   { id: 'first', label: 'First question' },
+  { id: 'actions-demo', label: 'Actions demo' },
   { id: 'codespaces', label: 'Codespaces lab' },
   { id: 'related', label: 'Related guides' },
   { id: 'links', label: 'Upstream links' },
@@ -80,6 +81,22 @@ npx rea-agents@latest setup`}</code></pre>
 
 
 
+        <h2 id="actions-demo">GitHub Actions demo (no local install)</h2>
+        <p>
+          Prefer watching a pipeline instead of installing locally? Open
+          <a href="https://github.com/ylwl1997/rea-run-lab">ylwl1997/rea-run-lab</a>
+          → <strong>Actions</strong> → workflow <strong>demo-smoke</strong> → <strong>Run workflow</strong>.
+          When it finishes, download the <strong>Artifacts</strong> (smoke / Evidence-style report) from the run summary.
+        </p>
+        <p>
+          <a class="btn-secondary inline-block no-underline" href="https://github.com/ylwl1997/rea-run-lab/actions">Open Actions demo</a>
+        </p>
+        <ul>
+          <li>Runs only the <strong>bundled self-owned</strong> Electron-shaped demo under <code>demo/</code> — no arbitrary binary uploads.</li>
+          <li>Authorized / own targets only; see <a href="/faq/legal-boundary/">legal boundary</a>.</li>
+          <li>Deeper Electron Evidence teaching: <a href="/showcase/rea-playbook/">rea-playbook</a>.</li>
+        </ul>
+
         <h2 id="codespaces">Try in GitHub Codespaces</h2>
         <p>
           Prefer a disposable cloud shell? Open the public lab
@@ -93,7 +110,7 @@ npx rea-agents@latest setup`}</code></pre>
         <ul>
           <li>No arbitrary binary uploads — lab ships one teaching target under <code>demo/</code>.</li>
           <li>Authorized / own targets only; see <a href="/faq/legal-boundary/">legal boundary</a>.</li>
-          <li>Deeper Electron Evidence teaching: <a href="/showcase/rea-playbook/">rea-playbook</a>.</li>
+          <li>Same lab repo as the Actions demo — two tracks, one <code>demo/</code>.</li>
         </ul>
 
         <h2 id="related">Related guides</h2>

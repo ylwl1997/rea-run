@@ -8,6 +8,7 @@ const toc = [
   { id: 'cli', label: '可选 CLI' },
   { id: 'ghidra', label: 'Ghidra（自备）' },
   { id: 'first', label: '第一次提问' },
+  { id: 'actions-demo', label: 'Actions 演示' },
   { id: 'codespaces', label: 'Codespaces 试跑' },
   { id: 'related', label: '相关指南' },
   { id: 'links', label: '上游链接' },
@@ -80,6 +81,22 @@ npx rea-agents@latest setup`}</code></pre>
 
         
 
+        <h2 id="actions-demo">GitHub Actions 演示（无需本机安装）</h2>
+        <p>
+          不想本机安装？打开
+          <a href="https://github.com/ylwl1997/rea-run-lab">ylwl1997/rea-run-lab</a>
+          → <strong>Actions</strong> → 工作流 <strong>demo-smoke</strong> → <strong>Run workflow</strong>。
+          跑完后在运行摘要里下载 <strong>Artifacts</strong>（smoke／Evidence 风格报告）。
+        </p>
+        <p>
+          <a class="btn-secondary inline-block no-underline" href="https://github.com/ylwl1997/rea-run-lab/actions">打开 Actions 演示</a>
+        </p>
+        <ul>
+          <li>只跑仓内<strong>自有</strong> Electron 风格演示 <code>demo/</code>——禁止任意上传二进制。</li>
+          <li>仅限授权／自有目标；见 <a href="/zh/faq/legal-boundary/">合法边界</a>。</li>
+          <li>更深入的 Electron Evidence 教学：<a href="/zh/showcase/rea-playbook/">rea-playbook</a>。</li>
+        </ul>
+
         <h2 id="codespaces">用 Codespaces 试跑</h2>
         <p>
           想要一次性云端环境？在 Codespaces 打开公开实验仓
@@ -93,7 +110,7 @@ npx rea-agents@latest setup`}</code></pre>
         <ul>
           <li>禁止任意上传二进制——实验仓只带 <code>demo/</code> 教学目标。</li>
           <li>仅限授权／自有目标；见 <a href="/zh/faq/legal-boundary/">合法边界</a>。</li>
-          <li>更深入的 Electron Evidence 教学：<a href="/zh/showcase/rea-playbook/">rea-playbook</a>。</li>
+          <li>与 Actions 演示同一实验仓——两条路径，一个 <code>demo/</code>。</li>
         </ul>
 
         <h2 id="related">相关指南</h2>
