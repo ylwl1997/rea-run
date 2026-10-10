@@ -8,6 +8,7 @@ const toc = [
   { id: 'cli', label: '可选 CLI' },
   { id: 'ghidra', label: 'Ghidra（自备）' },
   { id: 'first', label: '第一次提问' },
+  { id: 'codespaces', label: 'Codespaces 试跑' },
   { id: 'related', label: '相关指南' },
   { id: 'links', label: '上游链接' },
 ];
@@ -78,6 +79,23 @@ npx rea-agents@latest setup`}</code></pre>
         <p>重连智能体后，给出你<strong>有权分析</strong>的目标<strong>绝对路径</strong>与具体问题（入口、导出路径、某功能）。优先要 Evidence 与未知项，少要臆测叙事。</p>
 
         
+
+        <h2 id="codespaces">用 Codespaces 试跑</h2>
+        <p>
+          想要一次性云端环境？在 Codespaces 打开公开实验仓
+          <a href="https://github.com/ylwl1997/rea-run-lab">ylwl1997/rea-run-lab</a>
+          （Node 22 Dev Container），然后对<strong>仓内自有 Electron 风格演示</strong>运行
+          <code>npx rea-agents@latest setup</code>。
+        </p>
+        <p>
+          <a class="btn-secondary inline-block no-underline" href="https://codespaces.new/ylwl1997/rea-run-lab?quickstart=1">用 Codespaces 试跑</a>
+        </p>
+        <ul>
+          <li>禁止任意上传二进制——实验仓只带 <code>demo/</code> 教学目标。</li>
+          <li>仅限授权／自有目标；见 <a href="/zh/faq/legal-boundary/">合法边界</a>。</li>
+          <li>更深入的 Electron Evidence 教学：<a href="/zh/showcase/rea-playbook/">rea-playbook</a>。</li>
+        </ul>
+
         <h2 id="related">相关指南</h2>
         <ul>
           <li><a href="/zh/docs/mcp-clients/">MCP 客户端安装矩阵与 skill 路径</a></li>
