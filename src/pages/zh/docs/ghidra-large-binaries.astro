@@ -1,0 +1,37 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="zh"
+  title="大二进制与 Ghidra 启动截止 | rea.run"
+  description="大二进制上首查超时的原因；超时、堆与预导入。"
+  path="/docs/ghidra-large-binaries/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>
+
+    <p class="badge badge-accent mt-4">文档 · P1</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">大二进制与 Ghidra 启动截止</h1>
+    <p class="lede mt-4 !max-w-none">为何首查报 <code>provider_timeout</code>，而机器其实还在算。</p>
+    <h2>发生了什么</h2>
+    <p>Headless Ghidra 常常在回答前先<strong>导入并自动分析</strong>。大二进制上这项工作可能超过启动截止，客户端看到超时，分析却可能仍在另一进程生命周期里继续。</p>
+    <h2>建造者常用缓解</h2>
+    <ul>
+      <li>通过诸如 <code>REA_GHIDRA_STARTUP_TIMEOUT_MS</code> 的环境变量加长启动耐心（名称以你所用版本的上游文档／README 为准）。</li>
+      <li>按文档给 Ghidra headless 足够堆内存。</li>
+      <li>产品若允许范围导入，先分析更小切片。</li>
+      <li>社区功能诉求：打开<strong>已导入</strong>的 Ghidra 工程，让导入／分析发生在交互截止之外——跟上游进度，勿臆造未支持参数。</li>
+    </ul>
+    <p>另见 <a href="/zh/faq/tmpdir-dot-path/">TMPDIR 坑</a> 与 <a href="/zh/docs/windows-ghidra/">Windows × Ghidra</a>。</p>
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+      <p class="text-xs uppercase tracking-wider">来源</p>
+      <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+          <li><a href="https://github.com/morluto/rea/issues/1048" rel="noopener noreferrer" target="_blank">Issue #1048</a></li>
+          <li><a href="https://github.com/morluto/rea/blob/main/README.md" rel="noopener noreferrer" target="_blank">REA README</a></li>
+          <li><a href="https://github.com/morluto/rea/blob/main/docs/installation.md" rel="noopener noreferrer" target="_blank">installation</a></li>
+      </ol>
+      <p class="mt-4"><a class="quiet-link" href="/zh/compliance/">合规</a></p>
+    </footer>
+  </article>
+</BaseLayout>

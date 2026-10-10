@@ -33,6 +33,7 @@ export const NAV = [
   { href: '/examples/', labelEn: 'Examples', labelZh: '示例' },
   { href: '/showcase/', labelEn: 'Showcase', labelZh: '案例墙' },
   { href: '/docs/install/', labelEn: 'Install', labelZh: '安装' },
+  { href: '/faq/', labelEn: 'FAQ', labelZh: 'FAQ' },
   { href: '/compare/', labelEn: 'Compare', labelZh: '对比' },
   { href: '/blog/', labelEn: 'Blog', labelZh: '博客' },
 ] as const;

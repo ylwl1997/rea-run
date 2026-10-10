@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="zh"
+  title="MCP 客户端安装矩阵与 skill 路径 | rea.run"
+  description="setup 支持的客户端、skill 目录坑与 doctor 检查。"
+  path="/docs/mcp-clients/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>
+
+    <p class="badge badge-accent mt-4">文档</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">MCP 客户端安装矩阵与 skill 路径</h1>
+    <p class="lede mt-4 !max-w-none">把 REA 注册进编程智能体——并确认调查 skill 写在客户端真正会加载的目录。</p>
+
+    <h2>一行 setup</h2>
+    <pre><code>npx rea-agents@latest setup</code></pre>
+    <p>审阅计划、批准变更，然后<strong>重启或重连</strong>客户端。文档有时在全局安装后写 <code>rea setup</code>——两种形态都存在；需要可复现时请钉版本。</p>
+
+    <h2>客户端矩阵（示意）</h2>
+    <p>上游 setup 常见目标包括 Claude Code、Claude Desktop、Codex、Cursor、Gemini CLI、Qwen Code、Grok Build、Windsurf 等 stdio MCP 客户端。具体支持随版本变化——用下表定向，再以 <code>doctor --client …</code> 确认。</p>
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="compare-table">
+        <thead><tr><th>客户端家族</th><th>典型路径</th><th>检查</th></tr></thead>
+        <tbody>
+          <tr><td>CLI 智能体</td><td><code>npx rea-agents@latest setup</code> → 选择客户端</td><td><code>doctor --client …</code></td></tr>
+          <tr><td>IDE MCP</td><td>setup 或手写 <code>mcp</code> stdio</td><td>重连 MCP；列出工具</td></tr>
+          <tr><td>桌面聊天宿主</td><td>按该宿主的 setup 计划</td><td>写入 skill/MCP 后重启应用</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Skill 路径坑</h2>
+    <p>setup 可能把调查 skill 写到软件包认为规范的目录（例如 <code>~/.agents/skills</code>），而某客户端只从自己的树加载（例如 Claude Code 读 <code>~/.claude/skills</code>）。症状：MCP 工具在，但智能体从不采用 REA 工作流说明。</p>
+    <ul>
+      <li>setup 后确认 skill 文件落点。</li>
+      <li>若客户端忽略该路径，复制／符号链接到客户端 skills 目录——或升级到已对齐发现逻辑的版本后再跑 setup。</li>
+      <li>第三方 skill 安装器可能<strong>只装指令、不注册 MCP</strong>。仍需 setup 或手写 JSON 注册 MCP。</li>
+    </ul>
+    <pre><code>npx -y rea-agents@latest doctor --client claude_code --json
+npx -y rea-agents@latest doctor --skill --json</code></pre>
+
+    <h2>手动 MCP 形态</h2>
+    <pre><code>{`{
+  "mcpServers": {
+    "rea": {
+      "command": "npx",
+      "args": ["-y", "rea-agents@latest", "mcp"]
+    }
+  }
+}`}</code></pre>
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+      <p class="text-xs uppercase tracking-wider">来源</p>
+      <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+          <li><a href="https://github.com/morluto/rea/issues/1337" rel="noopener noreferrer" target="_blank">Issue #1337</a></li>
+          <li><a href="https://github.com/morluto/rea/issues/1459" rel="noopener noreferrer" target="_blank">Issue #1459</a></li>
+          <li><a href="https://github.com/morluto/rea/issues/1353" rel="noopener noreferrer" target="_blank">Issue #1353</a></li>
+          <li><a href="https://github.com/morluto/rea/blob/main/docs/installation.md" rel="noopener noreferrer" target="_blank">上游 installation 文档</a></li>
+      </ol>
+      <p class="mt-4"><a class="quiet-link" href="/zh/compliance/">合规</a></p>
+    </footer>
+  </article>
+</BaseLayout>

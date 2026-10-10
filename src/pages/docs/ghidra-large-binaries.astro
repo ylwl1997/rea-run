@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="en"
+  title="Large binaries & Ghidra startup deadlines | rea.run"
+  description="Why first Ghidra queries time out on big binaries; timeouts, heap, pre-import."
+  path="/docs/ghidra-large-binaries/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm"><a class="quiet-link" href="/faq/">← FAQ hub</a></p>
+
+    <p class="badge badge-accent mt-4">Docs · P1</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">Large binaries &amp; Ghidra startup deadlines</h1>
+    <p class="lede mt-4 !max-w-none">Why the first query dies with <code>provider_timeout</code> while the machine is still crunching.</p>
+    <h2>What is happening</h2>
+    <p>Headless Ghidra often <strong>imports and auto-analyzes</strong> before serving answers. On big binaries that work can exceed the startup deadline, so the client sees a timeout even though analysis continues in another process lifetime.</p>
+    <h2>Mitigations builders use</h2>
+    <ul>
+      <li>Raise startup patience via env such as <code>REA_GHIDRA_STARTUP_TIMEOUT_MS</code> (confirm current name in upstream docs/README for your version).</li>
+      <li>Give the JVM enough heap as documented for Ghidra headless.</li>
+      <li>Prefer analyzing a smaller first slice when the product allows scoped imports.</li>
+      <li>Community feature asks: open an <strong>already-imported</strong> Ghidra project so import/analysis happen outside the interactive deadline — track upstream rather than inventing unsupported flags.</li>
+    </ul>
+    <h2>Debug loop</h2>
+    <pre><code>npx -y rea-agents@latest doctor --provider ghidra --json
+# retry once after a cold JVM warm; then adjust timeout/heap</code></pre>
+    <p>Also see <a href="/faq/tmpdir-dot-path/">TMPDIR pitfalls</a> and <a href="/docs/windows-ghidra/">Windows × Ghidra</a>.</p>
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+      <p class="text-xs uppercase tracking-wider">Sources</p>
+      <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+          <li><a href="https://github.com/morluto/rea/issues/1048" rel="noopener noreferrer" target="_blank">Issue #1048 — pre-imported Ghidra project</a></li>
+          <li><a href="https://github.com/morluto/rea/blob/main/README.md" rel="noopener noreferrer" target="_blank">REA README / timeout notes</a></li>
+          <li><a href="https://github.com/morluto/rea/blob/main/docs/installation.md" rel="noopener noreferrer" target="_blank">Installation · heap / Ghidra</a></li>
+      </ol>
+      <p class="mt-4"><a class="quiet-link" href="/compliance/">Compliance</a></p>
+    </footer>
+  </article>
+</BaseLayout>

@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="en"
+  title="Large Electron/ASAR & JS graph timeouts | rea.run"
+  description="Silent ASAR analysis, RangeError on huge graphs, MCP ping blocked — how to stage work."
+  path="/faq/electron-asar-timeouts/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm"><a class="quiet-link" href="/faq/">← FAQ hub</a></p>
+
+    <p class="badge badge-accent mt-4">FAQ · P1</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">Large Electron / ASAR &amp; JS graphs</h1>
+    <p class="lede mt-4 !max-w-none">Silent minutes, <code>RangeError</code>, and MCP sessions that stop answering pings.</p>
+    <h2>Symptoms</h2>
+    <ul>
+      <li><code>analyze-javascript-application</code> on a multi‑tens‑of‑MB ASAR prints nothing for a long time, then fails generically.</li>
+      <li>Huge in-memory graphs blow string limits (<code>RangeError: Invalid string length</code>) masked as I/O errors.</li>
+      <li>While JS analysis runs synchronously, MCP ping/cancel may appear wedged.</li>
+    </ul>
+    <h2>Working pattern</h2>
+    <ol>
+      <li>Start with a <strong>smaller loader</strong> or extracted subset, not the whole ASAR.</li>
+      <li>Stage questions: inventory → one feature → one module.</li>
+      <li>Watch doctor/client health; restart the MCP session after a hard abort.</li>
+      <li>Prefer CLI for elephantine targets when the interactive agent needs to stay responsive.</li>
+    </ol>
+    <p>Authorized builds only — your app, your CI artifact, or permissioned samples.</p>
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+      <p class="text-xs uppercase tracking-wider">Sources</p>
+      <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+          <li><a href="https://github.com/morluto/rea/issues/746" rel="noopener noreferrer" target="_blank">Issue #746 — large ASAR silence</a></li>
+          <li><a href="https://github.com/morluto/rea/issues/623" rel="noopener noreferrer" target="_blank">Issue #623 — RangeError on large JS targets</a></li>
+          <li><a href="https://github.com/morluto/rea/issues/1462" rel="noopener noreferrer" target="_blank">Issue #1462 — JS analysis blocks MCP ping</a></li>
+          <li><a href="https://github.com/morluto/rea/issues/1387" rel="noopener noreferrer" target="_blank">Issue #1387 — large bundle abort regression notes</a></li>
+      </ol>
+      <p class="mt-4"><a class="quiet-link" href="/compliance/">Compliance</a></p>
+    </footer>
+  </article>
+</BaseLayout>

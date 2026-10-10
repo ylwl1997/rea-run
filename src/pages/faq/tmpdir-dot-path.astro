@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="en"
+  title="TMPDIR / hidden-directory pitfalls | rea.run"
+  description="Ghidra headless can reject project paths when TMPDIR contains a dot-prefixed segment."
+  path="/faq/tmpdir-dot-path/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm"><a class="quiet-link" href="/faq/">← FAQ hub</a></p>
+
+    <p class="badge badge-accent mt-4">FAQ · P0</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">TMPDIR / hidden-directory pitfalls</h1>
+    <p class="lede mt-4 !max-w-none">When Ghidra headless refuses project paths but <code>doctor</code> still looks healthy.</p>
+    <h2>Symptom</h2>
+    <p>Every Ghidra-backed operation aborts. Provider doctor may still report a healthy install because the JDK/Ghidra directories exist — the failure is in the <strong>runtime project path</strong>, not the install check.</p>
+    <h2>Cause</h2>
+    <p>If <code>TMPDIR</code> / <code>TEMP</code> / REA’s runtime root contains a path segment that starts with <code>.</code> (a hidden directory component), Ghidra headless may reject that project location. Dotfiles are common on Unix temp layouts and some sandboxes.</p>
+    <h2>Fix</h2>
+    <ul>
+      <li>Point temp to a path <strong>without</strong> dot-prefixed segments, for example <code>/var/tmp/rea-work</code> or <code>C:\Temp\rea</code>.</li>
+      <li>Export the new temp for the shell that launches MCP, then retry the operation.</li>
+      <li>Re-run provider doctor after the change; also attempt a tiny known-good binary to confirm end-to-end.</li>
+    </ul>
+    <pre><code># example (Unix)
+export TMPDIR=/var/tmp/rea-work
+mkdir -p "$TMPDIR"
+npx -y rea-agents@latest doctor --provider ghidra --json</code></pre>
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+      <p class="text-xs uppercase tracking-wider">Sources</p>
+      <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+          <li><a href="https://github.com/morluto/rea/issues/1219" rel="noopener noreferrer" target="_blank">Issue #1219 — dot-prefixed runtime path</a></li>
+          <li><a href="https://github.com/morluto/rea/discussions/1435" rel="noopener noreferrer" target="_blank">Discussion #1435 — Fedora test notes (related env)</a></li>
+      </ol>
+      <p class="mt-4"><a class="quiet-link" href="/compliance/">Compliance</a></p>
+    </footer>
+  </article>
+</BaseLayout>

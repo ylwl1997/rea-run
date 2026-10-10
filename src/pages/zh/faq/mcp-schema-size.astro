@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="zh"
+  title="MCP tools schema 体积与严格客户端 | rea.run"
+  description="巨大的 tools/list 与单 schema 上限——升级与客户端选择。"
+  path="/faq/mcp-schema-size/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>
+
+    <p class="badge badge-accent mt-4">FAQ · P1</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">MCP tools schema 体积与严格客户端</h1>
+    <p class="lede mt-4 !max-w-none">一接上 REA，整个智能体就拒绝所有请求时。</p>
+    <h2>哪里坏了</h2>
+    <p>部分提供商有<strong>单工具 JSON schema 大小上限</strong>。REA 的完整 <code>tools/list</code> 可能声明大量细节工具；单个过大 schema 会让 Moonshot／Kimi 类客户端拒绝整段会话。</p>
+    <h2>运维怎么做</h2>
+    <ul>
+      <li>升级 <code>rea-agents</code>——schema 压缩与发现修复会随版本发布。</li>
+      <li>改用能容忍大目录的客户端，或重活走 CLI。</li>
+      <li>关注上游有界资源下的 MCP 可用性路线；不要用损坏的 schema「绕过」上限。</li>
+    </ul>
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+      <p class="text-xs uppercase tracking-wider">来源</p>
+      <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+          <li><a href="https://github.com/morluto/rea/issues/1484" rel="noopener noreferrer" target="_blank">Issue #1484</a></li>
+          <li><a href="https://github.com/morluto/rea/issues/1327" rel="noopener noreferrer" target="_blank">Issue #1327</a></li>
+          <li><a href="https://github.com/morluto/rea/issues/1065" rel="noopener noreferrer" target="_blank">Issue #1065</a></li>
+      </ol>
+      <p class="mt-4"><a class="quiet-link" href="/zh/compliance/">合规</a></p>
+    </footer>
+  </article>
+</BaseLayout>

@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="en"
+  title="Linux / Fedora REA install notes | rea.run"
+  description="Node lines, Ghidra+JDK, browser executable, and Fedora-family host quirks."
+  path="/docs/linux-fedora/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm"><a class="quiet-link" href="/faq/">← FAQ hub</a></p>
+
+    <p class="badge badge-accent mt-4">Docs · P2</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">Linux / Fedora install notes</h1>
+    <p class="lede mt-4 !max-w-none">Field notes for Node lines, Ghidra+JDK, browsers, and Fedora-family host quirks.</p>
+    <h2>Node</h2>
+    <p>Match upstream’s supported Node lines (commonly 22.x / 24.x / 26+). Electron/JS targets are sensitive to that floor — do not assume system Node 18 is enough.</p>
+    <h2>Ghidra + JDK</h2>
+    <p>Pair a documented Ghidra release with a full Temurin (or equivalent) JDK 21+. Export <code>GHIDRA_INSTALL_DIR</code> and <code>JAVA_HOME</code>, then <code>doctor --provider ghidra</code>.</p>
+    <h2>Browser tools</h2>
+    <p>If page inspection cannot find Chrome/Chromium, set <code>REA_BROWSER_EXECUTABLE</code> to an absolute binary. Some Chromium builds report opaque placeholder URLs in frame trees — upgrade REA/browser when frame discovery fails.</p>
+    <h2>Host distros</h2>
+    <p>Fedora-based spins (including Nobara) have been reported as <code>unsupported_host</code> in older builds; check whether your REA version still gates that way before filing duplicates. Optional reverse tooling (pwntools, etc.) belongs in its own venv — REA setup will not replace your distro packages.</p>
+    <p>Also read <a href="/faq/tmpdir-dot-path/">TMPDIR pitfalls</a> on Linux temp layouts.</p>
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+      <p class="text-xs uppercase tracking-wider">Sources</p>
+      <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+          <li><a href="https://github.com/morluto/rea/discussions/1435" rel="noopener noreferrer" target="_blank">Discussion #1435 — Fedora test notes</a></li>
+          <li><a href="https://github.com/morluto/rea/issues/1335" rel="noopener noreferrer" target="_blank">Issue #1335 — Nobara unsupported_host</a></li>
+          <li><a href="https://github.com/morluto/rea/issues/1384" rel="noopener noreferrer" target="_blank">Issue #1384 — Chromium frame tree placeholder URL</a></li>
+      </ol>
+      <p class="mt-4"><a class="quiet-link" href="/compliance/">Compliance</a></p>
+    </footer>
+  </article>
+</BaseLayout>

@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="zh"
+  title="合法使用边界 FAQ | rea.run"
+  description="授权默认、不提供未授权商业逆向教程、净室与闭源边界。"
+  path="/faq/legal-boundary/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>
+
+    <p class="badge badge-accent mt-4">FAQ · P0</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">合法使用边界</h1>
+    <p class="lede mt-4 !max-w-none">rea.run 会／不会帮你用 REA 做什么。</p>
+    <h2>默认姿态</h2>
+    <ul>
+      <li>REA 在<strong>本地</strong>对你提供的制品运行。你须自行确保有权分析。</li>
+      <li>rea.run 不提供「上传二进制」服务，也不背书非法用途。</li>
+      <li>指南默认已授权：自有构建、许可兼容的开源、合规实验室样本，或书面许可。</li>
+    </ul>
+    <h2>「能不能逆向某商业 App？」</h2>
+    <p><strong>我们不发布未授权商业软件逆向的操作教程。</strong>社区偶尔会出现点名闭源产品的提问；那些帖子是边界提醒的需求信号——不是教案。我们不会把它们改写成逐步攻击配方。</p>
+    <h2>净室／开源伴侣</h2>
+    <p>从公开标准、开源伴侣或厂商授权 SDK 学习模式，不同于剥掉你不拥有的专有二进制的保护。不确定时先停，寻求许可或法律意见。</p>
+    <h2>本站相关</h2>
+    <p><a href="/zh/compliance/">合规</a> · <a href="/zh/showcase/">案例墙</a>（仅授权／可公开案例）</p>
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+      <p class="text-xs uppercase tracking-wider">来源</p>
+      <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+          <li><a href="https://github.com/morluto/rea/blob/main/README.md" rel="noopener noreferrer" target="_blank">上游 README 免责声明</a></li>
+          <li><a href="https://github.com/morluto/rea/issues/1343" rel="noopener noreferrer" target="_blank">Issue #1343</a></li>
+          <li><a href="https://github.com/morluto/rea/discussions/693" rel="noopener noreferrer" target="_blank">Discussion #693（仅作边界信号）</a></li>
+          <li><a href="https://github.com/morluto/rea/discussions/1115" rel="noopener noreferrer" target="_blank">Discussion #1115（仅作边界信号）</a></li>
+      </ol>
+      <p class="mt-4"><a class="quiet-link" href="/zh/compliance/">合规</a></p>
+    </footer>
+  </article>
+</BaseLayout>

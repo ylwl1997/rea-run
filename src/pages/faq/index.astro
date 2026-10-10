@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { FAQ_LINKS } from '../../data/faqIndex';
+import { pathFor } from '../../lib/site';
+const lang = 'en' as const;
+const groups = ['P0', 'P1', 'P2'] as const;
+---
+<BaseLayout
+  lang={lang}
+  title="FAQ — REA install, platforms, boundaries | rea.run"
+  description="Bilingual FAQ hub: MCP clients, Windows Ghidra, TMPDIR pitfalls, capability matrix, legal boundary, large binaries, Electron/ASAR, schema size."
+  path="/faq/"
+>
+  <div class="mx-auto max-w-5xl px-4 py-14">
+    <p class="badge badge-accent">FAQ</p>
+    <h1 class="display mt-4 text-4xl">Answers for getting REA working</h1>
+    <p class="lede mt-4">Original guides rewritten from public upstream themes. Footnotes cite GitHub; no competitor-doc CTAs.</p>
+    {groups.map((g) => (
+      <section class="mt-12">
+        <p class="kicker">{g}</p>
+        <div class="mt-4 grid gap-3">
+          {FAQ_LINKS.filter((l) => l.priority === g).map((l) => (
+            <a class="card no-underline hover:no-underline group" href={pathFor(lang, l.href)}>
+              <h2 class="text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">{l.en.title}</h2>
+              <p class="mt-1 text-sm text-[var(--color-muted)]">{l.en.blurb}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))}
+    <p class="mt-12 text-sm"><a href={pathFor(lang, '/docs/install/')}>Install</a> · <a class="quiet-link" href={pathFor(lang, '/compliance/')}>Compliance</a></p>
+  </div>
+</BaseLayout>

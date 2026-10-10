@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="zh"
+  title="这台机器能分析什么？| rea.run"
+  description="原生、JS、Android/JADX、固件与浏览器分析的宿主能力矩阵。"
+  path="/faq/what-can-i-analyze/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>
+
+    <p class="badge badge-accent mt-4">FAQ · P0</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">这台机器能分析什么？</h1>
+    <p class="lede mt-4 !max-w-none">按宿主划分的能力草图——不保证每个提供者都已安装。</p>
+    <div class="not-prose overflow-x-auto my-6">
+      <table class="compare-table">
+        <thead><tr><th>表面</th><th>典型引擎</th><th>备注</th></tr></thead>
+        <tbody>
+          <tr><td>原生二进制</td><td>Ghidra／Hopper／IDA（自备）</td><td>受 OS／架构门控；Windows Ghidra 有单独 P0 故事</td></tr>
+          <tr><td>JavaScript／Electron</td><td>REA 静态 JS 图</td><td>通常无需原生引擎；大 ASAR 另有 FAQ</td></tr>
+          <tr><td>.NET</td><td>托管／原生路径以上游为准</td><td>NativeAOT 可能落到原生提供者</td></tr>
+          <tr><td>Android</td><td>JADX（自备）+ Java</td><td>Linux／macOS 更顺；Windows 常提示「此处不可用」</td></tr>
+          <tr><td>固件／包</td><td>可选解包器（自备）</td><td>额外前置；勿臆造安装步骤</td></tr>
+          <tr><td>浏览器／页面</td><td>本机 Chrome 系 + REA 浏览器工具</td><td>可能需 <code>REA_BROWSER_EXECUTABLE</code>；注意配置隔离</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>对关心的提供者跑 <code>doctor</code>。Windows 上缺 Android/JADX 路径常常是环境限制，不是 npm 装坏了。</p>
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+      <p class="text-xs uppercase tracking-wider">来源</p>
+      <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+          <li><a href="https://github.com/morluto/rea/issues/1262" rel="noopener noreferrer" target="_blank">Issue #1262</a></li>
+          <li><a href="https://github.com/morluto/rea/blob/main/docs/android-analysis.md" rel="noopener noreferrer" target="_blank">android-analysis 文档</a></li>
+          <li><a href="https://github.com/morluto/rea/blob/main/README.md" rel="noopener noreferrer" target="_blank">REA README</a></li>
+      </ol>
+      <p class="mt-4"><a class="quiet-link" href="/zh/compliance/">合规</a></p>
+    </footer>
+  </article>
+</BaseLayout>
