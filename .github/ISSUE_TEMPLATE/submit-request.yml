@@ -1,0 +1,45 @@
+name: 提交需求 / Submit request
+description: Propose a docs, demo, or product need for the unofficial rea.run community site
+title: "[request] "
+labels: ["request", "status:open"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **rea.run** is an unofficial community site (not affiliated with REA upstream).
+        Authorized / legal reverse-engineering topics only — no crack or DRM bypass requests.
+  - type: input
+    id: title_hint
+    attributes:
+      label: Short title (also edit the issue title)
+      placeholder: e.g. Windows Ghidra FAQ for PE-only caveat
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind / 类型
+      options:
+        - docs
+        - demo
+        - showcase
+        - install
+        - faq
+        - i18n
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: body
+    attributes:
+      label: Details / 详情
+      description: What you need, why, and any links. EN or ZH OK.
+    validations:
+      required: true
+  - type: checkboxes
+    id: compliance
+    attributes:
+      label: Compliance
+      options:
+        - label: This request is for lawful, authorized research / docs — not crack, keygen, or DRM bypass.
+          required: true

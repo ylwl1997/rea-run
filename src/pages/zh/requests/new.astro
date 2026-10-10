@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { pathFor } from '../../../lib/site';
+const lang = 'zh' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="提交需求 | rea.run"
+  description="向 rea.run 社区提交需求。需 GitHub 登录。Issue 公开可见。"
+  path="/requests/new/"
+>
+  <div class="page-shell section-pad max-w-2xl">
+    <p class="badge">需求</p>
+    <h1 class="display mt-4 text-4xl">提交需求</h1>
+    <p class="lede mt-4">
+      非官方社区收集入口。仅限合法授权主题——不要提破解或规避 DRM。
+      请先用 GitHub 登录，便于署名。
+    </p>
+
+    <div class="card mt-8" data-request-login-gate hidden>
+      <p class="kicker">需要登录</p>
+      <p class="mt-2 text-sm text-[var(--color-ink-soft)]">使用现有社区 GitHub OAuth 会话，登录后返回本页提交。</p>
+      <a class="btn mt-4" href={`/api/auth/login?return_to=${encodeURIComponent('/zh/requests/new/')}`}>GitHub 登录</a>
+      <a class="btn-secondary mt-4 ml-2" href={pathFor(lang, '/requests/')}>返回广场</a>
+    </div>
+
+    <div class="card mt-8" data-request-form-panel hidden>
+      <p class="text-sm text-[var(--color-muted)]">当前用户 <strong data-request-who>—</strong></p>
+      <form class="mt-4 stack-md" data-request-form>
+        <label class="block text-sm font-semibold">
+          标题
+          <input class="req-input mt-1" name="title" required maxlength="120" placeholder="例如：安装页补充 Windows Ghidra 说明" />
+        </label>
+        <label class="block text-sm font-semibold">
+          类型
+          <select class="req-input mt-1" name="kind">
+            <option value="docs">docs</option>
+            <option value="demo">demo</option>
+            <option value="showcase">showcase</option>
+            <option value="install">install</option>
+            <option value="faq">faq</option>
+            <option value="i18n">i18n</option>
+            <option value="other">other</option>
+          </select>
+        </label>
+        <label class="block text-sm font-semibold">
+          详情
+          <textarea class="req-input mt-1" name="details" required rows="7" placeholder="需要什么、为什么（中英均可）。"></textarea>
+        </label>
+        <p class="text-xs text-[var(--color-muted)]">
+          若未配置服务端 Issues 令牌，提交会打开 GitHub 议题表单（预打 <code>request</code> 标签），保持公开可追溯。
+        </p>
+        <div class="cta-row">
+          <button class="btn" type="submit">提交</button>
+          <a class="btn-secondary" href={pathFor(lang, '/requests/')}>取消</a>
+        </div>
+        <p class="text-sm text-[var(--color-muted)]" data-request-status></p>
+      </form>
+    </div>
+  </div>
+  <script src="/scripts/requests.js" defer></script>
+</BaseLayout>

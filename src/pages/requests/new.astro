@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { pathFor } from '../../lib/site';
+const lang = 'en' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="Submit a request | rea.run"
+  description="Submit a community request for rea.run. Requires GitHub sign-in. Issues are public."
+  path="/requests/new/"
+>
+  <div class="page-shell section-pad max-w-2xl">
+    <p class="badge">Requests</p>
+    <h1 class="display mt-4 text-4xl">提交需求 / Submit request</h1>
+    <p class="lede mt-4">
+      Unofficial community intake. Authorized / legal topics only — no crack or DRM bypass requests.
+      Sign in with GitHub so we can attribute the submitter.
+    </p>
+
+    <div class="card mt-8" data-request-login-gate hidden>
+      <p class="kicker">Sign in required</p>
+      <p class="mt-2 text-sm text-[var(--color-ink-soft)]">
+        Use the existing community GitHub OAuth session, then return here to submit.
+      </p>
+      <a class="btn mt-4" href={`/api/auth/login?return_to=${encodeURIComponent('/requests/new/')}`}>GitHub 登录 / Sign in</a>
+      <a class="btn-secondary mt-4 ml-2" href={pathFor(lang, '/requests/')}>Back to plaza</a>
+    </div>
+
+    <div class="card mt-8" data-request-form-panel hidden>
+      <p class="text-sm text-[var(--color-muted)]">Submitting as <strong data-request-who>—</strong></p>
+      <form class="mt-4 stack-md" data-request-form>
+        <label class="block text-sm font-semibold">
+          Title
+          <input class="req-input mt-1" name="title" required maxlength="120" placeholder="e.g. Clarify Codespaces vs Actions on install" />
+        </label>
+        <label class="block text-sm font-semibold">
+          Kind
+          <select class="req-input mt-1" name="kind">
+            <option value="docs">docs</option>
+            <option value="demo">demo</option>
+            <option value="showcase">showcase</option>
+            <option value="install">install</option>
+            <option value="faq">faq</option>
+            <option value="i18n">i18n</option>
+            <option value="other">other</option>
+          </select>
+        </label>
+        <label class="block text-sm font-semibold">
+          Details
+          <textarea class="req-input mt-1" name="details" required rows="7" placeholder="What you need and why (EN or ZH)."></textarea>
+        </label>
+        <p class="text-xs text-[var(--color-muted)]">
+          Without a server Issues token, submit opens GitHub’s issue form (pre-labeled <code>request</code>) so the request stays public and attributable.
+        </p>
+        <div class="cta-row">
+          <button class="btn" type="submit">Submit</button>
+          <a class="btn-secondary" href={pathFor(lang, '/requests/')}>Cancel</a>
+        </div>
+        <p class="text-sm text-[var(--color-muted)]" data-request-status></p>
+      </form>
+    </div>
+  </div>
+  <script src="/scripts/requests.js" defer></script>
+</BaseLayout>

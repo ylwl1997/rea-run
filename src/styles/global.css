@@ -1147,3 +1147,105 @@ html.nav-open .burger-lines::after { top: 0; transform: rotate(-45deg); }
   border: 1px solid color-mix(in oklab, var(--color-mint) 30%, var(--color-line));
   background: color-mix(in oklab, var(--color-mint) 6%, var(--color-panel));
 }
+
+
+/* --- Request plaza --- */
+.req-grid {
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 800px) {
+  .req-grid { grid-template-columns: 1fr 1fr; gap: 1.15rem; }
+}
+.req-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  color: inherit;
+}
+.req-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.req-num {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-muted);
+}
+.req-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+  line-height: 1.35;
+}
+.req-preview {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--color-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.req-meta {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  padding-top: 0.55rem;
+  border-top: 1px dashed var(--color-line);
+}
+.req-avatar {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 999px;
+}
+.req-tags { display: inline-flex; flex-wrap: wrap; gap: 0.25rem; }
+.req-status {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.18rem 0.55rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid var(--color-line);
+}
+.req-status.is-open {
+  color: var(--color-mint);
+  border-color: color-mix(in oklab, var(--color-mint) 35%, var(--color-line));
+  background: color-mix(in oklab, var(--color-mint) 8%, white);
+}
+.req-status.is-planned {
+  color: var(--color-warn);
+  border-color: color-mix(in oklab, var(--color-warn) 35%, var(--color-line));
+  background: var(--color-warn-soft);
+}
+.req-status.is-done {
+  color: var(--color-accent-2);
+  border-color: color-mix(in oklab, var(--color-accent-2) 35%, var(--color-line));
+  background: color-mix(in oklab, var(--color-accent-2) 8%, white);
+}
+.req-input {
+  display: block;
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-line);
+  background: var(--color-panel);
+  padding: 0.65rem 0.75rem;
+  font: inherit;
+  color: var(--color-ink);
+}
+.req-input:focus {
+  outline: 2px solid color-mix(in oklab, var(--color-accent) 35%, transparent);
+  outline-offset: 1px;
+}

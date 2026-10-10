@@ -74,6 +74,16 @@
       t('◈ Codespaces lab', '◈ Codespaces 试跑') +
       '</a>' +
       '<a class="auth-dropdown-item" href="' +
+      (lang() === 'zh' ? '/zh/requests/new/' : '/requests/new/') +
+      '">' +
+      t('＋ 提交需求', '＋ 提交需求') +
+      '</a>' +
+      '<a class="auth-dropdown-item" href="' +
+      (lang() === 'zh' ? '/zh/requests/' : '/requests/') +
+      '">' +
+      t('▦ 需求广场', '▦ 需求广场') +
+      '</a>' +
+      '<a class="auth-dropdown-item" href="' +
       SUBMIT_CASE +
       '" target="_blank" rel="noopener noreferrer">' +
       t('＋ Submit case', '＋ 提交案例') +
