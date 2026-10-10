@@ -41,13 +41,14 @@ const live = publishedCases();
               <p class="showcase-summary">{c.zh.summary}</p>
               <div class="showcase-tags">
                 {tags.map((t) => <span class="chip">{t}</span>)}
-                {c.github?.license && <span class="chip">{c.github.license}</span>}
+              </div>
+              <div class="showcase-meta-row" aria-label="来源元数据">
+                <span class="chip">★ {c.github?.stars != null ? c.github.stars : '—'}</span>
+                <span class="chip">{c.github?.license ?? '—'}</span>
+                <span class="chip">{c.github?.updated ?? '—'}</span>
               </div>
               <div class="showcase-meta">
-                <span>
-                  {c.github?.stars != null ? `★ ${c.github.stars}` : '本站'}
-                  {c.rating ? ` · ${c.rating.labelZh}` : ''}
-                </span>
+                <span>{c.rating ? c.rating.labelZh : '—'}</span>
                 <span class="showcase-cta">阅读 →</span>
               </div>
             </div>

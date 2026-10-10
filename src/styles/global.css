@@ -880,3 +880,12 @@ html.nav-open .burger-lines::after { top: 0; transform: rotate(-45deg); }
 .showcase-hero {
   margin-bottom: 0.25rem;
 }
+
+.showcase-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.showcase-meta-panel {
+  box-shadow: 0 10px 28px rgba(20, 21, 26, 0.04);
+}

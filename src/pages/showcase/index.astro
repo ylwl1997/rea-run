@@ -42,13 +42,14 @@ const live = publishedCases();
               <p class="showcase-summary">{c.en.summary}</p>
               <div class="showcase-tags">
                 {tags.map((t) => <span class="chip">{t}</span>)}
-                {c.github?.license && <span class="chip">{c.github.license}</span>}
+              </div>
+              <div class="showcase-meta-row" aria-label="source meta">
+                <span class="chip">★ {c.github?.stars != null ? c.github.stars : '—'}</span>
+                <span class="chip">{c.github?.license ?? '—'}</span>
+                <span class="chip">{c.github?.updated ?? '—'}</span>
               </div>
               <div class="showcase-meta">
-                <span>
-                  {c.github?.stars != null ? `★ ${c.github.stars}` : 'on-site'}
-                  {c.rating ? ` · ${c.rating.labelEn}` : ''}
-                </span>
+                <span>{c.rating ? c.rating.labelEn : '—'}</span>
                 <span class="showcase-cta">Read →</span>
               </div>
             </div>

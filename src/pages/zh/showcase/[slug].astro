@@ -12,8 +12,10 @@ const c = getShowcase(Astro.params.slug!);
 if (!c || c.status !== 'published') throw new Error('missing showcase');
 const html = renderBody(c.zh.body);
 const others = publishedCases().filter((x) => x.id !== c.id).slice(0, 4);
+const dash = '—';
 const stars = c.github?.stars;
 const score = c.rating?.score;
+const ghUrl = c.github?.url;
 ---
 <BaseLayout
   lang="zh"
@@ -33,28 +35,39 @@ const score = c.rating?.score;
     <h1 class="display mt-4 text-4xl">{c.zh.title}</h1>
     <p class="lede mt-4">{c.zh.lede}</p>
 
-    {(c.github || c.rating) && (
-      <div class="mt-6 grid gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-4 text-sm sm:grid-cols-2">
-        {c.github && (
-          <div class="space-y-1 text-[var(--color-muted)]">
-            {stars != null && <p><span class="text-[var(--color-ink)] font-semibold">{stars}</span> GitHub 星标（快照）</p>}
-            {c.github.language && <p>语言：<span class="text-[var(--color-ink)]">{c.github.language}</span></p>}
-            {c.github.license && <p>许可：<span class="text-[var(--color-ink)]">{c.github.license}</span></p>}
-            {c.github.updated && <p>更新：<span class="text-[var(--color-ink)]">{c.github.updated}</span></p>}
-            <p class="pt-1"><a href={c.github.url} rel="noopener noreferrer" target="_blank">GitHub 源 ↗</a></p>
-          </div>
-        )}
-        {c.rating && (
-          <div class="space-y-1">
-            <p class="font-semibold text-[var(--color-ink)]">rea.run 评价：{score}/5 — {c.rating.labelZh}</p>
+    <div class="showcase-meta-panel mt-6 grid gap-4 rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-4 text-sm sm:grid-cols-2">
+      <div class="space-y-1.5 text-[var(--color-muted)]">
+        <p class="text-xs uppercase tracking-wider text-[var(--color-ink-soft)]">来源元数据</p>
+        <p>
+          <span class="text-[var(--color-ink)] font-semibold">{stars != null ? stars : dash}</span>
+          {' '}GitHub 星标（快照）
+        </p>
+        <p>语言：<span class="text-[var(--color-ink)]">{c.github?.language ?? dash}</span></p>
+        <p>许可：<span class="text-[var(--color-ink)]">{c.github?.license ?? dash}</span></p>
+        <p>更新：<span class="text-[var(--color-ink)]">{c.github?.updated ?? dash}</span></p>
+        <p class="pt-1">
+          {ghUrl ? (
+            <a href={ghUrl} rel="noopener noreferrer" target="_blank">GitHub 源 ↗</a>
+          ) : (
+            <span>GitHub 源：{dash}</span>
+          )}
+        </p>
+      </div>
+      <div class="space-y-1.5">
+        <p class="text-xs uppercase tracking-wider text-[var(--color-ink-soft)]">rea.run 评价</p>
+        {c.rating ? (
+          <>
+            <p class="font-semibold text-[var(--color-ink)]">{score}/5 — {c.rating.labelZh}</p>
             <p class="text-[var(--color-muted)]"><strong class="text-[var(--color-ink-soft)]">质量。</strong>{c.rating.qualityZh}</p>
             <p class="text-[var(--color-muted)]"><strong class="text-[var(--color-ink-soft)]">证据。</strong>{c.rating.evidenceZh}</p>
             <p class="text-[var(--color-muted)]"><strong class="text-[var(--color-ink-soft)]">局限。</strong>{c.rating.limitsZh}</p>
             <p class="text-[var(--color-muted)]"><strong class="text-[var(--color-ink-soft)]">适合。</strong>{c.rating.audienceZh}</p>
-          </div>
+          </>
+        ) : (
+          <p class="text-[var(--color-muted)]">{dash}</p>
         )}
       </div>
-    )}
+    </div>
 
     <div class="prose-page mt-8" set:html={html} />
 

@@ -78,7 +78,7 @@ export const SHOWCASE_GH_PROJECTS: ShowcaseCase[] = [
     attributionZh: 'rea.run 独立撰写 · 清洁室引擎项目',
     tags: ['case-study', 'clean-room', 'ghidra', 'mcp', 'authorized'],
     relation: 'case-study',
-    github: { url: 'https://github.com/Moxnatiy/OpenBattlefield2', stars: 35, language: 'C++', license: 'MIT', updated: '2026-10-09' },
+    github: { url: 'https://github.com/Moxnatiy/OpenBattlefield2', stars: 35, language: 'C++', license: 'NOASSERTION', updated: '2026-10-09' },
     rating: {
       score: 5,
       labelEn: 'Clean-room + REA tooling',
@@ -271,7 +271,7 @@ export const SHOWCASE_GH_PROJECTS: ShowcaseCase[] = [
     attributionZh: 'rea.run 独立撰写 · 公开 UI 学习演示',
     tags: ['demo', 'browser', 'cdp', 'ui'],
     relation: 'demo',
-    github: { url: 'https://github.com/47thtechcorner/RayCodes_Rea-AI-Agent-Setup', stars: 3, language: 'HTML', updated: '2026-10-09' },
+    github: { url: 'https://github.com/47thtechcorner/RayCodes_Rea-AI-Agent-Setup', stars: 4, language: 'HTML', updated: '2026-10-09' },
     rating: {
       score: 3,
       labelEn: 'Useful CDP demo — watch the tone',
@@ -336,7 +336,7 @@ export const SHOWCASE_GH_PROJECTS: ShowcaseCase[] = [
     attributionZh: 'rea.run 独立撰写 · 精选索引',
     tags: ['awesome', 'index', 'ai-re', 'authorized'],
     relation: 'awesome',
-    github: { url: 'https://github.com/DiscoverBox/awesome-ai-reverse', stars: 64, language: 'Python', license: 'MIT', updated: '2026-10-09' },
+    github: { url: 'https://github.com/DiscoverBox/awesome-ai-reverse', stars: 64, language: 'Python', license: 'MIT', updated: '2026-10-10' },
     rating: {
       score: 4,
       labelEn: 'Broad AI-RE map featuring REA',
@@ -400,7 +400,7 @@ export const SHOWCASE_GH_PROJECTS: ShowcaseCase[] = [
     attributionZh: 'rea.run 独立撰写 · 上游配套清单',
     tags: ['awesome', 'index', 'upstream'],
     relation: 'awesome',
-    github: { url: 'https://github.com/morluto/awesome-reverse-engineering', stars: 33, license: 'CC0-1.0', updated: '2026-10-09' },
+    github: { url: 'https://github.com/morluto/awesome-reverse-engineering', stars: 34, license: 'CC0-1.0', updated: '2026-10-09' },
     rating: {
       score: 4,
       labelEn: 'Upstream companion awesome-list',
@@ -1111,7 +1111,7 @@ export const SHOWCASE_GH_PROJECTS: ShowcaseCase[] = [
     attributionZh: 'rea.run 独立撰写 · 收录 rea-jev 的 Jev 生态索引',
     tags: ['awesome', 'jev', 'index', 'wrapper'],
     relation: 'awesome',
-    github: { url: 'https://github.com/AppitStudio/awesome-jev', stars: 98, language: 'Python', updated: '2026-10-10' },
+    github: { url: 'https://github.com/AppitStudio/awesome-jev', stars: 98, language: 'Python', license: 'NOASSERTION', updated: '2026-10-10' },
     rating: {
       score: 3,
       labelEn: 'Index page that surfaces rea-jev',

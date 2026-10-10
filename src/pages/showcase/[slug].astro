@@ -12,8 +12,10 @@ const c = getShowcase(Astro.params.slug!);
 if (!c || c.status !== 'published') throw new Error('missing showcase');
 const html = renderBody(c.en.body);
 const others = publishedCases().filter((x) => x.id !== c.id).slice(0, 4);
+const dash = '—';
 const stars = c.github?.stars;
 const score = c.rating?.score;
+const ghUrl = c.github?.url;
 ---
 <BaseLayout
   lang="en"
@@ -33,28 +35,39 @@ const score = c.rating?.score;
     <h1 class="display mt-4 text-4xl">{c.en.title}</h1>
     <p class="lede mt-4">{c.en.lede}</p>
 
-    {(c.github || c.rating) && (
-      <div class="mt-6 grid gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-4 text-sm sm:grid-cols-2">
-        {c.github && (
-          <div class="space-y-1 text-[var(--color-muted)]">
-            {stars != null && <p><span class="text-[var(--color-ink)] font-semibold">{stars}</span> GitHub stars (snapshot)</p>}
-            {c.github.language && <p>Language: <span class="text-[var(--color-ink)]">{c.github.language}</span></p>}
-            {c.github.license && <p>License: <span class="text-[var(--color-ink)]">{c.github.license}</span></p>}
-            {c.github.updated && <p>Updated: <span class="text-[var(--color-ink)]">{c.github.updated}</span></p>}
-            <p class="pt-1"><a href={c.github.url} rel="noopener noreferrer" target="_blank">GitHub source ↗</a></p>
-          </div>
-        )}
-        {c.rating && (
-          <div class="space-y-1">
-            <p class="font-semibold text-[var(--color-ink)]">rea.run rating: {score}/5 — {c.rating.labelEn}</p>
+    <div class="showcase-meta-panel mt-6 grid gap-4 rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-4 text-sm sm:grid-cols-2">
+      <div class="space-y-1.5 text-[var(--color-muted)]">
+        <p class="text-xs uppercase tracking-wider text-[var(--color-ink-soft)]">Source meta</p>
+        <p>
+          <span class="text-[var(--color-ink)] font-semibold">{stars != null ? stars : dash}</span>
+          {' '}GitHub stars (snapshot)
+        </p>
+        <p>Language: <span class="text-[var(--color-ink)]">{c.github?.language ?? dash}</span></p>
+        <p>License: <span class="text-[var(--color-ink)]">{c.github?.license ?? dash}</span></p>
+        <p>Updated: <span class="text-[var(--color-ink)]">{c.github?.updated ?? dash}</span></p>
+        <p class="pt-1">
+          {ghUrl ? (
+            <a href={ghUrl} rel="noopener noreferrer" target="_blank">GitHub source ↗</a>
+          ) : (
+            <span>GitHub source: {dash}</span>
+          )}
+        </p>
+      </div>
+      <div class="space-y-1.5">
+        <p class="text-xs uppercase tracking-wider text-[var(--color-ink-soft)]">rea.run rating</p>
+        {c.rating ? (
+          <>
+            <p class="font-semibold text-[var(--color-ink)]">{score}/5 — {c.rating.labelEn}</p>
             <p class="text-[var(--color-muted)]"><strong class="text-[var(--color-ink-soft)]">Quality.</strong> {c.rating.qualityEn}</p>
             <p class="text-[var(--color-muted)]"><strong class="text-[var(--color-ink-soft)]">Evidence.</strong> {c.rating.evidenceEn}</p>
             <p class="text-[var(--color-muted)]"><strong class="text-[var(--color-ink-soft)]">Limits.</strong> {c.rating.limitsEn}</p>
             <p class="text-[var(--color-muted)]"><strong class="text-[var(--color-ink-soft)]">For.</strong> {c.rating.audienceEn}</p>
-          </div>
+          </>
+        ) : (
+          <p class="text-[var(--color-muted)]">{dash}</p>
         )}
       </div>
-    )}
+    </div>
 
     <div class="prose-page mt-8" set:html={html} />
 
