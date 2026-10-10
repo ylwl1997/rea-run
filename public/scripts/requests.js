@@ -1,4 +1,7 @@
 (function () {
+  var REPO = 'ylwl1997/rea-run';
+  var LABEL = 'request';
+
   function t(en, zh) {
     return document.documentElement.lang === 'zh-CN' ? zh : en;
   }
@@ -26,15 +29,72 @@
     return map[status] || status;
   }
 
+  function mapIssue(issue) {
+    if (issue.pull_request) return null;
+    var tags = (issue.labels || [])
+      .map(function (l) {
+        return typeof l === 'string' ? l : l.name || '';
+      })
+      .filter(Boolean)
+      .filter(function (n) {
+        return n !== LABEL;
+      });
+    var statusLabelName =
+      tags.find(function (x) {
+        return x.indexOf('status:') === 0;
+      }) || (issue.state === 'closed' ? 'status:done' : 'status:open');
+    var status = statusLabelName.replace(/^status:/, '');
+    var body = String(issue.body || '')
+      .replace(/\r\n/g, '\n')
+      .trim();
+    return {
+      number: issue.number,
+      title: String(issue.title || '').replace(/^\[request\]\s*/i, ''),
+      html_url: issue.html_url,
+      state: issue.state,
+      status: status,
+      tags: tags.filter(function (x) {
+        return x.indexOf('status:') !== 0;
+      }),
+      user: (issue.user && issue.user.login) || 'unknown',
+      avatar_url: (issue.user && issue.user.avatar_url) || '',
+      created_at: issue.created_at,
+      updated_at: issue.updated_at,
+      body_preview: body.slice(0, 220),
+    };
+  }
+
+  async function fetchFromGitHubPublic() {
+    var url =
+      'https://api.github.com/repos/' +
+      REPO +
+      '/issues?labels=' +
+      encodeURIComponent(LABEL) +
+      '&state=all&per_page=50&sort=updated';
+    var res = await fetch(url, {
+      headers: { Accept: 'application/vnd.github+json' },
+    });
+    if (!res.ok) throw new Error('github_' + res.status);
+    var issues = await res.json();
+    return (issues || []).map(mapIssue).filter(Boolean);
+  }
+
+  async function fetchItems() {
+    try {
+      var res = await fetch('/api/requests', { credentials: 'same-origin' });
+      var data = await res.json();
+      if (data && data.ok && Array.isArray(data.items)) return data.items;
+    } catch (_) {}
+    return fetchFromGitHubPublic();
+  }
+
   async function loadPlaza() {
     var root = document.querySelector('[data-requests-plaza]');
     if (!root) return;
     root.innerHTML = '<p class="text-sm text-[var(--color-muted)]">' + t('Loading…', '加载中…') + '</p>';
     try {
-      var res = await fetch('/api/requests', { credentials: 'same-origin' });
-      var data = await res.json();
-      if (!data.ok) throw new Error(data.error || 'failed');
-      if (!data.items || !data.items.length) {
+      var items = await fetchItems();
+      if (!items.length) {
         root.innerHTML =
           '<div class="card"><p class="text-sm text-[var(--color-muted)]">' +
           t(
@@ -44,7 +104,7 @@
           '</p></div>';
         return;
       }
-      root.innerHTML = data.items
+      root.innerHTML = items
         .map(function (item) {
           var tags = (item.tags || [])
             .map(function (tag) {
@@ -73,7 +133,9 @@
               : '') +
             '<div class="req-meta">' +
             (item.avatar_url
-              ? '<img class="req-avatar" src="' + esc(item.avatar_url) + '" alt="" width="22" height="22" />'
+              ? '<img class="req-avatar" src="' +
+                esc(item.avatar_url) +
+                '" alt="" width="22" height="22" />'
               : '') +
             '<span>@' +
             esc(item.user) +
@@ -141,7 +203,8 @@
         var data = await res.json();
         if (!res.ok || !data.ok) {
           if (data.error === 'login_required') {
-            location.href = '/api/auth/login?return_to=' + encodeURIComponent(location.pathname);
+            location.href =
+              '/api/auth/login?return_to=' + encodeURIComponent(location.pathname);
             return;
           }
           throw new Error(data.error || 'failed');
@@ -166,7 +229,8 @@
         form.reset();
       } catch (e) {
         if (status)
-          status.textContent = t('Submit failed: ', '提交失败：') + (e && e.message ? e.message : '');
+          status.textContent =
+            t('Submit failed: ', '提交失败：') + (e && e.message ? e.message : '');
       }
     });
   }
