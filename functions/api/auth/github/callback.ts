@@ -6,7 +6,7 @@ import {
   signSession,
   siteOrigin,
   type SessionUser,
-} from '../../_lib/session';
+} from '../../../_lib/session';
 
 interface Env {
   GITHUB_OAUTH_CLIENT_ID?: string;
