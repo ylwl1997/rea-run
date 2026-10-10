@@ -4,16 +4,20 @@ import { SITE, pathFor } from '../../lib/site';
 import { EXAMPLES } from '../../data/examples';
 const lang = 'zh' as const;
 const featured = EXAMPLES.slice(0, 2);
+const agentPrompt =
+  '用 npx rea-agents@latest setup 为当前智能体安装并连接 REA。先展示 setup 计划供我批准，再验证 MCP 连接。只分析我有权检查的目标。';
+const puzzlePrompt =
+  '用 REA 检查 /abs/path/to/our-job-runner。为什么重试等待是 1s、2s、再 4s 然后停止？给出延迟函数与上限。不要改文件。';
 ---
 <BaseLayout
   lang={lang}
   title="rea.run — REA（Reverse Engineer Anything）中英社区指南"
-  description="REA 开源 MCP/CLI 的中英双语社区文档：安装、示例、什么是逆向、对比。仅限合法授权研究。"
+  description="REA 开源 MCP/CLI 的中英双语社区文档：安装、示例、什么是逆向、对比。"
   path="/"
 >
   <section class="mx-auto max-w-6xl px-4 pb-8 pt-14">
     <div class="reveal">
-      <p class="badge badge-accent mb-5">社区指南 · 仅限授权研究</p>
+      <p class="badge badge-accent mb-5">社区指南 · 中英双语</p>
       <h1 class="display text-[clamp(2.4rem,5.5vw,3.8rem)] max-w-4xl">
         让编程智能体「看见」你有权检查的软件。
       </h1>
@@ -26,18 +30,24 @@ const featured = EXAMPLES.slice(0, 2);
 
     <div class="mt-10 grid gap-4 lg:grid-cols-2 reveal delay-1">
       <div class="card !bg-[var(--color-void)] !border-[#2a3144] !text-[var(--color-paper)]">
-        <p class="kicker !text-[#8bb0ff]">智能体提示</p>
-        <h2 class="mt-2 font-display text-xl text-white">粘贴到你的编程智能体</h2>
-        <div class="code-well mt-4 !border-[#3a435c]">
-          <span class="prompt">›</span> 用 <span class="dim">npx rea-agents@latest setup</span> 为当前智能体安装并连接 REA。先展示 setup 计划供我批准，再验证 MCP 连接。只分析我有权检查的目标。
+        <div class="flex items-center justify-between gap-3">
+          <p class="kicker !text-[#8bb0ff]">智能体提示</p>
+          <span class="pulse-dot" aria-hidden="true"></span>
         </div>
-        <p class="mt-3 text-sm text-[#a8b0c2]">rea.run 自拟文案——写入配置前请先批准。</p>
+        <h2 class="mt-2 font-display text-xl text-white">粘贴到你的编程智能体</h2>
+        <div class="copy-row mt-4">
+          <div class="code-well !border-[#3a435c]" id="zh-home-agent-prompt">
+            <span class="prompt">›</span> {agentPrompt}
+          </div>
+          <button type="button" class="copy-btn" data-copy="#zh-home-agent-prompt" data-copied-label="已复制">复制</button>
+        </div>
       </div>
       <div class="card">
         <p class="kicker">命令行</p>
         <h2 class="mt-2 font-display text-xl">或自己跑 setup</h2>
-        <div class="code-well mt-4">
-          <span class="dim">$</span> npx rea-agents@latest setup
+        <div class="copy-row mt-4">
+          <div class="code-well" id="zh-home-cli"><span class="dim">$</span> npx rea-agents@latest setup</div>
+          <button type="button" class="copy-btn" data-copy="#zh-home-cli" data-copied-label="已复制">复制</button>
         </div>
         <div class="mt-5 flex flex-wrap gap-3">
           <a class="btn" href={pathFor(lang, '/docs/install/')}>安装指南</a>
@@ -47,39 +57,54 @@ const featured = EXAMPLES.slice(0, 2);
     </div>
   </section>
 
-  <div class="marquee-line mt-4" aria-hidden="true">
-    <span>仅限合法逆向 · 无破解教程 · 无规避 DRM · 自备 Ghidra · 面向智能体的 MCP · 中英双语 · 仅限合法逆向 · 无破解教程 · 无规避 DRM · 自备 Ghidra · 面向智能体的 MCP · 中英双语 · </span>
-  </div>
-
   <section class="mx-auto max-w-6xl px-4 py-16">
     <p class="kicker">什么是逆向？</p>
     <h2 class="display mt-2 text-3xl sm:text-4xl max-w-3xl">靠阅读程序本身弄清规则——不是看宣传页。</h2>
     <p class="lede mt-4">
-      原创谜题：本地任务调度在失败后重试。为什么等待看起来像
+      原创谜题：本地任务调度失败后重试。为什么等待看起来像
       <strong class="text-[var(--color-ink)]">1 秒 → 2 秒 → 4 秒 → 停止</strong>？
     </p>
-    <div class="mt-10 grid gap-5 lg:grid-cols-2">
-      <div class="card">
-        <p class="badge mb-3">之前 · 自己挖</p>
-        <div class="step-row"><span class="step-index">01</span><div><strong>找到调度器</strong><p class="mt-1 text-sm text-[var(--color-muted)]">手工翻配置键与日志。</p></div></div>
-        <div class="step-row"><span class="step-index">02</span><div><strong>解码延迟</strong><p class="mt-1 text-sm text-[var(--color-muted)]">线性、封顶，还是指数？</p></div></div>
-        <div class="step-row"><span class="step-index">03</span><div><strong>命名停止条件</strong><p class="mt-1 text-sm text-[var(--color-muted)]">最大次数？最大延迟？两者？</p></div></div>
-        <div class="code-well mt-4 text-[0.75rem]">
-          <span class="dim"># 你可能还原出的示意伪代码</span><br/>
-          delay = min(base * 2**attempt, cap)<br/>
-          if attempt &gt;= max_attempts: give_up()
+
+    <div class="demo-shell mt-8" data-backoff data-idle-log="点击播放，观看加速演示的指数退避。">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p class="kicker">退避实验室</p>
+          <p class="mt-1 text-sm text-[var(--color-muted)]">观察等待节奏的微交互——不是实时 REA 会话。</p>
+        </div>
+        <div class="flex gap-2">
+          <button type="button" class="demo-btn" data-backoff-play>播放</button>
+          <button type="button" class="demo-btn ghost" data-backoff-reset>重置</button>
         </div>
       </div>
-      <div class="card border-[color-mix(in_oklab,var(--color-accent)_35%,var(--color-line))]">
-        <p class="badge badge-accent mb-3">之后 · REA + 你的智能体</p>
+      <div class="backoff-track mt-3" data-backoff-track>
+        <div class="backoff-fill" data-backoff-fill></div>
+      </div>
+      <div class="flex justify-between mt-2 font-mono text-[0.7rem] text-[var(--color-muted)]">
+        <span>1s</span><span>2s</span><span>4s</span><span>停止</span>
+      </div>
+      <div class="backoff-log" data-backoff-log></div>
+    </div>
+
+    <div class="demo-shell mt-5" data-demo-tabs>
+      <div class="demo-tabs" role="tablist" aria-label="之前与之后">
+        <button type="button" class="demo-tab" role="tab" aria-controls="zh-panel-before" aria-selected="true">之前</button>
+        <button type="button" class="demo-tab" role="tab" aria-controls="zh-panel-after" aria-selected="false">之后 · REA + 智能体</button>
+      </div>
+      <div class="mt-5" id="zh-panel-before" data-panel role="tabpanel">
+        <div class="step-row"><span class="step-index">01</span><div><strong>找到调度器</strong><p class="mt-1 text-sm text-[var(--color-muted)]">手工翻配置与日志。</p></div></div>
+        <div class="step-row"><span class="step-index">02</span><div><strong>解码延迟</strong><p class="mt-1 text-sm text-[var(--color-muted)]">线性、封顶，还是指数？</p></div></div>
+        <div class="step-row"><span class="step-index">03</span><div><strong>命名停止条件</strong><p class="mt-1 text-sm text-[var(--color-muted)]">最大次数？最大延迟？两者？</p></div></div>
+      </div>
+      <div class="mt-5" id="zh-panel-after" data-panel role="tabpanel" hidden>
         <p class="text-sm text-[var(--color-ink-soft)] leading-7">
-          你用自然语言提问。REA 从你有权检查的目标返回 Evidence；智能体解释分支并引用位置。
+          用自然语言提问。REA 从你有权检查的目标返回 Evidence；智能体解释分支并引用位置。
         </p>
-        <div class="code-well mt-4">
-          <span class="prompt">›</span> 用 REA 检查 /abs/path/to/our-job-runner。为什么重试等待是 1s、2s、再 4s 然后停止？给出延迟函数与上限。不要改文件。
+        <div class="copy-row mt-4">
+          <div class="code-well" id="zh-puzzle-prompt"><span class="prompt">›</span> {puzzlePrompt}</div>
+          <button type="button" class="copy-btn" data-copy="#zh-puzzle-prompt" data-copied-label="已复制">复制</button>
         </div>
-        <p class="mt-4 text-sm text-[var(--color-muted)]">
-          <a href={pathFor(lang, '/learn/what-is-reverse-engineering/')}>阅读完整「什么是逆向」→</a>
+        <p class="mt-4 text-sm">
+          <a href={pathFor(lang, '/learn/what-is-reverse-engineering/')}>完整「什么是逆向」→</a>
         </p>
       </div>
     </div>
@@ -94,20 +119,41 @@ const featured = EXAMPLES.slice(0, 2);
       <a class="btn-secondary" href={pathFor(lang, '/examples/')}>全部示例</a>
     </div>
     <div class="mt-8 grid gap-5 lg:grid-cols-2">
-      {featured.map((ex) => (
-        <article class="card">
-          <p class="chip">{ex.slug}</p>
-          <h3 class="mt-3 font-display text-2xl tracking-tight">{ex.zh.title}</h3>
-          <dl class="mt-4 space-y-3 text-sm">
-            <div><dt class="kicker">目标</dt><dd class="mt-1 text-[var(--color-ink-soft)]">{ex.zh.goal}</dd></div>
-            <div><dt class="kicker">为何要逆向</dt><dd class="mt-1 text-[var(--color-ink-soft)]">{ex.zh.why}</dd></div>
-            <div><dt class="kicker">示例提示</dt><dd class="mt-2"><div class="code-well text-[0.72rem]">{ex.zh.prompt}</div></dd></div>
-            <div><dt class="kicker">返回通道</dt><dd class="mt-1 text-[var(--color-ink-soft)]">REA 把 Evidence／图返回到智能体会话（MCP 或 CLI JSON）。</dd></div>
-            <div><dt class="kicker">智能体角色</dt><dd class="mt-1 text-[var(--color-ink-soft)]">解释、引用、提出下一步核对——任何写入仍由你批准。</dd></div>
-          </dl>
-          <a class="mt-5 inline-block font-semibold no-underline hover:underline" href={pathFor(lang, `/examples/${ex.slug}/`)}>打开示例 →</a>
-        </article>
-      ))}
+      <article class="card">
+        <p class="chip">{featured[0].slug}</p>
+        <h3 class="mt-3 font-display text-2xl tracking-tight">{featured[0].zh.title}</h3>
+        <p class="mt-2 text-sm text-[var(--color-muted)]">{featured[0].zh.blurb}</p>
+        <div class="demo-shell mt-4 !p-3 !shadow-none" data-graph-demo>
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <p class="kicker">调用点展开</p>
+            <button type="button" class="demo-btn ghost !py-1 !px-2 !text-xs" data-graph-run>重放</button>
+          </div>
+          <div class="graph-demo">
+            <div class="graph-node" data-node><span class="font-mono text-xs text-[var(--color-accent)]">flag</span> --verbose</div>
+            <div class="graph-node" data-node><span class="font-mono text-xs text-[var(--color-accent)]">parse</span> parseArgs()</div>
+            <div class="graph-node" data-node><span class="font-mono text-xs text-[var(--color-accent)]">use</span> Logger.setLevel()</div>
+          </div>
+        </div>
+        <a class="mt-5 inline-block font-semibold no-underline hover:underline" href={pathFor(lang, `/examples/${featured[0].slug}/`)}>打开示例 →</a>
+      </article>
+      <article class="card">
+        <p class="chip">{featured[1].slug}</p>
+        <h3 class="mt-3 font-display text-2xl tracking-tight">{featured[1].zh.title}</h3>
+        <dl class="mt-4 space-y-3 text-sm">
+          <div><dt class="kicker">目标</dt><dd class="mt-1 text-[var(--color-ink-soft)]">{featured[1].zh.goal}</dd></div>
+          <div><dt class="kicker">为何要逆向</dt><dd class="mt-1 text-[var(--color-ink-soft)]">{featured[1].zh.why}</dd></div>
+          <div>
+            <dt class="kicker">示例提示</dt>
+            <dd class="mt-2">
+              <div class="copy-row">
+                <div class="code-well text-[0.72rem]" id="zh-ex2-prompt">{featured[1].zh.prompt}</div>
+                <button type="button" class="copy-btn" data-copy="#zh-ex2-prompt" data-copied-label="已复制">复制</button>
+              </div>
+            </dd>
+          </div>
+        </dl>
+        <a class="mt-5 inline-block font-semibold no-underline hover:underline" href={pathFor(lang, `/examples/${featured[1].slug}/`)}>打开示例 →</a>
+      </article>
     </div>
   </section>
 
@@ -131,12 +177,8 @@ const featured = EXAMPLES.slice(0, 2);
         <p class="mt-2 text-sm leading-6 text-[var(--color-muted)]">编程智能体调用本地工具；人保留批准与核实。</p>
       </a>
     </div>
-  </section>
-
-  <section class="mx-auto max-w-6xl px-4 pb-16">
-    <div class="callout">
-      <strong>合规。</strong>仅对你有权分析的软件使用 REA。rea.run 不含破解、注册机或规避 DRM 内容。
-      <a href={pathFor(lang, '/compliance/')}>阅读合规页</a>。
-    </div>
+    <p class="mt-8">
+      <a class="quiet-link" href={pathFor(lang, '/compliance/')}>合规说明</a>
+    </p>
   </section>
 </BaseLayout>

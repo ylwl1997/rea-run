@@ -97,7 +97,7 @@ export const EXAMPLES: Example[] = [
         { title: 'Authorized binary only', body: 'Your build, your customer’s sample under contract, or malware in an approved lab — not piracy targets.' },
         { title: 'Read-only default', body: 'Ask for explanation first; mutations stay human-gated.' },
       ],
-      note: 'rea.run will never publish crack or DRM-bypass walkthroughs.',
+      note: 'Authorized targets only — see the site compliance page.',
     },
     zh: {
       title: '自研原生二进制 — 自备 Ghidra',
@@ -111,7 +111,7 @@ export const EXAMPLES: Example[] = [
         { title: '仅限授权二进制', body: '自有构建、合同内客户样本，或合规实验室样本——不是盗版目标。' },
         { title: '默认只读', body: '先要解释；改动仍由人批准。' },
       ],
-      note: 'rea.run 永不发布破解或规避 DRM 教程。',
+      note: '仅限授权目标——详见站点合规页。',
     },
   },
 ];

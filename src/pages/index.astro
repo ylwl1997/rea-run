@@ -4,11 +4,15 @@ import { SITE, pathFor } from '../lib/site';
 import { EXAMPLES } from '../data/examples';
 const lang = 'en' as const;
 const featured = EXAMPLES.slice(0, 2);
+const agentPrompt =
+  'Install REA for this agent with npx rea-agents@latest setup. Show the setup plan for my approval, then verify the MCP connection. Use only targets I am authorized to analyze.';
+const puzzlePrompt =
+  'Use REA on /abs/path/to/our-job-runner. Why do retries wait 1s, 2s, then 4s and stop? Show the delay function and limits. Do not modify files.';
 ---
 <BaseLayout lang={lang} title={SITE.titleDefault} description={SITE.descriptionDefault} path="/">
-  <section class="mx-auto max-w-6xl px-4 pb-8 pt-14 sm:pt-18">
+  <section class="mx-auto max-w-6xl px-4 pb-8 pt-14">
     <div class="reveal">
-      <p class="badge badge-accent mb-5">Community guide · authorized research only</p>
+      <p class="badge badge-accent mb-5">Community guide · EN + ZH</p>
       <h1 class="display text-[clamp(2.6rem,6vw,4.2rem)] max-w-4xl">
         Give your coding agent eyes for software you may inspect.
       </h1>
@@ -22,19 +26,24 @@ const featured = EXAMPLES.slice(0, 2);
 
     <div class="mt-10 grid gap-4 lg:grid-cols-2 reveal delay-1">
       <div class="card !bg-[var(--color-void)] !border-[#2a3144] !text-[var(--color-paper)]">
-        <p class="kicker !text-[#8bb0ff]">Agent prompt</p>
-        <h2 class="mt-2 font-display text-xl text-white">Paste into your coding agent</h2>
-        <div class="code-well mt-4 !border-[#3a435c]">
-          <span class="prompt">›</span> Install REA for this agent with <span class="dim">npx rea-agents@latest setup</span>.
-          Show the setup plan for my approval, then verify the MCP connection. Use only targets I am authorized to analyze.
+        <div class="flex items-center justify-between gap-3">
+          <p class="kicker !text-[#8bb0ff]">Agent prompt</p>
+          <span class="pulse-dot" aria-hidden="true"></span>
         </div>
-        <p class="mt-3 text-sm text-[#a8b0c2]">Own wording for rea.run readers — approve before config writes.</p>
+        <h2 class="mt-2 font-display text-xl text-white">Paste into your coding agent</h2>
+        <div class="copy-row mt-4">
+          <div class="code-well !border-[#3a435c]" id="home-agent-prompt">
+            <span class="prompt">›</span> {agentPrompt}
+          </div>
+          <button type="button" class="copy-btn" data-copy="#home-agent-prompt" data-copied-label="Copied">Copy</button>
+        </div>
       </div>
       <div class="card">
         <p class="kicker">CLI</p>
         <h2 class="mt-2 font-display text-xl">Or run setup yourself</h2>
-        <div class="code-well mt-4">
-          <span class="dim">$</span> npx rea-agents@latest setup
+        <div class="copy-row mt-4">
+          <div class="code-well" id="home-cli-prompt"><span class="dim">$</span> npx rea-agents@latest setup</div>
+          <button type="button" class="copy-btn" data-copy="#home-cli-prompt" data-copied-label="Copied">Copy</button>
         </div>
         <div class="mt-5 flex flex-wrap gap-3">
           <a class="btn" href={pathFor(lang, '/docs/install/')}>Install guide</a>
@@ -44,47 +53,61 @@ const featured = EXAMPLES.slice(0, 2);
     </div>
   </section>
 
-  <div class="marquee-line mt-4" aria-hidden="true">
-    <span>Legal RE only · No crack guides · No DRM bypass · Bring-your-own Ghidra · MCP for agents · EN + ZH · Legal RE only · No crack guides · No DRM bypass · Bring-your-own Ghidra · MCP for agents · EN + ZH · </span>
-  </div>
-
-  <!-- What is RE — original puzzle: retry backoff -->
+  <!-- What is RE + interactive backoff lab -->
   <section class="mx-auto max-w-6xl px-4 py-16">
     <p class="kicker">What is reverse engineering?</p>
     <h2 class="display mt-2 text-3xl sm:text-4xl max-w-3xl">Understand a rule by reading the program — not the brochure.</h2>
     <p class="lede mt-4">
-      Puzzle (original to rea.run): a local job runner retries failed tasks. Why do waits look like
+      Original puzzle: a local job runner retries failed tasks. Why do waits look like
       <strong class="text-[var(--color-ink)]">1s → 2s → 4s → stop</strong>?
     </p>
 
-    <div class="mt-10 grid gap-5 lg:grid-cols-2">
-      <div class="card">
-        <p class="badge mb-3">Before · you dig alone</p>
-        <div class="step-row"><span class="step-index">01</span><div><strong>Find the scheduler</strong><p class="mt-1 text-sm text-[var(--color-muted)]">Hunt config keys and log lines by hand.</p></div></div>
-        <div class="step-row"><span class="step-index">02</span><div><strong>Decode the delay</strong><p class="mt-1 text-sm text-[var(--color-muted)]">Is it linear, capped, or exponential?</p></div></div>
-        <div class="step-row"><span class="step-index">03</span><div><strong>Name the stop rule</strong><p class="mt-1 text-sm text-[var(--color-muted)]">Max attempts? Max delay? Both?</p></div></div>
-        <div class="code-well mt-4 text-[0.75rem]">
-          <span class="dim"># illustrative pseudocode you might reconstruct</span><br/>
-          delay = min(base * 2**attempt, cap)<br/>
-          if attempt &gt;= max_attempts: give_up()
+    <div class="demo-shell mt-8" data-backoff data-idle-log="Press play to watch sped-up exponential backoff (demo timing).">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p class="kicker">Backoff lab</p>
+          <p class="mt-1 text-sm text-[var(--color-muted)]">Micro-demo of the observed wait pattern — not a live REA session.</p>
+        </div>
+        <div class="flex gap-2">
+          <button type="button" class="demo-btn" data-backoff-play>Play</button>
+          <button type="button" class="demo-btn ghost" data-backoff-reset>Reset</button>
         </div>
       </div>
-      <div class="card border-[color-mix(in_oklab,var(--color-accent)_35%,var(--color-line))]">
-        <p class="badge badge-accent mb-3">After · with REA + your agent</p>
+      <div class="backoff-track mt-3" data-backoff-track>
+        <div class="backoff-fill" data-backoff-fill></div>
+      </div>
+      <div class="flex justify-between mt-2 font-mono text-[0.7rem] text-[var(--color-muted)]">
+        <span>1s</span><span>2s</span><span>4s</span><span>stop</span>
+      </div>
+      <div class="backoff-log" data-backoff-log></div>
+    </div>
+
+    <div class="demo-shell mt-5" data-demo-tabs>
+      <div class="demo-tabs" role="tablist" aria-label="Before and after">
+        <button type="button" class="demo-tab" role="tab" id="tab-before" aria-controls="panel-before" aria-selected="true">Before</button>
+        <button type="button" class="demo-tab" role="tab" id="tab-after" aria-controls="panel-after" aria-selected="false">After · REA + agent</button>
+      </div>
+      <div class="mt-5" id="panel-before" data-panel role="tabpanel">
+        <div class="step-row"><span class="step-index">01</span><div><strong>Find the scheduler</strong><p class="mt-1 text-sm text-[var(--color-muted)]">Hunt config keys and log lines by hand.</p></div></div>
+        <div class="step-row"><span class="step-index">02</span><div><strong>Decode the delay</strong><p class="mt-1 text-sm text-[var(--color-muted)]">Linear, capped, or exponential?</p></div></div>
+        <div class="step-row"><span class="step-index">03</span><div><strong>Name the stop rule</strong><p class="mt-1 text-sm text-[var(--color-muted)]">Max attempts? Max delay? Both?</p></div></div>
+      </div>
+      <div class="mt-5" id="panel-after" data-panel role="tabpanel" hidden>
         <p class="text-sm text-[var(--color-ink-soft)] leading-7">
-          You ask in plain language. REA returns Evidence from a target you may inspect; the agent explains the branch and cites locations.
+          Ask in plain language. REA returns Evidence from a target you may inspect; the agent explains the branch and cites locations.
         </p>
-        <div class="code-well mt-4">
-          <span class="prompt">›</span> Use REA on /abs/path/to/our-job-runner. Why do retries wait 1s, 2s, then 4s and stop? Show the delay function and limits. Do not modify files.
+        <div class="copy-row mt-4">
+          <div class="code-well" id="home-puzzle-prompt"><span class="prompt">›</span> {puzzlePrompt}</div>
+          <button type="button" class="copy-btn" data-copy="#home-puzzle-prompt" data-copied-label="Copied">Copy</button>
         </div>
-        <p class="mt-4 text-sm text-[var(--color-muted)]">
-          <a href={pathFor(lang, '/learn/what-is-reverse-engineering/')}>Read the full What is RE guide →</a>
+        <p class="mt-4 text-sm">
+          <a href={pathFor(lang, '/learn/what-is-reverse-engineering/')}>Full What is RE guide →</a>
         </p>
       </div>
     </div>
   </section>
 
-  <!-- Examples -->
+  <!-- Examples with graph motion on first card -->
   <section class="mx-auto max-w-6xl px-4 py-8">
     <div class="flex flex-wrap items-end justify-between gap-4">
       <div>
@@ -94,24 +117,44 @@ const featured = EXAMPLES.slice(0, 2);
       <a class="btn-secondary" href={pathFor(lang, '/examples/')}>All examples</a>
     </div>
     <div class="mt-8 grid gap-5 lg:grid-cols-2">
-      {featured.map((ex) => (
-        <article class="card">
-          <p class="chip">{ex.slug}</p>
-          <h3 class="mt-3 font-display text-2xl tracking-tight">{ex.en.title}</h3>
-          <dl class="mt-4 space-y-3 text-sm">
-            <div><dt class="kicker">Goal</dt><dd class="mt-1 text-[var(--color-ink-soft)]">{ex.en.goal}</dd></div>
-            <div><dt class="kicker">Why reverse engineer</dt><dd class="mt-1 text-[var(--color-ink-soft)]">{ex.en.why}</dd></div>
-            <div><dt class="kicker">Sample prompt</dt><dd class="mt-2"><div class="code-well text-[0.72rem]">{ex.en.prompt}</div></dd></div>
-            <div><dt class="kicker">Return channel</dt><dd class="mt-1 text-[var(--color-ink-soft)]">REA returns Evidence / graphs to the agent session (MCP or CLI JSON).</dd></div>
-            <div><dt class="kicker">Agent role</dt><dd class="mt-1 text-[var(--color-ink-soft)]">Explain, cite, and propose next checks — you approve any writes.</dd></div>
-          </dl>
-          <a class="mt-5 inline-block font-semibold no-underline hover:underline" href={pathFor(lang, `/examples/${ex.slug}/`)}>Open example →</a>
-        </article>
-      ))}
+      <article class="card">
+        <p class="chip">{featured[0].slug}</p>
+        <h3 class="mt-3 font-display text-2xl tracking-tight">{featured[0].en.title}</h3>
+        <p class="mt-2 text-sm text-[var(--color-muted)]">{featured[0].en.blurb}</p>
+        <div class="demo-shell mt-4 !p-3 !shadow-none" data-graph-demo>
+          <div class="flex items-center justify-between gap-2 mb-2">
+            <p class="kicker">Call-site reveal</p>
+            <button type="button" class="demo-btn ghost !py-1 !px-2 !text-xs" data-graph-run>Replay</button>
+          </div>
+          <div class="graph-demo">
+            <div class="graph-node" data-node><span class="font-mono text-xs text-[var(--color-accent)]">flag</span> --verbose</div>
+            <div class="graph-node" data-node><span class="font-mono text-xs text-[var(--color-accent)]">parse</span> parseArgs()</div>
+            <div class="graph-node" data-node><span class="font-mono text-xs text-[var(--color-accent)]">use</span> Logger.setLevel()</div>
+          </div>
+        </div>
+        <a class="mt-5 inline-block font-semibold no-underline hover:underline" href={pathFor(lang, `/examples/${featured[0].slug}/`)}>Open example →</a>
+      </article>
+      <article class="card">
+        <p class="chip">{featured[1].slug}</p>
+        <h3 class="mt-3 font-display text-2xl tracking-tight">{featured[1].en.title}</h3>
+        <dl class="mt-4 space-y-3 text-sm">
+          <div><dt class="kicker">Goal</dt><dd class="mt-1 text-[var(--color-ink-soft)]">{featured[1].en.goal}</dd></div>
+          <div><dt class="kicker">Why reverse engineer</dt><dd class="mt-1 text-[var(--color-ink-soft)]">{featured[1].en.why}</dd></div>
+          <div>
+            <dt class="kicker">Sample prompt</dt>
+            <dd class="mt-2">
+              <div class="copy-row">
+                <div class="code-well text-[0.72rem]" id="home-ex2-prompt">{featured[1].en.prompt}</div>
+                <button type="button" class="copy-btn" data-copy="#home-ex2-prompt" data-copied-label="Copied">Copy</button>
+              </div>
+            </dd>
+          </div>
+        </dl>
+        <a class="mt-5 inline-block font-semibold no-underline hover:underline" href={pathFor(lang, `/examples/${featured[1].slug}/`)}>Open example →</a>
+      </article>
     </div>
   </section>
 
-  <!-- Capabilities -->
   <section class="mx-auto max-w-6xl px-4 py-16">
     <p class="kicker">Capabilities</p>
     <h2 class="display mt-2 text-3xl max-w-2xl">Chunked by target surface</h2>
@@ -132,13 +175,8 @@ const featured = EXAMPLES.slice(0, 2);
         <p class="mt-2 text-sm leading-6 text-[var(--color-muted)]">Coding agents call local tools; humans keep approvals and verification.</p>
       </a>
     </div>
-  </section>
-
-  <section class="mx-auto max-w-6xl px-4 pb-16">
-    <div class="callout">
-      <strong>Compliance.</strong> Use REA only on software you are authorized to analyze.
-      No crack, keygen, or DRM-circumvention content on rea.run.
-      <a href={pathFor(lang, '/compliance/')}>Read the compliance page</a>.
-    </div>
+    <p class="mt-8">
+      <a class="quiet-link" href={pathFor(lang, '/compliance/')}>Compliance</a>
+    </p>
   </section>
 </BaseLayout>
