@@ -83,15 +83,17 @@ npx rea-agents@latest setup`}</code></pre>
 
         <h2 id="actions-demo">GitHub Actions demo (no local install)</h2>
         <p>
-          Prefer watching a pipeline instead of installing locally? Open
+          Prefer a pipeline over installing locally? Open
           <a href="https://github.com/ylwl1997/rea-run-lab">ylwl1997/rea-run-lab</a>
-          → <strong>Actions</strong> → workflow <strong>demo-smoke</strong> → <strong>Run workflow</strong>.
-          When it finishes, download the <strong>Artifacts</strong> (smoke / Evidence-style report) from the run summary.
+          → <strong>Actions</strong> → workflow <strong>demo-smoke</strong> → <strong>Run workflow</strong>
+          (branch <code>main</code>). When the run finishes, open the run summary → <strong>Artifacts</strong> → download
+          <code>smoke-report</code> (JSON + HTML Evidence-style teaching report).
         </p>
         <p>
-          <a class="btn-secondary inline-block no-underline" href="https://github.com/ylwl1997/rea-run-lab/actions">Open Actions demo</a>
+          <a class="btn-secondary inline-block no-underline" href="https://github.com/ylwl1997/rea-run-lab/actions/workflows/demo-smoke.yml" target="_blank" rel="noopener noreferrer">Open Actions demo</a>
         </p>
         <ul>
+          <li>Visitor path is <strong>Artifacts download</strong> — not a live GitHub Pages site.</li>
           <li>Runs only the <strong>bundled self-owned</strong> Electron-shaped demo under <code>demo/</code> — no arbitrary binary uploads.</li>
           <li>Authorized / own targets only; see <a href="/faq/legal-boundary/">legal boundary</a>.</li>
           <li>Deeper Electron Evidence teaching: <a href="/showcase/rea-playbook/">rea-playbook</a>.</li>

@@ -85,13 +85,15 @@ npx rea-agents@latest setup`}</code></pre>
         <p>
           不想本机安装？打开
           <a href="https://github.com/ylwl1997/rea-run-lab">ylwl1997/rea-run-lab</a>
-          → <strong>Actions</strong> → 工作流 <strong>demo-smoke</strong> → <strong>Run workflow</strong>。
-          跑完后在运行摘要里下载 <strong>Artifacts</strong>（smoke／Evidence 风格报告）。
+          → <strong>Actions</strong> → 工作流 <strong>demo-smoke</strong> → <strong>Run workflow</strong>
+          （分支 <code>main</code>）。跑完后打开运行摘要 → <strong>Artifacts</strong> → 下载
+          <code>smoke-report</code>（JSON + HTML Evidence 风格教学报告）。
         </p>
         <p>
-          <a class="btn-secondary inline-block no-underline" href="https://github.com/ylwl1997/rea-run-lab/actions">打开 Actions 演示</a>
+          <a class="btn-secondary inline-block no-underline" href="https://github.com/ylwl1997/rea-run-lab/actions/workflows/demo-smoke.yml" target="_blank" rel="noopener noreferrer">打开 Actions 演示</a>
         </p>
         <ul>
+          <li>访客路径是<strong>下载 Artifacts</strong>——不是在线 GitHub Pages 站点。</li>
           <li>只跑仓内<strong>自有</strong> Electron 风格演示 <code>demo/</code>——禁止任意上传二进制。</li>
           <li>仅限授权／自有目标；见 <a href="/zh/faq/legal-boundary/">合法边界</a>。</li>
           <li>更深入的 Electron Evidence 教学：<a href="/zh/showcase/rea-playbook/">rea-playbook</a>。</li>
