@@ -57,7 +57,7 @@ export const COMPARE_PAGES: ComparePage[] = [
       lede:
         'The open-source REA project lives at github.com/morluto/rea (source of truth). This site (rea.run) is an unofficial bilingual community guide. rea.tools is a different domain — treat it as a separate third party until you verify ownership yourself.',
       rows: [
-        ['rea.run', 'Unofficial community docs (this site)', 'EN + ZH guides, install, compare, compliance'],
+        ['rea.run', 'Unofficial community docs (this site)', 'Guides, install, compare, compliance'],
         ['morluto/rea', 'Upstream open-source project', 'Source of truth for product behavior'],
         ['rea.tools', 'Separate third-party domain', 'Verify independently; not operated here'],
       ],
