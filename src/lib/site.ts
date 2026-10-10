@@ -11,7 +11,7 @@ export const SITE = {
   disclaimerZh:
     '非官方社区站点，与 morluto / REA 维护者无关联。仅面向合法、已授权的逆向与安全研究。不含破解、注册机或规避 DRM 内容。',
   gscVerification: '',
-  bingVerification: '',
+  bingVerification: 'BAAF2C75632898C27CE0B8EF9179004C',
   ga4Id: '',
 } as const;
 
