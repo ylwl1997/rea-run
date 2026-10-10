@@ -89,11 +89,20 @@ npx rea-agents@latest setup`}</code></pre>
           (branch <code>main</code>). When the run finishes, open the run summary → <strong>Artifacts</strong> → download
           <code>smoke-report</code> (JSON + HTML Evidence-style teaching report).
         </p>
-        <p>
-          <a class="btn-secondary inline-block no-underline" href="https://github.com/ylwl1997/rea-run-lab/actions/workflows/demo-smoke.yml" target="_blank" rel="noopener noreferrer">Open Actions demo</a>
-        </p>
+        <div class="try-tracks" aria-label="Lab try tracks">
+          <a class="try-track" href="https://github.com/ylwl1997/rea-run-lab/actions/workflows/demo-smoke.yml" target="_blank" rel="noopener noreferrer">
+            <span class="try-track-kicker">GitHub Actions</span>
+            <span class="try-track-title">Open Actions demo</span>
+            <span class="try-track-blurb">demo-smoke · Run workflow · Artifacts</span>
+          </a>
+          <a class="try-track" href="https://codespaces.new/ylwl1997/rea-run-lab?quickstart=1" target="_blank" rel="noopener noreferrer">
+            <span class="try-track-kicker">Codespaces</span>
+            <span class="try-track-title">用 Codespaces 试跑 / Open lab</span>
+            <span class="try-track-blurb">Node 22 · bundled demo only</span>
+          </a>
+        </div>
         <ul>
-          <li>Visitor path is <strong>Artifacts download</strong> — not a live GitHub Pages site.</li>
+          <li>Primary path: download <strong>Artifacts</strong> (<code>smoke-report</code>). Latest report may also appear on the lab’s GitHub Pages when the pages job succeeds.</li>
           <li>Runs only the <strong>bundled self-owned</strong> Electron-shaped demo under <code>demo/</code> — no arbitrary binary uploads.</li>
           <li>Authorized / own targets only; see <a href="/faq/legal-boundary/">legal boundary</a>.</li>
           <li>Deeper Electron Evidence teaching: <a href="/showcase/rea-playbook/">rea-playbook</a>.</li>
@@ -106,9 +115,7 @@ npx rea-agents@latest setup`}</code></pre>
           in Codespaces (Node 22 Dev Container), then run
           <code>npx rea-agents@latest setup</code> against the <strong>bundled self-owned Electron-shaped demo</strong> only.
         </p>
-        <p>
-          <a class="btn-secondary inline-block no-underline" href="https://codespaces.new/ylwl1997/rea-run-lab?quickstart=1" target="_blank" rel="noopener noreferrer">用 Codespaces 试跑 / Open lab</a>
-        </p>
+        <p class="text-sm text-[var(--color-muted)]">Same lab as the Actions track above — interactive shell when you want it.</p>
         <ul>
           <li>No arbitrary binary uploads — lab ships one teaching target under <code>demo/</code>.</li>
           <li>Authorized / own targets only; see <a href="/faq/legal-boundary/">legal boundary</a>.</li>

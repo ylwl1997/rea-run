@@ -52,8 +52,16 @@ const lang = 'zh' as const;
     </div>
 
     <p class="mt-12 flex flex-wrap gap-4 text-sm">
-      <a href="https://github.com/ylwl1997/rea-run-lab/actions/workflows/demo-smoke.yml" target="_blank" rel="noopener noreferrer">Actions 演示</a>
-      <a href="https://codespaces.new/ylwl1997/rea-run-lab?quickstart=1" target="_blank" rel="noopener noreferrer">用 Codespaces 试跑</a>
+      <div class="try-tracks w-full" aria-label="试跑路径">
+        <a class="try-track" href="https://github.com/ylwl1997/rea-run-lab/actions/workflows/demo-smoke.yml" target="_blank" rel="noopener noreferrer">
+          <span class="try-track-kicker">GitHub Actions</span>
+          <span class="try-track-title">Actions 演示</span>
+        </a>
+        <a class="try-track" href="https://codespaces.new/ylwl1997/rea-run-lab?quickstart=1" target="_blank" rel="noopener noreferrer">
+          <span class="try-track-kicker">Codespaces</span>
+          <span class="try-track-title">用 Codespaces 试跑</span>
+        </a>
+      </div>
       <a href={pathFor(lang, '/docs/install/#actions-demo')}>安装 · Actions</a>
       <a href={pathFor(lang, '/docs/install/#codespaces')}>安装 · Codespaces</a>
       <a href={pathFor(lang, '/learn/what-is-reverse-engineering/')}>什么是逆向</a>
