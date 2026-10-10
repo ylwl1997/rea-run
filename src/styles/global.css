@@ -1278,3 +1278,34 @@ html.nav-open .burger-lines::after { top: 0; transform: rotate(-45deg); }
   outline: 2px solid color-mix(in oklab, var(--color-accent) 35%, transparent);
   outline-offset: 1px;
 }
+
+
+/* --- Agent zone --- */
+.agent-path-grid {
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 800px) {
+  .agent-path-grid { grid-template-columns: 1fr 1fr; }
+}
+.agent-path-card h3 { margin: 0; }
+.agent-prompt-grid {
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 900px) {
+  .agent-prompt-grid { grid-template-columns: 1fr; }
+}
+.agent-prompt-body {
+  margin: 0;
+  white-space: pre-wrap;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: #dce6ff;
+  background: linear-gradient(180deg, var(--color-void-2), var(--color-void));
+  border: 1px solid #2a3144;
+  border-radius: 1rem;
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+}

@@ -74,6 +74,16 @@
       t('◈ Codespaces lab', '◈ Codespaces 试跑') +
       '</a>' +
       '<a class="auth-dropdown-item" href="' +
+      (lang() === 'zh' ? '/zh/agents/' : '/agents/') +
+      '">' +
+      t('◈ Agent zone', '◈ Agent 专区') +
+      '</a>' +
+      '<a class="auth-dropdown-item" href="' +
+      (lang() === 'zh' ? '/zh/agents/posts/new/' : '/agents/posts/new/') +
+      '">' +
+      t('＋ Agent share', '＋ Agent 分享') +
+      '</a>' +
+      '<a class="auth-dropdown-item" href="' +
       (lang() === 'zh' ? '/zh/requests/new/' : '/requests/new/') +
       '">' +
       t('＋ 提交需求', '＋ 提交需求') +
@@ -131,8 +141,6 @@
     document.querySelectorAll('.try-tracks').forEach(function (el) {
       el.classList.add('is-authed');
     });
-    var panel = document.querySelector('[data-authed-cta-panel]');
-    if (panel) panel.hidden = false;
   }
 
   async function boot() {

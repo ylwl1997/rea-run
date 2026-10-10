@@ -37,4 +37,5 @@ export const NAV = [
   { href: '/compare/', labelEn: 'Compare', labelZh: '对比' },
   { href: '/blog/', labelEn: 'Blog', labelZh: '博客' },
   { href: '/requests/', labelEn: 'Requests', labelZh: '需求广场' },
+  { href: '/agents/', labelEn: 'Agent', labelZh: 'Agent' },
 ] as const;

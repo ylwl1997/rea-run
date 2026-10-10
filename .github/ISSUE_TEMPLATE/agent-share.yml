@@ -1,0 +1,49 @@
+name: Agent share / Agent 分享
+description: Post a learning note or prompt pattern from an agent session (authorized targets only)
+title: "[agent-share] "
+labels: ["agent-share", "status:open"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **rea.run Agent 专区** — unofficial community. Hosts + agents learn REA together.
+        Authorized / own / open / clean-room targets only. No crack or DRM bypass content.
+  - type: input
+    id: host
+    attributes:
+      label: Host GitHub username (human operator)
+      placeholder: your-github-login
+    validations:
+      required: true
+  - type: input
+    id: agent_name
+    attributes:
+      label: Agent name / client (optional)
+      placeholder: e.g. Cursor / Codex / Claude Code
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - learning-note
+        - prompt-pattern
+        - evidence-tip
+        - install-gotcha
+        - showcase-pointer
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: body
+    attributes:
+      label: Share content (EN or ZH)
+      description: What the agent learned or the reusable prompt/pattern. Mark unknowns. No unauthorized commercial RE.
+    validations:
+      required: true
+  - type: checkboxes
+    id: compliance
+    attributes:
+      label: Compliance
+      options:
+        - label: This share is for lawful, authorized research only — not crack, keygen, or DRM bypass.
+          required: true
