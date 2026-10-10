@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="en"
+  title="GitHub sign-in setup | rea.run"
+  description="Community GitHub OAuth for rea.run — unofficial site; how login works and operator secrets."
+  path="/auth/setup/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="badge">Auth · community</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">GitHub sign-in (MVP)</h1>
+    <p class="lede mt-4">
+      Unofficial community login on <strong>rea.run</strong>. Used for light stats and faster deep links to the
+      <a href="https://github.com/ylwl1997/rea-run-lab">rea-run-lab</a> Actions / Codespaces flows and case submission.
+      Not affiliated with REA upstream maintainers.
+    </p>
+
+    <div class="callout mt-6" data-auth-setup-status hidden>
+      <strong>Status:</strong> <span data-auth-setup-msg></span>
+    </div>
+
+    <h2>What we store</h2>
+    <ul>
+      <li>After OAuth, the server drops the GitHub access token.</li>
+      <li>An <strong>HttpOnly Secure</strong> session cookie keeps only profile fields: id, login, avatar (HMAC-signed).</li>
+      <li>Nothing sensitive is written to <code>localStorage</code>.</li>
+    </ul>
+
+    <h2>Operator: enable OAuth</h2>
+    <ol>
+      <li>Create a GitHub OAuth App (Developer settings → OAuth Apps).</li>
+      <li>Homepage URL: <code>https://rea.run</code></li>
+      <li>Authorization callback URL: <code>https://rea.run/api/auth/callback</code> (also add <code>https://www.rea.run/api/auth/callback</code> if used).</li>
+      <li>Set Cloudflare Pages secrets on project <code>rea-run</code>:
+        <pre><code>GITHUB_OAUTH_CLIENT_ID
+GITHUB_OAUTH_CLIENT_SECRET
+SESSION_SECRET</code></pre>
+        Example: <code>npx wrangler pages secret put GITHUB_OAUTH_CLIENT_ID --project-name=rea-run</code>
+      </li>
+      <li>Redeploy Pages so Functions see the secrets.</li>
+    </ol>
+
+    <p class="mt-8">
+      <a class="btn" href="/api/auth/login?return_to=/">Try Sign in with GitHub</a>
+      <a class="btn-secondary ml-2" href="/">Home</a>
+    </p>
+  </article>
+  <script is:inline>
+    (function () {
+      var params = new URLSearchParams(location.search);
+      var err = params.get('error');
+      var box = document.querySelector('[data-auth-setup-status]');
+      var msg = document.querySelector('[data-auth-setup-msg]');
+      if (!box || !msg) return;
+      if (err === 'oauth_not_configured') {
+        box.hidden = false;
+        msg.textContent = 'OAuth secrets are not configured on this deployment yet.';
+      } else if (err) {
+        box.hidden = false;
+        msg.textContent = 'Sign-in failed: ' + err;
+      }
+    })();
+  </script>
+</BaseLayout>

@@ -1,0 +1,46 @@
+name: Submit showcase case
+description: Propose a community showcase case for rea.run (authorized / own / clean-room only)
+title: "[case] "
+labels: ["showcase", "community"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Unofficial community site (**rea.run**). Only **authorized / own / open / clean-room** targets.
+        No crack, DRM bypass, or unauthorized commercial RE.
+  - type: input
+    id: repo
+    attributes:
+      label: GitHub repo URL
+      placeholder: https://github.com/org/repo
+    validations:
+      required: true
+  - type: dropdown
+    id: relation
+    attributes:
+      label: Relation to REA
+      options:
+        - case-study
+        - wrapper
+        - demo
+        - packaging
+        - writeup
+        - other
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Short summary (EN or ZH)
+      description: What it does and how it uses REA. Compliance notes required.
+    validations:
+      required: true
+  - type: checkboxes
+    id: compliance
+    attributes:
+      label: Compliance
+      options:
+        - label: I confirm this is software I own, ship, or have written permission to study (or clean-room / open-source under a compatible license).
+          required: true
+        - label: This is not a crack, keygen, DRM bypass, or unauthorized commercial reverse-engineering guide.
+          required: true

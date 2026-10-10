@@ -21,3 +21,16 @@ npx wrangler pages deploy dist --project-name=rea-run
 ```
 
 GitHub Actions: copy `deploy.workflow.yml.example` to `.github/workflows/deploy.yml` once the pushing credential has the `workflow` OAuth scope (or add the file in the GitHub UI). Repo secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` are already set.
+
+
+## GitHub login (MVP)
+
+Cloudflare Pages Functions under `functions/api/auth/*`:
+
+- `GET /api/auth/login` → GitHub OAuth
+- `GET /api/auth/callback` → sets HttpOnly session cookie (profile only; access token discarded)
+- `GET /api/auth/me` → `{ user, configured }`
+- `GET /api/auth/logout`
+
+Secrets (Pages project `rea-run`): `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET`, `SESSION_SECRET`.
+Callback: `https://rea.run/api/auth/callback`.
