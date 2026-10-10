@@ -4,7 +4,6 @@ Unofficial bilingual community docs and brand site for **REA** (Reverse Engineer
 
 - Site: https://rea.run
 - Upstream project: https://github.com/morluto/rea
-- Official docs: https://morluto.github.io/rea/
 
 **Compliance:** legal, authorized reverse engineering and security research only. No crack, keygen, or DRM-circumvention content.
 

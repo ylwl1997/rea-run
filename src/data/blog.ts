@@ -19,7 +19,7 @@ export const BLOG_POSTS: BlogPost[] = [
         'In plain language: you point your agent at a **local target you are allowed to analyze**, and REA supplies structured tools — strings, symbols, decompilation (via a native engine you already own), JavaScript/Electron static graphs, and related inventory — so the agent can explain how the software works instead of guessing from marketing pages.',
         '**What it is not.** REA is not a crack tool, not a DRM bypass, and not a substitute for owning Hopper, Ghidra, or IDA when you need deep native analysis. Native providers are **bring-your-own**. Static JavaScript inspection does not require those engines.',
         '**Who it is for.** Security researchers, malware analysts under authorization, maintainers recovering behavior of their own shipping artifacts, and developers debugging closed packages **they have rights to inspect**. Always confirm license, contract, and local law before analyzing third-party software.',
-        '**Upstream sources.** Product overview: [morluto.github.io/rea](https://morluto.github.io/rea/). Install path on this site: [/docs/install/](/docs/install/). Official get-started: [Get started](https://morluto.github.io/rea/get-started/).',
+        '**Upstream sources.** Project home: [github.com/morluto/rea](https://github.com/morluto/rea). Install on this site: [/docs/install/](/docs/install/). Package: [npm rea-agents](https://www.npmjs.com/package/rea-agents).',
       ],
     },
     zh: {
@@ -32,7 +32,7 @@ export const BLOG_POSTS: BlogPost[] = [
         '通俗说：你把智能体指向**你有权分析的本地目标**，REA 提供结构化工具——字符串、符号、反编译（依赖你自备的原生引擎）、JS/Electron 静态图等——让智能体基于证据解释软件行为，而不是凭介绍页猜测。',
         '**它不是什么。**不是破解工具，不是 DRM 绕过，也不能替代你已有的 Hopper / Ghidra / IDA。原生分析是 **自备引擎**；静态 JavaScript 检查通常不需要这些引擎。',
         '**适合谁。**获授权的安全研究员、恶意软件分析人员、需要对照自有制品行为的维护者，以及有权检查闭源包的开发者。分析第三方软件前请确认许可、合同与当地法律。',
-        '**上游。**产品总览：[morluto.github.io/rea](https://morluto.github.io/rea/)。本站安装：[/zh/docs/install/](/zh/docs/install/)。官方入门：[Get started](https://morluto.github.io/rea/get-started/)。',
+        '**上游。**项目主页：[github.com/morluto/rea](https://github.com/morluto/rea)。本站安装：[/zh/docs/install/](/zh/docs/install/)。npm：[rea-agents](https://www.npmjs.com/package/rea-agents)。',
       ],
     },
   },

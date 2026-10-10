@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { COMPARE_PAGES, getCompare } from '../../data/compare';
+import { pathFor } from '../../lib/site';
 
 export function getStaticPaths() {
   return COMPARE_PAGES.map((p) => ({ params: { slug: p.slug } }));
@@ -10,32 +11,49 @@ if (!page) throw new Error('missing compare');
 const c = page.en;
 ---
 <BaseLayout lang="en" title={`${c.title} | rea.run`} description={c.description} path={`/compare/${page.slug}/`}>
-  <article class="prose-page mx-auto max-w-3xl px-4 py-12">
+  <div class="mx-auto max-w-5xl px-4 py-12">
     <p class="badge">Third-party orientation</p>
-    <h1 class="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-ink)]">{c.h1}</h1>
-    <p class="mt-4">{c.lede}</p>
-    <div class="mt-8 overflow-x-auto rounded-xl border border-[var(--color-line)]">
-      <table class="w-full text-left text-sm">
-        <thead class="bg-[var(--color-panel)] text-[var(--color-ink)]">
+    <h1 class="mt-4 text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">{c.h1}</h1>
+    <p class="mt-4 max-w-3xl text-base leading-7 text-[var(--color-muted)]">{c.lede}</p>
+
+    <div class="mt-8 grid gap-3 sm:grid-cols-2">
+      <div class="card !p-4">
+        <p class="section-kicker">Column A</p>
+        <p class="mt-1 text-sm text-[var(--color-muted)]">REA / rea.run framing in the matrix below.</p>
+      </div>
+      <div class="card !p-4">
+        <p class="section-kicker">Column B</p>
+        <p class="mt-1 text-sm text-[var(--color-muted)]">Workbench or third-party domain — verify live vendor docs.</p>
+      </div>
+    </div>
+
+    <div class="mt-8 overflow-x-auto">
+      <table class="compare-table">
+        <thead>
           <tr>
-            <th class="px-4 py-3 font-semibold">Topic</th>
-            <th class="px-4 py-3 font-semibold">A</th>
-            <th class="px-4 py-3 font-semibold">B</th>
+            <th>Topic</th>
+            <th>A</th>
+            <th>B</th>
           </tr>
         </thead>
         <tbody>
           {c.rows.map(([a, b, d]) => (
-            <tr class="border-t border-[var(--color-line)]">
-              <td class="px-4 py-3 font-medium text-[var(--color-ink)]">{a}</td>
-              <td class="px-4 py-3 text-[var(--color-muted)]">{b}</td>
-              <td class="px-4 py-3 text-[var(--color-muted)]">{d}</td>
+            <tr>
+              <td>{a}</td>
+              <td>{b}</td>
+              <td>{d}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-    <ul class="mt-6">
-      {c.notes.map((n) => <li>{n}</li>)}
+
+    <ul class="prose-page mt-8 list-disc space-y-2 pl-5">
+      {c.notes.map((n) => <li class="text-[var(--color-muted)]">{n}</li>)}
     </ul>
-  </article>
+
+    <p class="mt-10">
+      <a class="btn-secondary" href={pathFor('en', '/compare/')}>← All comparisons</a>
+    </p>
+  </div>
 </BaseLayout>

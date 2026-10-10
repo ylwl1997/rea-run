@@ -1,41 +1,57 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { SITE } from '../../../lib/site';
 const lang = 'zh' as const;
+const toc = [
+  { id: 'requirements', label: '环境要求' },
+  { id: 'connect', label: '连接智能体' },
+  { id: 'cli', label: '可选 CLI' },
+  { id: 'ghidra', label: 'Ghidra（自备）' },
+  { id: 'first', label: '第一次提问' },
+  { id: 'links', label: '上游链接' },
+];
 ---
 <BaseLayout
   lang={lang}
   title="安装 REA（rea-agents）— 社区指南 | rea.run"
-  description="用 npx rea-agents setup 安装 REA、注册 MCP，并自备 Ghidra。上游文档的社区改写，请以 GitHub 为准。"
+  description="用 npx rea-agents setup 安装 REA、注册 MCP，并自备 Ghidra。上游材料的社区改写，请以 GitHub 为准。"
   path="/docs/install/"
 >
-  <article class="prose-page mx-auto max-w-3xl px-4 py-12">
-    <p class="badge">文档 · 安装</p>
-    <h1 class="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-ink)]">安装 REA</h1>
-    <p class="mt-4">
-      以下为上游入门／安装说明的社区改写。产品行为以
-      <a href="https://github.com/morluto/rea">morluto/rea</a> 与
-      <a href="https://morluto.github.io/rea/get-started/">官方 get-started</a> 为准。版本会变，自动化前请复核。
-    </p>
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <div class="docs-layout">
+      <aside class="docs-toc hidden md:block">
+        <p class="section-kicker mb-3">本页目录</p>
+        {toc.map((item) => <a href={`#${item.id}`}>{item.label}</a>)}
+      </aside>
 
-    <div class="callout">
-      <strong>仅限授权使用。</strong>只对你有权分析的软件安装与运行 REA。此处无破解或规避 DRM 指引。
-    </div>
+      <article class="prose-page">
+        <p class="badge">文档 · 安装</p>
+        <h1 class="mt-4 text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">安装 REA</h1>
+        <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--color-muted)]">
+          以下为上游安装说明的社区改写。产品行为以
+          <a href={SITE.upstreamRepo}>github.com/morluto/rea</a>
+          与 npm 上的 <code>rea-agents</code> 为准。版本会变，自动化前请复核。
+        </p>
 
-    <h2>环境要求</h2>
-    <ul>
-      <li>Node.js <strong>22</strong>（22.19+）、<strong>24</strong>（24.11+）或 <strong>26+</strong>，以及 npm（以上游为准）。</li>
-      <li>支持 MCP 的编程智能体（上游列出的 Claude Code、Codex、Cursor、Gemini CLI、Windsurf、Grok Build 等），或仅用 CLI。</li>
-      <li>深度<strong>原生</strong>分析：按上游文档自备 Hopper、Ghidra 或 IDA。静态 JavaScript／Electron 检查通常不需要这些引擎。</li>
-    </ul>
+        <div class="callout">
+          <strong>仅限授权使用。</strong>只对你有权分析的软件安装与运行 REA。此处无破解或规避 DRM 指引。
+        </div>
 
-    <h2>连接编程智能体</h2>
-    <p>可让智能体在批准后执行 setup，或自行运行：</p>
-    <pre><code>npx rea-agents@latest setup</code></pre>
-    <p>
-      选择客户端、审阅计划并批准变更。setup 会注册 MCP 与配套调查 skill，并备份现有配置。完成后请<strong>重启客户端</strong>。
-    </p>
-    <p>手动 MCP 注册示例（若需手改 JSON，请再对照上游）：</p>
-    <pre><code>{`{
+        <h2 id="requirements">环境要求</h2>
+        <div class="mt-4 grid gap-3 sm:grid-cols-3">
+          <div class="step-card"><span class="step-num">1</span><div><strong class="text-[var(--color-ink)]">Node</strong><p class="mt-1 !text-sm">22（22.19+）、24（24.11+）或 26+，以及 npm（以上游为准）。</p></div></div>
+          <div class="step-card"><span class="step-num">2</span><div><strong class="text-[var(--color-ink)]">MCP 客户端</strong><p class="mt-1 !text-sm">Claude Code、Codex、Cursor、Gemini CLI、Windsurf、Grok Build 等，或仅用 CLI。</p></div></div>
+          <div class="step-card"><span class="step-num">3</span><div><strong class="text-[var(--color-ink)]">原生引擎</strong><p class="mt-1 !text-sm">深度原生分析需自备 Hopper / Ghidra / IDA。静态 JS／Electron 通常不需要。</p></div></div>
+        </div>
+
+        <h2 id="connect">连接编程智能体</h2>
+        <p>可让智能体在批准后执行 setup，或自行运行：</p>
+        <pre><code>npx rea-agents@latest setup</code></pre>
+        <p>
+          选择客户端、审阅计划并批准变更。setup 会注册 MCP 与配套调查 skill，并备份现有配置。完成后请<strong>重启客户端</strong>。
+        </p>
+        <p>手动 MCP 注册示例（若需手改 JSON，请再对照上游仓库）：</p>
+        <pre><code>{`{
   "mcpServers": {
     "rea": {
       "command": "npx",
@@ -43,31 +59,33 @@ const lang = 'zh' as const;
     }
   }
 }`}</code></pre>
-    <p>需要可复现安装时，请钉死 <code>rea-agents@VERSION</code>。</p>
+        <p>需要可复现安装时，请钉死 <code>rea-agents@VERSION</code>。</p>
 
-    <h2>可选：全局 CLI</h2>
-    <pre><code>npm install --global rea-agents</code></pre>
+        <h2 id="cli">可选：全局 CLI</h2>
+        <pre><code>npm install --global rea-agents</code></pre>
 
-    <h2>Ghidra（自备）</h2>
-    <p>REA 不会安装 Ghidra 或 Java。导出绝对路径后，先 doctor 再 setup：</p>
-    <pre><code>{`export GHIDRA_INSTALL_DIR=/absolute/path/to/ghidra_PUBLIC
+        <h2 id="ghidra">Ghidra（自备）</h2>
+        <p>REA 不会安装 Ghidra 或 Java。导出绝对路径后，先 doctor 再 setup：</p>
+        <pre><code>{`export GHIDRA_INSTALL_DIR=/absolute/path/to/ghidra_PUBLIC
 export JAVA_HOME=/absolute/path/to/jdk-21
 npx -y rea-agents@latest doctor --provider ghidra --json
 npx rea-agents@latest setup`}</code></pre>
-    <p>
-      受支持的主机／Ghidra／JDK 组合以上游为准，见
-      <a href="https://github.com/morluto/rea/blob/main/docs/installation.md">docs/installation.md</a>。
-    </p>
+        <p>
+          受支持的主机／Ghidra／JDK 组合以上游为准，见仓库内
+          <a href="https://github.com/morluto/rea/blob/main/docs/installation.md">docs/installation.md</a>。
+        </p>
 
-    <h2>第一次可以怎么问</h2>
-    <p>重连智能体后，给出你<strong>有权分析</strong>的目标<strong>绝对路径</strong>与具体问题（入口、导出路径、某功能）。优先要 Evidence 与未知项，少要臆测叙事。</p>
+        <h2 id="first">第一次可以怎么问</h2>
+        <p>重连智能体后，给出你<strong>有权分析</strong>的目标<strong>绝对路径</strong>与具体问题（入口、导出路径、某功能）。优先要 Evidence 与未知项，少要臆测叙事。</p>
 
-    <h2>上游链接</h2>
-    <ul>
-      <li><a href="https://morluto.github.io/rea/get-started/">官方 get-started</a></li>
-      <li><a href="https://www.npmjs.com/package/rea-agents">npm: rea-agents</a></li>
-      <li><a href="/zh/blog/ghidra-mcp-with-rea/">社区：Ghidra MCP</a></li>
-      <li><a href="/zh/compliance/">合规</a></li>
-    </ul>
-  </article>
+        <h2 id="links">上游链接</h2>
+        <ul>
+          <li><a href={SITE.upstreamRepo}>GitHub: morluto/rea</a></li>
+          <li><a href={SITE.upstreamNpm}>npm: rea-agents</a></li>
+          <li><a href="/zh/blog/ghidra-mcp-with-rea/">社区：Ghidra MCP</a></li>
+          <li><a href="/zh/compliance/">合规</a></li>
+        </ul>
+      </article>
+    </div>
+  </div>
 </BaseLayout>

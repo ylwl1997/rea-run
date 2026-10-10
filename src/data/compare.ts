@@ -55,7 +55,7 @@ export const COMPARE_PAGES: ComparePage[] = [
         'rea.run is this community docs/brand site. rea.tools is a separate third-party property. We do not claim affiliation with either morluto/rea or rea.tools.',
       h1: 'rea.run and rea.tools',
       lede:
-        'The open-source REA project lives at github.com/morluto/rea with docs on morluto.github.io/rea. This site (rea.run) is an unofficial bilingual community guide. rea.tools is a different domain — treat it as a separate third party until you verify ownership yourself.',
+        'The open-source REA project lives at github.com/morluto/rea (source of truth). This site (rea.run) is an unofficial bilingual community guide. rea.tools is a different domain — treat it as a separate third party until you verify ownership yourself.',
       rows: [
         ['rea.run', 'Unofficial community docs (this site)', 'EN + ZH guides, install, compare, compliance'],
         ['morluto/rea', 'Upstream open-source project', 'Source of truth for product behavior'],
@@ -72,7 +72,7 @@ export const COMPARE_PAGES: ComparePage[] = [
         'rea.run 是本社区文档/品牌站。rea.tools 是另一第三方域名。我们与 morluto/rea 或 rea.tools 均无隶属关系。',
       h1: 'rea.run 与 rea.tools',
       lede:
-        '开源 REA 项目在 github.com/morluto/rea，文档在 morluto.github.io/rea。本站（rea.run）是非官方中英双语社区指南。rea.tools 是不同域名——请自行核实归属，勿与本站混淆。',
+        '开源 REA 项目在 github.com/morluto/rea（行为以仓库为准）。本站（rea.run）是非官方中英双语社区指南。rea.tools 是不同域名——请自行核实归属，勿与本站混淆。',
       rows: [
         ['rea.run', '非官方社区文档（本站）', '中英指南、安装、对比、合规'],
         ['morluto/rea', '上游开源项目', '产品行为以它为准'],

@@ -6,7 +6,7 @@ interface Props {
   lang?: Lang;
   title: string;
   description: string;
-  path: string; // path without lang prefix, e.g. /docs/install/
+  path: string;
   noindex?: boolean;
 }
 const { lang = 'en', title, description, path, noindex = false } = Astro.props;
@@ -48,30 +48,37 @@ const otherHref = pathFor(otherLang, path);
         </script>
       </>
     )}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
-  <body class="min-h-screen flex flex-col">
-    <header class="border-b border-[var(--color-line)] bg-white/90 backdrop-blur sticky top-0 z-40">
-      <div class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
-        <a href={pathFor(lang, '/')} class="no-underline font-semibold tracking-tight text-[var(--color-ink)]">
-          rea.run
+  <body class="site-shell min-h-screen flex flex-col">
+    <header class="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[color-mix(in_oklab,var(--color-void)_82%,transparent)] backdrop-blur-xl">
+      <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3.5">
+        <a href={pathFor(lang, '/')} class="flex items-center gap-2.5 no-underline hover:no-underline">
+          <span class="brand-mark">RE</span>
+          <span class="text-[var(--color-ink)] font-semibold tracking-tight">rea.run</span>
         </a>
-        <nav class="hidden items-center gap-4 text-sm sm:flex">
+        <nav class="hidden items-center gap-5 md:flex">
           {NAV.map((item) => (
             <a
               href={pathFor(lang, item.href)}
-              class:list={[
-                'no-underline text-[var(--color-muted)] hover:text-[var(--color-ink)]',
-                path === item.href && 'text-[var(--color-ink)] font-medium',
-              ]}
+              class:list={['nav-link', path === item.href && 'is-active']}
             >
               {lang === 'zh' ? item.labelZh : item.labelEn}
             </a>
           ))}
         </nav>
-        <a href={otherHref} class="badge no-underline" hreflang={otherLang === 'zh' ? 'zh-CN' : 'en'}>
-          {otherLang === 'zh' ? '中文' : 'EN'}
-        </a>
+        <div class="flex items-center gap-2">
+          <a href={SITE.upstreamRepo} class="btn-secondary !py-1.5 !px-3 !text-xs hidden sm:inline-flex">GitHub</a>
+          <a href={otherHref} class="badge !normal-case !tracking-normal no-underline hover:no-underline" hreflang={otherLang === 'zh' ? 'zh-CN' : 'en'}>
+            {otherLang === 'zh' ? '中文' : 'EN'}
+          </a>
+        </div>
       </div>
     </header>
 
@@ -79,17 +86,21 @@ const otherHref = pathFor(otherLang, path);
       <slot />
     </main>
 
-    <footer class="mt-16 border-t border-[var(--color-line)] bg-[var(--color-panel)]">
-      <div class="mx-auto max-w-5xl px-4 py-10 text-sm text-[var(--color-muted)] space-y-3">
-        <p>{lang === 'zh' ? SITE.disclaimerZh : SITE.disclaimer}</p>
-        <p class="flex flex-wrap gap-x-4 gap-y-2">
-          <a href={SITE.upstreamRepo}>Upstream GitHub</a>
-          <a href={SITE.upstreamDocs}>Official docs</a>
+    <footer class="mt-20 border-t border-[var(--color-line)] bg-[var(--color-panel)]/80">
+      <div class="mx-auto max-w-6xl px-4 py-12 text-sm text-[var(--color-muted)] space-y-4">
+        <div class="flex items-center gap-2 text-[var(--color-ink)]">
+          <span class="brand-mark">RE</span>
+          <strong class="tracking-tight">rea.run</strong>
+        </div>
+        <p class="max-w-3xl leading-7">{lang === 'zh' ? SITE.disclaimerZh : SITE.disclaimer}</p>
+        <p class="flex flex-wrap gap-x-5 gap-y-2">
+          <a href={SITE.upstreamRepo}>{lang === 'zh' ? '上游仓库' : 'Upstream repo'}</a>
+          <a href={SITE.upstreamNpm}>npm rea-agents</a>
           <a href={pathFor(lang, '/docs/install/')}>{lang === 'zh' ? '安装' : 'Install'}</a>
           <a href={pathFor(lang, '/verify/')}>{lang === 'zh' ? '搜索验证' : 'Search verify'}</a>
           <a href={pathFor(lang, '/compliance/')}>{lang === 'zh' ? '合规' : 'Compliance'}</a>
         </p>
-        <p>© {new Date().getFullYear()} rea.run community</p>
+        <p class="font-mono text-xs opacity-70">© {new Date().getFullYear()} rea.run community</p>
       </div>
     </footer>
   </body>

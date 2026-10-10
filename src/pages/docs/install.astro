@@ -1,41 +1,57 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../lib/site';
 const lang = 'en' as const;
+const toc = [
+  { id: 'requirements', label: 'Requirements' },
+  { id: 'connect', label: 'Connect agent' },
+  { id: 'cli', label: 'Optional CLI' },
+  { id: 'ghidra', label: 'Ghidra (BYO)' },
+  { id: 'first', label: 'First question' },
+  { id: 'links', label: 'Upstream links' },
+];
 ---
 <BaseLayout
   lang={lang}
   title="Install REA (rea-agents) — community guide | rea.run"
-  description="Install REA with npx rea-agents setup, MCP registration, and bring-your-own Ghidra. Paraphrase of upstream docs; verify on GitHub."
+  description="Install REA with npx rea-agents setup, MCP registration, and bring-your-own Ghidra. Community paraphrase of upstream; verify on GitHub."
   path="/docs/install/"
 >
-  <article class="prose-page mx-auto max-w-3xl px-4 py-12">
-    <p class="badge">Docs · Install</p>
-    <h1 class="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-ink)]">Install REA</h1>
-    <p class="mt-4">
-      Community paraphrase of upstream get-started / installation notes. Product behavior is defined by
-      <a href="https://github.com/morluto/rea">morluto/rea</a> and
-      <a href="https://morluto.github.io/rea/get-started/">official get-started</a>. Versions change — re-check before you automate.
-    </p>
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <div class="docs-layout">
+      <aside class="docs-toc hidden md:block">
+        <p class="section-kicker mb-3">On this page</p>
+        {toc.map((item) => <a href={`#${item.id}`}>{item.label}</a>)}
+      </aside>
 
-    <div class="callout">
-      <strong>Authorized use only.</strong> Install and run REA against software you have the right to analyze. No crack or DRM bypass guidance here.
-    </div>
+      <article class="prose-page">
+        <p class="badge">Docs · Install</p>
+        <h1 class="mt-4 text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">Install REA</h1>
+        <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--color-muted)]">
+          Community paraphrase of upstream install notes. Product behavior is defined by
+          <a href={SITE.upstreamRepo}>github.com/morluto/rea</a>
+          and the <code>rea-agents</code> package on npm. Versions change — re-check before you automate.
+        </p>
 
-    <h2>Requirements</h2>
-    <ul>
-      <li>Node.js <strong>22</strong> (22.19+), <strong>24</strong> (24.11+), or <strong>26+</strong>, plus npm (per upstream).</li>
-      <li>An MCP-capable coding agent (Claude Code, Codex, Cursor, Gemini CLI, Windsurf, Grok Build, and others listed upstream), or the CLI alone.</li>
-      <li>For deep <strong>native</strong> analysis: an existing Hopper, Ghidra, or IDA setup as documented upstream. Static JavaScript / Electron inspection does not need those engines.</li>
-    </ul>
+        <div class="callout">
+          <strong>Authorized use only.</strong> Install and run REA against software you have the right to analyze. No crack or DRM bypass guidance here.
+        </div>
 
-    <h2>Connect your coding agent</h2>
-    <p>Ask your agent to run setup with approval, or run it yourself:</p>
-    <pre><code>npx rea-agents@latest setup</code></pre>
-    <p>
-      Choose your client, review the plan, and approve changes. Setup registers the MCP server and matching investigation skill, backing up existing config. <strong>Restart the client</strong> afterward.
-    </p>
-    <p>Manual MCP registration shape (confirm against upstream if your client needs hand-edited JSON):</p>
-    <pre><code>{`{
+        <h2 id="requirements">Requirements</h2>
+        <div class="mt-4 grid gap-3 sm:grid-cols-3">
+          <div class="step-card"><span class="step-num">1</span><div><strong class="text-[var(--color-ink)]">Node</strong><p class="mt-1 !text-sm">22 (22.19+), 24 (24.11+), or 26+ plus npm (per upstream).</p></div></div>
+          <div class="step-card"><span class="step-num">2</span><div><strong class="text-[var(--color-ink)]">MCP client</strong><p class="mt-1 !text-sm">Claude Code, Codex, Cursor, Gemini CLI, Windsurf, Grok Build, or other MCP clients — or CLI alone.</p></div></div>
+          <div class="step-card"><span class="step-num">3</span><div><strong class="text-[var(--color-ink)]">Native engines</strong><p class="mt-1 !text-sm">Deep native analysis needs existing Hopper, Ghidra, or IDA. Static JS/Electron does not.</p></div></div>
+        </div>
+
+        <h2 id="connect">Connect your coding agent</h2>
+        <p>Ask your agent to run setup with approval, or run it yourself:</p>
+        <pre><code>npx rea-agents@latest setup</code></pre>
+        <p>
+          Choose your client, review the plan, and approve changes. Setup registers the MCP server and matching investigation skill, backing up existing config. <strong>Restart the client</strong> afterward.
+        </p>
+        <p>Manual MCP registration shape (confirm against upstream if your client needs hand-edited JSON):</p>
+        <pre><code>{`{
   "mcpServers": {
     "rea": {
       "command": "npx",
@@ -43,31 +59,33 @@ const lang = 'en' as const;
     }
   }
 }`}</code></pre>
-    <p>Pin an exact <code>rea-agents@VERSION</code> when you need reproducible installs.</p>
+        <p>Pin an exact <code>rea-agents@VERSION</code> when you need reproducible installs.</p>
 
-    <h2>Optional: global CLI</h2>
-    <pre><code>npm install --global rea-agents</code></pre>
+        <h2 id="cli">Optional: global CLI</h2>
+        <pre><code>npm install --global rea-agents</code></pre>
 
-    <h2>Ghidra (bring your own)</h2>
-    <p>REA does not install Ghidra or Java. Export absolute paths, then doctor + setup:</p>
-    <pre><code>{`export GHIDRA_INSTALL_DIR=/absolute/path/to/ghidra_PUBLIC
+        <h2 id="ghidra">Ghidra (bring your own)</h2>
+        <p>REA does not install Ghidra or Java. Export absolute paths, then doctor + setup:</p>
+        <pre><code>{`export GHIDRA_INSTALL_DIR=/absolute/path/to/ghidra_PUBLIC
 export JAVA_HOME=/absolute/path/to/jdk-21
 npx -y rea-agents@latest doctor --provider ghidra --json
 npx rea-agents@latest setup`}</code></pre>
-    <p>
-      Upstream documents supported host/Ghidra/JDK combinations. Prefer the exact versions listed in
-      <a href="https://github.com/morluto/rea/blob/main/docs/installation.md">docs/installation.md</a>.
-    </p>
+        <p>
+          Supported host / Ghidra / JDK combinations are defined upstream — see
+          <a href="https://github.com/morluto/rea/blob/main/docs/installation.md">docs/installation.md</a> in the GitHub repo.
+        </p>
 
-    <h2>First question to try</h2>
-    <p>After reconnecting the agent, give an <strong>absolute path</strong> to a target you may analyze and a specific question (entry points, export paths, a named feature). Prefer Evidence + unknowns over speculative narratives.</p>
+        <h2 id="first">First question to try</h2>
+        <p>After reconnecting the agent, give an <strong>absolute path</strong> to a target you may analyze and a specific question (entry points, export paths, a named feature). Prefer Evidence + unknowns over speculative narratives.</p>
 
-    <h2>Upstream links</h2>
-    <ul>
-      <li><a href="https://morluto.github.io/rea/get-started/">Official get-started</a></li>
-      <li><a href="https://www.npmjs.com/package/rea-agents">npm: rea-agents</a></li>
-      <li><a href="/blog/ghidra-mcp-with-rea/">Community: Ghidra MCP with REA</a></li>
-      <li><a href="/compliance/">Compliance</a></li>
-    </ul>
-  </article>
+        <h2 id="links">Upstream links</h2>
+        <ul>
+          <li><a href={SITE.upstreamRepo}>GitHub: morluto/rea</a></li>
+          <li><a href={SITE.upstreamNpm}>npm: rea-agents</a></li>
+          <li><a href="/blog/ghidra-mcp-with-rea/">Community: Ghidra MCP with REA</a></li>
+          <li><a href="/compliance/">Compliance</a></li>
+        </ul>
+      </article>
+    </div>
+  </div>
 </BaseLayout>

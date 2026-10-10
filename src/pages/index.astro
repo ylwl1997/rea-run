@@ -5,29 +5,34 @@ import { BLOG_POSTS } from '../data/blog';
 import { COMPARE_PAGES } from '../data/compare';
 const lang = 'en' as const;
 ---
-<BaseLayout
-  lang={lang}
-  title={SITE.titleDefault}
-  description={SITE.descriptionDefault}
-  path="/"
->
-  <section class="mx-auto max-w-5xl px-4 pb-8 pt-14">
-    <p class="badge mb-4">Community docs · not the upstream product</p>
-    <h1 class="max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">
-      REA — Reverse Engineer Anything, explained for builders
-    </h1>
-    <p class="mt-5 max-w-2xl text-lg leading-8 text-[var(--color-muted)]">
-      Bilingual guides for the open-source <strong class="text-[var(--color-ink)]">REA</strong> MCP/CLI:
-      install, Ghidra wiring, agent workflows, and honest comparisons. Legal, authorized research only.
-    </p>
-    <div class="mt-8 flex flex-wrap gap-3">
-      <a class="btn" href={pathFor(lang, '/docs/install/')}>Install guide</a>
-      <a class="btn-secondary" href={SITE.upstreamRepo}>Upstream GitHub</a>
-      <a class="btn-secondary" href={SITE.upstreamDocs}>Official docs</a>
+<BaseLayout lang={lang} title={SITE.titleDefault} description={SITE.descriptionDefault} path="/">
+  <section class="relative overflow-hidden">
+    <div class="hex-grid absolute inset-0 opacity-80"></div>
+    <div class="relative mx-auto max-w-6xl px-4 pb-10 pt-16 sm:pt-20">
+      <p class="badge mb-5">Community docs · legal RE only</p>
+      <h1 class="hero-title max-w-3xl">
+        Reverse Engineer Anything —
+        <span class="bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] bg-clip-text text-transparent">explained for builders</span>
+      </h1>
+      <p class="hero-lede mt-6">
+        Bilingual guides for the open-source <strong class="text-[var(--color-ink)]">REA</strong> MCP/CLI:
+        install paths, Ghidra wiring, agent workflows, and honest comparisons — without the generic template look.
+      </p>
+      <div class="mt-9 flex flex-wrap gap-3">
+        <a class="btn" href={pathFor(lang, '/docs/install/')}>Install guide →</a>
+        <a class="btn-secondary" href={pathFor(lang, '/compare/')}>Compare tools</a>
+        <a class="btn-secondary" href={SITE.upstreamRepo}>Upstream GitHub</a>
+      </div>
+      <div class="mt-10 flex flex-wrap gap-3">
+        <div class="stat-pill"><strong>EN + ZH</strong><span>Day-one bilingual</span></div>
+        <div class="stat-pill"><strong>MCP + CLI</strong><span>Agent-facing RE</span></div>
+        <div class="stat-pill"><strong>BYO engine</strong><span>Ghidra / Hopper / IDA</span></div>
+        <div class="stat-pill"><strong>No DRM tips</strong><span>Authorized targets only</span></div>
+      </div>
     </div>
   </section>
 
-  <section class="mx-auto max-w-5xl px-4 py-8">
+  <section class="mx-auto max-w-6xl px-4 py-6">
     <div class="callout">
       <strong>Compliance.</strong> Use REA only on software you are authorized to analyze.
       This site publishes no crack, keygen, or DRM-circumvention material. See
@@ -35,38 +40,52 @@ const lang = 'en' as const;
     </div>
   </section>
 
-  <section class="mx-auto grid max-w-5xl gap-4 px-4 py-6 sm:grid-cols-3">
-    <a class="card no-underline hover:border-[var(--color-accent)]" href={pathFor(lang, '/docs/install/')}>
-      <h2 class="text-base font-semibold text-[var(--color-ink)]">Docs · Install</h2>
-      <p class="mt-2 text-sm text-[var(--color-muted)]">Node requirements, <code>rea-agents</code> setup, MCP registration, Ghidra env vars.</p>
-    </a>
-    <a class="card no-underline hover:border-[var(--color-accent)]" href={pathFor(lang, '/blog/')}>
-      <h2 class="text-base font-semibold text-[var(--color-ink)]">Key terms</h2>
-      <p class="mt-2 text-sm text-[var(--color-muted)]">What REA means, Ghidra MCP, and agent reverse engineering with MCP.</p>
-    </a>
-    <a class="card no-underline hover:border-[var(--color-accent)]" href={pathFor(lang, '/compare/')}>
-      <h2 class="text-base font-semibold text-[var(--color-ink)]">Compare</h2>
-      <p class="mt-2 text-sm text-[var(--color-muted)]">REA vs Ghidra / IDA orientation; rea.run vs rea.tools — third-party labeled.</p>
-    </a>
+  <section class="mx-auto max-w-6xl px-4 py-8">
+    <p class="section-kicker">Start here</p>
+    <h2 class="mt-2 text-2xl font-semibold tracking-tight">Three paths into REA</h2>
+    <div class="mt-6 grid gap-4 md:grid-cols-3">
+      <a class="card no-underline hover:no-underline group" href={pathFor(lang, '/docs/install/')}>
+        <p class="font-mono text-xs text-[var(--color-accent)]">01 · Docs</p>
+        <h3 class="mt-2 text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">Install & MCP setup</h3>
+        <p class="mt-2 text-sm leading-6 text-[var(--color-muted)]">Node requirements, <code>rea-agents</code> setup, manual MCP JSON, Ghidra env vars.</p>
+      </a>
+      <a class="card no-underline hover:no-underline group" href={pathFor(lang, '/blog/')}>
+        <p class="font-mono text-xs text-[var(--color-accent)]">02 · Blog</p>
+        <h3 class="mt-2 text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">Key terms decoded</h3>
+        <p class="mt-2 text-sm leading-6 text-[var(--color-muted)]">What REA means, Ghidra MCP, and agent reverse engineering with MCP.</p>
+      </a>
+      <a class="card no-underline hover:no-underline group" href={pathFor(lang, '/compare/')}>
+        <p class="font-mono text-xs text-[var(--color-accent)]">03 · Compare</p>
+        <h3 class="mt-2 text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">REA vs the workbench</h3>
+        <p class="mt-2 text-sm leading-6 text-[var(--color-muted)]">How REA relates to Ghidra and IDA — third-party labeled, no hype.</p>
+      </a>
+    </div>
   </section>
 
-  <section class="mx-auto max-w-5xl px-4 py-10">
-    <h2 class="text-xl font-semibold">Latest explainers</h2>
-    <ul class="mt-4 space-y-3">
-      {BLOG_POSTS.map((p) => (
-        <li>
-          <a class="font-medium no-underline hover:underline" href={pathFor(lang, `/blog/${p.slug}/`)}>{p.en.h1}</a>
-          <span class="ml-2 text-sm text-[var(--color-muted)]">{p.date}</span>
-        </li>
-      ))}
-    </ul>
-    <h2 class="mt-10 text-xl font-semibold">Comparisons</h2>
-    <ul class="mt-4 space-y-3">
-      {COMPARE_PAGES.map((p) => (
-        <li>
-          <a class="font-medium no-underline hover:underline" href={pathFor(lang, `/compare/${p.slug}/`)}>{p.en.h1}</a>
-        </li>
-      ))}
-    </ul>
+  <section class="mx-auto grid max-w-6xl gap-10 px-4 py-10 lg:grid-cols-2">
+    <div>
+      <p class="section-kicker">Explainers</p>
+      <h2 class="mt-2 text-2xl font-semibold tracking-tight">Latest posts</h2>
+      <ul class="mt-5 space-y-3">
+        {BLOG_POSTS.map((p) => (
+          <li class="card !p-4">
+            <a class="font-semibold text-[var(--color-ink)] no-underline hover:text-[var(--color-accent)] hover:no-underline" href={pathFor(lang, `/blog/${p.slug}/`)}>{p.en.h1}</a>
+            <p class="mt-1 text-xs font-mono text-[var(--color-muted)]">{p.date}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div>
+      <p class="section-kicker">Orientation</p>
+      <h2 class="mt-2 text-2xl font-semibold tracking-tight">Comparisons</h2>
+      <ul class="mt-5 space-y-3">
+        {COMPARE_PAGES.map((p) => (
+          <li class="card !p-4">
+            <a class="font-semibold text-[var(--color-ink)] no-underline hover:text-[var(--color-accent)] hover:no-underline" href={pathFor(lang, `/compare/${p.slug}/`)}>{p.en.h1}</a>
+            <p class="mt-1 text-sm text-[var(--color-muted)] line-clamp-2">{p.en.description}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   </section>
 </BaseLayout>

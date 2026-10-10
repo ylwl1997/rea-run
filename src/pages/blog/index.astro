@@ -4,23 +4,19 @@ import { BLOG_POSTS } from '../../data/blog';
 import { pathFor } from '../../lib/site';
 const lang = 'en' as const;
 ---
-<BaseLayout
-  lang={lang}
-  title="Blog — REA explainers | rea.run"
-  description="Community explainers: what REA means, Ghidra MCP, and agent reverse engineering with MCP."
-  path="/blog/"
->
-  <div class="mx-auto max-w-3xl px-4 py-12">
-    <h1 class="text-3xl font-semibold tracking-tight">Blog</h1>
-    <p class="mt-3 text-[var(--color-muted)]">Key-term explainers for builders. Paraphrase of public upstream material — not crack guides.</p>
-    <ul class="mt-8 space-y-4">
-      {BLOG_POSTS.map((p) => (
-        <li class="card">
-          <a class="text-lg font-semibold text-[var(--color-ink)] no-underline hover:underline" href={pathFor(lang, `/blog/${p.slug}/`)}>{p.en.h1}</a>
-          <p class="mt-2 text-sm text-[var(--color-muted)]">{p.en.description}</p>
-          <p class="mt-2 text-xs text-[var(--color-muted)]">{p.date}</p>
-        </li>
+<BaseLayout lang={lang} title="Blog — REA explainers | rea.run" description="Community explainers: what REA means, Ghidra MCP, and agent reverse engineering with MCP." path="/blog/">
+  <div class="mx-auto max-w-5xl px-4 py-12">
+    <p class="section-kicker">Blog</p>
+    <h1 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Key-term explainers</h1>
+    <p class="mt-3 max-w-2xl text-[var(--color-muted)]">Paraphrase of public upstream material — not crack guides.</p>
+    <div class="mt-8 grid gap-4 md:grid-cols-2">
+      {BLOG_POSTS.map((p, i) => (
+        <a class="card no-underline hover:no-underline group" href={pathFor(lang, `/blog/${p.slug}/`)}>
+          <p class="font-mono text-xs text-[var(--color-accent)]">{String(i + 1).padStart(2, '0')} · {p.date}</p>
+          <h2 class="mt-2 text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">{p.en.h1}</h2>
+          <p class="mt-2 text-sm leading-6 text-[var(--color-muted)]">{p.en.description}</p>
+        </a>
       ))}
-    </ul>
+    </div>
   </div>
 </BaseLayout>

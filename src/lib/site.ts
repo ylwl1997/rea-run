@@ -5,16 +5,13 @@ export const SITE = {
   descriptionDefault:
     'Bilingual community docs for REA: install, Ghidra MCP setup, agent reverse engineering workflows, and comparisons. Legal authorized research only.',
   upstreamRepo: 'https://github.com/morluto/rea',
-  upstreamDocs: 'https://morluto.github.io/rea/',
   upstreamNpm: 'https://www.npmjs.com/package/rea-agents',
   disclaimer:
     'Unofficial community site. Not affiliated with morluto or the REA maintainers. For legal, authorized reverse engineering and security research only. No crack, keygen, or DRM-circumvention content.',
   disclaimerZh:
     '非官方社区站点，与 morluto / REA 维护者无关联。仅面向合法、已授权的逆向与安全研究。不含破解、注册机或规避 DRM 内容。',
-  /** Paste meta verification content values when PM provides them from GSC/Bing. Leave empty until then. */
   gscVerification: '',
   bingVerification: '',
-  /** Optional GA4 measurement ID (e.g. G-XXXXXXXX). Empty until PM creates property. */
   ga4Id: '',
 } as const;
 
