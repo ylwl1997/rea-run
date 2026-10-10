@@ -2,24 +2,105 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import LifeProcessShell from '../../components/LifeProcessShell.astro';
 import { pathFor } from '../../lib/site';
-import { LIFE_MODULES } from '../../data/lifeProcess';
+import {
+  LIFE_MODULES,
+  SIGNAL_ATLAS_ENTRIES,
+  BEHAVIOR_MODEL_SAMPLES,
+  ARCH_DIAGRAM,
+  SIGNAL_ATLAS_COVERAGE_PCT,
+} from '../../data/lifeProcess';
 const lang = 'en' as const;
 ---
 <BaseLayout
   lang={lang}
-  title="Life Process modules — Signal Atlas to Chronicle | rea.run"
-  description="Six Life Process modules: Signal Atlas, Architecture Hypotheses, Behavior Models, Agent Playbooks (any agent incl. Hermes), Open Diff Prep, Chronicle."
+  title="Life Process modules — Signal Atlas, arch, behavior | rea.run"
+  description="Deep Signal Atlas (x-algorithm as public OSS signal), architecture hypothesis diagram, Behavior Models samples, and the other Life Process modules."
   path="/life-process/modules/"
 >
   <LifeProcessShell lang={lang} active="modules">
     <p class="lp-hero-kicker">Modules</p>
-    <h1 class="lp-title">Six chambers of the process</h1>
-    <p class="lp-lede mt-4">Each module maps to a GitHub Issue label. Agent Playbooks welcome any coding agent — Hermes included.</p>
+    <h1 class="lp-title">From Signal Atlas to falsifiable models</h1>
+    <p class="lp-lede mt-4">
+      Partial open source (e.g. x-algorithm) is a gift of public signal — not permission to stop observing other surfaces legally.
+      Each module maps to a GitHub Issue label.
+    </p>
+
+    <section class="lp-card mt-lp" id="signal-atlas">
+      <span class="lp-chip">signal</span>
+      <h2 class="lp-sub-title">Signal Atlas</h2>
+      <p class="lp-muted">
+        Catalog public client/API-visible behavior, protocol fingerprints, public configs, and <strong>public OSS</strong>.
+        Coverage ~{SIGNAL_ATLAS_COVERAGE_PCT}%. Label submissions <code>life-process</code> + <code>signal</code>.
+      </p>
+      <table class="lp-atlas-table">
+        <thead>
+          <tr><th>Source</th><th>Kind</th><th>Note</th><th>Compliance label</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          {SIGNAL_ATLAS_ENTRIES.map((row) => (
+            <tr>
+              <td>
+                {row.url ? (
+                  <a href={row.url} target="_blank" rel="noopener noreferrer">{row.en.title}</a>
+                ) : (
+                  row.en.title
+                )}
+              </td>
+              <td><code>{row.kind}</code></td>
+              <td>{row.en.note}</td>
+              <td>{row.en.compliance}</td>
+              <td><span class="lp-status">{row.status}</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div class="lp-callout">
+        <strong>x-algorithm note.</strong> Public OSS for a For You ranking slice. Cite commits. Do not treat it as the entire X architecture.
+        Compliance: authorized/public only — <a href={pathFor(lang, '/compliance/')}>/compliance/</a>.
+      </div>
+      <div class="lp-cta-row">
+        <a class="lp-btn" href={`${pathFor(lang, '/life-process/submissions/new/')}?module=signal`}>Contribute to Signal Atlas</a>
+      </div>
+    </section>
+
+    <section class="lp-card mt-lp" id="architecture">
+      <span class="lp-chip">arch</span>
+      <h2 class="lp-sub-title">Architecture Hypotheses</h2>
+      <p class="lp-muted">{ARCH_DIAGRAM.en.caption}</p>
+      <div class="lp-diagram">
+        <img src={ARCH_DIAGRAM.src} alt={ARCH_DIAGRAM.en.title} width="960" height="520" loading="lazy" />
+      </div>
+      <p class="lp-muted mt-lp">
+        Submit improved diagrams with citations and what would falsify them. Label <code>arch</code>.
+      </p>
+      <div class="lp-cta-row">
+        <a class="lp-btn" href={`${pathFor(lang, '/life-process/submissions/new/')}?module=arch`}>Submit arch hypothesis</a>
+      </div>
+    </section>
+
+    <section class="lp-card mt-lp" id="behavior">
+      <span class="lp-chip">behavior</span>
+      <h2 class="lp-sub-title">Behavior Models — seed &amp; placeholder</h2>
+      <p class="lp-muted">Testable claims from public signals. Replace placeholders with measured, cited models.</p>
+      {BEHAVIOR_MODEL_SAMPLES.map((m) => (
+        <div class="lp-card mt-lp" style="background:#0f1320">
+          <h3 class="lp-sub-title">{m.en.title}</h3>
+          <p class="lp-muted"><strong>Claim.</strong> {m.en.claim}</p>
+          <p class="lp-muted"><strong>Test.</strong> {m.en.test}</p>
+          <p class="lp-muted"><strong>Limits.</strong> {m.en.limits}</p>
+        </div>
+      ))}
+      <div class="lp-cta-row">
+        <a class="lp-btn" href={`${pathFor(lang, '/life-process/submissions/new/')}?module=behavior`}>Submit a behavior model</a>
+      </div>
+    </section>
+
+    <h2 class="lp-title mt-lp" style="font-size:1.6rem">All six modules</h2>
     <div class="lp-grid cols-2">
       {LIFE_MODULES.map((m) => (
-        <div class="lp-card">
+        <div class="lp-card" id={m.id}>
           <span class="lp-chip">{m.tag}</span>
-          <h2 class="lp-sub-title">{m.en.title}</h2>
+          <h3 class="lp-sub-title">{m.en.title}</h3>
           <p class="lp-muted">{m.en.blurb}</p>
           <div class="lp-cta-row">
             <a class="lp-btn" href={`${pathFor(lang, '/life-process/submissions/new/')}?module=${m.tag}`}>Submit to {m.tag}</a>
