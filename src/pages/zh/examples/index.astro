@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { EXAMPLES } from '../../../data/examples';
+import { pathFor } from '../../../lib/site';
+const lang = 'zh' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="REA 示例 — 授权教学场景 | rea.run"
+  description="原创 REA 教学示例：开源 CLI 参数、自有 Electron 导出路径、自备 Ghidra 查自研二进制。仅限合法授权研究。"
+  path="/examples/"
+>
+  <div class="mx-auto max-w-5xl px-4 py-14">
+    <p class="kicker">示例</p>
+    <h1 class="display mt-2 text-4xl">教学场景 — rea.run 原创</h1>
+    <p class="lede mt-4">目标、为何逆向、示例提示、返回通道、智能体角色。不复用其他站点的计算器／恐龙案例。</p>
+    <div class="callout mt-6">仅限授权目标。优先自有、你维护、或有书面许可检查的软件。</div>
+    <div class="mt-10 grid gap-4">
+      {EXAMPLES.map((ex, i) => (
+        <a class="card no-underline hover:no-underline group flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4" href={pathFor(lang, `/examples/${ex.slug}/`)}>
+          <div>
+            <p class="font-mono text-xs text-[var(--color-accent)]">{String(i + 1).padStart(2, '0')}</p>
+            <h2 class="mt-1 text-xl font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">{ex.zh.title}</h2>
+            <p class="mt-1 text-sm text-[var(--color-muted)]">{ex.zh.blurb}</p>
+          </div>
+          <span class="font-mono text-sm text-[var(--color-accent)]">打开 →</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

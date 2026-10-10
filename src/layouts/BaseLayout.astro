@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import BrandLogo from '../components/BrandLogo.astro';
 import { SITE, type Lang, pathFor, NAV } from '../lib/site';
 
 interface Props {
@@ -10,12 +11,15 @@ interface Props {
   noindex?: boolean;
 }
 const { lang = 'en', title, description, path, noindex = false } = Astro.props;
-const canonicalPath = pathFor(lang, path);
-const canonical = new URL(canonicalPath, SITE.url).href;
+const canonical = new URL(pathFor(lang, path), SITE.url).href;
 const enUrl = new URL(pathFor('en', path), SITE.url).href;
 const zhUrl = new URL(pathFor('zh', path), SITE.url).href;
 const otherLang = lang === 'en' ? 'zh' : 'en';
 const otherHref = pathFor(otherLang, path);
+const isActive = (href: string) => {
+  if (href === '/') return path === '/';
+  return path === href || path.startsWith(href);
+};
 ---
 <!doctype html>
 <html lang={lang === 'zh' ? 'zh-CN' : 'en'}>
@@ -34,73 +38,65 @@ const otherHref = pathFor(otherLang, path);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     {SITE.gscVerification && <meta name="google-site-verification" content={SITE.gscVerification} />}
     {SITE.bingVerification && <meta name="msvalidate.01" content={SITE.bingVerification} />}
-    {SITE.ga4Id && (
-      <>
-        <script async src={`https://www.googletagmanager.com/gtag/js?id=${SITE.ga4Id}`}></script>
-        <script is:inline define:vars={{ ga4Id: SITE.ga4Id }}>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', ga4Id);
-        </script>
-      </>
-    )}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;600;700&display=swap" rel="stylesheet" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   </head>
-  <body class="site-shell min-h-screen flex flex-col">
-    <header class="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[color-mix(in_oklab,var(--color-void)_82%,transparent)] backdrop-blur-xl">
+  <body class="site-wrap min-h-screen flex flex-col">
+    <header class="topbar">
       <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3.5">
-        <a href={pathFor(lang, '/')} class="flex items-center gap-2.5 no-underline hover:no-underline">
-          <span class="brand-mark">RE</span>
-          <span class="text-[var(--color-ink)] font-semibold tracking-tight">rea.run</span>
+        <a class="no-underline hover:no-underline" href={pathFor(lang, '/')}>
+          <BrandLogo />
         </a>
-        <nav class="hidden items-center gap-5 md:flex">
+        <nav class="hidden items-center gap-5 lg:flex">
           {NAV.map((item) => (
-            <a
-              href={pathFor(lang, item.href)}
-              class:list={['nav-link', path === item.href && 'is-active']}
-            >
+            <a href={pathFor(lang, item.href)} class:list={['nav-link', isActive(item.href) && 'is-active']}>
               {lang === 'zh' ? item.labelZh : item.labelEn}
             </a>
           ))}
         </nav>
         <div class="flex items-center gap-2">
-          <a href={SITE.upstreamRepo} class="btn-secondary !py-1.5 !px-3 !text-xs hidden sm:inline-flex">GitHub</a>
-          <a href={otherHref} class="badge !normal-case !tracking-normal no-underline hover:no-underline" hreflang={otherLang === 'zh' ? 'zh-CN' : 'en'}>
+          <a href={pathFor(lang, '/compliance/')} class="chip no-underline hover:no-underline hidden sm:inline-flex">
+            {lang === 'zh' ? '合规' : 'Compliance'}
+          </a>
+          <a href={otherHref} class="badge badge-accent no-underline hover:no-underline" hreflang={otherLang === 'zh' ? 'zh-CN' : 'en'}>
             {otherLang === 'zh' ? '中文' : 'EN'}
           </a>
         </div>
       </div>
     </header>
 
-    <main class="flex-1">
-      <slot />
-    </main>
+    <main class="flex-1"><slot /></main>
 
-    <footer class="mt-20 border-t border-[var(--color-line)] bg-[var(--color-panel)]/80">
-      <div class="mx-auto max-w-6xl px-4 py-12 text-sm text-[var(--color-muted)] space-y-4">
-        <div class="flex items-center gap-2 text-[var(--color-ink)]">
-          <span class="brand-mark">RE</span>
-          <strong class="tracking-tight">rea.run</strong>
+    <footer class="mt-20 border-t border-[var(--color-line)] bg-[var(--color-paper-2)]">
+      <div class="mx-auto grid max-w-6xl gap-8 px-4 py-14 md:grid-cols-[1.2fr_1fr]">
+        <div>
+          <div class="mb-4"><BrandLogo /></div>
+          <p class="max-w-xl text-sm leading-7 text-[var(--color-ink-soft)]">
+            {lang === 'zh' ? SITE.disclaimerZh : SITE.disclaimer}
+          </p>
         </div>
-        <p class="max-w-3xl leading-7">{lang === 'zh' ? SITE.disclaimerZh : SITE.disclaimer}</p>
-        <p class="flex flex-wrap gap-x-5 gap-y-2">
-          <a href={SITE.upstreamRepo}>{lang === 'zh' ? '上游仓库' : 'Upstream repo'}</a>
-          <a href={SITE.upstreamNpm}>npm rea-agents</a>
-          <a href={pathFor(lang, '/docs/install/')}>{lang === 'zh' ? '安装' : 'Install'}</a>
-          <a href={pathFor(lang, '/verify/')}>{lang === 'zh' ? '搜索验证' : 'Search verify'}</a>
-          <a href={pathFor(lang, '/compliance/')}>{lang === 'zh' ? '合规' : 'Compliance'}</a>
-        </p>
-        <p class="font-mono text-xs opacity-70">© {new Date().getFullYear()} rea.run community</p>
+        <div class="grid grid-cols-2 gap-4 text-sm">
+          <div class="space-y-2">
+            <p class="kicker">{lang === 'zh' ? '指南' : 'Guide'}</p>
+            <a class="block text-[var(--color-ink-soft)] no-underline hover:text-[var(--color-accent)]" href={pathFor(lang, '/learn/what-is-reverse-engineering/')}>{lang === 'zh' ? '什么是逆向' : 'What is RE'}</a>
+            <a class="block text-[var(--color-ink-soft)] no-underline hover:text-[var(--color-accent)]" href={pathFor(lang, '/examples/')}>{lang === 'zh' ? '示例' : 'Examples'}</a>
+            <a class="block text-[var(--color-ink-soft)] no-underline hover:text-[var(--color-accent)]" href={pathFor(lang, '/docs/install/')}>{lang === 'zh' ? '安装' : 'Install'}</a>
+          </div>
+          <div class="space-y-2">
+            <p class="kicker">{lang === 'zh' ? '上游' : 'Upstream'}</p>
+            <a class="block text-[var(--color-ink-soft)] no-underline hover:text-[var(--color-accent)]" href={SITE.upstreamRepo}>GitHub</a>
+            <a class="block text-[var(--color-ink-soft)] no-underline hover:text-[var(--color-accent)]" href={SITE.upstreamNpm}>npm rea-agents</a>
+            <a class="block text-[var(--color-ink-soft)] no-underline hover:text-[var(--color-accent)]" href={pathFor(lang, '/verify/')}>{lang === 'zh' ? '搜索验证' : 'Search verify'}</a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-[var(--color-line)]">
+        <p class="mx-auto max-w-6xl px-4 py-4 font-mono text-xs text-[var(--color-muted)]">© {new Date().getFullYear()} rea.run community</p>
       </div>
     </footer>
   </body>

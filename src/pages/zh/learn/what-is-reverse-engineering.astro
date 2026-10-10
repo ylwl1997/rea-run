@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { pathFor } from '../../../lib/site';
+---
+<BaseLayout
+  lang="zh"
+  title="什么是逆向工程？| rea.run"
+  description="面向编程智能体的逆向释义：证据、授权，以及原创的重试退避谜题——非破解指南。"
+  path="/learn/what-is-reverse-engineering/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="badge badge-accent">学习</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">什么是逆向工程？</h1>
+    <p class="lede mt-5 !max-w-none">
+      逆向工程是通过检查软件制品本身——二进制、脚本、包——弄清行为，直到你能解释某功能、在许可范围内修改，或重建兼容实现。
+    </p>
+
+    <div class="callout mt-8">
+      <strong>rea.run 的边界。</strong>仅限授权目标。我们不发布破解、注册机或规避 DRM 内容。
+    </div>
+
+    <h2>智能体如何改变流程</h2>
+    <p>
+      配备本地工具的编程智能体能更快收集 Evidence：字符串、符号、反编译（依赖你自备的引擎）、JS 图。
+      判断仍归你——核实引用、决定补丁、拒绝未授权目标。
+    </p>
+
+    <h2>原创谜题：重试退避</h2>
+    <p>
+      假设团队的任务调度在失败后等待 <code>1s</code>、<code>2s</code>、<code>4s</code> 然后停止。
+      宣传页只写「智能重试」。逆向要问：<em>哪个函数算延迟，上限是什么？</em>
+    </p>
+    <div class="grid gap-4 sm:grid-cols-2 not-prose my-6">
+      <div class="card">
+        <p class="kicker">之前</p>
+        <p class="mt-2 text-sm text-[var(--color-ink-soft)] leading-6">自己搜配置、加日志，手工还原指数退避。</p>
+      </div>
+      <div class="card">
+        <p class="kicker">之后（授权路径）</p>
+        <p class="mt-2 text-sm text-[var(--color-ink-soft)] leading-6">把 REA 指向你有权检查的代码／二进制；智能体带回带位置的延迟规则，由你核实。</p>
+      </div>
+    </div>
+    <pre><code>› 用 REA 检查 /abs/path/to/our-job-runner。为什么重试等待是 1s、2s、4s 然后停止？引用延迟函数。不要改文件。</code></pre>
+
+    <h2>好答案长什么样</h2>
+    <ul>
+      <li>具名函数／地址与文件路径</li>
+      <li>清楚标出未知（未解析调用、剥离符号）</li>
+      <li>没有「大概用了 AI」式空话</li>
+    </ul>
+
+    <p class="mt-10 flex flex-wrap gap-3 not-prose">
+      <a class="btn" href={pathFor('zh', '/examples/')}>浏览示例</a>
+      <a class="btn-secondary" href={pathFor('zh', '/docs/install/')}>安装 REA</a>
+    </p>
+  </article>
+</BaseLayout>

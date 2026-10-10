@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { EXAMPLES, getExample } from '../../../data/examples';
+import { pathFor } from '../../../lib/site';
+
+export function getStaticPaths() {
+  return EXAMPLES.map((e) => ({ params: { slug: e.slug } }));
+}
+const ex = getExample(Astro.params.slug!);
+if (!ex) throw new Error('missing example');
+const c = ex.zh;
+---
+<BaseLayout lang="zh" title={`${c.title} | rea.run`} description={c.blurb} path={`/examples/${ex.slug}/`}>
+  <article class="mx-auto max-w-3xl px-4 py-14">
+    <p class="badge">示例</p>
+    <h1 class="display mt-4 text-4xl">{c.title}</h1>
+    <p class="lede mt-4">{c.blurb}</p>
+    <div class="callout mt-6">{c.note}</div>
+
+    <div class="mt-10 grid gap-4">
+      <div class="card"><p class="kicker">目标</p><p class="mt-2 text-[var(--color-ink-soft)]">{c.goal}</p></div>
+      <div class="card"><p class="kicker">为何要逆向</p><p class="mt-2 text-[var(--color-ink-soft)]">{c.why}</p></div>
+      <div class="card">
+        <p class="kicker">示例提示</p>
+        <div class="code-well mt-3 text-[0.78rem]">{c.prompt}</div>
+      </div>
+      <div class="card"><p class="kicker">返回通道</p><p class="mt-2 text-[var(--color-ink-soft)]">REA 把 Evidence／结构化结果返回智能体会话（MCP 工具或 CLI JSON）。行动前请先读引用。</p></div>
+      <div class="card"><p class="kicker">智能体角色</p><p class="mt-2 text-[var(--color-ink-soft)]">解读 Evidence、解释规则、列出未知。写入、发送、安装仍须你批准。</p></div>
+    </div>
+
+    <h2 class="display mt-12 text-2xl">建议步骤</h2>
+    <div class="mt-4">
+      {c.steps.map((s, i) => (
+        <div class="step-row">
+          <span class="step-index">{String(i + 1).padStart(2, '0')}</span>
+          <div>
+            <strong>{s.title}</strong>
+            <p class="mt-1 text-sm text-[var(--color-muted)]">{s.body}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <p class="mt-10 flex flex-wrap gap-3">
+      <a class="btn-secondary" href={pathFor('zh', '/examples/')}>← 全部示例</a>
+      <a class="btn" href={pathFor('zh', '/docs/install/')}>安装</a>
+    </p>
+  </article>
+</BaseLayout>

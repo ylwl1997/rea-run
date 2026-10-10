@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { EXAMPLES } from '../../data/examples';
+import { pathFor } from '../../lib/site';
+const lang = 'en' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="REA examples — authorized teaching scenarios | rea.run"
+  description="Original REA teaching examples: open-source CLI flags, your Electron export path, BYO Ghidra on your binary. Legal authorized research only."
+  path="/examples/"
+>
+  <div class="mx-auto max-w-5xl px-4 py-14">
+    <p class="kicker">Examples</p>
+    <h1 class="display mt-2 text-4xl">Teaching scenarios — original to rea.run</h1>
+    <p class="lede mt-4">Goal, why RE, sample prompt, return channel, agent role. Not calculator or dinosaur demos from other sites.</p>
+    <div class="callout mt-6">Authorized targets only. Prefer software you own, maintain, or have written permission to inspect.</div>
+    <div class="mt-10 grid gap-4">
+      {EXAMPLES.map((ex, i) => (
+        <a class="card no-underline hover:no-underline group flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4" href={pathFor(lang, `/examples/${ex.slug}/`)}>
+          <div>
+            <p class="font-mono text-xs text-[var(--color-accent)]">{String(i + 1).padStart(2, '0')}</p>
+            <h2 class="mt-1 text-xl font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">{ex.en.title}</h2>
+            <p class="mt-1 text-sm text-[var(--color-muted)]">{ex.en.blurb}</p>
+          </div>
+          <span class="font-mono text-sm text-[var(--color-accent)]">Open →</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,11 @@
+---
+interface Props {
+  class?: string;
+  wordmark?: boolean;
+}
+const { class: className = '', wordmark = true } = Astro.props;
+---
+<span class:list={['brand', className]}>
+  <img class="brand-mark-img" src="/brand/logo-mark.svg" width="36" height="36" alt="" />
+  {wordmark && <span class="brand-word">rea.run</span>}
+</span>

@@ -1,91 +1,144 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE, pathFor } from '../lib/site';
-import { BLOG_POSTS } from '../data/blog';
-import { COMPARE_PAGES } from '../data/compare';
+import { EXAMPLES } from '../data/examples';
 const lang = 'en' as const;
+const featured = EXAMPLES.slice(0, 2);
 ---
 <BaseLayout lang={lang} title={SITE.titleDefault} description={SITE.descriptionDefault} path="/">
-  <section class="relative overflow-hidden">
-    <div class="hex-grid absolute inset-0 opacity-80"></div>
-    <div class="relative mx-auto max-w-6xl px-4 pb-10 pt-16 sm:pt-20">
-      <p class="badge mb-5">Community docs · legal RE only</p>
-      <h1 class="hero-title max-w-3xl">
-        Reverse Engineer Anything —
-        <span class="bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent-2)] bg-clip-text text-transparent">explained for builders</span>
+  <section class="mx-auto max-w-6xl px-4 pb-8 pt-14 sm:pt-18">
+    <div class="reveal">
+      <p class="badge badge-accent mb-5">Community guide · authorized research only</p>
+      <h1 class="display text-[clamp(2.6rem,6vw,4.2rem)] max-w-4xl">
+        Give your coding agent eyes for software you may inspect.
       </h1>
-      <p class="hero-lede mt-6">
-        Bilingual guides for the open-source <strong class="text-[var(--color-ink)]">REA</strong> MCP/CLI:
-        install paths, Ghidra wiring, agent workflows, and honest comparisons — without the generic template look.
+      <p class="lede mt-6">
+        <strong class="text-[var(--color-ink)]">rea.run</strong> is an unofficial bilingual home for
+        <strong class="text-[var(--color-ink)]">REA</strong> (Reverse Engineer Anything) — MCP + CLI workflows,
+        install notes, and original teaching examples. Source of truth stays on
+        <a href={SITE.upstreamRepo}>GitHub</a>.
       </p>
-      <div class="mt-9 flex flex-wrap gap-3">
-        <a class="btn" href={pathFor(lang, '/docs/install/')}>Install guide →</a>
-        <a class="btn-secondary" href={pathFor(lang, '/compare/')}>Compare tools</a>
-        <a class="btn-secondary" href={SITE.upstreamRepo}>Upstream GitHub</a>
+    </div>
+
+    <div class="mt-10 grid gap-4 lg:grid-cols-2 reveal delay-1">
+      <div class="card !bg-[var(--color-void)] !border-[#2a3144] !text-[var(--color-paper)]">
+        <p class="kicker !text-[#8bb0ff]">Agent prompt</p>
+        <h2 class="mt-2 font-display text-xl text-white">Paste into your coding agent</h2>
+        <div class="code-well mt-4 !border-[#3a435c]">
+          <span class="prompt">›</span> Install REA for this agent with <span class="dim">npx rea-agents@latest setup</span>.
+          Show the setup plan for my approval, then verify the MCP connection. Use only targets I am authorized to analyze.
+        </div>
+        <p class="mt-3 text-sm text-[#a8b0c2]">Own wording for rea.run readers — approve before config writes.</p>
       </div>
-      <div class="mt-10 flex flex-wrap gap-3">
-        <div class="stat-pill"><strong>EN + ZH</strong><span>Day-one bilingual</span></div>
-        <div class="stat-pill"><strong>MCP + CLI</strong><span>Agent-facing RE</span></div>
-        <div class="stat-pill"><strong>BYO engine</strong><span>Ghidra / Hopper / IDA</span></div>
-        <div class="stat-pill"><strong>No DRM tips</strong><span>Authorized targets only</span></div>
+      <div class="card">
+        <p class="kicker">CLI</p>
+        <h2 class="mt-2 font-display text-xl">Or run setup yourself</h2>
+        <div class="code-well mt-4">
+          <span class="dim">$</span> npx rea-agents@latest setup
+        </div>
+        <div class="mt-5 flex flex-wrap gap-3">
+          <a class="btn" href={pathFor(lang, '/docs/install/')}>Install guide</a>
+          <a class="btn-secondary" href={pathFor(lang, '/examples/')}>See examples</a>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="mx-auto max-w-6xl px-4 py-6">
+  <div class="marquee-line mt-4" aria-hidden="true">
+    <span>Legal RE only · No crack guides · No DRM bypass · Bring-your-own Ghidra · MCP for agents · EN + ZH · Legal RE only · No crack guides · No DRM bypass · Bring-your-own Ghidra · MCP for agents · EN + ZH · </span>
+  </div>
+
+  <!-- What is RE — original puzzle: retry backoff -->
+  <section class="mx-auto max-w-6xl px-4 py-16">
+    <p class="kicker">What is reverse engineering?</p>
+    <h2 class="display mt-2 text-3xl sm:text-4xl max-w-3xl">Understand a rule by reading the program — not the brochure.</h2>
+    <p class="lede mt-4">
+      Puzzle (original to rea.run): a local job runner retries failed tasks. Why do waits look like
+      <strong class="text-[var(--color-ink)]">1s → 2s → 4s → stop</strong>?
+    </p>
+
+    <div class="mt-10 grid gap-5 lg:grid-cols-2">
+      <div class="card">
+        <p class="badge mb-3">Before · you dig alone</p>
+        <div class="step-row"><span class="step-index">01</span><div><strong>Find the scheduler</strong><p class="mt-1 text-sm text-[var(--color-muted)]">Hunt config keys and log lines by hand.</p></div></div>
+        <div class="step-row"><span class="step-index">02</span><div><strong>Decode the delay</strong><p class="mt-1 text-sm text-[var(--color-muted)]">Is it linear, capped, or exponential?</p></div></div>
+        <div class="step-row"><span class="step-index">03</span><div><strong>Name the stop rule</strong><p class="mt-1 text-sm text-[var(--color-muted)]">Max attempts? Max delay? Both?</p></div></div>
+        <div class="code-well mt-4 text-[0.75rem]">
+          <span class="dim"># illustrative pseudocode you might reconstruct</span><br/>
+          delay = min(base * 2**attempt, cap)<br/>
+          if attempt &gt;= max_attempts: give_up()
+        </div>
+      </div>
+      <div class="card border-[color-mix(in_oklab,var(--color-accent)_35%,var(--color-line))]">
+        <p class="badge badge-accent mb-3">After · with REA + your agent</p>
+        <p class="text-sm text-[var(--color-ink-soft)] leading-7">
+          You ask in plain language. REA returns Evidence from a target you may inspect; the agent explains the branch and cites locations.
+        </p>
+        <div class="code-well mt-4">
+          <span class="prompt">›</span> Use REA on /abs/path/to/our-job-runner. Why do retries wait 1s, 2s, then 4s and stop? Show the delay function and limits. Do not modify files.
+        </div>
+        <p class="mt-4 text-sm text-[var(--color-muted)]">
+          <a href={pathFor(lang, '/learn/what-is-reverse-engineering/')}>Read the full What is RE guide →</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Examples -->
+  <section class="mx-auto max-w-6xl px-4 py-8">
+    <div class="flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="kicker">Examples</p>
+        <h2 class="display mt-2 text-3xl">Two teaching blocks — original scenarios</h2>
+      </div>
+      <a class="btn-secondary" href={pathFor(lang, '/examples/')}>All examples</a>
+    </div>
+    <div class="mt-8 grid gap-5 lg:grid-cols-2">
+      {featured.map((ex) => (
+        <article class="card">
+          <p class="chip">{ex.slug}</p>
+          <h3 class="mt-3 font-display text-2xl tracking-tight">{ex.en.title}</h3>
+          <dl class="mt-4 space-y-3 text-sm">
+            <div><dt class="kicker">Goal</dt><dd class="mt-1 text-[var(--color-ink-soft)]">{ex.en.goal}</dd></div>
+            <div><dt class="kicker">Why reverse engineer</dt><dd class="mt-1 text-[var(--color-ink-soft)]">{ex.en.why}</dd></div>
+            <div><dt class="kicker">Sample prompt</dt><dd class="mt-2"><div class="code-well text-[0.72rem]">{ex.en.prompt}</div></dd></div>
+            <div><dt class="kicker">Return channel</dt><dd class="mt-1 text-[var(--color-ink-soft)]">REA returns Evidence / graphs to the agent session (MCP or CLI JSON).</dd></div>
+            <div><dt class="kicker">Agent role</dt><dd class="mt-1 text-[var(--color-ink-soft)]">Explain, cite, and propose next checks — you approve any writes.</dd></div>
+          </dl>
+          <a class="mt-5 inline-block font-semibold no-underline hover:underline" href={pathFor(lang, `/examples/${ex.slug}/`)}>Open example →</a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- Capabilities -->
+  <section class="mx-auto max-w-6xl px-4 py-16">
+    <p class="kicker">Capabilities</p>
+    <h2 class="display mt-2 text-3xl max-w-2xl">Chunked by target surface</h2>
+    <div class="mt-8 grid gap-4 md:grid-cols-3">
+      <a class="card no-underline hover:no-underline group" href={pathFor(lang, '/docs/install/#ghidra')}>
+        <p class="font-mono text-xs text-[var(--color-accent)]">Native</p>
+        <h3 class="mt-2 text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">Binaries via BYO engines</h3>
+        <p class="mt-2 text-sm leading-6 text-[var(--color-muted)]">Ghidra, Hopper, or IDA you already own. REA does not install them for you.</p>
+      </a>
+      <a class="card no-underline hover:no-underline group" href={pathFor(lang, '/examples/your-electron-export-path/')}>
+        <p class="font-mono text-xs text-[var(--color-accent)]">JS · Electron</p>
+        <h3 class="mt-2 text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">Static app graphs</h3>
+        <p class="mt-2 text-sm leading-6 text-[var(--color-muted)]">Inspect folders or ASAR-style artifacts without a native decompiler.</p>
+      </a>
+      <a class="card no-underline hover:no-underline group" href={pathFor(lang, '/blog/agent-reverse-engineering-mcp/')}>
+        <p class="font-mono text-xs text-[var(--color-accent)]">Browser · agent</p>
+        <h3 class="mt-2 text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">MCP-connected workflows</h3>
+        <p class="mt-2 text-sm leading-6 text-[var(--color-muted)]">Coding agents call local tools; humans keep approvals and verification.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 pb-16">
     <div class="callout">
       <strong>Compliance.</strong> Use REA only on software you are authorized to analyze.
-      This site publishes no crack, keygen, or DRM-circumvention material. See
-      <a href={pathFor(lang, '/compliance/')}>compliance</a>.
-    </div>
-  </section>
-
-  <section class="mx-auto max-w-6xl px-4 py-8">
-    <p class="section-kicker">Start here</p>
-    <h2 class="mt-2 text-2xl font-semibold tracking-tight">Three paths into REA</h2>
-    <div class="mt-6 grid gap-4 md:grid-cols-3">
-      <a class="card no-underline hover:no-underline group" href={pathFor(lang, '/docs/install/')}>
-        <p class="font-mono text-xs text-[var(--color-accent)]">01 · Docs</p>
-        <h3 class="mt-2 text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">Install & MCP setup</h3>
-        <p class="mt-2 text-sm leading-6 text-[var(--color-muted)]">Node requirements, <code>rea-agents</code> setup, manual MCP JSON, Ghidra env vars.</p>
-      </a>
-      <a class="card no-underline hover:no-underline group" href={pathFor(lang, '/blog/')}>
-        <p class="font-mono text-xs text-[var(--color-accent)]">02 · Blog</p>
-        <h3 class="mt-2 text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">Key terms decoded</h3>
-        <p class="mt-2 text-sm leading-6 text-[var(--color-muted)]">What REA means, Ghidra MCP, and agent reverse engineering with MCP.</p>
-      </a>
-      <a class="card no-underline hover:no-underline group" href={pathFor(lang, '/compare/')}>
-        <p class="font-mono text-xs text-[var(--color-accent)]">03 · Compare</p>
-        <h3 class="mt-2 text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">REA vs the workbench</h3>
-        <p class="mt-2 text-sm leading-6 text-[var(--color-muted)]">How REA relates to Ghidra and IDA — third-party labeled, no hype.</p>
-      </a>
-    </div>
-  </section>
-
-  <section class="mx-auto grid max-w-6xl gap-10 px-4 py-10 lg:grid-cols-2">
-    <div>
-      <p class="section-kicker">Explainers</p>
-      <h2 class="mt-2 text-2xl font-semibold tracking-tight">Latest posts</h2>
-      <ul class="mt-5 space-y-3">
-        {BLOG_POSTS.map((p) => (
-          <li class="card !p-4">
-            <a class="font-semibold text-[var(--color-ink)] no-underline hover:text-[var(--color-accent)] hover:no-underline" href={pathFor(lang, `/blog/${p.slug}/`)}>{p.en.h1}</a>
-            <p class="mt-1 text-xs font-mono text-[var(--color-muted)]">{p.date}</p>
-          </li>
-        ))}
-      </ul>
-    </div>
-    <div>
-      <p class="section-kicker">Orientation</p>
-      <h2 class="mt-2 text-2xl font-semibold tracking-tight">Comparisons</h2>
-      <ul class="mt-5 space-y-3">
-        {COMPARE_PAGES.map((p) => (
-          <li class="card !p-4">
-            <a class="font-semibold text-[var(--color-ink)] no-underline hover:text-[var(--color-accent)] hover:no-underline" href={pathFor(lang, `/compare/${p.slug}/`)}>{p.en.h1}</a>
-            <p class="mt-1 text-sm text-[var(--color-muted)] line-clamp-2">{p.en.description}</p>
-          </li>
-        ))}
-      </ul>
+      No crack, keygen, or DRM-circumvention content on rea.run.
+      <a href={pathFor(lang, '/compliance/')}>Read the compliance page</a>.
     </div>
   </section>
 </BaseLayout>

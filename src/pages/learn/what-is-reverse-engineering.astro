@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { pathFor } from '../../lib/site';
+---
+<BaseLayout
+  lang="en"
+  title="What is reverse engineering? | rea.run"
+  description="A community definition of reverse engineering for coding agents: evidence, authorization, and an original retry-backoff puzzle — not crack guides."
+  path="/learn/what-is-reverse-engineering/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="badge badge-accent">Learn</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">What is reverse engineering?</h1>
+    <p class="lede mt-5 !max-w-none">
+      Reverse engineering means learning how software behaves by examining the artifact itself — binaries, scripts, packages — until you can explain a feature, change it under license, or rebuild a compatible piece.
+    </p>
+
+    <div class="callout mt-8">
+      <strong>Scope on rea.run.</strong> Authorized targets only. We do not publish crack, keygen, or DRM-circumvention material.
+    </div>
+
+    <h2>Why agents change the workflow</h2>
+    <p>
+      A coding agent with local tools can gather Evidence faster: strings, symbols, decompilation (via engines you own), JS graphs.
+      You still own judgment — verifying citations, deciding patches, and refusing unauthorized targets.
+    </p>
+
+    <h2>Original puzzle: retry backoff</h2>
+    <p>
+      Suppose your team’s job runner waits <code>1s</code>, then <code>2s</code>, then <code>4s</code>, then stops.
+      The brochure says “smart retries.” Reverse engineering asks: <em>which function computes the delay, and what caps it?</em>
+    </p>
+    <div class="grid gap-4 sm:grid-cols-2 not-prose my-6">
+      <div class="card">
+        <p class="kicker">Before</p>
+        <p class="mt-2 text-sm text-[var(--color-ink-soft)] leading-6">You grep configs, sprinkle logs, and reconstruct exponential backoff by hand.</p>
+      </div>
+      <div class="card">
+        <p class="kicker">After (authorized path)</p>
+        <p class="mt-2 text-sm text-[var(--color-ink-soft)] leading-6">You point REA at code/binary you may inspect; the agent returns the delay rule with locations for you to verify.</p>
+      </div>
+    </div>
+    <pre><code>› Use REA on /abs/path/to/our-job-runner. Why do retries wait 1s, 2s, 4s then stop? Cite the delay function. Do not modify files.</code></pre>
+
+    <h2>What good answers look like</h2>
+    <ul>
+      <li>Named functions / addresses and file paths</li>
+      <li>Clear unknowns (unresolved calls, stripped symbols)</li>
+      <li>No speculative “it probably uses AI” filler</li>
+    </ul>
+
+    <p class="mt-10 flex flex-wrap gap-3 not-prose">
+      <a class="btn" href={pathFor('en', '/examples/')}>Browse examples</a>
+      <a class="btn-secondary" href={pathFor('en', '/docs/install/')}>Install REA</a>
+    </p>
+  </article>
+</BaseLayout>

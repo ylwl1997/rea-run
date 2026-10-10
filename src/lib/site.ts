@@ -3,7 +3,7 @@ export const SITE = {
   url: 'https://rea.run',
   titleDefault: 'rea.run — community guide to REA (Reverse Engineer Anything)',
   descriptionDefault:
-    'Bilingual community docs for REA: install, Ghidra MCP setup, agent reverse engineering workflows, and comparisons. Legal authorized research only.',
+    'Bilingual community docs for REA: install, examples, what reverse engineering means for agents, and comparisons. Legal authorized research only.',
   upstreamRepo: 'https://github.com/morluto/rea',
   upstreamNpm: 'https://www.npmjs.com/package/rea-agents',
   disclaimer:
@@ -17,10 +17,6 @@ export const SITE = {
 
 export type Lang = 'en' | 'zh';
 
-export function t<T>(lang: Lang, en: T, zh: T): T {
-  return lang === 'zh' ? zh : en;
-}
-
 export function pathFor(lang: Lang, path: string): string {
   const clean = path.startsWith('/') ? path : `/${path}`;
   if (lang === 'zh') {
@@ -31,14 +27,11 @@ export function pathFor(lang: Lang, path: string): string {
   return clean.endsWith('/') ? clean : `${clean}/`;
 }
 
-export function switchLangPath(lang: Lang, pathWithoutLang: string): string {
-  return pathFor(lang === 'en' ? 'zh' : 'en', pathWithoutLang);
-}
-
 export const NAV = [
   { href: '/', labelEn: 'Home', labelZh: '首页' },
+  { href: '/learn/what-is-reverse-engineering/', labelEn: 'What is RE', labelZh: '什么是逆向' },
+  { href: '/examples/', labelEn: 'Examples', labelZh: '示例' },
   { href: '/docs/install/', labelEn: 'Install', labelZh: '安装' },
-  { href: '/blog/', labelEn: 'Blog', labelZh: '博客' },
   { href: '/compare/', labelEn: 'Compare', labelZh: '对比' },
-  { href: '/compliance/', labelEn: 'Compliance', labelZh: '合规' },
+  { href: '/blog/', labelEn: 'Blog', labelZh: '博客' },
 ] as const;
