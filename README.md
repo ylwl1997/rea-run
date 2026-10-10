@@ -28,9 +28,9 @@ GitHub Actions: copy `deploy.workflow.yml.example` to `.github/workflows/deploy.
 Cloudflare Pages Functions under `functions/api/auth/*`:
 
 - `GET /api/auth/login` → GitHub OAuth
-- `GET /api/auth/callback` → sets HttpOnly session cookie (profile only; access token discarded)
+- `GET /api/auth/github/callback` → sets HttpOnly session cookie (profile only; access token discarded)
 - `GET /api/auth/me` → `{ user, configured }`
 - `GET /api/auth/logout`
 
 Secrets (Pages project `rea-run`): `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET`, `SESSION_SECRET`.
-Callback: `https://rea.run/api/auth/callback`.
+Callback: `https://rea.run/api/auth/github/callback`.

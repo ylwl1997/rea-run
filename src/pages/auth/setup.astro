@@ -31,7 +31,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <ol>
       <li>Create a GitHub OAuth App (Developer settings → OAuth Apps).</li>
       <li>Homepage URL: <code>https://rea.run</code></li>
-      <li>Authorization callback URL: <code>https://rea.run/api/auth/callback</code> (also add <code>https://www.rea.run/api/auth/callback</code> if used).</li>
+      <li>Authorization callback URL: <code>https://rea.run/api/auth/github/callback</code> (also add <code>https://www.rea.run/api/auth/github/callback</code> if used).</li>
       <li>Set Cloudflare Pages secrets on project <code>rea-run</code>:
         <pre><code>GITHUB_OAUTH_CLIENT_ID
 GITHUB_OAUTH_CLIENT_SECRET

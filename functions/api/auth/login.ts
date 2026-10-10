@@ -20,7 +20,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
   }
 
   const state = crypto.randomUUID();
-  const redirectUri = `${origin}/api/auth/callback`;
+  const redirectUri = `${origin}/api/auth/github/callback`;
   const gh = new URL('https://github.com/login/oauth/authorize');
   gh.searchParams.set('client_id', env.GITHUB_OAUTH_CLIENT_ID!);
   gh.searchParams.set('redirect_uri', redirectUri);

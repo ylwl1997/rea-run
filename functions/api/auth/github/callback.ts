@@ -45,7 +45,7 @@ export const onRequestGet: PagesFunction<Env> = async (context) => {
       client_id: env.GITHUB_OAUTH_CLIENT_ID,
       client_secret: env.GITHUB_OAUTH_CLIENT_SECRET,
       code,
-      redirect_uri: `${origin}/api/auth/callback`,
+      redirect_uri: `${origin}/api/auth/github/callback`,
     }),
   });
   const tokenJson = (await tokenRes.json()) as { access_token?: string; error?: string };
