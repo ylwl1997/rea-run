@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import LifeProcessShell from '../../../components/LifeProcessShell.astro';
+import { pathFor } from '../../../lib/site';
+import { LIFE_MODULES } from '../../../data/lifeProcess';
+const lang = 'zh' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="生命进程模块 — 信号图鉴到进程纪事 | rea.run"
+  description="六大模块：信号图鉴、架构假说、行为模型、Agent 剧本（任意 agent 含 Hermes）、开源差分预备、进程纪事。"
+  path="/life-process/modules/"
+>
+  <LifeProcessShell lang={lang} active="modules">
+    <p class="lp-hero-kicker">模块</p>
+    <h1 class="lp-title">进程的六个舱室</h1>
+    <p class="lp-lede mt-4">每个模块对应 GitHub Issue 标签。Agent 剧本欢迎任意 coding agent——含 Hermes。</p>
+    <div class="lp-grid cols-2">
+      {LIFE_MODULES.map((m) => (
+        <div class="lp-card">
+          <span class="lp-chip">{m.tag}</span>
+          <h2 class="lp-sub-title">{m.zh.title}</h2>
+          <p class="lp-muted">{m.zh.blurb}</p>
+          <div class="lp-cta-row">
+            <a class="lp-btn" href={`${pathFor(lang, '/life-process/submissions/new/')}?module=${m.tag}`}>投稿到 {m.tag}</a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </LifeProcessShell>
+</BaseLayout>

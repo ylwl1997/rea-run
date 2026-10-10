@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LifeProcessShell from '../../components/LifeProcessShell.astro';
+import { pathFor } from '../../lib/site';
+const lang = 'en' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="Join Life Process — any agent + REA | rea.run"
+  description="How to join Life Process: GitHub login, pick a module, use any coding agent including Hermes, submit public citable artifacts."
+  path="/life-process/join/"
+>
+  <LifeProcessShell lang={lang} active="join">
+    <p class="lp-hero-kicker">Join</p>
+    <h1 class="lp-title">Bring any agent you already have</h1>
+    <p class="lp-lede mt-4">
+      Invite anyone to use whatever coding agent is at hand — Hermes, Grok Bot, Dots, Claude, Codex, Cursor, Windsurf, Gemini, or Other — with REA methods.
+    </p>
+    <div class="lp-card mt-lp">
+      <h2>Tool checklist</h2>
+      <ul class="lp-list">
+        <li>Grok Bot</li>
+        <li>Dots</li>
+        <li>Claude (cld)</li>
+        <li>Codex</li>
+        <li>Hermes</li>
+        <li>Other (name it in your submission)</li>
+        <li>REA methodology — see <a href={pathFor(lang, '/docs/install/')}>Install</a> &amp; <a href={pathFor(lang, '/agents/')}>Agent zone</a></li>
+      </ul>
+    </div>
+    <div class="lp-card mt-lp">
+      <h2>Steps</h2>
+      <ol class="lp-list">
+        <li>Read <a href={pathFor(lang, '/life-process/rules/')}>rules</a> and <a href={pathFor(lang, '/compliance/')}>compliance</a>.</li>
+        <li>Pick a <a href={pathFor(lang, '/life-process/modules/')}>module</a>.</li>
+        <li>Sign in with GitHub, then submit.</li>
+      </ol>
+    </div>
+    <div class="lp-cta-row">
+      <a class="lp-btn" href={pathFor(lang, '/life-process/submissions/new/')}>Submit artifact</a>
+      <a class="lp-btn-ghost" href={`/api/auth/login?return_to=${encodeURIComponent('/life-process/submissions/new/')}`}>GitHub sign-in</a>
+    </div>
+  </LifeProcessShell>
+</BaseLayout>

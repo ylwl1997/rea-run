@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import LifeProcessShell from '../../../../components/LifeProcessShell.astro';
+import { pathFor } from '../../../../lib/site';
+const lang = 'en' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="New Life Process submission | rea.run"
+  description="Submit a Life Process artifact. GitHub sign-in required. Disclose any agent tools used (Hermes, Grok Bot, Dots, Claude, Codex, Other)."
+  path="/life-process/submissions/new/"
+>
+  <LifeProcessShell lang={lang} active="submissions">
+    <p class="lp-hero-kicker">Submit</p>
+    <h1 class="lp-title">New Life Process artifact</h1>
+    <p class="lp-lede mt-4">
+      Public citable signals only. Disclose every agent you used — including Hermes or Other free text.
+    </p>
+
+    <div class="lp-card mt-lp" data-lp-login-gate hidden>
+      <h3>Sign in required</h3>
+      <p class="lp-muted">Use community GitHub OAuth, then return here.</p>
+      <div class="lp-cta-row">
+        <a class="lp-btn" href={`/api/auth/login?return_to=${encodeURIComponent('/life-process/submissions/new/')}`}>GitHub sign-in</a>
+        <a class="lp-btn-ghost" href={pathFor(lang, '/life-process/submissions/')}>Back</a>
+      </div>
+    </div>
+
+    <div class="lp-card mt-lp" data-lp-form-panel hidden>
+      <p class="lp-muted">Submitting as <strong data-lp-who>—</strong></p>
+      <form data-lp-form>
+        <label class="lp-label">Title
+          <input class="lp-input" name="title" required maxlength="120" placeholder="Short artifact title" />
+        </label>
+        <label class="lp-label">Module
+          <select class="lp-select" name="module">
+            <option value="signal">signal — Signal Atlas</option>
+            <option value="arch">arch — Architecture Hypotheses</option>
+            <option value="behavior">behavior — Behavior Models</option>
+            <option value="playbook">playbook — Agent Playbooks</option>
+            <option value="diff-prep">diff-prep — Open Diff Prep</option>
+            <option value="chronicle">chronicle — Chronicle</option>
+          </select>
+        </label>
+        <div class="lp-label">Agent tools used (multi-select)</div>
+
+            <div class="lp-tools" data-lp-tools>
+              <label class="lp-tool"><input type="checkbox" name="agent_tool" value="Grok Bot" /> Grok Bot</label>
+              <label class="lp-tool"><input type="checkbox" name="agent_tool" value="Dots" /> Dots</label>
+              <label class="lp-tool"><input type="checkbox" name="agent_tool" value="Claude" /> Claude (cld)</label>
+              <label class="lp-tool"><input type="checkbox" name="agent_tool" value="Codex" /> Codex</label>
+              <label class="lp-tool"><input type="checkbox" name="agent_tool" value="Hermes" /> Hermes</label>
+              <label class="lp-tool"><input type="checkbox" name="agent_tool" value="Other" /> Other</label>
+            </div>
+            <input class="lp-input mt-lp" name="agent_other" maxlength="80" placeholder="If Other: free text (e.g. Cursor, Windsurf, Gemini)" />
+
+        <label class="lp-label">Summary
+          <textarea class="lp-textarea" name="summary" required rows="4" placeholder="What did you find or build?"></textarea>
+        </label>
+        <label class="lp-label">Method
+          <textarea class="lp-textarea" name="method" required rows="4" placeholder="How — public signals only"></textarea>
+        </label>
+        <label class="lp-label">Citations
+          <textarea class="lp-textarea" name="citations" required rows="3" placeholder="Public URLs / docs / talks"></textarea>
+        </label>
+        <label class="lp-label">Repro steps
+          <textarea class="lp-textarea" name="repro" required rows="4" placeholder="Steps another person + agent can reproduce"></textarea>
+        </label>
+        <label class="lp-label">Limits
+          <textarea class="lp-textarea" name="limits" required rows="3" placeholder="What you did not / cannot claim"></textarea>
+        </label>
+        <label class="lp-label">Optional public artifact URL
+          <input class="lp-input" name="artifact_url" type="url" placeholder="https://gist.github.com/…" />
+        </label>
+        <p class="lp-muted mt-lp">Without a server Issues token, submit opens GitHub’s issue form (template pre-filled).</p>
+        <div class="lp-cta-row">
+          <button class="lp-btn" type="submit">Submit</button>
+          <a class="lp-btn-ghost" href={pathFor(lang, '/life-process/submissions/')}>Cancel</a>
+        </div>
+        <p class="lp-muted" data-lp-status></p>
+      </form>
+    </div>
+  </LifeProcessShell>
+  <script src="/scripts/life-process.js" defer></script>
+  <script is:inline>
+    (function () {
+      var m = new URLSearchParams(location.search).get('module');
+      if (!m) return;
+      var sel = document.querySelector('select[name="module"]');
+      if (sel) sel.value = m;
+    })();
+  </script>
+</BaseLayout>

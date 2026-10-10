@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LifeProcessShell from '../../components/LifeProcessShell.astro';
+import { pathFor } from '../../lib/site';
+import { LIFE_MODULES } from '../../data/lifeProcess';
+const lang = 'en' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="Life Process modules — Signal Atlas to Chronicle | rea.run"
+  description="Six Life Process modules: Signal Atlas, Architecture Hypotheses, Behavior Models, Agent Playbooks (any agent incl. Hermes), Open Diff Prep, Chronicle."
+  path="/life-process/modules/"
+>
+  <LifeProcessShell lang={lang} active="modules">
+    <p class="lp-hero-kicker">Modules</p>
+    <h1 class="lp-title">Six chambers of the process</h1>
+    <p class="lp-lede mt-4">Each module maps to a GitHub Issue label. Agent Playbooks welcome any coding agent — Hermes included.</p>
+    <div class="lp-grid cols-2">
+      {LIFE_MODULES.map((m) => (
+        <div class="lp-card">
+          <span class="lp-chip">{m.tag}</span>
+          <h2 class="lp-sub-title">{m.en.title}</h2>
+          <p class="lp-muted">{m.en.blurb}</p>
+          <div class="lp-cta-row">
+            <a class="lp-btn" href={`${pathFor(lang, '/life-process/submissions/new/')}?module=${m.tag}`}>Submit to {m.tag}</a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </LifeProcessShell>
+</BaseLayout>

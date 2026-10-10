@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import LifeProcessShell from '../../../../../components/LifeProcessShell.astro';
+import { pathFor } from '../../../../../lib/site';
+const lang = 'zh' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="新建生命进程投稿 | rea.run"
+  description="提交生命进程工件。需 GitHub 登录。披露所用 agent（含 Hermes、Grok Bot、Dots、Claude、Codex、Other）。"
+  path="/life-process/submissions/new/"
+>
+  <LifeProcessShell lang={lang} active="submissions">
+    <p class="lp-hero-kicker">投稿</p>
+    <h1 class="lp-title">新建生命进程工件</h1>
+    <p class="lp-lede mt-4">
+      仅公开可引用信号。请披露所用全部 agent——含 Hermes，或 Other 自由填写。
+    </p>
+
+    <div class="lp-card mt-lp" data-lp-login-gate hidden>
+      <h3>需要登录</h3>
+      <p class="lp-muted">使用社区 GitHub OAuth，然后返回本页。</p>
+      <div class="lp-cta-row">
+        <a class="lp-btn" href={`/api/auth/login?return_to=${encodeURIComponent('/zh/life-process/submissions/new/')}`}>GitHub 登录</a>
+        <a class="lp-btn-ghost" href={pathFor(lang, '/life-process/submissions/')}>返回</a>
+      </div>
+    </div>
+
+    <div class="lp-card mt-lp" data-lp-form-panel hidden>
+      <p class="lp-muted">投稿身份 <strong data-lp-who>—</strong></p>
+      <form data-lp-form>
+        <label class="lp-label">标题
+          <input class="lp-input" name="title" required maxlength="120" placeholder="简短标题" />
+        </label>
+        <label class="lp-label">模块
+          <select class="lp-select" name="module">
+            <option value="signal">signal — 信号图鉴</option>
+            <option value="arch">arch — 架构假说</option>
+            <option value="behavior">behavior — 行为模型</option>
+            <option value="playbook">playbook — Agent 剧本</option>
+            <option value="diff-prep">diff-prep — 开源差分预备</option>
+            <option value="chronicle">chronicle — 进程纪事</option>
+          </select>
+        </label>
+        <div class="lp-label">所用 Agent 工具（可多选）</div>
+
+            <div class="lp-tools" data-lp-tools>
+              <label class="lp-tool"><input type="checkbox" name="agent_tool" value="Grok Bot" /> Grok Bot</label>
+              <label class="lp-tool"><input type="checkbox" name="agent_tool" value="Dots" /> Dots</label>
+              <label class="lp-tool"><input type="checkbox" name="agent_tool" value="Claude" /> Claude (cld)</label>
+              <label class="lp-tool"><input type="checkbox" name="agent_tool" value="Codex" /> Codex</label>
+              <label class="lp-tool"><input type="checkbox" name="agent_tool" value="Hermes" /> Hermes</label>
+              <label class="lp-tool"><input type="checkbox" name="agent_tool" value="Other" /> Other</label>
+            </div>
+            <input class="lp-input mt-lp" name="agent_other" maxlength="80" placeholder="若选 Other：自由填写（如 Cursor、Windsurf、Gemini）" />
+
+        <label class="lp-label">摘要
+          <textarea class="lp-textarea" name="summary" required rows="4" placeholder="发现或产物是什么？"></textarea>
+        </label>
+        <label class="lp-label">方法
+          <textarea class="lp-textarea" name="method" required rows="4" placeholder="如何做——仅公开信号"></textarea>
+        </label>
+        <label class="lp-label">引用
+          <textarea class="lp-textarea" name="citations" required rows="3" placeholder="公开 URL／文档／演讲"></textarea>
+        </label>
+        <label class="lp-label">可复现步骤
+          <textarea class="lp-textarea" name="repro" required rows="4" placeholder="他人 + agent 如何复现"></textarea>
+        </label>
+        <label class="lp-label">局限声明
+          <textarea class="lp-textarea" name="limits" required rows="3" placeholder="未做／不能声称什么"></textarea>
+        </label>
+        <label class="lp-label">可选公开工件 URL
+          <input class="lp-input" name="artifact_url" type="url" placeholder="https://gist.github.com/…" />
+        </label>
+        <p class="lp-muted mt-lp">若无服务端 Issues token，提交将打开 GitHub 预填 Issue 表单。</p>
+        <div class="lp-cta-row">
+          <button class="lp-btn" type="submit">提交</button>
+          <a class="lp-btn-ghost" href={pathFor(lang, '/life-process/submissions/')}>取消</a>
+        </div>
+        <p class="lp-muted" data-lp-status></p>
+      </form>
+    </div>
+  </LifeProcessShell>
+  <script src="/scripts/life-process.js" defer></script>
+  <script is:inline>
+    (function () {
+      var m = new URLSearchParams(location.search).get('module');
+      if (!m) return;
+      var sel = document.querySelector('select[name="module"]');
+      if (sel) sel.value = m;
+    })();
+  </script>
+</BaseLayout>

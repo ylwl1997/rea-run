@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import LifeProcessShell from '../../../components/LifeProcessShell.astro';
+import { pathFor } from '../../../lib/site';
+import { LIFE_MODULES, LIFE_STAGES } from '../../../data/lifeProcess';
+const lang = 'zh' as const;
+const currentStage = 'call';
+---
+<BaseLayout
+  lang={lang}
+  title="生命进程 — 开源前用社区与 agent REA 逆向 X | rea.run"
+  description="生命进程：艺术＋开放科学实验。邀请任何人用手头任意 agent（含 Hermes、Grok Bot、Dots、Claude、Codex 等）配合 REA，仅用公开可引用信号，在 X 开源前推到极限，再对照差距。"
+  path="/life-process/"
+>
+  <LifeProcessShell lang={lang} active="home">
+    <p class="lp-hero-kicker">生命进程 · 开源之前</p>
+    <h1 class="lp-title">在官方源码落地前，把对 X 的公开理解推到极限——然后，看差距。</h1>
+    <p class="lp-lede mt-4">
+      这不是入侵，是一场可引用、可复现、可证伪的集体逆向实验。
+      邀请任何人用手头任意 agent（含 Hermes、Grok Bot、Dots、Claude、Codex 等）＋ REA 方法论。
+    </p>
+    <div class="lp-stages" aria-label="阶段">
+      {LIFE_STAGES.map((s) => (
+        <span class:list={['lp-stage', s.id === currentStage && 'is-current']}>{s.zh}</span>
+      ))}
+    </div>
+    <div class="lp-cta-row">
+      <a class="lp-btn" href={pathFor(lang, '/life-process/about/')}>了解活动</a>
+      <a class="lp-btn-ghost" href={pathFor(lang, '/life-process/modules/')}>查看模块</a>
+      <a class="lp-btn-ghost" href={pathFor(lang, '/life-process/join/')}>立即参加</a>
+    </div>
+    <div class="lp-grid cols-3 mt-lp">
+      {LIFE_MODULES.slice(0, 3).map((m) => (
+        <a class="lp-card lp-sub-card" href={pathFor(lang, '/life-process/modules/')}>
+          <span class="lp-chip">{m.tag}</span>
+          <h2 class="lp-sub-title">{m.zh.title}</h2>
+          <p class="lp-muted">{m.zh.blurb}</p>
+        </a>
+      ))}
+    </div>
+    <div class="lp-card mt-lp">
+      <h3>硬合规</h3>
+      <p class="lp-muted">
+        仅公开可引用信号。禁止未授权访问、破解、exploit、窃取凭证、对非公开后端的侵入式探测。
+        详见 <a href={pathFor(lang, '/compliance/')}>合规</a>。
+      </p>
+    </div>
+  </LifeProcessShell>
+</BaseLayout>

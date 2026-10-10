@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import LifeProcessShell from '../../../components/LifeProcessShell.astro';
+import { SIGNAL_ATLAS_COVERAGE_PCT } from '../../../data/lifeProcess';
+const lang = 'zh' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="生命进程统计 — 参与与模块分布 | rea.run"
+  description="聚合 GitHub Issues 标签 life-process：参与人数、按模块投稿、agent 工具分布、每日序列。"
+  path="/life-process/stats/"
+>
+  <LifeProcessShell lang={lang} active="stats">
+    <p class="lp-hero-kicker">统计</p>
+    <h1 class="lp-title">进程看板</h1>
+    <p class="lp-lede mt-4">来自 ylwl1997/rea-run 上标签 <code>life-process</code> 的公开 Issues 聚合。</p>
+    <div class="mt-lp" data-lp-stats data-signal-coverage={SIGNAL_ATLAS_COVERAGE_PCT}></div>
+  </LifeProcessShell>
+  <script src="/scripts/life-process.js" defer></script>
+</BaseLayout>

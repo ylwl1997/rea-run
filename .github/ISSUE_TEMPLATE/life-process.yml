@@ -1,0 +1,81 @@
+name: Life Process / 生命进程 投稿
+description: Submit a Life Process module artifact (public citable signals only)
+title: "[life-process] "
+labels: ["life-process", "status:open"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **生命进程 / Life Process** — unofficial art + open-science experiment on rea.run.
+        Public citable signals only. No unauthorized access, crack, exploit, or credential theft.
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module / 模块
+      options:
+        - signal
+        - arch
+        - behavior
+        - playbook
+        - diff-prep
+        - chronicle
+    validations:
+      required: true
+  - type: dropdown
+    id: agent_tools
+    attributes:
+      label: Agent tools used (multi-select)
+      description: Select all that apply. If Other, name it in Summary/Method.
+      multiple: true
+      options:
+        - Grok Bot
+        - Dots
+        - Claude (cld)
+        - Codex
+        - Hermes
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary / 摘要
+    validations:
+      required: true
+  - type: textarea
+    id: method
+    attributes:
+      label: Method / 方法
+    validations:
+      required: true
+  - type: textarea
+    id: citations
+    attributes:
+      label: Citations / 引用（公开可引用信号）
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Repro steps / 可复现步骤
+    validations:
+      required: true
+  - type: textarea
+    id: limits
+    attributes:
+      label: Limits / 局限声明
+    validations:
+      required: true
+  - type: input
+    id: artifact_url
+    attributes:
+      label: Optional public gist/repo URL
+  - type: checkboxes
+    id: compliance
+    attributes:
+      label: Compliance
+      options:
+        - label: Public citable signals only; no unauthorized access, crack, exploit, or private credentials.
+          required: true
+        - label: I disclose agent tools used and accept CC BY 4.0 for this submission text.
+          required: true

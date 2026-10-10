@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import LifeProcessShell from '../../../../components/LifeProcessShell.astro';
+import { pathFor } from '../../../../lib/site';
+const lang = 'zh' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="生命进程投稿广场 | rea.run"
+  description="来自 GitHub Issues 标签 life-process 的公开投稿。仅公开可引用信号。"
+  path="/life-process/submissions/"
+>
+  <LifeProcessShell lang={lang} active="submissions">
+    <p class="lp-hero-kicker">投稿</p>
+    <h1 class="lp-title">社区广场</h1>
+    <p class="lp-lede mt-4">ylwl1997/rea-run 上标签 <code>life-process</code> 的 Issues。</p>
+    <div class="lp-cta-row">
+      <a class="lp-btn" href={pathFor(lang, '/life-process/submissions/new/')}>新建投稿</a>
+      <a class="lp-btn-ghost" href="https://github.com/ylwl1997/rea-run/labels/life-process" target="_blank" rel="noopener noreferrer">在 GitHub 查看</a>
+    </div>
+    <div class="lp-grid cols-2 mt-lp" data-lp-plaza></div>
+  </LifeProcessShell>
+  <script src="/scripts/life-process.js" defer></script>
+</BaseLayout>

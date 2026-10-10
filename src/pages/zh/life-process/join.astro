@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import LifeProcessShell from '../../../components/LifeProcessShell.astro';
+import { pathFor } from '../../../lib/site';
+const lang = 'zh' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="参加生命进程 — 任意 agent + REA | rea.run"
+  description="如何参加生命进程：GitHub 登录、选模块、用手头任意 agent（含 Hermes）提交公开可引用工件。"
+  path="/life-process/join/"
+>
+  <LifeProcessShell lang={lang} active="join">
+    <p class="lp-hero-kicker">参加</p>
+    <h1 class="lp-title">用手头任意 agent 即可</h1>
+    <p class="lp-lede mt-4">
+      邀请任何人用手头任意 agent——Hermes、Grok Bot、Dots、Claude、Codex、Cursor、Windsurf、Gemini 或 Other——配合 REA。
+    </p>
+    <div class="lp-card mt-lp">
+      <h2>工具清单</h2>
+      <ul class="lp-list">
+        <li>Grok Bot</li>
+        <li>Dots</li>
+        <li>Claude (cld)</li>
+        <li>Codex</li>
+        <li>Hermes</li>
+        <li>Other（投稿时写明）</li>
+        <li>REA 方法论 — 见 <a href={pathFor(lang, '/docs/install/')}>安装</a> 与 <a href={pathFor(lang, '/agents/')}>Agent 专区</a></li>
+      </ul>
+    </div>
+    <div class="lp-card mt-lp">
+      <h2>步骤</h2>
+      <ol class="lp-list">
+        <li>阅读 <a href={pathFor(lang, '/life-process/rules/')}>规则</a> 与 <a href={pathFor(lang, '/compliance/')}>合规</a>。</li>
+        <li>选择 <a href={pathFor(lang, '/life-process/modules/')}>模块</a>。</li>
+        <li>GitHub 登录后投稿。</li>
+      </ol>
+    </div>
+    <div class="lp-cta-row">
+      <a class="lp-btn" href={pathFor(lang, '/life-process/submissions/new/')}>提交工件</a>
+      <a class="lp-btn-ghost" href={`/api/auth/login?return_to=${encodeURIComponent('/zh/life-process/submissions/new/')}`}>GitHub 登录</a>
+    </div>
+  </LifeProcessShell>
+</BaseLayout>

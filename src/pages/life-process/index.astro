@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import LifeProcessShell from '../../components/LifeProcessShell.astro';
+import { pathFor } from '../../lib/site';
+import { LIFE_MODULES, LIFE_STAGES } from '../../data/lifeProcess';
+const lang = 'en' as const;
+const currentStage = 'call';
+---
+<BaseLayout
+  lang={lang}
+  title="Life Process — community REA of X before open source | rea.run"
+  description="Life Process: an art + open-science experiment. Use any coding agent (Grok Bot, Dots, Claude, Codex, Hermes, …) with REA on public citable signals before X open source — then compare."
+  path="/life-process/"
+>
+  <LifeProcessShell lang={lang} active="home">
+    <p class="lp-hero-kicker">Life Process · before open source</p>
+    <h1 class="lp-title">Push public understanding of X to the limit — then see the gap.</h1>
+    <p class="lp-lede mt-4">
+      This is not intrusion. It is a citable, reproducible, falsifiable community reverse-engineering experiment.
+      Invite anyone with any coding agent — including Hermes, Grok Bot, Dots, Claude, Codex, and others — plus REA methodology.
+    </p>
+    <div class="lp-stages" aria-label="Stages">
+      {LIFE_STAGES.map((s) => (
+        <span class:list={['lp-stage', s.id === currentStage && 'is-current']}>{s.en}</span>
+      ))}
+    </div>
+    <div class="lp-cta-row">
+      <a class="lp-btn" href={pathFor(lang, '/life-process/about/')}>About the activity</a>
+      <a class="lp-btn-ghost" href={pathFor(lang, '/life-process/modules/')}>Modules</a>
+      <a class="lp-btn-ghost" href={pathFor(lang, '/life-process/join/')}>Join now</a>
+    </div>
+    <div class="lp-grid cols-3 mt-lp">
+      {LIFE_MODULES.slice(0, 3).map((m) => (
+        <a class="lp-card lp-sub-card" href={pathFor(lang, '/life-process/modules/')}>
+          <span class="lp-chip">{m.tag}</span>
+          <h2 class="lp-sub-title">{m.en.title}</h2>
+          <p class="lp-muted">{m.en.blurb}</p>
+        </a>
+      ))}
+    </div>
+    <div class="lp-card mt-lp">
+      <h3>Hard compliance</h3>
+      <p class="lp-muted">
+        Public citable signals only. No unauthorized access, crack, exploit, credential theft, or intrusive probing of non-public backends.
+        See <a href={pathFor(lang, '/compliance/')}>compliance</a>.
+      </p>
+    </div>
+  </LifeProcessShell>
+</BaseLayout>
