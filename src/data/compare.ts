@@ -23,6 +23,8 @@ export const COMPARE_PAGES: ComparePage[] = [
         ['Maturity', 'Published npm; large community', 'SPEC-led port; early', 'Pre-release; 12 verbs'],
         ['Evidence model', 'Evidence envelopes (upstream)', 'Evidence envelopes; fail-closed policy', 'Pageable MCP/CLI verbs'],
         ['Engines', 'BYO Ghidra/Hopper/IDA/JEB/…', 'Port of provider surface — verify docs', 'Reimpl surface — verify docs'],
+        ['Tool/protocol surface', 'MCP + CLI (rea-agents npm)', 'MCP/A2A (Rust)', 'MCP + CLI (12 verbs, pre-release)'],
+        ['Stars snapshot (2026-10-12 API)', 'Upstream large community', '0 (qompassai/fathom)', '0 (Sage-is/CleanRoom)'],
         ['Relation', 'Source of truth for product behavior', 'No upstream code copy (clean-room claim)', 'Reimplementation; AGPL copyleft'],
       ],
       notes: [
@@ -30,6 +32,7 @@ export const COMPARE_PAGES: ComparePage[] = [
         'Do not treat ports as drop-in replacements. Prefer upstream releases for install facts; use ports when your supply-chain policy requires them.',
         'Sources: https://github.com/qompassai/fathom · https://github.com/Sage-is/CleanRoom · https://github.com/morluto/rea',
         'Legal use only on authorized targets. Primary CTAs stay on rea.run — not competitor marketing docs.',
+        'Stars snapshot is discovery-only (API fetch 2026-10-12); not a quality ranking. AGPL redistributors must read copyleft obligations.',
       ],
     },
     zh: {
@@ -46,6 +49,8 @@ export const COMPARE_PAGES: ComparePage[] = [
         ['成熟度', 'npm 已发布；社区大', 'SPEC 驱动移植；早期', '预发布；12 个动词'],
         ['Evidence 模型', 'Evidence 信封（上游）', 'Evidence 信封；失败关闭策略', '可分页 MCP／CLI 动词'],
         ['引擎', '自备 Ghidra／Hopper／IDA／JEB／…', '提供者表面移植——核验文档', '重实现表面——核验文档'],
+        ['工具／协议面', 'MCP + CLI（npm rea-agents）', 'MCP／A2A（Rust）', 'MCP + CLI（12 动词，预发布）'],
+        ['星标快照（2026-10-12 API）', '上游社区大', '0（qompassai/fathom）', '0（Sage-is/CleanRoom）'],
         ['关系', '产品行为真源', '声称无上游代码拷贝（清洁室）', '重实现；AGPL 传染'],
       ],
       notes: [
@@ -53,6 +58,7 @@ export const COMPARE_PAGES: ComparePage[] = [
         '勿把移植当即插即用替代。安装事实优先上游发行；仅在供应链政策要求时选用移植。',
         '来源：https://github.com/qompassai/fathom · https://github.com/Sage-is/CleanRoom · https://github.com/morluto/rea',
         '仅限授权目标。主 CTA 留在 rea.run——不以竞品营销文档作主入口。',
+        '星标快照仅供发现（2026-10-12 API），不是质量排名。AGPL 再分发者须阅读传染义务。',
       ],
     },
   },

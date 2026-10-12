@@ -47,7 +47,9 @@ export const SHOWCASE_GH_PROJECTS: ShowcaseCase[] = [
         '**What it is.** A MIT (+ CC-BY text) TypeScript lab by @pablodiazjorge created 2026-10-11. It pins **rea-agents 6.4.0** and **Ghidra 12.1.4**, with a Spanish README that still maps cleanly to English ops: verify → measure → visualize.',
         '**Why it matters for operators.** Community Windows wiring often dies at JAVA_HOME / GHIDRA_INSTALL_DIR / cold-start. This lab’s narrative is **doctor-green first**, then portable per-project MCP registration so agents do not inherit a broken global config.',
         '**Workflow you can copy.** (1) Install Ghidra + JDK outside REA. (2) Export absolute paths; run `doctor --provider ghidra --json`. (3) Register MCP for the project. (4) Analyze only seeded challenges / own builds / allowed crackmes (WinHelloCPP, Wallace, own XOR writeups). (5) Optional benchmark harness for timing — not a crack leaderboard.',
-        '**Related on rea.run.** Deepen wiring with [/docs/windows-ghidra/](/docs/windows-ghidra/). For 6.4.0 deltas (ADB, compact schema, Evidence views) see [/blog/rea-agents-6-4-0/](/blog/rea-agents-6-4-0/). Prefer Codespaces/Actions labs when you want a disposable shell without Windows.',
+        '**Related on rea.run.** Deepen wiring with [/docs/windows-ghidra/](/docs/windows-ghidra/). For 6.4.0 deltas (ADB, compact schema, Evidence views) see [/blog/rea-agents-6-4-0/](/blog/rea-agents-6-4-0/). Prefer Codespaces/Actions labs when you want a disposable shell without Windows.',,
+        '**How to try (authorized lab only).** (1) Clone the repo; read MIT/CC-BY notices. (2) Install Ghidra 12.1.4 + JDK outside REA. (3) Pin `rea-agents@6.4.0` as the lab documents. (4) Export absolute paths; run `doctor --provider ghidra --json` until green. (5) Register MCP per-project. (6) Work only seeded challenges / own builds / allowed crackmes — never employer binaries.',
+        '**Limits table (narrative).** Doctor-green ≠ license to analyze arbitrary PE; Spanish-first README may need translation aids; benchmark harness is timing intent, not a crack leaderboard; stars snapshot was **1** on 2026-10-12 fetch.'
       ],
       takeaways: [
         'Doctor-green before agent demos.',
@@ -63,7 +65,9 @@ export const SHOWCASE_GH_PROJECTS: ShowcaseCase[] = [
         '**这是什么。**@pablodiazjorge 于 2026-10-11 发布的 MIT（文本 CC-BY）TypeScript 实验室。钉死 **rea-agents 6.4.0** 与 **Ghidra 12.1.4**；README 以西语为主，运维口径仍是：核验 → 测量 → 可视化。',
         '**对运维为何重要。**社区 Windows 接线常死在 JAVA_HOME／GHIDRA_INSTALL_DIR／冷启动。本仓叙事是**先 doctor 绿灯**，再按项目注册 MCP，避免继承坏掉的全局配置。',
         '**可复制流程。**(1) 在 REA 外安装 Ghidra + JDK。(2) 导出绝对路径；跑 `doctor --provider ghidra --json`。(3) 为项目注册 MCP。(4) 只分析种子题／自建／允许的 crackme（WinHelloCPP、Wallace、自写 XOR writeup）。(5) 可选基准 harness——不是破解排行榜。',
-        '**本站相关。**接线深挖见 [/zh/docs/windows-ghidra/](/zh/docs/windows-ghidra/)。6.4.0 变更见 [/zh/blog/rea-agents-6-4-0/](/zh/blog/rea-agents-6-4-0/)。若要一次性 shell，可用 Codespaces／Actions 实验室（非 Windows）。',
+        '**本站相关。**接线深挖见 [/zh/docs/windows-ghidra/](/zh/docs/windows-ghidra/)。6.4.0 变更见 [/zh/blog/rea-agents-6-4-0/](/zh/blog/rea-agents-6-4-0/)。若要一次性 shell，可用 Codespaces／Actions 实验室（非 Windows）。',,
+        '**怎么试（仅授权实验室）。**(1) 克隆仓库；阅读 MIT／CC-BY。(2) 在 REA 外安装 Ghidra 12.1.4 + JDK。(3) 按该仓文档钉 `rea-agents@6.4.0`。(4) 导出绝对路径；跑 `doctor --provider ghidra --json` 至绿灯。(5) 按项目注册 MCP。(6) 只做种子题／自建／允许的 crackme——绝不碰雇主二进制。',
+        '**限制表（叙述）。**doctor 绿灯 ≠ 可分析任意 PE；README 以西语为主可能需要翻译辅助；基准 harness 是计时意图，不是破解排行榜；2026-10-12 抓取星标快照为 **1**。'
       ],
       takeaways: [
         '智能体演示前先 doctor 绿灯。',
@@ -112,7 +116,9 @@ export const SHOWCASE_GH_PROJECTS: ShowcaseCase[] = [
         '**What it is.** MIT Python skill repo (2026-10-11) aimed at Claude / Codex / Antigravity-style agents. Twelve tests green; ledger hashes findings so “I think we saw X” cannot silently rewrite history.',
         '**How it pairs with REA.** Treat REA MCP tools as the observation layer; rea-investigate structures **how** the agent plans, traces, verifies, and reports. Contrast with already-shipped ledger showcases when you need case discipline.',
         '**Workflow.** (1) Authorize the target. (2) Load the skill in your agent host. (3) Run cases through Plan→Trace→Verify→Report — fail closed on skipped gates. (4) Keep process capture inside a disposable VM. (5) Publish Evidence + unknowns, not secrets.',
-        '**Agent zone.** See [/agents/](/agents/) for learning paths and prompt cards; this showcase is the structured-investigation skill narrative.',
+        '**Agent zone.** See [/agents/](/agents/) for learning paths and prompt cards; this showcase is the structured-investigation skill narrative.',,
+        '**How to try.** (1) Read README ethics (own/authorized only). (2) Load the skill in Claude/Codex/Antigravity-class hosts. (3) Run a case through Plan→Trace→Verify→Report without skipping gates. (4) Confirm SHA-256 ledger updates. (5) Keep process capture inside a disposable VM. (6) Cross-check 12/12 tests before trusting edits.',
+        '**Limits.** Process capture ≠ sandbox; ledger proves integrity of recorded findings, not legal authorization; stars snapshot **1** (2026-10-12 fetch); always refuse secrets exfiltration.'
       ],
       takeaways: [
         'Gates beat vibes.',
@@ -128,7 +134,9 @@ export const SHOWCASE_GH_PROJECTS: ShowcaseCase[] = [
         '**这是什么。**2026-10-11 的 MIT Python skill 仓，面向 Claude／Codex／Antigravity 类智能体。十二项测试全绿；账本哈希发现，防止「我觉得看见了 X」悄悄改写历史。',
         '**与 REA 如何配合。**把 REA MCP 工具当观察层；rea-investigate 约束智能体**如何**计划、追踪、核验与报告。需要案件纪律时，对照已上线的账本案例。',
         '**流程。**(1) 先授权目标。(2) 在智能体宿主加载 skill。(3) 案件走 Plan→Trace→Verify→Report——跳过门禁则失败关闭。(4) 进程捕获放一次性虚拟机。(5) 公开 Evidence 与未知，不公开密钥。',
-        '**Agent 专区。**学习路径与 prompt 卡见 [/zh/agents/](/zh/agents/)；本案例是「结构化调查 skill」叙事。',
+        '**Agent 专区。**学习路径与 prompt 卡见 [/zh/agents/](/zh/agents/)；本案例是「结构化调查 skill」叙事。',,
+        '**怎么试。**(1) 读 README 伦理（仅自有／授权）。(2) 在 Claude／Codex／Antigravity 类宿主加载 skill。(3) 案件走完 Plan→Trace→Verify→Report，不跳门禁。(4) 确认 SHA-256 账本更新。(5) 进程捕获放一次性虚拟机。(6) 改代码前确认 12／12 测试。',
+        '**限制。**进程捕获 ≠ 沙箱；账本证明记录完整性，不证明法律授权；星标快照 **1**（2026-10-12）；始终拒绝密钥外泄。'
       ],
       takeaways: [
         '门禁胜过气氛。',
@@ -177,7 +185,9 @@ export const SHOWCASE_GH_PROJECTS: ShowcaseCase[] = [
         '**Who needs it.** Operators on **IDA Free 9.x** who want REA agents to call IDA-backed tools without pretending they own IDA Pro.',
         '**How to wire.** Point REA at the adapter via `REA_IDA_MCP_CONFIG` (per upstream adapter README). Keep IDA Free running with its MCP endpoint; the adapter translates tool names/args.',
         '**Honest limitations.** String listing may be regex-derived; callers can be inferred; sha256 may be unavailable in some Free builds. Read the adapter README before promising byte-identical workflows.',
-        '**Compliance.** BYO IDA Free license only. This showcase does not teach cracking IDA Pro or bypassing commercial licenses. See [/compare/rea-vs-ida/](/compare/rea-vs-ida/) and [/faq/setup-vs-providers/](/faq/setup-vs-providers/).',
+        '**Compliance.** BYO IDA Free license only. This showcase does not teach cracking IDA Pro or bypassing commercial licenses. See [/compare/rea-vs-ida/](/compare/rea-vs-ida/) and [/faq/setup-vs-providers/](/faq/setup-vs-providers/).',,
+        '**How to try.** (1) Install IDA Free 9.x with a valid license. (2) Run ida-free-mcp as documented by that stack. (3) Start rea-ida-adapter; set `REA_IDA_MCP_CONFIG` per adapter README. (4) `doctor` the IDA-related path. (5) Expect honest gaps: regex string lists, derived callers, sha256 sometimes unavailable.',
+        '**Limits.** Adapter is protocol glue — not a decompiler and not an IDA Pro crack; stars snapshot **0** (2026-10-12 fetch); Free ≠ Pro features.'
       ],
       takeaways: [
         'Adapter = protocol glue, not a decompiler.',
@@ -193,7 +203,9 @@ export const SHOWCASE_GH_PROJECTS: ShowcaseCase[] = [
         '**谁需要。**使用 **IDA Free 9.x**、希望 REA 智能体调用 IDA 工具、但不假装拥有 IDA Pro 的运维者。',
         '**怎么接。**按适配器 README，用 `REA_IDA_MCP_CONFIG` 指向适配器。保持 IDA Free 及其 MCP 端点运行；适配器翻译工具名／参数。',
         '**诚实限制。**字符串列表可能由正则派生；调用者可推断；部分 Free 构建上 sha256 不可用。承诺字节级工作流前先读 README。',
-        '**合规。**仅自备 IDA Free 许可。本案例不教破解 IDA Pro 或绕过商业许可。见 [/zh/compare/rea-vs-ida/](/zh/compare/rea-vs-ida/) 与 [/zh/faq/setup-vs-providers/](/zh/faq/setup-vs-providers/)。',
+        '**合规。**仅自备 IDA Free 许可。本案例不教破解 IDA Pro 或绕过商业许可。见 [/zh/compare/rea-vs-ida/](/zh/compare/rea-vs-ida/) 与 [/zh/faq/setup-vs-providers/](/zh/faq/setup-vs-providers/)。',,
+        '**怎么试。**(1) 安装持有有效许可的 IDA Free 9.x。(2) 按该栈文档运行 ida-free-mcp。(3) 启动 rea-ida-adapter；按 README 设置 `REA_IDA_MCP_CONFIG`。(4) 对 IDA 相关路径跑 `doctor`。(5) 预期诚实缺口：正则字符串列表、派生调用者、有时无 sha256。',
+        '**限制。**适配器是协议胶水——不是反编译器，也不是 IDA Pro 破解；星标快照 **0**（2026-10-12）；Free ≠ Pro 功能。'
       ],
       takeaways: [
         '适配器 = 协议胶水，不是反编译器。',
