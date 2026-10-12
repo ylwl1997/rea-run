@@ -101,7 +101,6 @@ export const SHOWCASE_GH_PROJECTS: ShowcaseCase[] = [
     complianceEn: 'Amplify README ethics: own/authorized targets only; no secrets exfiltration; process capture in disposable sandboxes.',
     complianceZh: '放大 README 伦理：仅自有／授权目标；不外泄密钥；进程捕获放一次性沙箱。',
     related: [
-      { href: '/agents/', labelEn: 'Agent zone', labelZh: 'Agent 专区' },
       { href: '/showcase/rea-jev/', labelEn: 'rea-jev ledger culture', labelZh: 'rea-jev 账本文化' },
       { href: '/blog/rea-agent-security-posture/', labelEn: 'Agent security posture', labelZh: '智能体安全姿态' },
     ],
@@ -116,7 +115,7 @@ export const SHOWCASE_GH_PROJECTS: ShowcaseCase[] = [
         '**What it is.** MIT Python skill repo (2026-10-11) aimed at Claude / Codex / Antigravity-style agents. Twelve tests green; ledger hashes findings so “I think we saw X” cannot silently rewrite history.',
         '**How it pairs with REA.** Treat REA MCP tools as the observation layer; rea-investigate structures **how** the agent plans, traces, verifies, and reports. Contrast with already-shipped ledger showcases when you need case discipline.',
         '**Workflow.** (1) Authorize the target. (2) Load the skill in your agent host. (3) Run cases through Plan→Trace→Verify→Report — fail closed on skipped gates. (4) Keep process capture inside a disposable VM. (5) Publish Evidence + unknowns, not secrets.',
-        '**Agent zone.** See [/agents/](/agents/) for learning paths and prompt cards; this showcase is the structured-investigation skill narrative.',,
+        '**On rea.run.** Learning paths live in [/docs/install/](/docs/install/); this showcase is the structured-investigation skill narrative.',,
         '**How to try.** (1) Read README ethics (own/authorized only). (2) Load the skill in Claude/Codex/Antigravity-class hosts. (3) Run a case through Plan→Trace→Verify→Report without skipping gates. (4) Confirm SHA-256 ledger updates. (5) Keep process capture inside a disposable VM. (6) Cross-check 12/12 tests before trusting edits.',
         '**Limits.** Process capture ≠ sandbox; ledger proves integrity of recorded findings, not legal authorization; stars snapshot **1** (2026-10-12 fetch); always refuse secrets exfiltration.'
       ],
@@ -134,7 +133,7 @@ export const SHOWCASE_GH_PROJECTS: ShowcaseCase[] = [
         '**这是什么。**2026-10-11 的 MIT Python skill 仓，面向 Claude／Codex／Antigravity 类智能体。十二项测试全绿；账本哈希发现，防止「我觉得看见了 X」悄悄改写历史。',
         '**与 REA 如何配合。**把 REA MCP 工具当观察层；rea-investigate 约束智能体**如何**计划、追踪、核验与报告。需要案件纪律时，对照已上线的账本案例。',
         '**流程。**(1) 先授权目标。(2) 在智能体宿主加载 skill。(3) 案件走 Plan→Trace→Verify→Report——跳过门禁则失败关闭。(4) 进程捕获放一次性虚拟机。(5) 公开 Evidence 与未知，不公开密钥。',
-        '**Agent 专区。**学习路径与 prompt 卡见 [/zh/agents/](/zh/agents/)；本案例是「结构化调查 skill」叙事。',,
+        '**本站。**学习路径见 [/zh/docs/install/](/zh/docs/install/)；本案例是「结构化调查 skill」叙事。',,
         '**怎么试。**(1) 读 README 伦理（仅自有／授权）。(2) 在 Claude／Codex／Antigravity 类宿主加载 skill。(3) 案件走完 Plan→Trace→Verify→Report，不跳门禁。(4) 确认 SHA-256 账本更新。(5) 进程捕获放一次性虚拟机。(6) 改代码前确认 12／12 测试。',
         '**限制。**进程捕获 ≠ 沙箱；账本证明记录完整性，不证明法律授权；星标快照 **1**（2026-10-12）；始终拒绝密钥外泄。'
       ],

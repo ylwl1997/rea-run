@@ -5,3 +5,17 @@
 /zh/life-process /zh/showcase/ 301
 /zh/life-process/ /zh/showcase/ 301
 /zh/life-process/* /zh/showcase/ 301
+
+# Requests plaza + Agent zone taken down 2026-10-12
+/requests / 301
+/requests/ / 301
+/requests/* / 301
+/zh/requests /zh/ 301
+/zh/requests/ /zh/ 301
+/zh/requests/* /zh/ 301
+/agents /showcase/ 301
+/agents/ /showcase/ 301
+/agents/* /showcase/ 301
+/zh/agents /zh/showcase/ 301
+/zh/agents/ /zh/showcase/ 301
+/zh/agents/* /zh/showcase/ 301
