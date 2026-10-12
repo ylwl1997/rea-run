@@ -139,4 +139,40 @@
       io.observe(root);
     }
   });
+
+  // Recovered dinosaur acceleration: start at 6, +0.001 while speed < 13.
+  document.querySelectorAll('[data-speed-rule]').forEach((root) => {
+    const out = root.querySelector('[data-speed-out]');
+    const runBtn = root.querySelector('[data-speed-run]');
+    const pass = root.getAttribute('data-pass') || 'match';
+    const fail = root.getAttribute('data-fail') || 'diff';
+    const heads = (root.getAttribute('data-head') || 'Updates|Reference|Replay|Result').split('|');
+    const expected = [
+      [0, '6.000'],
+      [1000, '7.000'],
+      [4000, '10.000'],
+      [10000, '13.001'],
+    ];
+    const advance = (speed) => (speed < 13 ? speed + 0.001 : speed);
+    const after = (n) => {
+      let speed = 6;
+      for (let i = 0; i < n; i++) speed = advance(speed);
+      return speed;
+    };
+    const render = () => {
+      const rows = expected
+        .map(([n, want]) => {
+          const got = after(n).toFixed(3);
+          const ok = got === want;
+          return `<tr><td>${n.toLocaleString('en-US')}</td><td>${want}</td><td>${got}</td><td>${ok ? pass : fail}</td></tr>`;
+        })
+        .join('');
+      if (out) {
+        out.innerHTML = `<table class="compare-table"><thead><tr>${heads
+          .map((h) => `<th>${h}</th>`)
+          .join('')}</tr></thead><tbody>${rows}</tbody></table>`;
+      }
+    };
+    runBtn?.addEventListener('click', render);
+  });
 })();

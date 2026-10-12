@@ -4,6 +4,7 @@ import CommunityClip from '../../../components/CommunityClip.astro';
 import { SITE } from '../../../lib/site';
 const lang = 'zh' as const;
 const toc = [
+  { id: 'install-demo', label: 'Codex 跟练' },
   { id: 'requirements', label: '环境要求' },
   { id: 'connect', label: '连接智能体' },
   { id: 'cli', label: '可选 CLI' },
@@ -39,6 +40,12 @@ const toc = [
         </p>
 
         <p class="text-sm text-[var(--color-muted)]">仅对你有权分析的软件使用。<a class="quiet-link" href="/zh/compliance/">合规说明</a></p>
+
+        <h2 id="install-demo">Codex 跟练</h2>
+        <p>
+          想一次走完？安装演示钉死 <code>rea-agents@6.4.0</code>：检查 Node，登记 Codex，用 9222 打开 Chrome，让 Codex 读公开恐龙页的加速规则，再做一个带速度滑块的单文件小游戏。
+        </p>
+        <p><a class="btn" href="/zh/docs/install-demo/">打开 Codex 安装演示</a></p>
 
         <h2 id="requirements">环境要求</h2>
         <div class="mt-4 grid gap-3 sm:grid-cols-3">
@@ -142,6 +149,7 @@ npx rea-agents@latest setup`}</code></pre>
 
         <h2 id="related">相关指南</h2>
         <ul>
+          <li><a href="/zh/docs/install-demo/">Codex 安装演示 — 恐龙加速规则</a></li>
           <li><a href="/zh/docs/mcp-clients/">MCP 客户端安装矩阵与 skill 路径</a></li>
           <li><a href="/zh/docs/android-adb/">Android ADB 设备通道（6.4+）</a></li>
           <li><a href="/zh/faq/setup-vs-providers/">setup 会装 Ghidra／Hopper／IDA 吗？</a></li>
