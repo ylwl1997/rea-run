@@ -37,6 +37,30 @@ export const FAQ_LINKS: FaqLink[] = [
     zh: { title: '合法使用边界', blurb: '授权、不提供未授权商业逆向教程、净室与闭源边界。' },
   },
   {
+    href: '/faq/macos-ghidra-decompiler/',
+    priority: 'P0',
+    en: { title: 'macOS Ghidra decompiler missing', blurb: '12.1.4 PUBLIC often ships linux/win natives only; make ghidra_opt recipe.' },
+    zh: { title: 'macOS Ghidra 反编译器缺失', blurb: '12.1.4 PUBLIC 常只带 linux／win；make ghidra_opt 配方。' },
+  },
+  {
+    href: '/docs/android-adb/',
+    priority: 'P0',
+    en: { title: 'Android ADB device lane (6.4+)', blurb: 'Your device/emulator: inspect, split-APK, logs, screenshots.' },
+    zh: { title: 'Android ADB 设备通道（6.4+）', blurb: '你的设备／模拟器：检查、分体 APK、日志、截图。' },
+  },
+  {
+    href: '/faq/setup-vs-providers/',
+    priority: 'P1',
+    en: { title: 'Does setup install Ghidra/Hopper/IDA?', blurb: 'MCP registration ≠ shipping a decompiler; BYO engines.' },
+    zh: { title: 'setup 会装 Ghidra／Hopper／IDA 吗？', blurb: '注册 MCP ≠ 自带反编译器；引擎自备。' },
+  },
+  {
+    href: '/faq/token-efficient-rea/',
+    priority: 'P1',
+    en: { title: 'Token-efficient Evidence', blurb: 'Summaries, compact schema, bounded queries — no fabricated findings.' },
+    zh: { title: '省 token 的 Evidence', blurb: '摘要、compact schema、有界提问——不编造发现。' },
+  },
+  {
     href: '/docs/ghidra-large-binaries/',
     priority: 'P1',
     en: { title: 'Large binaries & Ghidra startup deadlines', blurb: 'Why the first query times out; timeouts, heap, pre-import ideas.' },

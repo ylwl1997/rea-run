@@ -44,6 +44,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <h2>Compliance</h2>
     <p>Proxying tool catalogs does not change the legal target rule: analyze only software you are authorized to inspect. See <a href="/faq/legal-boundary/">legal boundary</a>.</p>
 
+        <p>As of <strong>6.4.0</strong>, prefer the first-party <code>REA_MCP_INPUT_SCHEMA_PROFILE=compact</code> when the issue is schema size alone — then use domain-split when you need curated domain groups. See <a href="/faq/mcp-schema-size/">schema size FAQ</a>.</p>
+
     <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
       <p class="text-xs uppercase tracking-wider">Sources</p>
       <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">

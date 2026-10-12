@@ -15,9 +15,11 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     <p class="lede mt-4 !max-w-none">一接上 REA，整个智能体就拒绝所有请求时。</p>
     <h2>哪里坏了</h2>
     <p>部分提供商有<strong>单工具 JSON schema 大小上限</strong>。REA 的完整 <code>tools/list</code> 可能声明大量细节工具；单个过大 schema 会让 Moonshot／Kimi 类客户端拒绝整段会话。</p>
+    <h2>官方 compact 配置（6.4+）</h2>
+    <p>上游现提供一等开关：对 Moonshot／Kimi 类客户端设 <code>REA_MCP_INPUT_SCHEMA_PROFILE=compact</code>。社区变通之前，优先升级到 <strong>6.4.0+</strong>。见 <a href="/zh/blog/rea-agents-6-4-0/">6.4.0 运维指南</a> 与 <a href="/zh/faq/token-efficient-rea/">省 token 的 Evidence</a>。</p>
     <h2>运维怎么做</h2>
     <ul>
-      <li>升级 <code>rea-agents</code>——schema 压缩与发现修复会随版本发布。</li>
+      <li>升级到 <code>rea-agents@6.4.0+</code> 并尝试 <code>REA_MCP_INPUT_SCHEMA_PROFILE=compact</code>。</li>
       <li>改用能容忍大目录的客户端，或重活走 CLI。</li>
       <li>关注上游有界资源下的 MCP 可用性路线；不要用损坏的 schema「绕过」上限。</li>
     </ul>
@@ -28,6 +30,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
       <p class="text-xs uppercase tracking-wider">来源</p>
       <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+          <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">rea-agents 6.4.0 — compact schema</a></li>
           <li><a href="https://github.com/morluto/rea/issues/1484" rel="noopener noreferrer" target="_blank">Issue #1484</a></li>
           <li><a href="https://github.com/morluto/rea/issues/1327" rel="noopener noreferrer" target="_blank">Issue #1327</a></li>
           <li><a href="https://github.com/morluto/rea/issues/1065" rel="noopener noreferrer" target="_blank">Issue #1065</a></li>

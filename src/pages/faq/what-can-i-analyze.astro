@@ -20,12 +20,20 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <tr><td>Native binaries</td><td>Ghidra / Hopper / IDA (BYO)</td><td>OS + arch gates; Windows Ghidra is a specific P0 story</td></tr>
           <tr><td>JavaScript / Electron</td><td>REA static JS graph</td><td>No native engine required; large ASAR has its own FAQ</td></tr>
           <tr><td>.NET</td><td>Managed / native paths per docs</td><td>NativeAOT may fall through to native providers</td></tr>
-          <tr><td>Android</td><td>JADX (BYO) + Java</td><td>Often smoother on Linux/macOS; Windows users hit “not available here” prompts</td></tr>
+          <tr><td>Android (static)</td><td>JADX (BYO) + Java</td><td>Often smoother on Linux/macOS; Windows users hit “not available here” prompts</td></tr>
+          <tr><td>Android (device)</td><td>ADB lane (6.4+) + Apktool resources</td><td><strong>Your</strong> device/emulator only — inspect / split-APK / logs / screenshots; see <a href="/docs/android-adb/">Android ADB</a></td></tr>
+          <tr><td>JEB</td><td>Caller-started MCP (BYO licensed JEB)</td><td>6.4+ provider path; REA does not ship JEB</td></tr>
           <tr><td>Firmware / packs</td><td>Optional unpackers (BYO)</td><td>Separate prerequisites; do not invent tool installs</td></tr>
           <tr><td>Browser / pages</td><td>Local Chrome-family + REA browser tools</td><td>May need <code>REA_BROWSER_EXECUTABLE</code>; profile isolation matters</td></tr>
         </tbody>
       </table>
     </div>
+
+    <h2>Tip: native reject ≠ nothing left</h2>
+    <p>If a native provider refuses a format, check <code>doctor</code> capabilities and dedicated <strong>WASM / firmware / JS</strong> lanes before giving up. Do not invent providers or “edit headers to force admission.” Source: <a href="https://github.com/morluto/rea/issues/1852" rel="noopener noreferrer" target="_blank">issue #1852</a>.</p>
+    <h2>Capability refresh (community)</h2>
+    <p>Public capability lists (e.g. <a href="https://x.com/milonspace/status/2109422629161763064" rel="noopener noreferrer" target="_blank">@milonspace</a>) are orientation — always verify with doctor on your host. Client-only surfaces stay client-only (<a href="https://x.com/0xLiquidation/status/2109440974858453284" rel="noopener noreferrer" target="_blank">@0xLiquidation</a>).</p>
+
     <p>Ask <code>doctor</code> for the providers you care about. A missing Android/JADX path on Windows is frequently an environment limitation, not a broken npm install.</p>
 
     <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">

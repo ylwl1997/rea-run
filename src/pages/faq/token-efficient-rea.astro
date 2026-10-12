@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="en"
+  title="Token-efficient REA: right-sized Evidence | rea.run"
+  description="Practical checklist from discussion #1958: bounded queries, retain Evidence, summaries/selected views, compact schema — efficiency without fabricating findings."
+  path="/faq/token-efficient-rea/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm"><a class="quiet-link" href="/faq/">← FAQ hub</a></p>
+    <p class="badge badge-accent mt-4">FAQ · P1</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">Token-efficient REA (right-sized Evidence)</h1>
+    <p class="lede mt-4 !max-w-none">Measure <strong>tokens per verified finding</strong> — not tokens per vibes. Efficiency never means inventing summaries.</p>
+
+    <h2>Checklist</h2>
+    <ul>
+      <li>Prefer <strong>summary / selected views</strong> in 6.4+ for Evidence, JS graphs, and dossiers before dumping raw trees into the model.</li>
+      <li>Use <code>REA_MCP_INPUT_SCHEMA_PROFILE=compact</code> and/or <a href="/faq/mcp-domain-split/">domain-split</a> so tools/list fits strict clients (<a href="/faq/mcp-schema-size/">schema size FAQ</a>).</li>
+      <li>Keep raw dumps on disk; pull slices into context only when needed.</li>
+      <li>Reuse sessions / snapshots — avoid re-analyzing the same binary cold every turn.</li>
+      <li>Ask bounded questions (“list imports of module X”) instead of “explain the whole app.”</li>
+      <li>Retain Evidence files; quote them. Do not strip limitations/unknowns to look confident.</li>
+    </ul>
+
+    <h2>Related</h2>
+    <ul>
+      <li><a href="/blog/rea-agents-6-4-0/">6.4.0 operator guide</a></li>
+      <li><a href="/faq/electron-asar-timeouts/">Large Electron/ASAR</a></li>
+      <li><a href="/docs/ghidra-large-binaries/">Large binaries</a></li>
+    </ul>
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+      <p class="text-xs uppercase tracking-wider">Sources</p>
+      <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+        <li><a href="https://github.com/morluto/rea/discussions/1958" rel="noopener noreferrer" target="_blank">Discussion #1958 — token workflows (@jaelliot)</a></li>
+        <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">rea-agents 6.4.0</a></li>
+      </ol>
+      <p class="mt-4"><a class="quiet-link" href="/compliance/">Compliance</a></p>
+    </footer>
+  </article>
+</BaseLayout>

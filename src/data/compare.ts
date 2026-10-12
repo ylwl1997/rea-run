@@ -6,6 +6,57 @@ export type ComparePage = {
 
 /** Third-party orientation only — not affiliated; verify against live vendor docs. */
 export const COMPARE_PAGES: ComparePage[] = [
+
+  {
+    slug: 'rea-cleanroom-ports',
+    en: {
+      title: 'REA ecosystem ports: fathom & CleanRoom',
+      description:
+        'Orientation table for clean-room / alternate ports (fathom Rust, CleanRoom Python) vs upstream REA — supply-chain alternatives, not promoted replacements. AGPL callouts.',
+      h1: 'Clean-room ports vs upstream REA',
+      lede:
+        'Builders evaluating forks sometimes need a map. **fathom** and **CleanRoom** are community ports with different languages, licenses, and maturity. This page positions them as **ecosystem / supply-chain alternatives**, not as replacements we promote over upstream REA. Credit MIT NOTICE lineage from morluto/rea; no affiliation claimed.',
+      rows: [
+        ['Project', 'morluto/rea (upstream)', 'qompassai/fathom', 'Sage-is/CleanRoom'],
+        ['Language', 'TypeScript / Node (rea-agents)', 'Rust (MCP/A2A)', 'Python 3.12'],
+        ['License', 'MIT', 'AGPL | Apache (dual — check tree)', 'AGPL-3.0'],
+        ['Maturity', 'Published npm; large community', 'SPEC-led port; early', 'Pre-release; 12 verbs'],
+        ['Evidence model', 'Evidence envelopes (upstream)', 'Evidence envelopes; fail-closed policy', 'Pageable MCP/CLI verbs'],
+        ['Engines', 'BYO Ghidra/Hopper/IDA/JEB/…', 'Port of provider surface — verify docs', 'Reimpl surface — verify docs'],
+        ['Relation', 'Source of truth for product behavior', 'No upstream code copy (clean-room claim)', 'Reimplementation; AGPL copyleft'],
+      ],
+      notes: [
+        'Third-party orientation for Agent / compare readers. Verify licenses and NOTICE files before redistribution — AGPL obligations differ from MIT.',
+        'Do not treat ports as drop-in replacements. Prefer upstream releases for install facts; use ports when your supply-chain policy requires them.',
+        'Sources: https://github.com/qompassai/fathom · https://github.com/Sage-is/CleanRoom · https://github.com/morluto/rea',
+        'Legal use only on authorized targets. Primary CTAs stay on rea.run — not competitor marketing docs.',
+      ],
+    },
+    zh: {
+      title: 'REA 生态移植：fathom 与 CleanRoom',
+      description:
+        '清洁室／替代移植对照表（Rust fathom、Python CleanRoom）相对上游 REA——供应链备选，非主推替代。含 AGPL 提示。',
+      h1: '清洁室移植 vs 上游 REA',
+      lede:
+        '评估 fork 的建造者需要一张地图。**fathom** 与 **CleanRoom** 是不同语言、许可与成熟度的社区移植。本页把它们定位为**生态／供应链备选**，而非我们主推以取代上游 REA 的产品。致谢 morluto/rea 的 MIT NOTICE 谱系；不声称隶属。',
+      rows: [
+        ['项目', 'morluto/rea（上游）', 'qompassai/fathom', 'Sage-is/CleanRoom'],
+        ['语言', 'TypeScript／Node（rea-agents）', 'Rust（MCP／A2A）', 'Python 3.12'],
+        ['许可', 'MIT', 'AGPL｜Apache（双许可——以树为准）', 'AGPL-3.0'],
+        ['成熟度', 'npm 已发布；社区大', 'SPEC 驱动移植；早期', '预发布；12 个动词'],
+        ['Evidence 模型', 'Evidence 信封（上游）', 'Evidence 信封；失败关闭策略', '可分页 MCP／CLI 动词'],
+        ['引擎', '自备 Ghidra／Hopper／IDA／JEB／…', '提供者表面移植——核验文档', '重实现表面——核验文档'],
+        ['关系', '产品行为真源', '声称无上游代码拷贝（清洁室）', '重实现；AGPL 传染'],
+      ],
+      notes: [
+        '给 Agent／对比读者的第三方说明。再分发前核验许可与 NOTICE——AGPL 义务异于 MIT。',
+        '勿把移植当即插即用替代。安装事实优先上游发行；仅在供应链政策要求时选用移植。',
+        '来源：https://github.com/qompassai/fathom · https://github.com/Sage-is/CleanRoom · https://github.com/morluto/rea',
+        '仅限授权目标。主 CTA 留在 rea.run——不以竞品营销文档作主入口。',
+      ],
+    },
+  },
+
   {
     slug: 'rea-vs-ghidra',
     en: {

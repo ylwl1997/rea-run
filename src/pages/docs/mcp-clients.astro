@@ -32,6 +32,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </table>
     </div>
 
+        <p><strong>6.4+ footnote.</strong> Client coverage continues to expand (including Pi / Hermes / Qwen Code-class hosts). Treat the matrix as orientation — confirm with <code>doctor --client …</code> after upgrading. See <a href="/blog/rea-agents-6-4-0/">6.4.0 ops guide</a>.</p>
     <h2>Skill path pitfall</h2>
     <p>Setup may write an investigation skill to a directory the <em>package</em> considers canonical (for example under <code>~/.agents/skills</code>), while a specific client only auto-loads skills from its own tree (for example Claude Code reading <code>~/.claude/skills</code>). Symptom: MCP tools appear, but the agent never picks up REA’s workflow instructions.</p>
     <ul>

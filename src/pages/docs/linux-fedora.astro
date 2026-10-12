@@ -23,6 +23,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <p>Fedora-based spins (including Nobara) have been reported as <code>unsupported_host</code> in older builds; check whether your REA version still gates that way before filing duplicates. Optional reverse tooling (pwntools, etc.) belongs in its own venv — REA setup will not replace your distro packages.</p>
     <p>Also read <a href="/faq/tmpdir-dot-path/">TMPDIR pitfalls</a> on Linux temp layouts.</p>
 
+        <h2 id="startup">Startup benchmarks (community)</h2>
+    <p>Discussion <a href="https://github.com/morluto/rea/discussions/1998" rel="noopener noreferrer" target="_blank">#1998</a> published Node 22/24/26 tool-list and first-job timings for 6.3.0 / 6.4.0 / main on OSS fixtures. Headline: 6.4 lists more tools → list can be slower while Android scans improve. Full write-up: <a href="/blog/rea-linux-startup-benchmarks/">Linux startup benchmarks</a>.</p>
+
     <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
       <p class="text-xs uppercase tracking-wider">Sources</p>
       <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">

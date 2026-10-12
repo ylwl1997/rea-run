@@ -20,12 +20,20 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
           <tr><td>原生二进制</td><td>Ghidra／Hopper／IDA（自备）</td><td>受 OS／架构门控；Windows Ghidra 有单独 P0 故事</td></tr>
           <tr><td>JavaScript／Electron</td><td>REA 静态 JS 图</td><td>通常无需原生引擎；大 ASAR 另有 FAQ</td></tr>
           <tr><td>.NET</td><td>托管／原生路径以上游为准</td><td>NativeAOT 可能落到原生提供者</td></tr>
-          <tr><td>Android</td><td>JADX（自备）+ Java</td><td>Linux／macOS 更顺；Windows 常提示「此处不可用」</td></tr>
+          <tr><td>Android（静态）</td><td>JADX（自备）+ Java</td><td>Linux／macOS 更顺；Windows 常提示「此处不可用」</td></tr>
+          <tr><td>Android（设备）</td><td>ADB 通道（6.4+）+ Apktool 资源</td><td>仅<strong>你的</strong>设备／模拟器——检查／分体 APK／日志／截图；见 <a href="/zh/docs/android-adb/">Android ADB</a></td></tr>
+          <tr><td>JEB</td><td>调用方启动的 MCP（自备已授权 JEB）</td><td>6.4+ 提供者路径；REA 不附带 JEB</td></tr>
           <tr><td>固件／包</td><td>可选解包器（自备）</td><td>额外前置；勿臆造安装步骤</td></tr>
           <tr><td>浏览器／页面</td><td>本机 Chrome 系 + REA 浏览器工具</td><td>可能需 <code>REA_BROWSER_EXECUTABLE</code>；注意配置隔离</td></tr>
         </tbody>
       </table>
     </div>
+
+    <h2>提示：原生拒绝 ≠ 无路可走</h2>
+    <p>若原生提供者拒绝某种格式，先查 <code>doctor</code> 能力与专用的 <strong>WASM／固件／JS</strong> 通道，再放弃。不要臆造提供者，也不要「改头强迫接纳」。来源：<a href="https://github.com/morluto/rea/issues/1852" rel="noopener noreferrer" target="_blank">issue #1852</a>。</p>
+    <h2>能力刷新（社区）</h2>
+    <p>公开能力列表（如 <a href="https://x.com/milonspace/status/2109422629161763064" rel="noopener noreferrer" target="_blank">@milonspace</a>）仅供定向——务必在本机用 doctor 核验。仅客户端表面就只谈客户端（<a href="https://x.com/0xLiquidation/status/2109440974858453284" rel="noopener noreferrer" target="_blank">@0xLiquidation</a>）。</p>
+
     <p>对关心的提供者跑 <code>doctor</code>。Windows 上缺 Android/JADX 路径常常是环境限制，不是 npm 装坏了。</p>
 
     <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">

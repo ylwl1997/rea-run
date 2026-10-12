@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="zh"
+  title="REA 6.4+ 的 Android ADB 设备通道 | rea.run"
+  description="REA Android ADB 工作流运维指南：仅你的设备／模拟器——检查、分体 APK、日志、截图、生命周期。无商店 DRM 口径。"
+  path="/docs/android-adb/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>
+    <p class="badge badge-accent mt-4">文档 · 6.4+</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">Android ADB 设备通道（REA 6.4+）</h1>
+    <p class="lede mt-4 !max-w-none">对<strong>你的</strong>设备或模拟器使用 ADB。这是授权实验室表面——不是抽取任意应用商店 DRM 的教程。</p>
+
+    <h2>6.4 给运维加了什么</h2>
+    <ul>
+      <li>经 ADB 通道的设备检查／分体 APK／日志／截图／生命周期钩子。</li>
+      <li>在自备工具存在时的 Apktool 资源路径。</li>
+      <li>与已有 JADX（自备 Java）静态路径配合——用 <code>doctor</code> 确认。</li>
+    </ul>
+
+    <h2>最低卫生</h2>
+    <ol>
+      <li>安装 platform-tools；确认 <code>adb devices</code> 显示你控制且已授权的设备／模拟器。</li>
+      <li>钉 <code>rea-agents@6.4.0</code>（或更新），按上游文档跑提供者／设备 doctor。</li>
+      <li>目标限于你拥有的应用、自建 debug 包、或明确授权的夹具。</li>
+      <li>不信任 APK 优先用一次性模拟器。</li>
+    </ol>
+
+    <h2>相关</h2>
+    <ul>
+      <li><a href="/zh/blog/rea-agents-6-4-0/">6.4.0 运维指南</a></li>
+      <li><a href="/zh/faq/what-can-i-analyze/">能力矩阵</a></li>
+      <li><a href="/zh/faq/legal-boundary/">合法边界</a></li>
+    </ul>
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+      <p class="text-xs uppercase tracking-wider">来源</p>
+      <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+        <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">rea-agents 6.4.0 发行</a></li>
+        <li><a href="https://github.com/morluto/rea/blob/main/docs/android-analysis.md" rel="noopener noreferrer" target="_blank">上游 android analysis 文档</a></li>
+      </ol>
+      <p class="mt-4"><a class="quiet-link" href="/zh/compliance/">合规</a></p>
+    </footer>
+  </article>
+</BaseLayout>

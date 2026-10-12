@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="zh"
+  title="macOS 上 Ghidra 12.1.4 缺少原生反编译器 | rea.run"
+  description="Ghidra 12.1.4 PUBLIC 常只带 linux／win 反编译器——macOS doctor 报 native_decompiler 缺失；社区 make ghidra_opt 配方。自备工具链。"
+  path="/faq/macos-ghidra-decompiler/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>
+    <p class="badge badge-accent mt-4">FAQ · P0</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">macOS：Ghidra 原生反编译器缺失（12.1.4）</h1>
+    <p class="lede mt-4 !max-w-none">若 Mac 上 <code>doctor --provider ghidra</code> 因 <code>native_decompiler</code> 缺失失败，多半是打包缺口——不是 npm 装坏了。</p>
+
+    <h2>会发生什么</h2>
+    <p>Ghidra <strong>12.1.4 PUBLIC</strong> 发行常见只带 <code>linux_x86_64</code> 与 <code>win_x86_64</code> 原生反编译器。在 macOS 上，REA 的 doctor 可能报告反编译器 OS 目录为空／缺失。上游 REA<strong>拒绝替你自动编译</strong>该原生工具。</p>
+
+    <h2>怎么做（社区配方）</h2>
+    <ol>
+      <li>用绝对路径确认 JDK + <code>GHIDRA_INSTALL_DIR</code>。</li>
+      <li>按 Ghidra 文档在本机工具链上执行 <code>make ghidra_opt</code>（或以当前上游等价目标）编译可选反编译器。</li>
+      <li>把得到的 <code>decompile</code> 拷到 Ghidra 的 <code>os/mac_x86_64/</code>（或相应的 <code>mac_arm_64/</code>）布局。</li>
+      <li>重跑 <code>npx -y rea-agents@latest doctor --provider ghidra --json</code>。若 GUI／headless 包装也误报，对照相关 issue 的启动诊断。</li>
+    </ol>
+    <p>具体 make 目标随 Ghidra 版本变动——以你所用 tag 的 Ghidra 构建文档为准。本站不粘贴专有插件破解。</p>
+
+    <h2>相关</h2>
+    <ul>
+      <li><a href="/zh/docs/windows-ghidra/">Windows × Ghidra 接线</a></li>
+      <li><a href="/zh/docs/ghidra-large-binaries/">大二进制与截止</a></li>
+      <li><a href="/zh/faq/setup-vs-providers/">setup 与提供者</a></li>
+    </ul>
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+      <p class="text-xs uppercase tracking-wider">来源</p>
+      <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+        <li><a href="https://github.com/morluto/rea/issues/1994" rel="noopener noreferrer" target="_blank">Issue #1994 — macOS native_decompiler 缺失（@EDMND-SRC）</a></li>
+        <li><a href="https://github.com/morluto/rea/issues/1992" rel="noopener noreferrer" target="_blank">Issue #1992 — 启动诊断</a></li>
+      </ol>
+      <p class="mt-4"><a class="quiet-link" href="/zh/compliance/">合规</a> · 仅自备工具链；禁止盗版专有插件。</p>
+    </footer>
+  </article>
+</BaseLayout>

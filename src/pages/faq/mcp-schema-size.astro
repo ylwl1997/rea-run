@@ -15,9 +15,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <p class="lede mt-4 !max-w-none">When connecting REA makes the entire agent refuse every request.</p>
     <h2>What breaks</h2>
     <p>Some providers enforce a <strong>per-tool JSON schema size cap</strong>. REA’s full <code>tools/list</code> can advertise many detailed tools; a single oversized schema may cause Moonshot/Kimi-class clients to reject the whole session.</p>
+    <h2>First-party compact profile (6.4+)</h2>
+    <p>Upstream now ships an official knob: set <code>REA_MCP_INPUT_SCHEMA_PROFILE=compact</code> for Moonshot/Kimi-class clients. Prefer upgrading <code>rea-agents</code> to <strong>6.4.0+</strong> before relying on community workarounds alone. See the <a href="/blog/rea-agents-6-4-0/">6.4.0 operator guide</a> and <a href="/faq/token-efficient-rea/">token-efficient Evidence</a>.</p>
     <h2>What to do (operator)</h2>
     <ul>
-      <li>Upgrade <code>rea-agents</code> — schema compaction and discovery fixes ship over time.</li>
+      <li>Upgrade to <code>rea-agents@6.4.0+</code> and try <code>REA_MCP_INPUT_SCHEMA_PROFILE=compact</code>.</li>
       <li>Prefer clients that tolerate large catalogs, or use CLI for heavy jobs.</li>
       <li>Watch upstream roadmap work on bounded-resource MCP usability; do not “fix” caps by corrupting schemas.</li>
     </ul>
@@ -28,6 +30,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
       <p class="text-xs uppercase tracking-wider">Sources</p>
       <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+          <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">rea-agents 6.4.0 — compact schema profile</a></li>
           <li><a href="https://github.com/morluto/rea/issues/1484" rel="noopener noreferrer" target="_blank">Issue #1484 — Moonshot/kimi schema cap</a></li>
           <li><a href="https://github.com/morluto/rea/issues/1327" rel="noopener noreferrer" target="_blank">Issue #1327 — npm latest vs main schema fixes</a></li>
           <li><a href="https://github.com/morluto/rea/issues/1065" rel="noopener noreferrer" target="_blank">Issue #1065 — MCP usability under bounded resources</a></li>

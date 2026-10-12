@@ -22,6 +22,9 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     <h2>宿主发行版</h2>
     <p>Fedora 系（含 Nobara）在旧版本上曾被报 <code>unsupported_host</code>；提重复 issue 前先看你的 REA 版本是否仍如此门控。可选逆向工具（pwntools 等）放进独立 venv——REA setup 不会取代发行版包装。</p>
 
+        <h2 id="startup">启动基准（社区）</h2>
+    <p>讨论 <a href="https://github.com/morluto/rea/discussions/1998" rel="noopener noreferrer" target="_blank">#1998</a> 公布了 Node 22／24／26 在 6.3.0／6.4.0／main 上、开源夹具的 tool-list 与首任务计时。头条：6.4 工具更多 → 列表可能更慢，同时 Android 扫描改善。全文：<a href="/zh/blog/rea-linux-startup-benchmarks/">Linux 启动基准</a>。</p>
+
     <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
       <p class="text-xs uppercase tracking-wider">来源</p>
       <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">

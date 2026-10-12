@@ -31,7 +31,8 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
       </table>
     </div>
 
-    <h2>Skill 路径坑</h2>
+        <p><strong>6.4+ 脚注。</strong>客户端覆盖持续扩大（含 Pi／Hermes／Qwen Code 类宿主）。矩阵仅供定向——升级后用 <code>doctor --client …</code> 确认。见 <a href="/zh/blog/rea-agents-6-4-0/">6.4.0 运维指南</a>。</p>
+<h2>Skill 路径坑</h2>
     <p>setup 可能把调查 skill 写到软件包认为规范的目录（例如 <code>~/.agents/skills</code>），而某客户端只从自己的树加载（例如 Claude Code 读 <code>~/.claude/skills</code>）。症状：MCP 工具在，但智能体从不采用 REA 工作流说明。</p>
     <ul>
       <li>setup 后确认 skill 文件落点。</li>

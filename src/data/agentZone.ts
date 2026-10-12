@@ -57,6 +57,27 @@ export const AGENT_LEARNING_PATH: AgentLink[] = [
     blurbZh: '社区案例——卡片留在本站。',
   },
   {
+    href: '/showcase/rea-investigate/',
+    en: 'rea-investigate skill',
+    zh: 'rea-investigate skill',
+    blurbEn: 'Plan→Trace→Verify→Report + SHA-256 ledger.',
+    blurbZh: 'Plan→Trace→Verify→Report + SHA-256 账本。',
+  },
+  {
+    href: '/blog/evaluating-rea-claims/',
+    en: 'Evaluate REA claims',
+    zh: '评估 REA 主张',
+    blurbEn: 'Evidence contracts, stars≠installs, dual-use caution.',
+    blurbZh: 'Evidence 契约、星标≠安装、双用途谨慎。',
+  },
+  {
+    href: '/compare/rea-cleanroom-ports/',
+    en: 'Clean-room ports',
+    zh: '清洁室移植',
+    blurbEn: 'fathom / CleanRoom vs upstream — supply-chain map.',
+    blurbZh: 'fathom／CleanRoom 相对上游——供应链地图。',
+  },
+  {
     href: '/blog/rea-agent-security-posture/',
     en: 'Agent security posture',
     zh: '智能体安全姿态',
