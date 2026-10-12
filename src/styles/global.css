@@ -707,7 +707,7 @@ html.nav-open .burger-lines::after { top: 0; transform: rotate(-45deg); }
   align-items: flex-start;
   gap: 0.65rem;
 }
-.copy-row .code-well { flex: 1; margin: 0; }
+.copy-row .code-well { flex: 1; margin: 0; white-space: pre-wrap; }
 .copy-btn {
   flex-shrink: 0;
   border-radius: 0.7rem;

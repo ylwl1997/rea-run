@@ -4,6 +4,7 @@ import CommunityClip from '../../components/CommunityClip.astro';
 import { SITE } from '../../lib/site';
 const lang = 'en' as const;
 const toc = [
+  { id: 'install-demo', label: 'Codex walkthrough' },
   { id: 'requirements', label: 'Requirements' },
   { id: 'connect', label: 'Connect agent' },
   { id: 'cli', label: 'Optional CLI' },
@@ -39,6 +40,12 @@ const toc = [
         </p>
 
         <p class="text-sm text-[var(--color-muted)]">Use on software you are authorized to analyze. <a class="quiet-link" href="/compliance/">Compliance</a></p>
+
+        <h2 id="install-demo">Codex walkthrough</h2>
+        <p>
+          Want the whole loop in one sitting? The install demo pins <code>rea-agents@6.4.0</code>, checks Node, registers Codex, opens Chrome on port 9222, and has Codex recover the public dinosaur game’s acceleration rule — then build a one-file game with a speed slider.
+        </p>
+        <p><a class="btn" href="/docs/install-demo/">Open the Codex install demo</a></p>
 
         <h2 id="requirements">Requirements</h2>
         <div class="mt-4 grid gap-3 sm:grid-cols-3">
@@ -145,6 +152,7 @@ npx rea-agents@latest setup`}</code></pre>
 
         <h2 id="related">Related guides</h2>
         <ul>
+          <li><a href="/docs/install-demo/">Codex install demo — dinosaur speed rule</a></li>
           <li><a href="/docs/mcp-clients/">MCP client install matrix &amp; skill paths</a></li>
           <li><a href="/docs/android-adb/">Android ADB device lane (6.4+)</a></li>
           <li><a href="/faq/setup-vs-providers/">Does setup install Ghidra/Hopper/IDA?</a></li>

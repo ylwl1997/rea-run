@@ -1,0 +1,274 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE } from '../../lib/site';
+
+const lang = 'en' as const;
+const toc = [
+  { id: 'roles', label: 'Who does what' },
+  { id: 'play', label: '1 · Play first' },
+  { id: 'node', label: '2 · Check Node' },
+  { id: 'setup', label: '3 · Connect Codex' },
+  { id: 'chrome', label: '4 · Debug Chrome' },
+  { id: 'ask', label: '5 · Read the rule' },
+  { id: 'build', label: '6 · Speed slider' },
+  { id: 'verify', label: '7 · Check the numbers' },
+  { id: 'stuck', label: 'If you get stuck' },
+  { id: 'next', label: 'What next' },
+  { id: 'upstream', label: 'Upstream' },
+];
+
+const nodeCmd = `node --version
+npm --version`;
+const dryRunCmd = `npx -y rea-agents@6.4.0 setup --client codex --dry-run --json`;
+const applyCmd = `npx -y rea-agents@6.4.0 setup --client codex --yes --json`;
+const macChrome = `REA_BROWSER_DIR=$(mktemp -d /tmp/rea-dino-browser.XXXXXX)
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \\
+  --remote-debugging-address=127.0.0.1 \\
+  --remote-debugging-port=9222 \\
+  --user-data-dir="$REA_BROWSER_DIR" \\
+  --no-first-run --no-default-browser-check \\
+  "https://wayou.github.io/t-rex-runner/"`;
+const linuxChrome = `REA_BROWSER_DIR=$(mktemp -d /tmp/rea-dino-browser.XXXXXX)
+google-chrome \\
+  --remote-debugging-address=127.0.0.1 \\
+  --remote-debugging-port=9222 \\
+  --user-data-dir="$REA_BROWSER_DIR" \\
+  --no-first-run --no-default-browser-check \\
+  "https://wayou.github.io/t-rex-runner/"`;
+const winChrome = `$dir = Join-Path $env:TEMP ("rea-dino-" + [guid]::NewGuid().ToString("N").Substring(0,8))
+New-Item -ItemType Directory -Force -Path $dir | Out-Null
+& "$env:ProgramFiles\\Google\\Chrome\\Application\\chrome.exe" \`
+  --remote-debugging-address=127.0.0.1 \`
+  --remote-debugging-port=9222 \`
+  --user-data-dir="$dir" \`
+  --no-first-run --no-default-browser-check \`
+  "https://wayou.github.io/t-rex-runner/"`;
+const explainPrompt = `Explain this REA setup JSON in plain language. Confirm it will register REA's MCP server for Codex and install the matching skill. Point out failures. Missing Ghidra, Hopper, or IDA is fine — this session is only the public dinosaur page. Do not run any command that writes config unless I approve it separately.`;
+const inspectPrompt = `Use REA to inspect this dinosaur page: https://wayou.github.io/t-rex-runner/. Chrome is already open for analysis. The debugging endpoint is http://127.0.0.1:9222. Call list_browser_targets to find the page, then inspect_web_page with include_script_sources, and read the loaded index.js. In plain language, state the starting speed, how speed increases, and when it stops increasing. Cite the program location for each claim. Separate what you read in code from what you checked by running it. This turn is rules only. Do not build a new game yet.`;
+const inspectFollowup = `Split the answer into three lines: starting speed, how it accelerates, and the stop condition. For each line, cite where in index.js you read it.`;
+const buildPrompt = `Using the acceleration rule REA just recovered, create dino-demo.html in this practice folder: a dinosaur game that opens directly in a browser. Keep everything in one file. Do not install packages or download assets. The dinosaur can jump, and cacti come in from the right. Add buttons labeled Start, Jump, and Restart. Space also jumps. A collision shows game over. Add a speed slider from 2 to 18 and show the current speed beside it. Dragging the slider selects a fixed speed. Also add an Auto-accelerate option that starts again at 6 when turned on. Auto-accelerate keeps the original check on each update without a collision: if speed < 13, add 0.001. The new game runs 60 logic updates per second. You implement drawing, jumping, and collision, and you label which parts follow the original rule and which parts are new. Then check that the page runs, tell me the absolute path, and give the exact steps to open it in Chrome. Do not ask me to edit the code.`;
+const verifyPrompt = `Check the acceleration function that the generated dino-demo.html actually runs. Start at speed 6, with collisions excluded, and report the speed after 0, 1000, 4000, and 10000 updates. Keep three decimal places and compare each value with 6.000, 7.000, 10.000, and 13.001. Reply with a table, say what you executed, and if any row differs, fix it and run the check again.`;
+const stuckPrompt = `I am following the rea.run Codex dinosaur install demo, pinned to rea-agents@6.4.0. In [terminal / Codex / Chrome] I just did [action], and got this output: [paste]. Explain the cause, then tell me the next action, which window to use, and what I should see when it works. This session only analyzes the public dinosaur page.`;
+const ruleSnippet = `if (this.currentSpeed < this.config.MAX_SPEED) {
+  this.currentSpeed += this.config.ACCELERATION;
+}`;
+const advanceSnippet = `function advanceSpeed(speed) {
+  return speed < 13 ? speed + 0.001 : speed;
+}`;
+---
+<BaseLayout
+  lang={lang}
+  title="Install demo: Codex walkthrough for the dinosaur speed rule | rea.run"
+  description="Pin rea-agents@6.4.0. Check Node, connect REA to Codex, read the public dinosaur page over Chrome remote debugging, then build a one-file game with a speed slider and check the acceleration checkpoints."
+  path="/docs/install-demo/"
+>
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <div class="docs-layout">
+      <aside class="docs-toc hidden md:block">
+        <p class="section-kicker mb-3">On this page</p>
+        {toc.map((item) => <a href={`#${item.id}`}>{item.label}</a>)}
+      </aside>
+
+      <article class="prose-page">
+        <p class="text-sm"><a class="quiet-link" href="/docs/install/">← Install</a></p>
+        <p class="badge badge-accent mt-4">Install demo · Codex</p>
+        <h1 class="mt-4 text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">Follow along: install REA, then read why the dinosaur speeds up</h1>
+        <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--color-muted)]">
+          This is a full install track on rea.run. The package pin is <code>rea-agents@6.4.0</code>. You ask questions and play the result. Codex explains the rule and writes the file. REA reads the script that is actually running. Chrome hosts the original game.
+        </p>
+        <p class="text-sm text-[var(--color-muted)]">
+          The target is the public page
+          <a href="https://wayou.github.io/t-rex-runner/">wayou’s t-rex-runner</a>,
+          a browser port of Chromium’s offline dinosaur (Chromium Authors, BSD). Analyze that page, or software you are authorized to inspect.
+          <a class="quiet-link" href="/compliance/">Compliance</a>
+        </p>
+
+        <h2 id="roles">Four roles</h2>
+        <div class="not-prose mt-4 grid gap-3 sm:grid-cols-2">
+          <div class="card !p-4"><p class="kicker">You</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">Create the practice folder, paste commands, open the result, try the buttons and the slider.</p></div>
+          <div class="card !p-4"><p class="kicker">Codex</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">Read the script REA returns, explain the rule, and write a one-file game.</p></div>
+          <div class="card !p-4"><p class="kicker">REA 6.4.0</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">Connects over MCP to the local debugging port, lists the page, and reads index.js. It does not approve setup for you.</p></div>
+          <div class="card !p-4"><p class="kicker">Chrome</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">Runs the original game from a separate profile on port 9222. A normal window has no analysis endpoint.</p></div>
+        </div>
+        <p>You finish with <code>dino-demo.html</code> in the practice folder: the dinosaur jumps, cacti arrive, the slider changes speed, and auto-accelerate climbs from 6.</p>
+
+        <h2 id="play">1. Play a round so you know the target</h2>
+        <p>In everyday Chrome, open the original game. Click the playfield, press Space to start, and press Space again to jump the cactus. A crash is fine — start another round. Notice the pace: the longer you last, the faster it feels. That is the question for Codex.</p>
+        <p>
+          Then open the upstream
+          <a href="https://rea.tools/examples/dino-lab/">dinosaur speed lab</a>
+          and try the end state:
+        </p>
+        <ul>
+          <li>Press Play, then jump the cactus.</li>
+          <li>Drag the speed slider and watch the cactus slow down or speed up. Dragging selects a fixed speed.</li>
+          <li>Turn on the recovered acceleration rule and the speed climbs again from 6. Dragging the slider returns you to a fixed speed.</li>
+          <li>Press Restart.</li>
+        </ul>
+        <p class="rail"><strong>Done when:</strong> you have played the original game and the official lab with a slider. The original is for the rule. The lab is the feel to compare against.</p>
+
+        <h2 id="node">2. Check Node</h2>
+        <p>Open a local folder in Codex. The chat and <code>dino-demo.html</code> stay there. A desktop folder named <code>rea-dino-practice</code> is enough.</p>
+        <p>The engines field on <code>rea-agents@6.4.0</code> is <code>^22.19.0 || ^24.11.0 || &gt;=26.0.0</code>. This track recommends <strong>24.x at 24.11 or newer</strong>. Node 22.19+ and 26+ also pass. Anything older stops setup before a plan exists.</p>
+        <div class="copy-row">
+          <pre class="code-well" id="en-node-cmd"><code>{nodeCmd}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#en-node-cmd" data-copied-label="Copied">Copy</button>
+        </div>
+        <p class="rail"><strong>Success:</strong> two version lines. For example <code>v24.11.0</code> or a newer 24, plus a working npm. <strong>Failure:</strong> <code>command not found</code>, or a version outside those three lines. Install the current Node 24 LTS from the <a href="https://nodejs.org/en/download">Node.js download page</a>, open a new terminal, and check again.</p>
+        <p>Outside that range, <code>--dry-run --json</code> returns <code>"status":"needs_human"</code> with an empty <code>plannedActions</code> array and a <code>remediation</code> that names the three Node lines. Switch Node before you run <code>--yes</code>.</p>
+
+        <h2 id="setup">3. Connect REA to Codex</h2>
+        <p>Read the plan first. This downloads 6.4.0, prints JSON, and does <strong>not</strong> write Codex config.</p>
+        <div class="copy-row">
+          <pre class="code-well" id="en-dry-run"><code>{dryRunCmd}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#en-dry-run" data-copied-label="Copied">Copy</button>
+        </div>
+        <p>On a supported Node, the status is <code>"status":"planned"</code>. <code>appliedActions</code> stays empty. <code>plannedActions</code> should include a Codex client registration and the matching skill. MCP is how Codex calls REA. The skill is the matching workflow note.</p>
+        <p>If the JSON is opaque, paste it to Codex with:</p>
+        <div class="copy-row">
+          <pre class="code-well" id="en-explain"><code>{explainPrompt}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#en-explain" data-copied-label="Copied">Copy</button>
+        </div>
+        <p>This exercise is a web script. Ghidra, Hopper, and IDA are not required. A plan that only says those engines are unconfigured is fine. Do not pass <code>--install-hopper</code>.</p>
+        <p>When the plan is acceptable, apply it:</p>
+        <div class="copy-row">
+          <pre class="code-well" id="en-apply"><code>{applyCmd}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#en-apply" data-copied-label="Copied">Copy</button>
+        </div>
+        <p class="rail">
+          <strong>Continue:</strong> <code>"status":"ready"</code>. Or <code>needs_human</code> whose remediation only says Hopper is optional for non-Hopper work — Codex registration and the skill are already written. Do <strong>not</strong> install Hopper for that message.
+          <strong>Stop:</strong> a non-zero exit, or a remediation about Node, directory permissions, a skill that could not be written, or a Codex config failure. Paste the JSON to Codex, fix it, and rerun.
+        </p>
+        <p>Quit Codex completely and open it again (Command + Q on macOS; do not only close the chat). Return to <code>rea-dino-practice</code> and the same chat so the new MCP registration loads.</p>
+        <p class="text-sm">Registration shape is upstream: <a href="https://github.com/morluto/rea/blob/main/docs/installation.md">docs/installation.md</a>. Client matrix: <a href="/docs/mcp-clients/">MCP clients</a>.</p>
+
+        <h2 id="chrome">4. Open the dinosaur page on a debugging port</h2>
+        <p>Back in the terminal, start Chrome with a <strong>separate profile</strong> and listen only on local port 9222. The page URL tells Codex which page to read. <code>http://127.0.0.1:9222</code> tells REA which browser to attach to.</p>
+        <h3>macOS</h3>
+        <div class="copy-row">
+          <pre class="code-well" id="en-chrome-mac"><code>{macChrome}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#en-chrome-mac" data-copied-label="Copied">Copy</button>
+        </div>
+        <h3>Linux</h3>
+        <p>If <code>google-chrome</code> is not on <code>PATH</code>, use <code>google-chrome-stable</code> or your Chromium binary. The upstream browser guide uses the same debugging flags.</p>
+        <div class="copy-row">
+          <pre class="code-well" id="en-chrome-linux"><code>{linuxChrome}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#en-chrome-linux" data-copied-label="Copied">Copy</button>
+        </div>
+        <h3>Windows (PowerShell)</h3>
+        <p>If Chrome is not under <code>Program Files</code>, point the command at the real <code>chrome.exe</code>.</p>
+        <div class="copy-row">
+          <pre class="code-well" id="en-chrome-win"><code>{winChrome}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#en-chrome-win" data-copied-label="Copied">Copy</button>
+        </div>
+        <p class="rail"><strong>Success:</strong> a new Chrome window opens on the dinosaur game. Leave that window and the terminal that launched it. A normal Chrome window does not expose port 9222. Connection notes: the <a href="https://rea.tools/guides/browser/">upstream browser guide</a> and <a href="https://github.com/morluto/rea/blob/main/docs/browser-observation.md">browser-observation.md</a>.</p>
+
+        <h2 id="ask">5. Ask Codex why it gets faster</h2>
+        <p>Return to the same Codex chat and send this whole block. The tool names are for Codex to call over MCP.</p>
+        <div class="copy-row">
+          <pre class="code-well" id="en-inspect"><code>{inspectPrompt}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#en-inspect" data-copied-label="Copied">Copy</button>
+        </div>
+        <p>The chat should show REA tool calls. The answer should cite a location in <code>index.js</code>. This turn needs three facts, each with a source:</p>
+        <ul>
+          <li>Speed starts at <strong>6</strong> (<code>SPEED</code>).</li>
+          <li>On an update without a collision, if current speed is below <code>MAX_SPEED</code>, the game adds <code>ACCELERATION</code>, which is <strong>0.001</strong>.</li>
+          <li>The cap check is <strong>13</strong>. The check happens before the add, so the last increment can land slightly above 13.</li>
+        </ul>
+        <p>An “update” here is one logic tick, not one wall-clock second. The upstream lab quotes the same branch:</p>
+        <pre><code>{ruleSnippet}</code></pre>
+        <p>The settings are <code>SPEED: 6</code>, <code>ACCELERATION: 0.001</code>, and <code>MAX_SPEED: 13</code>. If the reply only says “it gets faster”, send:</p>
+        <div class="copy-row">
+          <pre class="code-well" id="en-inspect-2"><code>{inspectFollowup}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#en-inspect-2" data-copied-label="Copied">Copy</button>
+        </div>
+        <p class="rail"><strong>Continue when:</strong> all three facts cite <code>index.js</code>, and code-read claims are separate from anything checked by running. You do not need to audit the file yourself yet.</p>
+
+        <h2 id="build">6. Build a version with a speed slider</h2>
+        <p>Stay in the same chat so Codex still has the rule it just read.</p>
+        <div class="copy-row">
+          <pre class="code-well" id="en-build"><code>{buildPrompt}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#en-build" data-copied-label="Copied">Copy</button>
+        </div>
+        <p>When it finishes, open <code>dino-demo.html</code> from the practice folder in Chrome. If the file is missing, or the tab shows source text, ask Codex for the absolute path and the open steps.</p>
+        <p>Once the page plays, try this order:</p>
+        <ol>
+          <li>Press Start. The cactus should move.</li>
+          <li>Press Space. The dinosaur should jump. If the page scrolls instead, send that symptom back to Codex.</li>
+          <li>Drag speed from 3 to 12. The cactus should get obviously faster, and the speed should stay fixed.</li>
+          <li>After a collision, press Restart and play again.</li>
+          <li>Turn on Auto-accelerate. The speed number should climb from 6.</li>
+        </ol>
+        <p>The picture does not have to match the <a href="https://rea.tools/examples/dino-lab/">official lab</a>. Buttons, jump, slider, restart, and auto-accelerate are this step. Auto-accelerate should be equivalent to:</p>
+        <pre><code>{advanceSnippet}</code></pre>
+        <p>The slider supplies a fixed speed. Drawing, jumping, and rectangle collision are new code. The simulation advances at 60 logic updates per second.</p>
+
+        <h2 id="verify">7. After it plays, check the arithmetic</h2>
+        <p>Playing proves the controls. This step proves the acceleration function matches the original rule at four checkpoints. You do not have to survive 10,000 updates by hand.</p>
+        <div class="copy-row">
+          <pre class="code-well" id="en-verify"><code>{verifyPrompt}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#en-verify" data-copied-label="Copied">Copy</button>
+        </div>
+        <div class="not-prose my-6 overflow-x-auto">
+          <table class="compare-table">
+            <thead><tr><th>Updates</th><th>Reference</th><th>What it means</th></tr></thead>
+            <tbody>
+              <tr><td>0</td><td>6.000</td><td>Start, before any add</td></tr>
+              <tr><td>1,000</td><td>7.000</td><td>+0.001 each update</td></tr>
+              <tr><td>4,000</td><td>10.000</td><td>Still under 13</td></tr>
+              <tr><td>10,000</td><td>13.001</td><td>Check-before-add, then float, lands just over 13</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Four matches mean those checkpoints agree. Collision and restart still depend on the play pass in step 6. When both pass, this track is done. Close the debugging Chrome window and keep the practice folder.</p>
+        <div
+          class="demo-shell not-prose"
+          data-speed-rule
+          data-pass="match"
+          data-fail="diff"
+          data-head="Updates|Reference|Replay|Result"
+        >
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p class="kicker">Replay on this page</p>
+              <p class="mt-1 text-sm text-[var(--color-muted)]">The browser applies <code>speed &lt; 13 ? speed + 0.001 : speed</code> starting at 6. It does not call REA, and it does not replace Codex checking your HTML.</p>
+            </div>
+            <button type="button" class="demo-btn" data-speed-run>Run check</button>
+          </div>
+          <div class="mt-4 overflow-x-auto" data-speed-out></div>
+        </div>
+
+        <h2 id="stuck">If you get stuck</h2>
+        <p>Paste the action and the raw output to Codex:</p>
+        <div class="copy-row">
+          <pre class="code-well" id="en-stuck"><code>{stuckPrompt}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#en-stuck" data-copied-label="Copied">Copy</button>
+        </div>
+        <ul>
+          <li><strong>command not found:</strong> Node or npm is missing. Install 24.11+ and open a new terminal.</li>
+          <li><strong>setup returns needs_human and mentions Node:</strong> the version is outside <code>^22.19.0 || ^24.11.0 || &gt;=26.0.0</code>. Switch, then dry-run again.</li>
+          <li><strong>No new Chrome window:</strong> paste the terminal output to Codex and say whether Chrome is installed and whether the binary path is right.</li>
+          <li><strong>Connection refused, or the game target is missing:</strong> the debugging Chrome must still be open on t-rex-runner at <code>http://127.0.0.1:9222</code>.</li>
+          <li><strong>Port 9222 is in use:</strong> pick another local port, change both the launch command and the address you send Codex, then start that Chrome again.</li>
+          <li><strong>Codex says it has no REA tools:</strong> confirm <code>--yes</code> wrote the config, and that Codex was fully quit and reopened.</li>
+          <li><strong>The new game opens but a control does nothing:</strong> say which control, what you did, and what appeared. Let Codex edit the file, then open it again.</li>
+        </ul>
+
+        <h2 id="next">After the dinosaur</h2>
+        <p>The same browser connection continues into the upstream Notes export: click Export notes, then ask what data the click fetched and how the download was built. Steps are in the <a href="https://rea.tools/guides/browser/">browser guide</a>. The page is <a href="https://rea.tools/examples/notes-web/">notes-web</a>.</p>
+        <p>Other authorized cases live on the <a href="/showcase/">showcase</a>. Install flags and engine limits stay on the <a href="/docs/install/">install guide</a> and the <a href="/blog/rea-agents-6-4-0/">6.4.0 ops note</a>.</p>
+
+        <h2 id="upstream">Upstream</h2>
+        <ul>
+          <li><a href="https://www.npmjs.com/package/rea-agents/v/6.4.0">npm: rea-agents@6.4.0</a></li>
+          <li><a href={SITE.upstreamRepo}>GitHub: morluto/rea</a></li>
+          <li><a href="https://rea.tools/examples/dino-lab/">rea.tools dinosaur speed lab</a></li>
+          <li><a href="https://wayou.github.io/t-rex-runner/">Public page under inspection</a></li>
+          <li><a href="https://github.com/morluto/rea/blob/main/docs/installation.md">Installation docs</a></li>
+          <li><a href="https://github.com/morluto/rea/blob/main/docs/browser-observation.md">Browser observation</a></li>
+          <li><a href="/compliance/">Compliance</a></li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</BaseLayout>

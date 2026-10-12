@@ -1,0 +1,273 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { SITE } from '../../../lib/site';
+
+const lang = 'zh' as const;
+const toc = [
+  { id: 'roles', label: '谁做什么' },
+  { id: 'play', label: '1 · 先玩一局' },
+  { id: 'node', label: '2 · 检查 Node' },
+  { id: 'setup', label: '3 · 接入 Codex' },
+  { id: 'chrome', label: '4 · 调试 Chrome' },
+  { id: 'ask', label: '5 · 查加速规则' },
+  { id: 'build', label: '6 · 做速度滑块' },
+  { id: 'verify', label: '7 · 核对数字' },
+  { id: 'stuck', label: '卡住了' },
+  { id: 'next', label: '接着练' },
+  { id: 'upstream', label: '上游' },
+];
+
+const nodeCmd = `node --version
+npm --version`;
+const dryRunCmd = `npx -y rea-agents@6.4.0 setup --client codex --dry-run --json`;
+const applyCmd = `npx -y rea-agents@6.4.0 setup --client codex --yes --json`;
+const macChrome = `REA_BROWSER_DIR=$(mktemp -d /tmp/rea-dino-browser.XXXXXX)
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \\
+  --remote-debugging-address=127.0.0.1 \\
+  --remote-debugging-port=9222 \\
+  --user-data-dir="$REA_BROWSER_DIR" \\
+  --no-first-run --no-default-browser-check \\
+  "https://wayou.github.io/t-rex-runner/"`;
+const linuxChrome = `REA_BROWSER_DIR=$(mktemp -d /tmp/rea-dino-browser.XXXXXX)
+google-chrome \\
+  --remote-debugging-address=127.0.0.1 \\
+  --remote-debugging-port=9222 \\
+  --user-data-dir="$REA_BROWSER_DIR" \\
+  --no-first-run --no-default-browser-check \\
+  "https://wayou.github.io/t-rex-runner/"`;
+const winChrome = `$dir = Join-Path $env:TEMP ("rea-dino-" + [guid]::NewGuid().ToString("N").Substring(0,8))
+New-Item -ItemType Directory -Force -Path $dir | Out-Null
+& "$env:ProgramFiles\\Google\\Chrome\\Application\\chrome.exe" \`
+  --remote-debugging-address=127.0.0.1 \`
+  --remote-debugging-port=9222 \`
+  --user-data-dir="$dir" \`
+  --no-first-run --no-default-browser-check \`
+  "https://wayou.github.io/t-rex-runner/"`;
+const explainPrompt = `请用普通话解释这份 REA setup JSON。确认它准备给 Codex 登记 REA 的 MCP，并安装配套 skill。指出失败项。Ghidra、Hopper、IDA 没装可以忽略，这次只做公开网页上的恐龙练习。不要执行会改配置的命令，除非我另外批准。`;
+const inspectPrompt = `使用 REA 调查这个恐龙页：https://wayou.github.io/t-rex-runner/。分析用的 Chrome 已经开着，调试地址是 http://127.0.0.1:9222。请先调用 list_browser_targets 找到这个页面，再调用 inspect_web_page，把 include_script_sources 打开，读取它加载的 index.js。用不用写代码也能听懂的话说明三件事：游戏从什么速度开始，怎样逐渐加速，什么时候停止加速。每条结论给出程序出处，并分开写哪些来自读到的代码、哪些经过运行检查。这一轮只查规则，先不要做新游戏。`;
+const inspectFollowup = `请把初始速度、加速方式、停止条件分成三条，用普通话解释。每条都附上你从 index.js 的哪里读到的。`;
+const buildPrompt = `根据刚才用 REA 读到的加速规则，在当前练习文件夹里创建 dino-demo.html，做一个浏览器能直接打开的恐龙小游戏。全部放在一个文件里，不要再装包，也不要下载素材。恐龙能跳，仙人掌从右边过来。提供中文按钮「开始」「跳跃」「重开」，空格也能跳，撞上后显示游戏结束。加一个范围 2 到 18 的速度滑块，旁边显示当前速度。拖动滑块时改用选定的固定速度。再提供「自动加速」选项，重新打开时从 6 开始。自动加速保留原游戏在没有碰撞的更新里的判断：speed < 13 时增加 0.001。新游戏每秒固定做 60 次逻辑更新。画面、跳跃和碰撞由你新写，并注明哪些采用了原游戏规则、哪些是新写的。写完后自己检查页面能否运行，告诉我文件的绝对路径，以及用 Chrome 打开的具体步骤。不要让我手改代码。`;
+const verifyPrompt = `请检查这次生成的 dino-demo.html 里、实际运行时用到的加速函数。从速度 6 开始，排除碰撞，分别计算 0、1000、4000、10000 次更新后的速度。结果保留三位小数，与 6.000、7.000、10.000、13.001 逐项比较。用表格告诉我是否一致，并说明你实际运行了什么。不一致就改完再查一遍。`;
+const stuckPrompt = `我在跟练 rea.run 的 Codex 恐龙安装演示，钉的是 rea-agents@6.4.0。刚才在【终端 / Codex / Chrome】做了【具体操作】，出现下面的输出：【粘贴】。请先解释原因，再给我下一步该在哪个窗口做、成功时会看到什么。这次只分析公开的恐龙页。`;
+const ruleSnippet = `if (this.currentSpeed < this.config.MAX_SPEED) {
+  this.currentSpeed += this.config.ACCELERATION;
+}`;
+const advanceSnippet = `function advanceSpeed(speed) {
+  return speed < 13 ? speed + 0.001 : speed;
+}`;
+---
+<BaseLayout
+  lang={lang}
+  title="安装演示：Codex 跟练恐龙加速 | rea.run"
+  description="钉死 rea-agents@6.4.0。检查 Node，把 REA 接到 Codex，用 Chrome 远程调试读公开恐龙页的加速规则，再做一个带速度滑块的网页小游戏并核对检查点。"
+  path="/docs/install-demo/"
+>
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <div class="docs-layout">
+      <aside class="docs-toc hidden md:block">
+        <p class="section-kicker mb-3">本页目录</p>
+        {toc.map((item) => <a href={`#${item.id}`}>{item.label}</a>)}
+      </aside>
+
+      <article class="prose-page">
+        <p class="text-sm"><a class="quiet-link" href="/zh/docs/install/">← 安装</a></p>
+        <p class="badge badge-accent mt-4">安装演示 · Codex</p>
+        <h1 class="mt-4 text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">跟练：装上 REA，读懂恐龙为什么越来越快</h1>
+        <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--color-muted)]">
+          这是 rea.run 的一条完整安装轨。版本钉死 <code>rea-agents@6.4.0</code>。你负责提问和试玩，Codex 负责解释和写文件，REA 负责读正在运行的脚本，Chrome 负责把原游戏跑起来。
+        </p>
+        <p class="text-sm text-[var(--color-muted)]">
+          目标是公开页面
+          <a href="https://wayou.github.io/t-rex-runner/">wayou 的 t-rex-runner</a>
+          （Chromium 离线恐龙的浏览器移植，Chromium Authors，BSD）。只分析这个公开页，或你有权检查的软件。
+          <a class="quiet-link" href="/zh/compliance/">合规</a>
+        </p>
+
+        <h2 id="roles">先分清四个角色</h2>
+        <div class="not-prose mt-4 grid gap-3 sm:grid-cols-2">
+          <div class="card !p-4"><p class="kicker">你</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">建练习文件夹，复制命令，打开结果，试按钮和滑块。</p></div>
+          <div class="card !p-4"><p class="kicker">Codex</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">读 REA 交回的脚本，用普通话解释规则，写出单文件小游戏。</p></div>
+          <div class="card !p-4"><p class="kicker">REA 6.4.0</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">经 MCP 连上本机调试端口，列出页面并读 index.js。不代替你批准 setup。</p></div>
+          <div class="card !p-4"><p class="kicker">Chrome</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">用独立用户目录和 9222 端口把原游戏跑起来。普通窗口没有这条分析入口。</p></div>
+        </div>
+        <p>做完你会得到练习文件夹里的 <code>dino-demo.html</code>：恐龙能跳，仙人掌会来，滑块能改速度，自动加速能从 6 慢慢爬升。</p>
+
+        <h2 id="play">1. 先玩一局，知道最后要做出什么</h2>
+        <p>用日常的 Chrome 打开原游戏。点游戏区域，按空格开始，再按空格跳过仙人掌。撞上了就再开一局。留意节奏：玩得越久，是不是越来越快？这就是后面要交给 Codex 的问题。</p>
+        <p>
+          再打开上游已经做好的
+          <a href="https://rea.tools/zh-CN/examples/dino-lab/">恐龙速度实验室</a>，对照最终手感：
+        </p>
+        <ul>
+          <li>点开始，再跳过仙人掌。</li>
+          <li>拖速度滑块，看仙人掌变慢还是变快。拖动之后走的是你选定的固定速度。</li>
+          <li>勾上恢复出来的加速规则，速度会从 6 重新自动加快；再拖滑块又回到固定速度。</li>
+          <li>点重新开始。</li>
+        </ul>
+        <p class="rail"><strong>这一步结束时：</strong>你玩过原游戏，也玩过带滑块的官方实验室。原游戏用来查规则，实验室用来对照效果。</p>
+
+        <h2 id="node">2. 检查 Node</h2>
+        <p>在 Codex 里打开一个本地文件夹，后面的提问和 <code>dino-demo.html</code> 都留在这里。桌面新建 <code>rea-dino-practice</code> 即可。</p>
+        <p><code>rea-agents@6.4.0</code> 的 engines 是 <code>^22.19.0 || ^24.11.0 || &gt;=26.0.0</code>。本轨推荐 <strong>24.x，且不低于 24.11</strong>。22.19+ 和 26+ 也能过检查。比这旧的 Node，setup 会直接停住。</p>
+        <div class="copy-row">
+          <pre class="code-well" id="zh-node-cmd"><code>{nodeCmd}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#zh-node-cmd" data-copied-label="已复制">复制</button>
+        </div>
+        <p class="rail"><strong>成功：</strong>两行版本号。例如 <code>v24.11.0</code> 或更高的 24，以及任意能用的 npm。<strong>失败：</strong><code>command not found</code>，或版本低于上面三条线。到 <a href="https://nodejs.org/en/download">Node.js 下载页</a>装 24 的当前 LTS，重新打开终端再查一次。</p>
+        <p>不在范围内时，<code>--dry-run --json</code> 会返回 <code>"status":"needs_human"</code>，<code>plannedActions</code> 为空，<code>remediation</code> 会点名这三条 Node 线。先换 Node，不要接着执行 <code>--yes</code>。</p>
+
+        <h2 id="setup">3. 把 REA 接到 Codex</h2>
+        <p>先只看计划。这条命令会下载 6.4.0，打印 JSON，<strong>不写</strong> Codex 配置。</p>
+        <div class="copy-row">
+          <pre class="code-well" id="zh-dry-run"><code>{dryRunCmd}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#zh-dry-run" data-copied-label="已复制">复制</button>
+        </div>
+        <p>支持的 Node 上，状态应是 <code>"status":"planned"</code>。<code>appliedActions</code> 仍为空。<code>plannedActions</code> 里应能看到针对 Codex 的客户端登记，以及配套 skill。MCP 是 Codex 调用 REA 的连接；skill 是配套用法说明。</p>
+        <p>JSON 看不懂就整段贴给 Codex，发：</p>
+        <div class="copy-row">
+          <pre class="code-well" id="zh-explain"><code>{explainPrompt}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#zh-explain" data-copied-label="已复制">复制</button>
+        </div>
+        <p>这次练习是网页脚本，不需要 Ghidra、Hopper 或 IDA。计划里如果只是说这些引擎没配置，可以忽略。不要加 <code>--install-hopper</code>。</p>
+        <p>计划可用之后，再真正写入：</p>
+        <div class="copy-row">
+          <pre class="code-well" id="zh-apply"><code>{applyCmd}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#zh-apply" data-copied-label="已复制">复制</button>
+        </div>
+        <p class="rail">
+          <strong>可以继续：</strong><code>"status":"ready"</code>。或者状态是 <code>needs_human</code>，但 remediation 只说 Hopper 对非 Hopper 分析是可选的——Codex 的登记和 skill 已经写上，<strong>不要</strong>为此再装 Hopper。
+          <strong>先停：</strong>非零退出，或 remediation 在说 Node、目录权限、skill 写不进去、Codex 配置失败。把 JSON 交给 Codex，修完再重跑。
+        </p>
+        <p>然后彻底退出 Codex 再打开（macOS 用 Command + Q，不要只关聊天窗口），回到 <code>rea-dino-practice</code> 和原来的聊天。这一步是为了加载刚登记的 MCP。</p>
+        <p class="text-sm">登记形状以上游为准：<a href="https://github.com/morluto/rea/blob/main/docs/installation.md">docs/installation.md</a>。客户端矩阵见 <a href="/zh/docs/mcp-clients/">MCP 客户端</a>。</p>
+
+        <h2 id="chrome">4. 用调试端口打开恐龙页</h2>
+        <p>回到终端，启动一个<strong>独立配置目录</strong>的 Chrome，只监听本机 9222。页面地址告诉 Codex「查哪一页」；<code>http://127.0.0.1:9222</code> 告诉 REA「连哪个浏览器」。</p>
+        <h3>macOS</h3>
+        <div class="copy-row">
+          <pre class="code-well" id="zh-chrome-mac"><code>{macChrome}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#zh-chrome-mac" data-copied-label="已复制">复制</button>
+        </div>
+        <h3>Linux</h3>
+        <p>可执行文件不在 <code>google-chrome</code> 时，改成 <code>google-chrome-stable</code> 或你本机的 Chromium 路径。上游浏览器指南用的是同一组调试参数。</p>
+        <div class="copy-row">
+          <pre class="code-well" id="zh-chrome-linux"><code>{linuxChrome}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#zh-chrome-linux" data-copied-label="已复制">复制</button>
+        </div>
+        <h3>Windows（PowerShell）</h3>
+        <p>Chrome 不在 <code>Program Files</code> 时，把 <code>chrome.exe</code> 换成实际路径。</p>
+        <div class="copy-row">
+          <pre class="code-well" id="zh-chrome-win"><code>{winChrome}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#zh-chrome-win" data-copied-label="已复制">复制</button>
+        </div>
+        <p class="rail"><strong>成功：</strong>新出现一个 Chrome 窗口，里面是恐龙游戏。保留这个窗口和启动它的终端。普通 Chrome 窗口没有 9222 这条入口。连接说明见 <a href="https://rea.tools/guides/browser/">上游浏览器指南</a>与 <a href="https://github.com/morluto/rea/blob/main/docs/browser-observation.md">browser-observation.md</a>。</p>
+
+        <h2 id="ask">5. 问 Codex：为什么越来越快</h2>
+        <p>回到同一个 Codex 聊天，整段发送。英文工具名是给 Codex 调用 MCP 的，不用改。</p>
+        <div class="copy-row">
+          <pre class="code-well" id="zh-inspect"><code>{inspectPrompt}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#zh-inspect" data-copied-label="已复制">复制</button>
+        </div>
+        <p>聊天里应出现 REA 工具调用。回答应带上 <code>index.js</code> 的位置。这一轮要落到三个数，并带出处：</p>
+        <ul>
+          <li>开始速度是 <strong>6</strong>（配置项 <code>SPEED</code>）。</li>
+          <li>没有碰撞的更新里，若当前速度低于 <code>MAX_SPEED</code>，就加上 <code>ACCELERATION</code>，增量是 <strong>0.001</strong>。</li>
+          <li>上限检查值是 <strong>13</strong>。判断发生在相加之前，所以最后一次增加可能略微越过 13。</li>
+        </ul>
+        <p>这里的「更新」是游戏推进一次逻辑，不是墙上时钟的一秒。上游实验室把同一分支写成：</p>
+        <pre><code>{ruleSnippet}</code></pre>
+        <p>设置是 <code>SPEED: 6</code>、<code>ACCELERATION: 0.001</code>、<code>MAX_SPEED: 13</code>。若回答只说「会变快」，或整段看不懂，再发：</p>
+        <div class="copy-row">
+          <pre class="code-well" id="zh-inspect-2"><code>{inspectFollowup}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#zh-inspect-2" data-copied-label="已复制">复制</button>
+        </div>
+        <p class="rail"><strong>可以进入下一步：</strong>三条规则都有 <code>index.js</code> 出处，并且分得清「代码里读到的」和「跑过的」。代码长什么样先不用自己核对。</p>
+
+        <h2 id="build">6. 做一个带速度滑块的版本</h2>
+        <p>继续用同一个聊天，这样 Codex 还拿着刚才的规则。</p>
+        <div class="copy-row">
+          <pre class="code-well" id="zh-build"><code>{buildPrompt}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#zh-build" data-copied-label="已复制">复制</button>
+        </div>
+        <p>写完后，在练习文件夹找到 <code>dino-demo.html</code>，用 Chrome 打开。找不到，或打开后只是源码文本，就告诉 Codex 文件的绝对路径和打开步骤。</p>
+        <p>网页能玩之后，按这个顺序试：</p>
+        <ol>
+          <li>点「开始」，仙人掌会动。</li>
+          <li>按空格，恐龙会跳。若页面跟着往下滚，把这个现象发回 Codex 修。</li>
+          <li>把速度从 3 拖到 12，仙人掌明显变快。此时应是固定速度，不再自动加。</li>
+          <li>撞上之后点「重开」，可以再玩。</li>
+          <li>打开「自动加速」，速度数字从 6 开始慢慢涨。</li>
+        </ol>
+        <p>画面不必和 <a href="https://rea.tools/zh-CN/examples/dino-lab/">官方实验室</a> 长得一样。按钮、跳跃、滑块、重开、自动加速这几项通了，就是这一步的结果。自动加速用的函数应等价于：</p>
+        <pre><code>{advanceSnippet}</code></pre>
+        <p>滑块提供固定速度。绘图、跳跃和矩形碰撞是新写的；模拟每秒 60 次逻辑更新。</p>
+
+        <h2 id="verify">7. 能玩之后，再核对有没有算对</h2>
+        <p>试玩证明按钮可用。这一步证明加速函数和原规则在四个检查点上一致。不用真的玩到第 10000 次更新。</p>
+        <div class="copy-row">
+          <pre class="code-well" id="zh-verify"><code>{verifyPrompt}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#zh-verify" data-copied-label="已复制">复制</button>
+        </div>
+        <div class="not-prose my-6 overflow-x-auto">
+          <table class="compare-table">
+            <thead><tr><th>更新次数</th><th>参考速度</th><th>含义</th></tr></thead>
+            <tbody>
+              <tr><td>0</td><td>6.000</td><td>起点，尚未加速</td></tr>
+              <tr><td>1,000</td><td>7.000</td><td>每次 +0.001</td></tr>
+              <tr><td>4,000</td><td>10.000</td><td>仍低于 13</td></tr>
+              <tr><td>10,000</td><td>13.001</td><td>相加前才检查，浮点后略超过 13</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>四组都对上，说明这些检查点的加速算对了。碰撞和重开仍以第 6 步的试玩为准。两项都过，这条跟练就完成了。关掉调试用的 Chrome，练习文件夹留着。</p>
+        <div
+          class="demo-shell not-prose"
+          data-speed-rule
+          data-pass="一致"
+          data-fail="不一致"
+          data-head="更新次数|参考值|本页重放|结果"
+        >
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <p class="kicker">本页重放</p>
+              <p class="mt-1 text-sm text-[var(--color-muted)]">浏览器里用同一条 <code>speed &lt; 13 ? speed + 0.001 : speed</code> 从 6 加起。不连接 REA，也不代替 Codex 对你那份 HTML 的检查。</p>
+            </div>
+            <button type="button" class="demo-btn" data-speed-run>跑检查</button>
+          </div>
+          <div class="mt-4 overflow-x-auto" data-speed-out></div>
+        </div>
+
+        <h2 id="stuck">卡住了</h2>
+        <p>把出错前的操作和原文贴给 Codex：</p>
+        <div class="copy-row">
+          <pre class="code-well" id="zh-stuck"><code>{stuckPrompt}</code></pre>
+          <button type="button" class="copy-btn" data-copy="#zh-stuck" data-copied-label="已复制">复制</button>
+        </div>
+        <ul>
+          <li><strong>command not found：</strong>缺 Node 或 npm。装好 24.11+ 后新开一个终端。</li>
+          <li><strong>setup 是 needs_human 且在说 Node：</strong>版本不在 <code>^22.19.0 || ^24.11.0 || &gt;=26.0.0</code>。换版本再 dry-run。</li>
+          <li><strong>没有新 Chrome 窗口：</strong>把终端输出交给 Codex，并说明 Chrome 是否已安装、可执行文件路径对不对。</li>
+          <li><strong>连接被拒绝，或找不到游戏：</strong>确认调试 Chrome 还开着，里面已经是 t-rex-runner，地址仍是 <code>http://127.0.0.1:9222</code>。</li>
+          <li><strong>9222 被占用：</strong>换一个本机端口，启动命令和发给 Codex 的地址一起改，然后重启那个 Chrome。</li>
+          <li><strong>Codex 说没有 REA 工具：</strong>确认 <code>--yes</code> 已经写过配置，并且 Codex 是完全退出后重新打开的。</li>
+          <li><strong>游戏打开了但按钮没反应：</strong>说清点了什么、出现了什么，让 Codex 改文件后再打开。</li>
+        </ul>
+
+        <h2 id="next">跑通之后还能看什么</h2>
+        <p>同一条浏览器连接可以接着看上游的 Notes 导出：点 Export notes，问点击之后取了什么数据、怎样生成下载。步骤在 <a href="https://rea.tools/guides/browser/">浏览器指南</a>，示例页是 <a href="https://rea.tools/examples/notes-web/">notes-web</a>。</p>
+        <p>想看别的已授权案例，去 <a href="/zh/showcase/">案例墙</a>。安装参数和引擎边界仍以 <a href="/zh/docs/install/">安装指南</a> 与 <a href="/zh/blog/rea-agents-6-4-0/">6.4.0 运维笔记</a> 为准。</p>
+
+        <h2 id="upstream">上游</h2>
+        <ul>
+          <li><a href="https://www.npmjs.com/package/rea-agents/v/6.4.0">npm：rea-agents@6.4.0</a></li>
+          <li><a href={SITE.upstreamRepo}>GitHub：morluto/rea</a></li>
+          <li><a href="https://rea.tools/zh-CN/examples/dino-lab/">rea.tools 恐龙速度实验室</a></li>
+          <li><a href="https://wayou.github.io/t-rex-runner/">被检查的公开页面</a></li>
+          <li><a href="https://github.com/morluto/rea/blob/main/docs/installation.md">安装文档</a></li>
+          <li><a href="https://github.com/morluto/rea/blob/main/docs/browser-observation.md">浏览器观察</a></li>
+          <li><a href="/zh/compliance/">合规</a></li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</BaseLayout>
