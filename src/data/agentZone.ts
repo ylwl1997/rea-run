@@ -25,8 +25,8 @@ export const AGENT_LEARNING_PATH: AgentLink[] = [
     href: '/docs/install-demo/',
     en: 'Codex install demo',
     zh: 'Codex 安装演示',
-    blurbEn: 'Pin rea-agents@6.4.0, Chrome CDP, dinosaur speed slider.',
-    blurbZh: '钉 rea-agents@6.4.0，Chrome CDP，恐龙速度滑块。',
+    blurbEn: 'Pin rea-agents 6.4.0, Chrome CDP, dinosaur speed slider.',
+    blurbZh: '钉 rea-agents 6.4.0，Chrome CDP，恐龙速度滑块。',
   },
   {
     href: '/docs/mcp-clients/',
