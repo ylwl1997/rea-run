@@ -90,10 +90,16 @@ const advanceSnippet = `function advanceSpeed(speed) {
           <div class="card !p-4"><p class="kicker">REA 6.4.0</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">经 MCP 连上本机调试端口，列出页面并读 index.js。不代替你批准 setup。</p></div>
           <div class="card !p-4"><p class="kicker">Chrome</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">用独立用户目录和 9222 端口把原游戏跑起来。普通窗口没有这条分析入口。</p></div>
         </div>
+        <figure class="step-figure">
+          <img src="/media/install-demo/zh/01-roles.jpg" alt="四个角色：你提问并试玩，Codex 解释规则并写新游戏，REA 读取游戏背后的程序，Chrome 运行原游戏。调试地址是 http://127.0.0.1:9222。" width="1199" height="675" loading="lazy" decoding="async" />
+        </figure>
         <p>做完你会得到练习文件夹里的 <code>dino-demo.html</code>：恐龙能跳，仙人掌会来，滑块能改速度，自动加速能从 6 慢慢爬升。</p>
 
         <h2 id="play">1. 先玩一局，知道最后要做出什么</h2>
         <p>用日常的 Chrome 打开原游戏。点游戏区域，按空格开始，再按空格跳过仙人掌。撞上了就再开一局。留意节奏：玩得越久，是不是越来越快？这就是后面要交给 Codex 的问题。</p>
+        <figure class="step-figure">
+          <img src="/media/install-demo/zh/02-original-game.jpg" alt="用 Chrome 打开的原恐龙游戏。点击游戏区域，按空格开始，再按空格跳过仙人掌。" width="1199" height="675" loading="lazy" decoding="async" />
+        </figure>
         <p>
           再打开上游已经做好的
           <a href="https://rea.tools/zh-CN/examples/dino-lab/">恐龙速度实验室</a>，对照最终手感：
@@ -104,9 +110,16 @@ const advanceSnippet = `function advanceSpeed(speed) {
           <li>勾上恢复出来的加速规则，速度会从 6 重新自动加快；再拖滑块又回到固定速度。</li>
           <li>点重新开始。</li>
         </ul>
+        <figure class="step-figure">
+          <img src="/media/install-demo/zh/03-official-lab.jpg" alt="官方恐龙实验室。依次点 Play 和 Jump，拖动 Speed 滑块，再点 Restart。勾选恢复出来的加速规则会从 6 重新加速。" width="1200" height="675" loading="lazy" decoding="async" />
+        </figure>
         <p class="rail"><strong>这一步结束时：</strong>你玩过原游戏，也玩过带滑块的官方实验室。原游戏用来查规则，实验室用来对照效果。</p>
 
         <h2 id="node">2. 检查 Node</h2>
+        <p>后面几节是四件事：练习文件夹、检查 Node、把 REA 接到 Codex，然后开一个调试用的 Chrome。</p>
+        <figure class="step-figure">
+          <img src="/media/install-demo/zh/04-four-actions.jpg" alt="四件准备：在 Codex 打开练习文件夹，在终端检查 node 和 npm，接入 REA 后重开 Codex，再用终端打开调试 Chrome。" width="1199" height="675" loading="lazy" decoding="async" />
+        </figure>
         <p>在 Codex 里打开一个本地文件夹，后面的提问和 <code>dino-demo.html</code> 都留在这里。桌面新建 <code>rea-dino-practice</code> 即可。</p>
         <p><code>rea-agents@6.4.0</code> 的 engines 是 <code>^22.19.0 || ^24.11.0 || &gt;=26.0.0</code>。本轨推荐 <strong>24.x，且不低于 24.11</strong>。22.19+ 和 26+ 也能过检查。比这旧的 Node，setup 会直接停住。</p>
         <div class="copy-row">
@@ -143,6 +156,9 @@ const advanceSnippet = `function advanceSpeed(speed) {
 
         <h2 id="chrome">4. 用调试端口打开恐龙页</h2>
         <p>回到终端，启动一个<strong>独立配置目录</strong>的 Chrome，只监听本机 9222。页面地址告诉 Codex「查哪一页」；<code>http://127.0.0.1:9222</code> 告诉 REA「连哪个浏览器」。</p>
+        <figure class="step-figure">
+          <img src="/media/install-demo/zh/05-debug-chrome.jpg" alt="终端启动监听 127.0.0.1:9222 的 Chrome，新窗口里是恐龙游戏。普通窗口没有这个调试入口。" width="1199" height="675" loading="lazy" decoding="async" />
+        </figure>
         <h3>macOS</h3>
         <div class="copy-row">
           <pre class="code-well" id="zh-chrome-mac"><code>{macChrome}</code></pre>
@@ -168,6 +184,9 @@ const advanceSnippet = `function advanceSpeed(speed) {
           <pre class="code-well" id="zh-inspect"><code>{inspectPrompt}</code></pre>
           <button type="button" class="copy-btn" data-copy="#zh-inspect" data-copied-label="已复制">复制</button>
         </div>
+        <figure class="step-figure">
+          <img src="/media/install-demo/zh/06-codex-prompt.jpg" alt="发给 Codex 的调查提示：用 REA 读取 index.js。三条结果是起始速度 6、每次增加 0.001、上限检查 13。" width="1000" height="585" loading="lazy" decoding="async" />
+        </figure>
         <p>聊天里应出现 REA 工具调用。回答应带上 <code>index.js</code> 的位置。这一轮要落到三个数，并带出处：</p>
         <ul>
           <li>开始速度是 <strong>6</strong>（配置项 <code>SPEED</code>）。</li>
@@ -176,6 +195,9 @@ const advanceSnippet = `function advanceSpeed(speed) {
         </ul>
         <p>这里的「更新」是游戏推进一次逻辑，不是墙上时钟的一秒。上游实验室把同一分支写成：</p>
         <pre><code>{ruleSnippet}</code></pre>
+        <figure class="step-figure">
+          <img src="/media/install-demo/zh/08-source-check.jpg" alt="原游戏 index.js 里的加速判断：当前速度低于上限时再加上加速度。先判断、后相加。" width="1199" height="675" loading="lazy" decoding="async" />
+        </figure>
         <p>设置是 <code>SPEED: 6</code>、<code>ACCELERATION: 0.001</code>、<code>MAX_SPEED: 13</code>。若回答只说「会变快」，或整段看不懂，再发：</p>
         <div class="copy-row">
           <pre class="code-well" id="zh-inspect-2"><code>{inspectFollowup}</code></pre>
@@ -198,6 +220,9 @@ const advanceSnippet = `function advanceSpeed(speed) {
           <li>撞上之后点「重开」，可以再玩。</li>
           <li>打开「自动加速」，速度数字从 6 开始慢慢涨。</li>
         </ol>
+        <figure class="step-figure">
+          <img src="/media/install-demo/zh/07-slider-game.jpg" alt="这次做出的单文件游戏，撞上仙人掌后暂停。按钮是开始、跳跃、重开，下面有速度滑块和自动加速。" width="1000" height="379" loading="lazy" decoding="async" />
+        </figure>
         <p>画面不必和 <a href="https://rea.tools/zh-CN/examples/dino-lab/">官方实验室</a> 长得一样。按钮、跳跃、滑块、重开、自动加速这几项通了，就是这一步的结果。自动加速用的函数应等价于：</p>
         <pre><code>{advanceSnippet}</code></pre>
         <p>滑块提供固定速度。绘图、跳跃和矩形碰撞是新写的；模拟每秒 60 次逻辑更新。</p>
@@ -219,6 +244,9 @@ const advanceSnippet = `function advanceSpeed(speed) {
             </tbody>
           </table>
         </div>
+        <figure class="step-figure">
+          <img src="/media/install-demo/zh/09-speed-table.jpg" alt="加速核对表。0、1000、4000、10000 次更新后的速度是 6.000、7.000、10.000、13.001，四行都一致。" width="1200" height="480" loading="lazy" decoding="async" />
+        </figure>
         <p>四组都对上，说明这些检查点的加速算对了。碰撞和重开仍以第 6 步的试玩为准。两项都过，这条跟练就完成了。关掉调试用的 Chrome，练习文件夹留着。</p>
         <div
           class="demo-shell not-prose"

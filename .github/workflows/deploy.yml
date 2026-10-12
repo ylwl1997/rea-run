@@ -2,7 +2,7 @@ name: Deploy to Cloudflare Pages
 
 on:
   push:
-    branches: [ main, cursor/codex-dino-install-demo-6073 ]
+    branches: [ main, cursor/codex-dino-install-demo-6073, cursor/install-demo-figures-61c5 ]
   workflow_dispatch:
 
 jobs:

@@ -90,10 +90,16 @@ const advanceSnippet = `function advanceSpeed(speed) {
           <div class="card !p-4"><p class="kicker">REA 6.4.0</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">Connects over MCP to the local debugging port, lists the page, and reads index.js. It does not approve setup for you.</p></div>
           <div class="card !p-4"><p class="kicker">Chrome</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">Runs the original game from a separate profile on port 9222. A normal window has no analysis endpoint.</p></div>
         </div>
+        <figure class="step-figure">
+          <img src="/media/install-demo/en/01-roles.jpg" alt="Four roles. You ask questions and play the result. Codex explains the rule and writes the new game. REA reads the program behind the game. Chrome runs the original game. Debug address http://127.0.0.1:9222." width="1199" height="675" loading="lazy" decoding="async" />
+        </figure>
         <p>You finish with <code>dino-demo.html</code> in the practice folder: the dinosaur jumps, cacti arrive, the slider changes speed, and auto-accelerate climbs from 6.</p>
 
         <h2 id="play">1. Play a round so you know the target</h2>
         <p>In everyday Chrome, open the original game. Click the playfield, press Space to start, and press Space again to jump the cactus. A crash is fine — start another round. Notice the pace: the longer you last, the faster it feels. That is the question for Codex.</p>
+        <figure class="step-figure">
+          <img src="/media/install-demo/en/02-original-game.jpg" alt="The original dinosaur game in Chrome. Click the game, press Space to start, and press Space again to jump the cactus." width="1199" height="675" loading="lazy" decoding="async" />
+        </figure>
         <p>
           Then open the upstream
           <a href="https://rea.tools/examples/dino-lab/">dinosaur speed lab</a>
@@ -105,9 +111,16 @@ const advanceSnippet = `function advanceSpeed(speed) {
           <li>Turn on the recovered acceleration rule and the speed climbs again from 6. Dragging the slider returns you to a fixed speed.</li>
           <li>Press Restart.</li>
         </ul>
+        <figure class="step-figure">
+          <img src="/media/install-demo/en/03-official-lab.jpg" alt="The official dinosaur lab. Three actions: press Play then Jump, drag the Speed slider, and press Restart. The checkbox reads Use the recovered acceleration rule." width="1200" height="675" loading="lazy" decoding="async" />
+        </figure>
         <p class="rail"><strong>Done when:</strong> you have played the original game and the official lab with a slider. The original is for the rule. The lab is the feel to compare against.</p>
 
         <h2 id="node">2. Check Node</h2>
+        <p>The next sections are four actions: the practice folder, a Node check, REA connected to Codex, then a debug Chrome window.</p>
+        <figure class="step-figure">
+          <img src="/media/install-demo/en/04-four-actions.jpg" alt="Four setup actions. Open the practice folder in Codex. Check node and npm in the terminal. Connect REA with rea-agents 6.4.0 and restart Codex. Open debug Chrome from the terminal." width="1199" height="675" loading="lazy" decoding="async" />
+        </figure>
         <p>Open a local folder in Codex. The chat and <code>dino-demo.html</code> stay there. A desktop folder named <code>rea-dino-practice</code> is enough.</p>
         <p>The engines field on <code>rea-agents@6.4.0</code> is <code>^22.19.0 || ^24.11.0 || &gt;=26.0.0</code>. This track recommends <strong>24.x at 24.11 or newer</strong>. Node 22.19+ and 26+ also pass. Anything older stops setup before a plan exists.</p>
         <div class="copy-row">
@@ -144,6 +157,9 @@ const advanceSnippet = `function advanceSpeed(speed) {
 
         <h2 id="chrome">4. Open the dinosaur page on a debugging port</h2>
         <p>Back in the terminal, start Chrome with a <strong>separate profile</strong> and listen only on local port 9222. The page URL tells Codex which page to read. <code>http://127.0.0.1:9222</code> tells REA which browser to attach to.</p>
+        <figure class="step-figure">
+          <img src="/media/install-demo/en/05-debug-chrome.jpg" alt="Terminal launch of Chrome with remote debugging on 127.0.0.1 port 9222, and a separate window open on the dinosaur game. A normal Chrome window has no debug endpoint." width="1199" height="675" loading="lazy" decoding="async" />
+        </figure>
         <h3>macOS</h3>
         <div class="copy-row">
           <pre class="code-well" id="en-chrome-mac"><code>{macChrome}</code></pre>
@@ -169,6 +185,9 @@ const advanceSnippet = `function advanceSpeed(speed) {
           <pre class="code-well" id="en-inspect"><code>{inspectPrompt}</code></pre>
           <button type="button" class="copy-btn" data-copy="#en-inspect" data-copied-label="Copied">Copy</button>
         </div>
+        <figure class="step-figure">
+          <img src="/media/install-demo/en/06-codex-prompt.jpg" alt="The Codex prompt: use REA on the dinosaur page at debug address 127.0.0.1:9222, read index.js, and report three facts. Speed starts at 6, adds 0.001 each update, and the cap check is 13." width="1199" height="675" loading="lazy" decoding="async" />
+        </figure>
         <p>The chat should show REA tool calls. The answer should cite a location in <code>index.js</code>. This turn needs three facts, each with a source:</p>
         <ul>
           <li>Speed starts at <strong>6</strong> (<code>SPEED</code>).</li>
@@ -177,6 +196,9 @@ const advanceSnippet = `function advanceSpeed(speed) {
         </ul>
         <p>An “update” here is one logic tick, not one wall-clock second. The upstream lab quotes the same branch:</p>
         <pre><code>{ruleSnippet}</code></pre>
+        <figure class="step-figure">
+          <img src="/media/install-demo/en/08-source-check.jpg" alt="The acceleration branch in index.js. If current speed is below MAX_SPEED, add ACCELERATION. The check runs before the add, which is why the last step can land just over 13." width="1199" height="675" loading="lazy" decoding="async" />
+        </figure>
         <p>The settings are <code>SPEED: 6</code>, <code>ACCELERATION: 0.001</code>, and <code>MAX_SPEED: 13</code>. If the reply only says “it gets faster”, send:</p>
         <div class="copy-row">
           <pre class="code-well" id="en-inspect-2"><code>{inspectFollowup}</code></pre>
@@ -199,6 +221,9 @@ const advanceSnippet = `function advanceSpeed(speed) {
           <li>After a collision, press Restart and play again.</li>
           <li>Turn on Auto-accelerate. The speed number should climb from 6.</li>
         </ol>
+        <figure class="step-figure">
+          <img src="/media/install-demo/en/07-slider-game.jpg" alt="The one-file game paused after a collision. Buttons read Start, Jump, and Restart. A speed slider shows 6.0. Auto-accelerate is available." width="1000" height="379" loading="lazy" decoding="async" />
+        </figure>
         <p>The picture does not have to match the <a href="https://rea.tools/examples/dino-lab/">official lab</a>. Buttons, jump, slider, restart, and auto-accelerate are this step. Auto-accelerate should be equivalent to:</p>
         <pre><code>{advanceSnippet}</code></pre>
         <p>The slider supplies a fixed speed. Drawing, jumping, and rectangle collision are new code. The simulation advances at 60 logic updates per second.</p>
@@ -220,6 +245,9 @@ const advanceSnippet = `function advanceSpeed(speed) {
             </tbody>
           </table>
         </div>
+        <figure class="step-figure">
+          <img src="/media/install-demo/en/09-speed-table.jpg" alt="Acceleration check table. After 0, 1000, 4000, and 10000 updates the speeds are 6.000, 7.000, 10.000, and 13.001. Each row matches." width="1200" height="480" loading="lazy" decoding="async" />
+        </figure>
         <p>Four matches mean those checkpoints agree. Collision and restart still depend on the play pass in step 6. When both pass, this track is done. Close the debugging Chrome window and keep the practice folder.</p>
         <div
           class="demo-shell not-prose"
