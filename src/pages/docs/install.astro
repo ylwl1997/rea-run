@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CommunityClip from '../../components/CommunityClip.astro';
 import { SITE } from '../../lib/site';
 const lang = 'en' as const;
 const toc = [
@@ -8,6 +9,7 @@ const toc = [
   { id: 'cli', label: 'Optional CLI' },
   { id: 'ghidra', label: 'Ghidra (BYO)' },
   { id: 'first', label: 'First question' },
+  { id: 'community-clip', label: 'Community clip' },
   { id: 'actions-demo', label: 'Actions demo' },
   { id: 'codespaces', label: 'Codespaces lab' },
   { id: 'related', label: 'Related guides' },
@@ -80,6 +82,25 @@ npx rea-agents@latest setup`}</code></pre>
         <p>After reconnecting the agent, give an <strong>absolute path</strong> to a target you may analyze and a specific question (entry points, export paths, a named feature). Prefer Evidence + unknowns over speculative narratives.</p>
 
 
+
+
+        <h2 id="community-clip">Community clip (status-bar remote vibe)</h2>
+        <p>
+          High-reach community demo of a status-bar air-conditioner remote. The original post
+          <strong>does not name REA</strong> — we host it as parallel inspiration for own-device remotes, not as a REA success claim.
+        </p>
+        <CommunityClip
+          lang="en"
+          src="/media/x-cases/icanberk-ac.gif.mp4"
+          poster="/media/x-cases/icanberk-poster.jpg"
+          kicker="Social proof · not REA-attributed"
+          title="AC status-bar remote (@icanberk)"
+          blurb="~1.07M views vibe clip. Honest label: source never claimed REA. See the REA-named toilet BLE case for an explicit Codex + REA twin."
+          href="/showcase/icanberk-ac-statusbar/"
+          hrefLabel="Open case card →"
+          attribution="Source: @icanberk · snapshot ~1.07M views / ~18.8k likes / ~5.9k bookmarks (2026-10-12)"
+          note="Own or authorized HVAC only. Do not fabricate REA attribution."
+        />
 
         <h2 id="actions-demo">GitHub Actions demo (no local install)</h2>
         <p>

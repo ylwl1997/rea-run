@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CommunityClip from '../components/CommunityClip.astro';
 import { SITE, pathFor } from '../lib/site';
 import { EXAMPLES } from '../data/examples';
 const lang = 'en' as const;
@@ -64,6 +65,21 @@ const puzzlePrompt =
         </div>
       </div>
     </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 pb-4">
+    <CommunityClip
+      lang="en"
+      src="/media/x-cases/icanberk-ac.gif.mp4"
+      poster="/media/x-cases/icanberk-poster.jpg"
+      kicker="Community social proof"
+      title="Status-bar AC remote vibe (~1M views)"
+      blurb="A viral own-device remote clip. The original X post does not name REA — we keep attribution honest and point you to REA-named twins on the showcase wall."
+      href="/showcase/icanberk-ac-statusbar/"
+      hrefLabel="Case card →"
+      attribution="@icanberk · self-hosted on rea.run · metrics snapshot 2026-10-12"
+      note="Parallel inspiration only — not a fabricated REA endorsement."
+    />
   </section>
 
   <!-- What is RE + interactive backoff lab -->

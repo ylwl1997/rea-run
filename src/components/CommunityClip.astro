@@ -1,0 +1,55 @@
+---
+/**
+ * Self-hosted community clip / social-proof video block.
+ * Never hotlink x.com media.
+ */
+interface Props {
+  lang?: 'en' | 'zh';
+  src: string;
+  poster?: string;
+  kicker: string;
+  title: string;
+  blurb: string;
+  href?: string;
+  hrefLabel?: string;
+  attribution: string;
+  note?: string;
+}
+const {
+  lang = 'en',
+  src,
+  poster,
+  kicker,
+  title,
+  blurb,
+  href,
+  hrefLabel,
+  attribution,
+  note,
+} = Astro.props;
+---
+<aside class="community-clip" data-lang={lang}>
+  <div class="community-clip-copy">
+    <p class="kicker">{kicker}</p>
+    <h2 class="community-clip-title">{title}</h2>
+    <p class="community-clip-blurb">{blurb}</p>
+    {note && <p class="community-clip-note">{note}</p>}
+    <p class="community-clip-attr">{attribution}</p>
+    {href && hrefLabel && (
+      <p class="mt-3">
+        <a href={href}>{hrefLabel}</a>
+      </p>
+    )}
+  </div>
+  <div class="community-clip-media">
+    <video
+      controls
+      playsinline
+      preload="metadata"
+      poster={poster}
+      src={src}
+    >
+      <a href={src}>Download video</a>
+    </video>
+  </div>
+</aside>

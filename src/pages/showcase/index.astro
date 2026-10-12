@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import CommunityClip from '../../components/CommunityClip.astro';
 import { publishedCases } from '../../data/showcase';
 import { pathFor } from '../../lib/site';
 const lang = 'en' as const;
@@ -20,6 +21,19 @@ const live = publishedCases();
         ratings, tags, and compliance notes stay on rea.run.
       </p>
     </header>
+
+    <CommunityClip
+      lang="en"
+      src="/media/x-cases/icanberk-ac.gif.mp4"
+      poster="/media/x-cases/icanberk-poster.jpg"
+      kicker="Featured community clip"
+      title="AC status-bar remote (REA not named in source)"
+      blurb="High-traffic vibe demo hosted on rea.run. Scroll the wall for REA-named cases like the toilet BLE remote and Claude Slides reverse."
+      href="/showcase/icanberk-ac-statusbar/"
+      hrefLabel="Open this case →"
+      attribution="@icanberk · ~1.07M views snapshot 2026-10-12 · not a REA attribution claim"
+      note="Self-hosted media — no X hotlink."
+    />
 
     <div class="mt-12 showcase-grid">
       {live.map((c) => {

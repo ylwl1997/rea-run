@@ -38,5 +38,4 @@ export const NAV = [
   { href: '/blog/', labelEn: 'Blog', labelZh: '博客' },
   { href: '/requests/', labelEn: 'Requests', labelZh: '需求广场' },
   { href: '/agents/', labelEn: 'Agent', labelZh: 'Agent' },
-  { href: '/life-process/', labelEn: 'Life Process', labelZh: '生命进程' },
 ] as const;

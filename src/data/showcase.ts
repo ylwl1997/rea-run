@@ -1,5 +1,6 @@
 import type { ShowcaseCase } from './showcaseTypes';
 import { SHOWCASE_GH_PROJECTS } from './showcaseGhProjects';
+import { SHOWCASE_X_CASES } from './showcaseXCases';
 export type {
   ShowcaseFootnote,
   ShowcaseRelation,
@@ -7,6 +8,9 @@ export type {
   ShowcaseRating,
   ShowcaseRelated,
   ShowcaseCase,
+  ShowcaseMedia,
+  ShowcaseMediaImage,
+  ShowcaseMediaVideo,
 } from './showcaseTypes';
 
 const SHOWCASE_CORE: ShowcaseCase[] = [
@@ -442,7 +446,7 @@ const SHOWCASE_CORE: ShowcaseCase[] = [
   },
 ];
 
-export const SHOWCASE_CASES: ShowcaseCase[] = [...SHOWCASE_CORE, ...SHOWCASE_GH_PROJECTS];
+export const SHOWCASE_CASES: ShowcaseCase[] = [...SHOWCASE_X_CASES, ...SHOWCASE_CORE, ...SHOWCASE_GH_PROJECTS];
 
 export function publishedCases() {
   return SHOWCASE_CASES.filter((c) => c.status === 'published');

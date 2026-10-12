@@ -1,0 +1,312 @@
+import type { ShowcaseCase } from './showcaseTypes';
+
+/**
+ * X / community clips burned into showcase (2026-10-12).
+ * Media is self-hosted under /media/x-cases/ — no x.com hotlinks.
+ * Public metrics are snapshot figures from the brief; date stamped.
+ */
+export const SHOWCASE_X_CASES: ShowcaseCase[] = [
+  {
+    id: 'thinkszyg-toilet-ble',
+    date: '2026-10-12',
+    status: 'published',
+    attributionEn:
+      'Community case · @thinkszyg on X · paraphrased on rea.run (not affiliated)',
+    attributionZh: '社区案例 · X 上 @thinkszyg · rea.run 改写收录（非官方合作）',
+    tags: ['x-case', 'bluetooth', 'wechat-miniprogram', 'codex', 'authorized-device'],
+    relation: 'case-study',
+    rating: {
+      score: 5,
+      labelEn: 'REA + Codex BLE remote (own device)',
+      labelZh: 'REA + Codex 蓝牙遥控器（自有设备）',
+      qualityEn: 'Clear REA+Codex story with demo video on authorized hardware.',
+      qualityZh: '清晰的 REA+Codex 故事，授权硬件演示视频。',
+      evidenceEn: 'Public X post + self-hosted clip; ~30 min vibe remote claim by author.',
+      evidenceZh: '公开 X 帖 + 站内托管片段；作者自称约半小时 vibe 遥控器。',
+      limitsEn: 'One creator’s workflow — not a universal BLE tutorial or product endorsement.',
+      limitsZh: '单创作者工作流——非通用蓝牙教程或产品背书。',
+      audienceEn: 'Builders with own smart-home devices and authorized miniprogram assets.',
+      audienceZh: '拥有自有智能家居设备与获准小程序资产的建造者。',
+    },
+    footnotes: [
+      {
+        label: '@thinkszyg · X status 2109309251533570509',
+        url: 'https://x.com/thinkszyg/status/2109309251533570509',
+      },
+    ],
+    media: {
+      video: {
+        src: '/media/x-cases/thinkszyg-toilet.mp4',
+        poster: '/media/x-cases/thinkszyg-poster.jpg',
+        captionEn:
+          'Author demo: desktop status-bar remote flipping a toilet lid over BLE (self-hosted; from @thinkszyg post).',
+        captionZh:
+          '作者演示：电脑状态栏经蓝牙遥控马桶翻盖（站内托管；源自 @thinkszyg 帖）。',
+      },
+    },
+    complianceEn:
+      'Lawful RE only: reverse protocols on devices and miniprogram assets you own or are authorized to analyze. Do not attack third-party accounts, DRM, or neighbors’ hardware. Demo is the author’s own setup.',
+    complianceZh:
+      '仅合法逆向：只在你拥有或获准分析的设备／小程序资产上还原协议。勿攻第三方账户、DRM 或他人硬件。演示为作者自有环境。',
+    related: [
+      { href: '/docs/install/', labelEn: 'Install REA', labelZh: '安装 REA' },
+      { href: '/faq/legal-boundary/', labelEn: 'Legal boundary', labelZh: '合法边界' },
+      { href: '/showcase/icanberk-ac-statusbar/', labelEn: 'Parallel vibe remote (AC)', labelZh: '并行 vibe 遥控（空调）' },
+    ],
+    en: {
+      title: 'Status-bar toilet remote: REA + Codex on a WeChat miniprogram BLE protocol',
+      summary:
+        '@thinkszyg used Codex + REA to reverse a WeChat miniprogram Bluetooth toilet protocol and vibe a native status-bar remote in ~30 minutes — own device demo.',
+      lede:
+        'A public X post shows what “agent + REA on hardware you already own” can look like: recover the BLE control path from a WeChat miniprogram, then ship a tiny desktop remote that opens/closes the lid from the menu bar.',
+      body: [
+        '## Public metrics (snapshot)',
+        '| Metric | Figure | Note |\n|---|---|---|\n| Views | ~10.9k | Author post at capture |\n| Likes | 52 | Snapshot 2026-10-12 |\n| Bookmarks | 47 | Snapshot 2026-10-12 |\n| Source | [@thinkszyg](https://x.com/thinkszyg/status/2109309251533570509) | Self-hosted clip on rea.run |',
+        '## What happened (paraphrase)',
+        'The author describes using **Codex + REA** to reverse the Bluetooth protocol exposed by a WeChat miniprogram that controls a smart toilet, then vibing a **native status-bar remote** in about half an hour so a laptop can flip the lid without opening the phone app.',
+        '## Steps you can mirror (authorized device only)',
+        '1. Confirm the toilet / hub / miniprogram assets are **yours** or written-authorized.\n2. Install REA into Codex (or another MCP host): `npx rea-agents@latest setup` — see [/docs/install/](/docs/install/).\n3. Point the agent at the miniprogram package / captured BLE traffic you are allowed to keep.\n4. Ask for Evidence: GATT services, characteristic UUIDs, write payloads for open/close — mark unknowns.\n5. Rebuild a minimal native remote (status-bar / menu-bar) that only sends the recovered writes.\n6. Verify on your hardware; do not publish secrets that unlock other people’s units.',
+        '## Checklist',
+        '- [ ] Ownership / authorization documented\n- [ ] REA doctor green on the host\n- [ ] Evidence cites concrete UUIDs / payloads (or honest unknowns)\n- [ ] Remote scoped to your device pairing\n- [ ] No DRM / account-bypass framing',
+        '## Why it is on rea.run',
+        'It is a concrete, lawful “own device + agent + REA” story with a watchable demo. We host the video ourselves so the case wall does not depend on X CDN.',
+      ],
+      takeaways: [
+        'Own-device BLE remotes are a legitimate REA teaching shape.',
+        'Demand Evidence (UUIDs, payloads) before shipping vibes.',
+        'Self-host community clips — never hotlink X media.',
+      ],
+    },
+    zh: {
+      title: '状态栏马桶遥控：用 REA + Codex 逆向微信小程序蓝牙协议',
+      summary:
+        '@thinkszyg 用 Codex + REA 逆向微信小程序蓝牙马桶协议，约半小时 vibe 出原生状态栏遥控器——自有设备演示。',
+      lede:
+        '一条公开 X 帖展示「智能体 + REA + 自有硬件」可以长什么样：从小程序还原蓝牙控制路径，再做出从菜单栏翻盖的桌面遥控器。',
+      body: [
+        '## 公开指标（快照）',
+        '| 指标 | 数字 | 说明 |\n|---|---|---|\n| 浏览 | ~10.9k | 抓取时作者帖 |\n| 赞 | 52 | 快照 2026-10-12 |\n| 书签 | 47 | 快照 2026-10-12 |\n| 来源 | [@thinkszyg](https://x.com/thinkszyg/status/2109309251533570509) | 视频由 rea.run 自托管 |',
+        '## 发生了什么（改写）',
+        '作者描述用 **Codex + REA** 逆向控制智能马桶的微信小程序蓝牙协议，再花约半小时 vibe 出一个**原生状态栏遥控器**，让电脑不必开手机 App 即可翻盖。',
+        '## 可镜像步骤（仅授权设备）',
+        '1. 确认马桶／网关／小程序资产为**自有**或书面授权。\n2. 在 Codex（或其他 MCP 宿主）安装 REA：`npx rea-agents@latest setup`——见 [/zh/docs/install/](/zh/docs/install/)。\n3. 把智能体指向你有权保留的小程序包／蓝牙抓包。\n4. 要 Evidence：GATT 服务、特征 UUID、开／关写入载荷——未知项标出。\n5. 重建极简原生遥控（状态栏／菜单栏），只发还原出的写入。\n6. 在自有硬件上核验；勿公开可解锁他人设备的密钥。',
+        '## 清单',
+        '- [ ] 所有权／授权已记录\n- [ ] 宿主上 REA doctor 绿灯\n- [ ] Evidence 引用具体 UUID／载荷（或诚实未知）\n- [ ] 遥控范围限于你的配对设备\n- [ ] 无 DRM／账户绕过叙事',
+        '## 为何收录',
+        '这是具体、合法的「自有设备 + 智能体 + REA」故事，且可观看。视频由本站托管，案例墙不依赖 X CDN。',
+      ],
+      takeaways: [
+        '自有设备蓝牙遥控是正当的 REA 教学形态。',
+        '发 vibes 前先要 Evidence（UUID、载荷）。',
+        '社区片段自托管——勿热链 X 媒体。',
+      ],
+    },
+  },
+  {
+    id: 'dotey-claude-slides',
+    date: '2026-10-12',
+    status: 'published',
+    attributionEn:
+      'Community case · @dotey on X · paraphrased on rea.run (not affiliated)',
+    attributionZh: '社区案例 · X 上 @dotey · rea.run 改写收录（非官方合作）',
+    tags: ['x-case', 'javascript', 'claude-slides', 'codex', 'obfuscation'],
+    relation: 'case-study',
+    rating: {
+      score: 5,
+      labelEn: 'REA Skill reverse of Claude Slides',
+      labelZh: '用 REA Skill 逆向 Claude Slides',
+      qualityEn: 'High-engagement walkthrough with clear install → reverse steps and screenshots.',
+      qualityZh: '高互动图文：安装 → 逆向步骤清晰，含截图。',
+      evidenceEn: 'Public X thread + four self-hosted screenshots; author names REA explicitly.',
+      evidenceZh: '公开 X 帖 + 四张站内截图；作者明确点名 REA。',
+      limitsEn: 'Author’s session on assets they chose to inspect — not a license to crack third-party SaaS DRM.',
+      limitsZh: '作者对其选择检视之资产的会话——并非破解第三方 SaaS DRM 的许可。',
+      audienceEn: 'Builders studying obfuscated front-end editors they are authorized to analyze.',
+      audienceZh: '研究获准分析的混淆前端编辑器的建造者。',
+    },
+    footnotes: [
+      {
+        label: '@dotey · X status 2109151666020794711',
+        url: 'https://x.com/dotey/status/2109151666020794711',
+      },
+    ],
+    media: {
+      images: [
+        {
+          src: '/media/x-cases/dotey-HUUy907WkAAijNk.jpg',
+          altEn: 'Step context from @dotey Claude Slides reverse thread (1/4)',
+          altZh: '@dotey Claude Slides 逆向帖步骤语境（1/4）',
+        },
+        {
+          src: '/media/x-cases/dotey-HUUyueaWEAI3toM.jpg',
+          altEn: 'Step context from @dotey Claude Slides reverse thread (2/4)',
+          altZh: '@dotey Claude Slides 逆向帖步骤语境（2/4）',
+        },
+        {
+          src: '/media/x-cases/dotey-HUUzbPCXkAAoJUl.jpg',
+          altEn: 'Step context from @dotey Claude Slides reverse thread (3/4)',
+          altZh: '@dotey Claude Slides 逆向帖步骤语境（3/4）',
+        },
+        {
+          src: '/media/x-cases/dotey-HUU2D_4WcAAM2DJ.jpg',
+          altEn: 'Step context from @dotey Claude Slides reverse thread (4/4)',
+          altZh: '@dotey Claude Slides 逆向帖步骤语境（4/4）',
+        },
+      ],
+    },
+    complianceEn:
+      'Lawful RE only on software and copies you are authorized to analyze. Reconstructing editor behavior for learning is not permission to pirate, bypass billing, or redistribute proprietary assets.',
+    complianceZh:
+      '仅对你有权分析的软件与副本做合法逆向。为学习还原编辑器行为，不等于可盗版、绕过计费或再分发专有资产。',
+    related: [
+      { href: '/docs/install/', labelEn: 'Install REA', labelZh: '安装 REA' },
+      { href: '/blog/agent-reverse-engineering-mcp/', labelEn: 'Agent + MCP overview', labelZh: '智能体 + MCP 概览' },
+      { href: '/faq/legal-boundary/', labelEn: 'Legal boundary', labelZh: '合法边界' },
+    ],
+    en: {
+      title: 'Almost-complete Claude Slides editor: REA Skill reverse with Codex',
+      summary:
+        '@dotey reports using REA to reverse nearly the full Claude Slides editor — download scripts/styles, install REA via Codex, then REA Skill on obfuscated code.',
+      lede:
+        'A widely bookmarked X walkthrough names REA explicitly: pull the Slides front-end artifacts, wire REA into Codex, and let a REA Skill chew through obfuscated editor code toward a working reconstruction.',
+      body: [
+        '## Public metrics (snapshot)',
+        '| Metric | Figure | Note |\n|---|---|---|\n| Views | ~71k | Author post at capture |\n| Likes | 676 | Snapshot 2026-10-12 |\n| Bookmarks | 999 | Snapshot 2026-10-12 |\n| Reposts | 103 | Snapshot 2026-10-12 |\n| Source | [@dotey](https://x.com/dotey/status/2109151666020794711) | Four screenshots self-hosted |',
+        '## Four-step flow (as described by the author)',
+        '| Step | Action |\n|---|---|\n| 1 | Download the editor’s scripts and styles |\n| 2 | Install REA through Codex (`npx rea-agents… setup` pattern) |\n| 3 | Run a REA Skill against the obfuscated code |\n| 4 | Iterate until the reconstructed editor covers nearly full functionality |',
+        '## Operator checklist (authorized copies only)',
+        '1. Confirm you may keep and analyze the downloaded assets.\n2. Pin a reproducible `rea-agents` version after setup.\n3. Ask the agent for Evidence on module boundaries, not vibes alone.\n4. Keep proprietary blobs out of public repos unless license allows.\n5. Cross-link findings to your own rebuild tests.',
+        '## Screenshots',
+        'The four images below are self-hosted copies from the public thread (for case archival). See the original post for full context and any updates from the author.',
+        '## Why it is on rea.run',
+        'High-signal community proof that people already pair Codex + REA Skill on messy front-end packages — with steps others can audit, not a crack script dump.',
+      ],
+      takeaways: [
+        'Author-named REA + Codex Skill path on obfuscated JS.',
+        'Steps: fetch assets → setup REA → Skill reverse → verify rebuild.',
+        'Authorization and redistribution limits still apply.',
+      ],
+    },
+    zh: {
+      title: '几乎完整的 Claude Slides 编辑器：Codex + REA Skill 逆向',
+      summary:
+        '@dotey 称用 REA 逆向出 Claude Slides 编辑器几乎完整功能——下载脚本样式、经 Codex 装 REA，再用 REA Skill 啃混淆代码。',
+      lede:
+        '一条高收藏 X 图文明确点名 REA：拉下 Slides 前端制品，把 REA 接进 Codex，再让 REA Skill 处理混淆编辑器代码，逼近可工作的重建。',
+      body: [
+        '## 公开指标（快照）',
+        '| 指标 | 数字 | 说明 |\n|---|---|---|\n| 浏览 | ~71k | 抓取时作者帖 |\n| 赞 | 676 | 快照 2026-10-12 |\n| 书签 | 999 | 快照 2026-10-12 |\n| 转发 | 103 | 快照 2026-10-12 |\n| 来源 | [@dotey](https://x.com/dotey/status/2109151666020794711) | 四张截图站内托管 |',
+        '## 四步流程（按作者描述）',
+        '| 步骤 | 动作 |\n|---|---|\n| 1 | 下载编辑器的脚本与样式 |\n| 2 | 经 Codex 安装 REA（`npx rea-agents… setup` 一类） |\n| 3 | 对混淆代码跑 REA Skill |\n| 4 | 迭代至重建编辑器覆盖几乎完整功能 |',
+        '## 运维清单（仅授权副本）',
+        '1. 确认你可以保留并分析下载资产。\n2. setup 后钉可复现的 `rea-agents` 版本。\n3. 向智能体要模块边界 Evidence，而非仅 vibes。\n4. 除非许可允许，勿把专有 blob 推进公开仓。\n5. 把发现交叉到你自己的重建测试。',
+        '## 截图',
+        '下方四图为公开帖的站内存档副本。完整语境与作者后续更新请看原帖。',
+        '## 为何收录',
+        '高信号社区证明：人们已在脏前端包上组合 Codex + REA Skill——步骤可审计，不是破解脚本倾倒。',
+      ],
+      takeaways: [
+        '作者点名的 REA + Codex Skill 混淆 JS 路径。',
+        '步骤：拉资产 → 装 REA → Skill 逆向 → 核验重建。',
+        '授权与再分发限制仍然成立。',
+      ],
+    },
+  },
+  {
+    id: 'icanberk-ac-statusbar',
+    date: '2026-10-12',
+    status: 'published',
+    attributionEn:
+      'Community vibe-remote case · @icanberk on X · original post does NOT name REA — parallel inspiration only',
+    attributionZh:
+      '社区 vibe 遥控案例 · X 上 @icanberk · 原帖未点名 REA——仅作并行灵感／同类场景',
+    tags: ['x-case', 'vibe-remote', 'status-bar', 'community', 'not-rea-attributed'],
+    relation: 'demo',
+    rating: {
+      score: 4,
+      labelEn: 'Parallel vibe remote (REA not claimed)',
+      labelZh: '并行 vibe 遥控（未声称 REA）',
+      qualityEn: 'Huge reach status-bar AC demo; honest non-attribution to REA.',
+      qualityZh: '高曝光状态栏空调演示；诚实不把功劳算给 REA。',
+      evidenceEn: 'Public X post + self-hosted short clip; author did not mention REA.',
+      evidenceZh: '公开 X 帖 + 站内短片；作者未提及 REA。',
+      limitsEn: 'Not a REA tutorial. Do not invent “built with REA” attribution.',
+      limitsZh: '不是 REA 教程。禁止伪造「用 REA 做的」归因。',
+      audienceEn: 'Anyone studying status-bar remotes / own HVAC integrations.',
+      audienceZh: '研究状态栏遥控／自有暖通集成的人。',
+    },
+    footnotes: [
+      {
+        label: '@icanberk · X status 2109031477484937571 (does not name REA)',
+        url: 'https://x.com/icanberk/status/2109031477484937571',
+      },
+    ],
+    media: {
+      video: {
+        src: '/media/x-cases/icanberk-ac.gif.mp4',
+        poster: '/media/x-cases/icanberk-poster.jpg',
+        captionEn:
+          'Short community clip: AC status-bar remote vibe (self-hosted). Original post does not name REA.',
+        captionZh:
+          '社区短片：空调状态栏遥控 vibe（站内托管）。原帖未点名 REA。',
+      },
+    },
+    complianceEn:
+      'Own or authorized HVAC / IoT only. This card is social-proof of the status-bar remote pattern, not an REA success claim and not a guide to attack third-party systems.',
+    complianceZh:
+      '仅限自有或授权的暖通／物联网。本卡是状态栏遥控模式的社会证明，不是 REA 成功声明，也不是攻击第三方系统的指南。',
+    related: [
+      { href: '/showcase/thinkszyg-toilet-ble/', labelEn: 'REA-named BLE toilet remote', labelZh: '点名 REA 的蓝牙马桶遥控' },
+      { href: '/docs/install/', labelEn: 'Install REA (if you choose it)', labelZh: '安装 REA（若你选择用）' },
+      { href: '/faq/legal-boundary/', labelEn: 'Legal boundary', labelZh: '合法边界' },
+    ],
+    en: {
+      title: 'AC status-bar remote: high-reach vibe demo (REA not named in source)',
+      summary:
+        '@icanberk’s AC status-bar clip hit ~1M views. The original post does not mention REA — we file it as parallel community inspiration for own-device remotes.',
+      lede:
+        'Not every viral reverse-and-vibe remote was built with REA. This card keeps the attribution honest: a popular status-bar air-conditioner control demo, hosted here as a parallel scene beside REA-named cases.',
+      body: [
+        '## Attribution honesty (read first)',
+        'The source post **does not name REA**. rea.run must not fabricate “built with REA.” We present it as **community RE / vibe-remote inspiration** in the same product shape as other own-device status-bar remotes.',
+        '## Public metrics (snapshot)',
+        '| Metric | Figure | Note |\n|---|---|---|\n| Views | ~1.07M | Author post at capture |\n| Likes | ~18.8k | Snapshot 2026-10-12 |\n| Bookmarks | ~5.9k | Snapshot 2026-10-12 |\n| Source | [@icanberk](https://x.com/icanberk/status/2109031477484937571) | Self-hosted clip; **no REA claim** |',
+        '## What you can learn anyway',
+        '1. Status-bar / menu-bar remotes are a sticky UX for home devices.\n2. Short silent clips travel far as social proof.\n3. When you *do* use REA on your own AC bridge / app, follow the same legal boundary as our toilet BLE case: own device, Evidence first, no third-party attacks.',
+        '## If you want a REA-named twin',
+        'See [@thinkszyg toilet BLE remote](/showcase/thinkszyg-toilet-ble/) where the author **does** name Codex + REA.',
+        '## Compliance reminder',
+        'Control only equipment you own or are authorized to automate. Do not scrape or attack vendor clouds without permission.',
+      ],
+      takeaways: [
+        'High reach ≠ REA attribution — label sources honestly.',
+        'Useful as parallel inspiration next to REA-named cases.',
+        'Own-device remotes still need authorization discipline.',
+      ],
+    },
+    zh: {
+      title: '空调状态栏遥控：高曝光 vibe 演示（来源未点名 REA）',
+      summary:
+        '@icanberk 的空调状态栏短片约 100 万浏览。原帖未提 REA——我们收录为自有设备遥控的并行社区灵感。',
+      lede:
+        '并非每条爆款「逆向 + vibe 遥控」都用了 REA。本卡诚实归因：热门状态栏空调控制演示，作为与点名 REA 案例并列的同类场景托管于此。',
+      body: [
+        '## 归因诚实（先读）',
+        '来源帖**未点名 REA**。rea.run 不得伪造「用 REA 做的」。我们将其列为**社区逆向／vibe 遥控灵感**，产品形态与其他自有设备状态栏遥控相近。',
+        '## 公开指标（快照）',
+        '| 指标 | 数字 | 说明 |\n|---|---|---|\n| 浏览 | ~1.07M | 抓取时作者帖 |\n| 赞 | ~18.8k | 快照 2026-10-12 |\n| 书签 | ~5.9k | 快照 2026-10-12 |\n| 来源 | [@icanberk](https://x.com/icanberk/status/2109031477484937571) | 站内短片；**无 REA 声称** |',
+        '## 仍可学到什么',
+        '1. 状态栏／菜单栏遥控对家居设备很粘人。\n2. 无声短片作为社会证明传播力强。\n3. 当你**确实**对自有空调网桥／App 使用 REA 时，边界与马桶蓝牙案例相同：自有设备、先 Evidence、不攻第三方。',
+        '## 若要找点名 REA 的孪生案例',
+        '见 [@thinkszyg 马桶蓝牙遥控](/zh/showcase/thinkszyg-toilet-ble/)，作者**明确**写了 Codex + REA。',
+        '## 合规提醒',
+        '只控制你拥有或获准自动化的设备。未经许可勿抓取或攻击厂商云。',
+      ],
+      takeaways: [
+        '高曝光 ≠ REA 归因——来源要老实标注。',
+        '可作为点名 REA 案例旁的并行灵感。',
+        '自有设备遥控仍要授权纪律。',
+      ],
+    },
+  },
+];

@@ -69,6 +69,30 @@ const ghUrl = c.github?.url;
       </div>
     </div>
 
+    {c.media?.video && (
+      <figure class="showcase-media mt-8">
+        <video
+          controls
+          playsinline
+          preload="metadata"
+          poster={c.media.video.poster}
+          src={c.media.video.src}
+        ></video>
+        <figcaption>{c.media.video.captionEn}</figcaption>
+      </figure>
+    )}
+
+    {c.media?.images && c.media.images.length > 0 && (
+      <div class="showcase-media-grid mt-8">
+        {c.media.images.map((img) => (
+          <figure>
+            <img src={img.src} alt={img.altEn} loading="lazy" />
+            <figcaption>{img.altEn}</figcaption>
+          </figure>
+        ))}
+      </div>
+    )}
+
     <div class="prose-page mt-8" set:html={html} />
 
     {c.complianceEn && (

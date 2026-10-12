@@ -39,6 +39,25 @@ export type ShowcaseRating = {
 
 export type ShowcaseRelated = { href: string; labelEn: string; labelZh: string };
 
+/** Self-hosted media under /public (no X hotlinks). */
+export type ShowcaseMediaImage = {
+  src: string;
+  altEn: string;
+  altZh: string;
+};
+
+export type ShowcaseMediaVideo = {
+  src: string;
+  poster?: string;
+  captionEn: string;
+  captionZh: string;
+};
+
+export type ShowcaseMedia = {
+  video?: ShowcaseMediaVideo;
+  images?: ShowcaseMediaImage[];
+};
+
 export type ShowcaseCase = {
   id: string;
   date: string;
@@ -54,6 +73,8 @@ export type ShowcaseCase = {
   complianceEn?: string;
   complianceZh?: string;
   related?: ShowcaseRelated[];
+  /** Self-hosted clips / screenshots (public/media/…) */
+  media?: ShowcaseMedia;
   en: {
     title: string;
     summary: string;
