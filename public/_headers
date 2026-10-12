@@ -1,0 +1,14 @@
+/
+  Cache-Control: public, max-age=0, must-revalidate
+/zh/
+  Cache-Control: public, max-age=0, must-revalidate
+/life-process
+  Cache-Control: public, max-age=0, must-revalidate
+/life-process/*
+  Cache-Control: public, max-age=0, must-revalidate
+/zh/life-process
+  Cache-Control: public, max-age=0, must-revalidate
+/zh/life-process/*
+  Cache-Control: public, max-age=0, must-revalidate
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate

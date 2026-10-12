@@ -1,0 +1,7 @@
+# Life Process taken down 2026-10-12 — keep URLs from hanging on stale edge HTML
+/life-process /showcase/ 301
+/life-process/ /showcase/ 301
+/life-process/* /showcase/ 301
+/zh/life-process /zh/showcase/ 301
+/zh/life-process/ /zh/showcase/ 301
+/zh/life-process/* /zh/showcase/ 301
