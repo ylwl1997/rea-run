@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import AegisClock from '../../../components/showcase/AegisClock.astro';
 import { getShowcase, publishedCases } from '../../../data/showcase';
 import { pathFor } from '../../../lib/site';
 import { renderBody } from '../../../lib/render';
@@ -82,6 +83,8 @@ const ghUrl = c.github?.url;
       </div>
     </div>
 
+    {c.id === 'aegis-totp' && <AegisClock lang="zh" />}
+
     {c.media?.video && c.media.video.frame !== 'portrait' && (
       <figure class="showcase-media mt-8">
         <video
@@ -96,10 +99,10 @@ const ghUrl = c.github?.url;
     )}
 
     {c.media?.images && c.media.images.length > 0 && (
-      <div class="showcase-media-grid mt-8">
+      <div class:list={['showcase-media-grid mt-8', c.media.images.length === 1 && 'is-single']}>
         {c.media.images.map((img) => (
           <figure>
-            <img src={img.src} alt={img.altZh} loading="lazy" />
+            <img src={img.srcZh ?? img.src} alt={img.altZh} loading="lazy" />
             <figcaption>{img.altZh}</figcaption>
           </figure>
         ))}

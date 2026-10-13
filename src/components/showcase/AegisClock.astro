@@ -1,0 +1,64 @@
+---
+interface Props {
+  lang: 'en' | 'zh';
+}
+const { lang } = Astro.props;
+const zh = lang === 'zh';
+const presets = [0, 30, 59, 60, 90, 120];
+---
+<section id="aegis-clock" class="aegis-clock" data-aegis-demo data-locale={lang}>
+  <p class="kicker">{zh ? '可调时钟' : 'Adjustable clock'}</p>
+  <h2 class="aegis-clock-title">
+    {zh ? '同一密钥，时间块一变，验证码就变' : 'Same key, next time block, next code'}
+  </h2>
+  <p class="aegis-clock-note">
+    {
+      zh
+        ? '密钥是 RFC 6238 的公开测试串，不是任何账户种子。演示按发行版 APK 里还原出的规则计算：30 秒一块、HMAC-SHA1、默认六位。'
+        : 'The key is the public RFC 6238 test string, not an account seed. The demo runs the rule recovered from the release APK: 30-second blocks, HMAC-SHA1, six digits by default.'
+    }
+  </p>
+  <label class="aegis-clock-slider">
+    <span>
+      {zh ? '示例时间' : 'Example time'}
+      {' '}
+      <strong data-aegis-seconds>59</strong>
+      {zh ? ' 秒' : ' seconds'}
+    </span>
+    <input type="range" min="0" max="120" value="59" step="1" disabled aria-valuemin="0" aria-valuemax="120" aria-valuenow="59" />
+  </label>
+  <div class="aegis-clock-presets">
+    {presets.map((n) => (
+      <button type="button" data-aegis-time={String(n)} disabled>{n}</button>
+    ))}
+  </div>
+  <ol class="aegis-clock-steps">
+    <li>
+      <span>01</span>
+      <p>{zh ? '时间' : 'Time'}</p>
+      <strong><span data-aegis-seconds>59</span> {zh ? '秒' : 's'}</strong>
+    </li>
+    <li>
+      <span>02</span>
+      <p>{zh ? '30 秒时间块' : '30-second block'}</p>
+      <strong data-aegis-block>1</strong>
+      <code data-aegis-division>floor(59 / 30)</code>
+      <small data-aegis-window>{zh ? '30–59 秒' : '30–59 seconds'}</small>
+    </li>
+    <li>
+      <span>03</span>
+      <p>{zh ? '六位验证码' : 'Six-digit code'}</p>
+      <strong class="aegis-code" data-aegis-code>287082</strong>
+    </li>
+  </ol>
+  <p class="aegis-clock-status" data-aegis-status>
+    {zh ? '未启用 JavaScript 时，图中是 59 秒的结果。' : 'Without JavaScript, the figure shows the result at 59 seconds.'}
+  </p>
+  <div class="aegis-clock-check">
+    <button type="button" data-aegis-check disabled>
+      {zh ? '用 RFC 6238 向量核对' : 'Check against RFC 6238 vectors'}
+    </button>
+    <p data-aegis-check-result></p>
+  </div>
+</section>
+<script is:inline type="module" src="/scripts/showcase/aegis-demo.js"></script>
