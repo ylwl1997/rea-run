@@ -7,6 +7,117 @@ import type { ShowcaseCase } from './showcaseTypes';
  */
 export const SHOWCASE_X_CASES: ShowcaseCase[] = [
   {
+    id: 'greco-dev-tv',
+    date: '2026-10-13',
+    status: 'published',
+    attributionEn:
+      'Community case · @greco_dev (greco) on X · paraphrased on rea.run (not affiliated). Original post is in Portuguese and explicitly names REA.',
+    attributionZh:
+      '社区案例 · X 上 @greco_dev（greco）· rea.run 改写收录（非官方合作）。原帖为葡萄牙语，并明确点名 REA。',
+    tags: ['x-case', 'own-device', 'tv', 'rea-named', 'authorized-device'],
+    relation: 'case-study',
+    rating: {
+      score: 5,
+      labelEn: 'Own-TV demo that names REA',
+      labelZh: '自有电视演示，原帖点名 REA',
+      qualityEn: 'Short public post that names REA, links the repo, and shows a control-panel demo.',
+      qualityZh: '短帖点名 REA、给出仓库链接，并附控制面板演示。',
+      evidenceEn: 'Public X post (Portuguese) plus a self-hosted clip. Author wrote that they used REA and linked morluto/rea.',
+      evidenceZh: '公开 X 帖（葡萄牙语）加站内托管片段。作者写明使用了 REA，并链接 morluto/rea。',
+      limitsEn: 'Feature list is the author claim. No TV brand, no protocol write-up, and not a universal remote tutorial.',
+      limitsZh: '功能列表来自作者自述。无电视品牌、无协议拆解，也不是通用遥控教程。',
+      audienceEn: 'Builders who want an Evidence workflow on a television they own.',
+      audienceZh: '想在自有电视上走 Evidence 流程的建造者。',
+    },
+    footnotes: [
+      {
+        label: '@greco_dev · X status 2109842197654692349 (Portuguese; names REA)',
+        url: 'https://x.com/greco_dev/status/2109842197654692349',
+      },
+      {
+        label: 'REA repository linked from the post (morluto/rea)',
+        url: 'https://github.com/morluto/rea',
+      },
+    ],
+    media: {
+      video: {
+        src: '/media/x-cases/greco-tv.mp4',
+        poster: '/media/x-cases/greco-tv-poster.jpg',
+        captionEn:
+          'Author demo: a personal control panel for their own TV (self-hosted; from the @greco_dev post).',
+        captionZh:
+          '作者演示：为自己的电视做的控制面板（站内托管；源自 @greco_dev 帖）。',
+      },
+    },
+    complianceEn:
+      'Lawful RE only: a television, companion app, or firmware copy you own or are authorized to analyze. This card does not teach DRM bypass, account bypass, or access to someone else\u2019s set. The author is not affiliated with rea.run.',
+    complianceZh:
+      '仅合法逆向：只分析你拥有或获准的电视、配套应用或固件副本。本卡不教 DRM 绕过、账号绕过，也不教如何进入他人的电视。作者与 rea.run 无隶属关系。',
+    related: [
+      { href: '/docs/install/', labelEn: 'Install REA', labelZh: '安装 REA' },
+      { href: '/docs/install-demo/', labelEn: 'Codex install walkthrough', labelZh: 'Codex 安装跟练' },
+      { href: '/showcase/thinkszyg-toilet-ble/', labelEn: 'REA-named BLE case', labelZh: '点名 REA 的蓝牙案例' },
+      { href: '/showcase/brorlandi-miscale/', labelEn: 'Own-device case (REA not named)', labelZh: '自有设备案例（未点名 REA）' },
+      { href: '/faq/legal-boundary/', labelEn: 'Legal boundary', labelZh: '合法边界' },
+    ],
+    en: {
+      title: 'Own TV, REA named: greco\u2019s remote and Mac-mirror demo',
+      summary:
+        '@greco_dev posted in Portuguese that they reverse engineered their own TV with REA and linked the repo. The demo covers app/input switching, volume, a remote, Mac screen mirror, screen time, and brightness/contrast controls.',
+      lede:
+        'greco (@greco_dev, data engineer) published an own-television reverse-engineering note that names REA and links github.com/morluto/rea. rea.run credits that post and does not add protocol steps the author did not publish.',
+      body: [
+        '## Short version',
+        'The original post is in Portuguese. In it, greco says they reverse engineered their own TV and used REA. The features they list: switch app or input, volume, remote control, mirror a Mac screen, screen time, and general controls such as brightness and contrast. A short demo video is attached. rea.run hosts a copy of that clip and links the post.',
+        '## Attribution (read this)',
+        '**Credit:** greco, [@greco_dev](https://x.com/greco_dev/status/2109842197654692349). The post **explicitly names REA** (“usei o rea”) and links [github.com/morluto/rea](https://github.com/morluto/rea). Unlike own-device posts that never mention REA, this one can be described as “the author says they used REA.” It is still not a rea.run session log, and this page does not invent steps that are absent from the post.',
+        '## What the author demonstrated',
+        '1. **Own device.** Their television. The post does not name a brand or model.\n2. **Tool credit.** They wrote that they used REA and linked the upstream repository.\n3. **Features they listed.** Switch app/input; volume; remote control; mirror the Mac screen; screen time; general controls (brightness, contrast, and similar).\n4. **Demo.** The clip above is a self-hosted copy of the attached video: a personal control panel for that set. Full context and any later edits stay on the X post.',
+        '## Public metrics (snapshot 2026-10-13)',
+        '| Metric | Figure | Note |\n|---|---|---|\n| Impressions | 10,112 | Fetched from the post |\n| Likes | 379 | Same snapshot |\n| Reposts | 25 | Same snapshot |\n| Bookmarks | 287 | Same snapshot |\n| Source | [@greco_dev](https://x.com/greco_dev/status/2109842197654692349) | Portuguese; **names REA** |',
+        '## How this relates to installing REA',
+        'REA is the local MCP/CLI that lets a coding agent inspect software you are allowed to analyze and return Evidence plus unknowns. This post is an own-device story that **does** name that tool. To mirror the lawful shape — not the unpublished internals — install REA, point it at a target you own, and ask for Evidence.',
+        '**Install.** Paste into your agent, or run it yourself: `npx rea-agents@latest setup`. Then restart the client. Walkthrough: [/docs/install/](/docs/install/) · Codex demo: [/docs/install-demo/](/docs/install-demo/).',
+        '**Nearby cases.** [@thinkszyg\u2019s toilet BLE remote](/showcase/thinkszyg-toilet-ble/) also names REA on hardware the author owns. [@BrOrlandi\u2019s scale dashboard](/showcase/brorlandi-miscale/) is the same own-device shape, and those posts do **not** name REA.',
+        '## What to copy (authorized hardware only)',
+        '- [ ] The television (and any app or firmware you inspect) is yours, or you have written permission\n- [ ] You ask the agent for Evidence and unknowns after setup\n- [ ] You do not publish keys, pairing secrets, or a method that controls someone else\u2019s set\n- [ ] You do not treat this page as a DRM-bypass, account-bypass, or firmware-extraction recipe\n- [ ] Screen-mirror and picture controls stay on equipment you are allowed to operate',
+      ],
+      takeaways: [
+        'Credit @greco_dev: a Portuguese post that says they used REA on their own TV and links the repo.',
+        'Listed features: app/input, volume, remote, Mac screen mirror, screen time, brightness and contrast.',
+        'Install REA for an Evidence workflow on targets you may analyze. This page is not a bypass guide.',
+      ],
+    },
+    zh: {
+      title: '用 REA 逆向自己的电视：greco 的遥控与 Mac 镜像',
+      summary:
+        '@greco_dev 用葡萄牙语说明：对自己的电视做逆向，并写明使用 REA、附上仓库链接。演示含切换应用／输入源、音量、遥控、镜像 Mac 屏幕、屏幕时间，以及亮度与对比度。',
+      lede:
+        'greco（@greco_dev，数据工程师）发了一条自有电视的逆向说明。帖子直接写出用了 REA，并链接到 GitHub 上的 morluto/rea。rea.run 按原帖署名，不补写作者没有公开的协议步骤。',
+      body: [
+        '## 短摘要',
+        '原帖是葡萄牙语。大意是：他逆向了自己的电视，用的是 REA。他列出的主要功能有：切换应用或输入源、音量、遥控器、把 Mac 屏幕镜像到电视、屏幕使用时间，以及亮度、对比度一类的通用控制。帖子附有约 29 秒演示。本站托管该视频，并链回原帖。',
+        '## 归因（先读）',
+        '**署名：** greco，[@greco_dev](https://x.com/greco_dev/status/2109842197654692349)。原帖**明确点名 REA**（原文 “usei o rea”），链接是 [github.com/morluto/rea](https://github.com/morluto/rea)。这和那些完全没提 REA 的自有设备帖不同：这里可以写「作者说用了 REA」。它仍然不是 rea.run 的会话记录，本页也不编造原帖里没有的步骤。',
+        '## 作者演示了什么',
+        '1. **自有设备。** 他自己的电视。帖子没有写品牌或型号。\n2. **工具署名。** 他写明使用了 REA，并给出上游仓库链接。\n3. **他列出的功能。** 切换应用／输入源；音量；遥控；镜像 Mac 屏幕；屏幕使用时间；通用控制（亮度、对比度等）。\n4. **演示。** 上方视频是原帖附件的站内副本：一块给他这台电视用的控制面板。完整语境和作者后来的修改，以 X 原帖为准。',
+        '## 公开指标（快照 2026-10-13）',
+        '| 指标 | 数字 | 说明 |\n|---|---|---|\n| 展示 | 10,112 | 抓取该帖 |\n| 赞 | 379 | 同一快照 |\n| 转发 | 25 | 同一快照 |\n| 书签 | 287 | 同一快照 |\n| 来源 | [@greco_dev](https://x.com/greco_dev/status/2109842197654692349) | 葡萄牙语；**点名 REA** |',
+        '## 这和安装 REA 的关系',
+        'REA 是本地 MCP／CLI：让编程智能体检查你有权分析的软件，并返回 Evidence 与未知项。这条帖子是自有设备故事，而且**确实**点了这个工具的名。若要照着合法形态做——而不是去补原帖没写的内部细节——先安装 REA，指向你拥有的目标，再要 Evidence。',
+        '**安装。** 贴进智能体，或自己执行：`npx rea-agents@latest setup`。然后重启客户端。跟练：[/zh/docs/install/](/zh/docs/install/) · Codex 演示：[/zh/docs/install-demo/](/zh/docs/install-demo/)。',
+        '**邻近案例。** [@thinkszyg 的马桶蓝牙遥控](/zh/showcase/thinkszyg-toilet-ble/) 也在自有硬件上点名了 REA。[@BrOrlandi 的体脂秤看板](/zh/showcase/brorlandi-miscale/) 同属自有设备形态，那些帖子**没有**点名 REA。',
+        '## 可以照做的边界（仅授权硬件）',
+        '- [ ] 电视以及你要检查的应用或固件是你的，或有书面许可\n- [ ] 安装之后向智能体要 Evidence 与未知项\n- [ ] 不公开密钥、配对秘密，或能控制别人电视的方法\n- [ ] 不把本页当成 DRM 绕过、账号绕过或固件提取配方\n- [ ] 屏幕镜像和画面控制只发生在你有权操作的设备上',
+      ],
+      takeaways: [
+        '署名 @greco_dev：葡萄牙语原帖写明对自己的电视使用了 REA，并链接仓库。',
+        '作者列出的功能：切换应用／输入源、音量、遥控、镜像 Mac 屏幕、屏幕时间、亮度与对比度。',
+        '在可分析的目标上要 Evidence，请先安装 REA。本页不是绕过指南。',
+      ],
+    },
+  },
+  {
     id: 'brorlandi-miscale',
     date: '2026-10-13',
     status: 'published',
