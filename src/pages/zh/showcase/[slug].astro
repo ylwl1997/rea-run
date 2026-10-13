@@ -35,6 +35,19 @@ const ghUrl = c.github?.url;
     <h1 class="display mt-4 text-4xl">{c.zh.title}</h1>
     <p class="lede mt-4">{c.zh.lede}</p>
 
+    {c.media?.video?.frame === 'portrait' && (
+      <figure class="showcase-media is-portrait mt-6">
+        <video
+          controls
+          playsinline
+          preload="metadata"
+          poster={c.media.video.poster}
+          src={c.media.video.src}
+        ></video>
+        <figcaption>{c.media.video.captionZh}</figcaption>
+      </figure>
+    )}
+
     <div class="showcase-meta-panel mt-6 grid gap-4 rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-4 text-sm sm:grid-cols-2">
       <div class="space-y-1.5 text-[var(--color-muted)]">
         <p class="text-xs uppercase tracking-wider text-[var(--color-ink-soft)]">来源元数据</p>
@@ -69,7 +82,7 @@ const ghUrl = c.github?.url;
       </div>
     </div>
 
-    {c.media?.video && (
+    {c.media?.video && c.media.video.frame !== 'portrait' && (
       <figure class="showcase-media mt-8">
         <video
           controls

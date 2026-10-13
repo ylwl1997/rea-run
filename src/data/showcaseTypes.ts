@@ -51,6 +51,8 @@ export type ShowcaseMediaVideo = {
   poster?: string;
   captionEn: string;
   captionZh: string;
+  /** Vertical phone clips stay a column; landscape clips stay full width. */
+  frame?: 'portrait';
 };
 
 export type ShowcaseMedia = {
