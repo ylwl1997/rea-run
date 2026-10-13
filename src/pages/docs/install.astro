@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CommunityClip from '../../components/CommunityClip.astro';
+import { installVideoGallery } from '../../data/communityClips';
 import { SITE } from '../../lib/site';
 const lang = 'en' as const;
+const videoGallery = installVideoGallery(lang);
 const toc = [
   { id: 'install-demo', label: 'Codex walkthrough' },
   { id: 'requirements', label: 'Requirements' },
@@ -10,7 +12,8 @@ const toc = [
   { id: 'cli', label: 'Optional CLI' },
   { id: 'ghidra', label: 'Ghidra (BYO)' },
   { id: 'first', label: 'First question' },
-  { id: 'community-clip', label: 'Community clip' },
+  { id: 'see-others', label: 'See how others use it' },
+  { id: 'related-videos', label: 'Related videos' },
   { id: 'actions-demo', label: 'Actions demo' },
   { id: 'codespaces', label: 'Codespaces lab' },
   { id: 'related', label: 'Related guides' },
@@ -91,22 +94,25 @@ npx rea-agents@latest setup`}</code></pre>
 
 
 
-        <h2 id="community-clip">Community clip (status-bar remote vibe)</h2>
-        <p>
-          High-reach community demo of a status-bar air-conditioner remote, hosted here with other own-device remotes.
-        </p>
-        <CommunityClip
-          lang="en"
-          src="/media/x-cases/icanberk-ac.gif.mp4"
-          poster="/media/x-cases/icanberk-poster.jpg"
-          kicker="Social proof"
-          title="AC status-bar remote (@icanberk)"
-          blurb="~1.07M views vibe clip of an own-device status-bar remote. The toilet BLE case is another remote on the same showcase wall."
-          href="/showcase/icanberk-ac-statusbar/"
-          hrefLabel="Open case card →"
-          attribution="Source: @icanberk · snapshot ~1.07M views / ~18.8k likes / ~5.9k bookmarks (2026-10-12)"
-          note="Own or authorized HVAC only."
-        />
+        <h2 id="see-others">See how others use it</h2>
+        <p>After install, start with three community demos on devices the authors own (hosted here, not hotlinked from X): a status-bar toilet remote, an own TV, and an own body-composition scale.</p>
+        <div id="related-videos">
+          {videoGallery.map((clip) => (
+            <CommunityClip
+              lang="en"
+              src={clip.src}
+              poster={clip.poster}
+              frame={clip.frame}
+              kicker={clip.kicker}
+              title={clip.title}
+              blurb={clip.blurb}
+              href={clip.href}
+              hrefLabel={clip.hrefLabel}
+              attribution={clip.attribution}
+              note={clip.note}
+            />
+          ))}
+        </div>
 
         <h2 id="actions-demo">GitHub Actions demo (no local install)</h2>
         <p>
@@ -151,6 +157,9 @@ npx rea-agents@latest setup`}</code></pre>
 
         <h2 id="related">Related guides</h2>
         <ul>
+          <li><a href="/showcase/thinkszyg-toilet-ble/">Case: status-bar toilet remote</a></li>
+          <li><a href="/showcase/greco-dev-tv/">Case: greco’s own TV</a></li>
+          <li><a href="/showcase/brorlandi-miscale/">Case: BrOrlandi’s own scale</a></li>
           <li><a href="/docs/install-demo/">Codex install demo — dinosaur speed rule</a></li>
           <li><a href="/docs/mcp-clients/">MCP client install matrix &amp; skill paths</a></li>
           <li><a href="/docs/android-adb/">Android ADB device lane (6.4+)</a></li>
