@@ -140,8 +140,8 @@ export const SHOWCASE_X_CASES: ShowcaseCase[] = [
       labelZh: '自有体脂秤的智能体逆向（未点名 REA）',
       qualityEn: 'Public demo, open-source repo, and an explicit own-device reverse-engineering intent.',
       qualityZh: '有公开演示、开源仓库，以及明确的自有设备逆向意图。',
-      evidenceEn: 'X posts + MIT repo README. Author credits a coding-agent prompt and BLE advertisements, not REA.',
-      evidenceZh: 'X 帖 + MIT 仓库 README。作者归因于编程智能体提示与蓝牙广播，未写 REA。',
+      evidenceEn: 'Public X post + self-hosted ~27s clip; MIT repo README. Author credits a coding-agent prompt, not REA.',
+      evidenceZh: '公开 X 帖 + 站内托管约 27 秒片段；MIT 仓库 README。作者归因于编程智能体提示，未写 REA。',
       limitsEn: 'Not a REA session log and not a packet-decoder tutorial. Own scale only.',
       limitsZh: '不是 REA 会话记录，也不是报文解码教程。仅限自有秤。',
       audienceEn: 'Builders studying agent-built dashboards for a scale they own.',
@@ -165,6 +165,17 @@ export const SHOWCASE_X_CASES: ShowcaseCase[] = [
         url: 'https://youtu.be/ajvoJN0Qh_4',
       },
     ],
+    media: {
+      video: {
+        src: '/media/x-cases/brorlandi-miscale.mp4',
+        poster: '/media/x-cases/brorlandi-miscale-poster.jpg',
+        frame: 'portrait',
+        captionEn:
+          'Author demo (~27s): one-prompt app for his own Mi Body Composition Scale 2. Self-hosted from @BrOrlandi’s X post; that post does not name REA. Longer promo: the YouTube link in the sources below.',
+        captionZh:
+          '作者演示（约 27 秒）：一条提示做出的自有小米体脂秤应用。站内托管，源自 @BrOrlandi 的 X 帖；该帖未点名 REA。更长宣传片见下方来源中的 YouTube 链接。',
+      },
+    },
     complianceEn:
       'Lawful RE only: a scale, watch, or app you own or are authorized to analyze. Do not capture a neighbor’s broadcasts, bypass Xiaomi accounts, or treat this card as a decoder recipe. The author is not affiliated with rea.run.',
     complianceZh:
