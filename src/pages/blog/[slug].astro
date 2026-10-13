@@ -11,10 +11,22 @@ const post = getPost(Astro.params.slug!);
 if (!post) throw new Error('missing post');
 const html = renderBody(post.en.body);
 ---
-<BaseLayout lang="en" title={`${post.en.title} | rea.run`} description={post.en.description} path={`/blog/${post.slug}/`}>
+<BaseLayout lang="en" title={`${post.en.title} | rea.run`} description={post.en.description} path={`/blog/${post.slug}/`} image={post.cover?.src}>
   <article class="prose-page mx-auto max-w-3xl px-4 py-12">
     <p class="badge">{post.date}</p>
     <h1 class="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-ink)]">{post.en.h1}</h1>
+    {post.cover && (
+      <figure class="blog-cover">
+        <img
+          src={post.cover.src}
+          width={post.cover.width}
+          height={post.cover.height}
+          alt={post.cover.altEn}
+          decoding="async"
+        />
+        <figcaption>{post.cover.captionEn}</figcaption>
+      </figure>
+    )}
     <div class="mt-6" set:html={html} />
   </article>
 </BaseLayout>

@@ -12,6 +12,17 @@ const lang = 'en' as const;
     <div class="mt-8 grid gap-4 md:grid-cols-2">
       {BLOG_POSTS.map((p, i) => (
         <a class="card no-underline hover:no-underline group" href={pathFor(lang, `/blog/${p.slug}/`)}>
+          {p.cover && (
+            <img
+              class="blog-card-thumb"
+              src={p.cover.src}
+              width={p.cover.width}
+              height={p.cover.height}
+              alt={p.en.h1}
+              loading="lazy"
+              decoding="async"
+            />
+          )}
           <p class="font-mono text-xs text-[var(--color-accent)]">{String(i + 1).padStart(2, '0')} · {p.date}</p>
           <h2 class="mt-2 text-lg font-semibold text-[var(--color-ink)] group-hover:text-[var(--color-accent)]">{p.en.h1}</h2>
           <p class="mt-2 text-sm leading-6 text-[var(--color-muted)]">{p.en.description}</p>
