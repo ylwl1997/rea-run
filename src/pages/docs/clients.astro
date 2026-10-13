@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ClientMatrix from '../../components/ClientMatrix.astro';
+import OfficialInstallNotice from '../../components/OfficialInstallNotice.astro';
 import { CLIENTS_640, MCP_REGISTRY_ID, NODE_ENGINES } from '../../data/clients64';
 const toc = [
   { id: 'pin', label: 'Pin and engines' },
@@ -36,6 +37,7 @@ const toc = [
 
         <h2 id="pin">Pin and engines</h2>
         <p>Node for this package: <code>{NODE_ENGINES}</code>. Registry id: <code>{MCP_REGISTRY_ID}</code>. The registry entry launches the same npm package with <code>npx</code> and the <code>mcp</code> command. It is not a second distribution.</p>
+        <OfficialInstallNotice lang="en" variant="brief" />
         <pre><code>{`npx -y rea-agents@6.4.0 setup
 npx -y rea-agents@6.4.0 doctor --client codex --json
 npx -y rea-agents@6.4.0 doctor --skill --json`}</code></pre>

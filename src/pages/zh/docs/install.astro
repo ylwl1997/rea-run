@@ -2,11 +2,13 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CommunityClip from '../../../components/CommunityClip.astro';
 import ClientMatrix from '../../../components/ClientMatrix.astro';
+import OfficialInstallNotice from '../../../components/OfficialInstallNotice.astro';
 import { zhInstallVideoGallery } from '../../../data/communityClips';
 import { SITE } from '../../../lib/site';
 const lang = 'zh' as const;
 const videoGallery = zhInstallVideoGallery();
 const toc = [
+  { id: 'official-sources', label: '官方来源' },
   { id: 'install-demo', label: 'Codex 跟练' },
   { id: 'requirements', label: '环境要求' },
   { id: 'connect', label: '连接智能体' },
@@ -24,7 +26,7 @@ const toc = [
 <BaseLayout
   lang={lang}
   title="安装 REA（rea-agents）— 社区指南 | rea.run"
-  description="用 npx rea-agents setup 安装 REA、注册 MCP，并自备 Ghidra。上游材料的社区改写，请以 GitHub 为准。"
+  description="用 npx rea-agents setup 安装 REA、注册 MCP，并自备 Ghidra。仅限官方来源：npm 上的 rea-agents 与 github.com/morluto/rea。上游材料的社区改写。"
   path="/docs/install/"
 >
   <div class="mx-auto max-w-6xl px-4 py-12">
@@ -43,6 +45,8 @@ const toc = [
           <a href={SITE.upstreamRepo}>github.com/morluto/rea</a>
           与 npm 上的 <code>rea-agents</code> 为准。版本会变，自动化前请复核。
         </p>
+
+        <OfficialInstallNotice lang={lang} />
 
         <p class="text-sm text-[var(--color-muted)]">仅对你有权分析的软件使用。<a class="quiet-link" href="/zh/compliance/">合规说明</a></p>
 
