@@ -7,6 +7,118 @@ import type { ShowcaseCase } from './showcaseTypes';
  */
 export const SHOWCASE_X_CASES: ShowcaseCase[] = [
   {
+    id: 'yurirdev-home-iot',
+    date: '2026-10-13',
+    status: 'published',
+    attributionEn:
+      'Community case · @YuriRDev (YuriRDev) on X · paraphrased on rea.run (not affiliated). Original post is in Portuguese, names Claude, and does not name REA.',
+    attributionZh:
+      '社区案例 · X 上 @YuriRDev（YuriRDev）· rea.run 改写收录（非官方合作）。原帖为葡萄牙语，点名 Claude，未点名 REA。',
+    tags: ['x-case', 'own-device', 'iot', 'agent-re', 'not-rea-attributed'],
+    relation: 'case-study',
+    rating: {
+      score: 4,
+      labelEn: 'Own-home IoT with AI (REA not named)',
+      labelZh: '自有家居物联网的 AI 逆向（未点名 REA）',
+      qualityEn: 'Short public post plus a demo: several devices he already owns, controlled from his PC.',
+      qualityZh: '短帖加演示：几件他已经拥有的设备，从自己的电脑控制。',
+      evidenceEn: 'Public X post (Portuguese) plus a self-hosted ~34s clip. Author credits AI / Claude, not REA, and did not publish a repo.',
+      evidenceZh: '公开 X 帖（葡萄牙语）加站内托管约 34 秒片段。作者归因于 AI／Claude，未写 REA，也没有公开仓库。',
+      limitsEn: 'Not a REA session log, not an IR or camera integration recipe, and not open source.',
+      limitsZh: '不是 REA 会话记录，不是红外或摄像头对接配方，也不是开源项目。',
+      audienceEn: 'Builders who want an Evidence workflow on lights, cameras, or an air conditioner they own.',
+      audienceZh: '想在自有灯具、摄像头或空调上走 Evidence 流程的建造者。',
+    },
+    footnotes: [
+      {
+        label: '@YuriRDev · X status 2109644135959236765 (Portuguese; names Claude, not REA)',
+        url: 'https://x.com/YuriRDev/status/2109644135959236765',
+      },
+      {
+        label: '@YuriRDev · video page on the same post',
+        url: 'https://x.com/YuriRDev/status/2109644135959236765/video/1',
+      },
+    ],
+    media: {
+      video: {
+        src: '/media/x-cases/yurirdev-home-iot.mp4',
+        poster: '/media/x-cases/yurirdev-home-iot-poster.jpg',
+        captionEn:
+          'Author demo (~34s): PC control of IoT he already owns. Self-hosted from @YuriRDev’s X post; that post names Claude and does not name REA.',
+        captionZh:
+          '作者演示（约 34 秒）：从电脑控制他已经拥有的物联网设备。站内托管，源自 @YuriRDev 的 X 帖；该帖点名 Claude，未点名 REA。',
+      },
+    },
+    complianceEn:
+      'Lawful RE only: lights, cameras, and an air conditioner you own or are authorized to analyze. Do not reach a neighbor’s cameras, bypass vendor accounts, or treat this card as an IR, pairing, or camera-integration recipe. The author is not affiliated with rea.run.',
+    complianceZh:
+      '仅合法逆向：只分析你拥有或获准的灯、摄像头和空调。勿接入邻居的摄像头、绕过厂商账号，或把本卡当成红外、配对或摄像头对接配方。作者与 rea.run 无隶属关系。',
+    related: [
+      { href: '/docs/install/', labelEn: 'Install REA', labelZh: '安装 REA' },
+      { href: '/docs/install-demo/', labelEn: 'Codex install walkthrough', labelZh: 'Codex 安装跟练' },
+      { href: '/showcase/thinkszyg-toilet-ble/', labelEn: 'REA-named BLE case', labelZh: '点名 REA 的蓝牙案例' },
+      { href: '/showcase/greco-dev-tv/', labelEn: 'Own-TV case (REA named)', labelZh: '自有电视案例（点名 REA）' },
+      { href: '/showcase/brorlandi-miscale/', labelEn: 'Own-device case (REA not named)', labelZh: '自有设备案例（未点名 REA）' },
+      { href: '/faq/legal-boundary/', labelEn: 'Legal boundary', labelZh: '合法边界' },
+    ],
+    en: {
+      title: 'Own-home IoT, under 12 hours: YuriRDev’s PC controls (REA not named)',
+      summary:
+        '@YuriRDev wrote that the proprietary IoT already in his home was reversed with AI and is now controlled from his PC, in under 12 hours. The post names Claude and does not name REA.',
+      lede:
+        'YuriRDev (@YuriRDev) posted a Portuguese note: devices he already owns, previously stuck on vendor software, now driven from his computer after an AI session. rea.run credits that post and does not claim he used REA.',
+      body: [
+        '## Short version',
+        'He says 100% of the IoT at home that used to sit on proprietary software was reversed with AI, and that he controls it from his PC. He puts the whole effort under 12 hours. Three things he names: LED strips that a proprietary infrared app used to drive; Intelbras cameras he already had; and a Media air conditioner (his wording). For the lights, he sent a photo of his room to Claude and describes a 3D model of that room as the control surface. He is explicit that he is not open-sourcing it.',
+        '## Attribution (read this)',
+        '**Credit:** YuriRDev, [@YuriRDev](https://x.com/YuriRDev/status/2109644135959236765). The post **names Claude / AI** and **does not name REA.** This page must not say “built with REA.” He also writes that open-sourcing does not make sense for him: as it stands, it works for him — no login, the design he wants, his camera model, his AC model, no settings tab. That choice is his. rea.run does not republish a private app and does not fill in steps the post left out.',
+        '## What the author described',
+        '1. **Own devices.** LED strips previously driven by a proprietary IR app; Intelbras cameras he already owned; a Media air conditioner, in the author’s words.\n2. **Model credit.** He attributes the work to AI, and names Claude for the room photo that became a 3D model he uses to control those lights. That is not a published REA transcript.\n3. **What he says the software does.** From his PC: control the lights on that room model; open his own Intelbras cameras in one click, without the freeze he associates with the vendor app; control the air conditioner. He calls the result plug-and-play for himself.\n4. **What he did not publish.** No repository, no protocol notes, no IR codes, no camera pairing flow. This page does not add them.\n5. **Demo.** The clip above is a self-hosted copy of the attached video (~34 seconds). Full context stays on the X post.',
+        '## Public metrics (snapshot 2026-10-13)',
+        '| Metric | Figure | Note |\n|---|---|---|\n| Impressions | 20,320 | Fetched from the post |\n| Likes | 610 | Same snapshot |\n| Reposts | 19 | Same snapshot |\n| Bookmarks | 209 | Same snapshot |\n| Replies | 26 | Same snapshot |\n| Source | [@YuriRDev](https://x.com/YuriRDev/status/2109644135959236765) | Portuguese; names **Claude**, not REA |',
+        '## How this relates to REA',
+        'REA is the local MCP/CLI that lets a coding agent inspect software you are allowed to analyze and return Evidence plus unknowns. YuriRDev’s post is the **same lawful shape** — own devices, an assistant, a control surface that fits the person who owns the hardware — without being an REA case log. If you want that Evidence loop on a target you own, install REA and keep approval with the human.',
+        '**Install.** Paste into your agent, or run it yourself: `npx rea-agents@latest setup`. Then restart the client. Walkthrough: [/docs/install/](/docs/install/) · Codex demo: [/docs/install-demo/](/docs/install-demo/).',
+        '**A REA-named twin.** [@thinkszyg’s toilet BLE remote](/showcase/thinkszyg-toilet-ble/) is the nearby case where the author **does** name Codex + REA on hardware they own. [@greco_dev’s TV demo](/showcase/greco-dev-tv/) also names REA. [@BrOrlandi’s scale dashboard](/showcase/brorlandi-miscale/) is the same own-device shape, and that post does **not** name REA either.',
+        '## What to copy (authorized hardware only)',
+        '- [ ] The lights, cameras, and air conditioner are yours, or you have written permission\n- [ ] You do not point a listener or a client at a neighbor’s cameras or HVAC\n- [ ] You do not publish account tokens, pairing secrets, IR codes, or a method that controls someone else’s unit\n- [ ] You do not treat this page as a DRM-bypass, account-bypass, or vendor-cloud recipe\n- [ ] If you add REA, you ask for Evidence and unknowns — not a vibe-only story\n- [ ] His decision not to open-source stays his; this page is a credit, not a source drop',
+      ],
+      takeaways: [
+        'Credit @YuriRDev: own-home IoT, reversed with AI and driven from his PC in under 12 hours. The post names Claude, not REA.',
+        'He describes lights (room photo to a 3D model), his Intelbras cameras, and his Media AC — and he is not open-sourcing it.',
+        'Install REA for an Evidence workflow on devices you may analyze. This page is not a camera, IR, or account-bypass guide.',
+      ],
+    },
+    zh: {
+      title: '自有家居物联网、不到 12 小时：YuriRDev 从电脑控制（未点名 REA）',
+      summary:
+        '@YuriRDev 写道：家里原先跑在专有软件上的物联网，用 AI 逆向之后从电脑控制，全程不到 12 小时。原帖点名 Claude，没有点名 REA。',
+      lede:
+        'YuriRDev（@YuriRDev）用葡萄牙语发了一条说明：已经拥有的设备，原先停在厂商软件里，经过一次 AI 会话后改由自己的电脑驱动。rea.run 按原帖署名，并不声称他使用了 REA。',
+      body: [
+        '## 短摘要',
+        '他说家里 100% 原先使用专有软件的物联网都用 AI 做了逆向，并且现在从自己的电脑控制。他把整件事放在 12 小时以内。点名的三件东西：原先由专有红外 App 控制的灯带；他已经拥有的 Intelbras 摄像头；以及他原文里的 Media 空调。灯的部分，他把自己房间的照片发给 Claude，并描述用由此得到的房间三维模型来控制这些灯。他写明不打算开源。',
+        '## 归因（先读）',
+        '**署名：** YuriRDev，[@YuriRDev](https://x.com/YuriRDev/status/2109644135959236765)。原帖**点名 Claude／AI**，**没有点名 REA。** 本页不得写成「用 REA 做的」。他还写道，开源对他没有意义：现状只为他服务——没有登录、是他喜欢的设计、对着他的摄像头型号和他的空调型号，也没有设置页。这个选择是他的。rea.run 不转载私有应用，也不补写原帖没写的步骤。',
+        '## 作者描述了什么',
+        '1. **自有设备。** 原先由专有红外 App 驱动的灯带；他已经拥有的 Intelbras 摄像头；作者原文中的 Media 空调。\n2. **模型署名。** 他把工作归因于 AI，并点名 Claude：房间照片变成他用来控制这些灯的三维模型。这不是一份公开的 REA 记录。\n3. **他说软件做什么。** 从他的电脑：在那个房间模型上控制灯；一键打开他自己的 Intelbras 摄像头，并且不像他印象里的厂商 App 那样卡住；控制空调。他称之为只对自己即插即用。\n4. **他没有公开的。** 没有仓库、没有协议笔记、没有红外码、没有摄像头配对流程。本页不补这些。\n5. **演示。** 上方视频是原帖附件的站内副本（约 34 秒）。完整语境以 X 原帖为准。',
+        '## 公开指标（快照 2026-10-13）',
+        '| 指标 | 数字 | 说明 |\n|---|---|---|\n| 展示 | 20,320 | 抓取该帖 |\n| 赞 | 610 | 同一快照 |\n| 转发 | 19 | 同一快照 |\n| 书签 | 209 | 同一快照 |\n| 回复 | 26 | 同一快照 |\n| 来源 | [@YuriRDev](https://x.com/YuriRDev/status/2109644135959236765) | 葡萄牙语；点名 **Claude**，未点名 REA |',
+        '## 这和 REA / 安装的关系',
+        'REA 是本地 MCP／CLI：让编程智能体检查你有权分析的软件，并返回 Evidence 与未知项。YuriRDev 的帖子是**同一种合法形态**——自有设备、助手、一块贴合主人的控制面——但不是一份 REA 案例日志。若你要在自有目标上走这条 Evidence 回路，先安装 REA，批准权留在人这边。',
+        '**安装。** 贴进智能体，或自己执行：`npx rea-agents@latest setup`。然后重启客户端。跟练：[/zh/docs/install/](/zh/docs/install/) · Codex 演示：[/zh/docs/install-demo/](/zh/docs/install-demo/)。',
+        '**点名 REA 的邻近案例。** [@thinkszyg 的马桶蓝牙遥控](/zh/showcase/thinkszyg-toilet-ble/) 里，作者**明确**写了在自有硬件上使用 Codex + REA。[@greco_dev 的电视演示](/zh/showcase/greco-dev-tv/) 也点了 REA。[@BrOrlandi 的体脂秤看板](/zh/showcase/brorlandi-miscale/) 同属自有设备形态，那条帖子**同样没有**点名 REA。',
+        '## 可以照做的边界（仅授权硬件）',
+        '- [ ] 灯、摄像头和空调是你的，或有书面许可\n- [ ] 不把监听或客户端指向邻居的摄像头或暖通\n- [ ] 不公开账号令牌、配对秘密、红外码，或能控制别人设备的方法\n- [ ] 不把本页当成 DRM 绕过、账号绕过或厂商云配方\n- [ ] 若加上 REA，要 Evidence 与未知项，而不是只有 vibe\n- [ ] 他选择不开源，本页只做署名，不投放私有源码',
+      ],
+      takeaways: [
+        '署名 @YuriRDev：自有家居物联网用 AI 逆向，不到 12 小时从电脑控制。原帖点名 Claude，未点名 REA。',
+        '他描述了灯（房间照片到三维模型）、自有 Intelbras 摄像头和自有 Media 空调，并且不开源。',
+        '在可分析的设备上要 Evidence，请先安装 REA。本页不是摄像头、红外或账号绕过指南。',
+      ],
+    },
+  },
+  {
     id: 'greco-dev-tv',
     date: '2026-10-13',
     status: 'published',
