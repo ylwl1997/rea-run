@@ -7,6 +7,121 @@ import type { ShowcaseCase } from './showcaseTypes';
  */
 export const SHOWCASE_X_CASES: ShowcaseCase[] = [
   {
+    id: 'brorlandi-miscale',
+    date: '2026-10-13',
+    status: 'published',
+    attributionEn:
+      'Community case · @BrOrlandi (Bruno Orlandi) on X · paraphrased on rea.run (not affiliated). Original posts do not name REA.',
+    attributionZh:
+      '社区案例 · X 上 @BrOrlandi（Bruno Orlandi）· rea.run 改写收录（非官方合作）。原帖未点名 REA。',
+    tags: ['x-case', 'bluetooth', 'own-device', 'agent-re', 'not-rea-attributed'],
+    relation: 'case-study',
+    github: {
+      url: 'https://github.com/BrOrlandi/miscale-dashboard',
+      stars: 46,
+      language: 'Python',
+      license: 'MIT',
+      updated: '2026-10-13',
+    },
+    rating: {
+      score: 4,
+      labelEn: 'Own-scale agent RE (REA not named)',
+      labelZh: '自有体脂秤的智能体逆向（未点名 REA）',
+      qualityEn: 'Public demo, open-source repo, and an explicit own-device reverse-engineering intent.',
+      qualityZh: '有公开演示、开源仓库，以及明确的自有设备逆向意图。',
+      evidenceEn: 'X posts + MIT repo README. Author credits a coding-agent prompt and BLE advertisements, not REA.',
+      evidenceZh: 'X 帖 + MIT 仓库 README。作者归因于编程智能体提示与蓝牙广播，未写 REA。',
+      limitsEn: 'Not a REA session log and not a packet-decoder tutorial. Own scale only.',
+      limitsZh: '不是 REA 会话记录，也不是报文解码教程。仅限自有秤。',
+      audienceEn: 'Builders studying agent-built dashboards for a scale they own.',
+      audienceZh: '研究「智能体为自有体脂秤做看板」的建造者。',
+    },
+    footnotes: [
+      {
+        label: '@BrOrlandi · demo post (one prompt, own scale)',
+        url: 'https://x.com/BrOrlandi/status/2109533877744128247',
+      },
+      {
+        label: '@BrOrlandi · reverse-engineering intent (Mi Body Composition Scale 2)',
+        url: 'https://x.com/BrOrlandi/status/2109338723955736808',
+      },
+      {
+        label: 'BrOrlandi/miscale-dashboard (MIT)',
+        url: 'https://github.com/BrOrlandi/miscale-dashboard',
+      },
+      {
+        label: 'Author promo video (YouTube)',
+        url: 'https://youtu.be/ajvoJN0Qh_4',
+      },
+    ],
+    complianceEn:
+      'Lawful RE only: a scale, watch, or app you own or are authorized to analyze. Do not capture a neighbor’s broadcasts, bypass Xiaomi accounts, or treat this card as a decoder recipe. The author is not affiliated with rea.run.',
+    complianceZh:
+      '仅合法逆向：只分析你拥有或获准的秤、手表或应用。勿抓邻居的广播、绕过小米账号，或把本卡当成解码配方。作者与 rea.run 无隶属关系。',
+    related: [
+      { href: '/docs/install/', labelEn: 'Install REA', labelZh: '安装 REA' },
+      { href: '/docs/install-demo/', labelEn: 'Codex install walkthrough', labelZh: 'Codex 安装跟练' },
+      { href: '/showcase/thinkszyg-toilet-ble/', labelEn: 'REA-named BLE case', labelZh: '点名 REA 的蓝牙案例' },
+      { href: '/faq/legal-boundary/', labelEn: 'Legal boundary', labelZh: '合法边界' },
+    ],
+    en: {
+      title: 'Own Xiaomi scale, one agent prompt: BrOrlandi’s local BLE dashboard',
+      summary:
+        '@BrOrlandi used a coding agent on his own Mi Body Composition Scale 2, then open-sourced miscale-dashboard. The posts do not name REA — this card says how the shape relates to installing REA.',
+      lede:
+        'Bruno Orlandi (@BrOrlandi) posted a public agent reverse-engineering story: a local dashboard for the Xiaomi scale he already owns, built from one coding-agent prompt, then published as MIT source. rea.run credits him and does not claim he used REA.',
+      body: [
+        '## Short version',
+        'He wanted the scale’s readings on his own server — training context from a watch, meal ideas — without staying inside the vendor app. The follow-up demo says one prompt produced an app he preferred to the official one. The repo is a self-hosted listener: while someone stands on **his** scale, a nearby computer hears Bluetooth advertisements and the browser shows weight and body composition. No Xiaomi account and no vendor cloud in that path.',
+        '## Attribution (read this)',
+        '**Credit:** Bruno Orlandi, [@BrOrlandi](https://x.com/BrOrlandi/status/2109533877744128247). The demo post, the earlier “I want to reverse engineer it” note, and the GitHub repo are his. **Those posts do not name REA.** This page must not say “built with REA.”',
+        '## What was demonstrated',
+        '1. **Own device.** Mi Body Composition Scale 2 (model called out by the author as XMTZC05HM in the repo).\n2. **Agent session.** He describes one coding-agent prompt and a few minutes for the first demo — not a published REA transcript.\n3. **What the software does.** A local dashboard matches a weigh-in to a profile, stores history, and can optionally ask a model he configures for a weekly summary of **his** numbers. The README credits body-composition formulas to public projects (openScale and related), not to a private exploit.\n4. **How he described the link.** In-thread he said the connection is Bluetooth Low Energy and that the scale’s broadcast is straightforward to receive. The README states the scale does not pair; it advertises while someone is standing on it.\n5. **Official artifacts.** Repo [BrOrlandi/miscale-dashboard](https://github.com/BrOrlandi/miscale-dashboard) (MIT, Python; 46 stars on 2026-10-13). Promo video: [YouTube](https://youtu.be/ajvoJN0Qh_4).',
+        '## Public metrics (snapshot 2026-10-13)',
+        '| Metric | Figure | Note |\n|---|---|---|\n| Views | ~55.6k | Demo post |\n| Likes | 1,263 | Demo post |\n| Bookmarks | 494 | Demo post |\n| Reposts | 34 | Demo post |\n| Source | [@BrOrlandi](https://x.com/BrOrlandi/status/2109533877744128247) | Does **not** name REA |\n| Repo | [miscale-dashboard](https://github.com/BrOrlandi/miscale-dashboard) | 46★ · MIT · Python |',
+        '## How this relates to REA',
+        'REA is the local MCP/CLI that lets a coding agent inspect software you are allowed to analyze and return Evidence plus unknowns. BrOrlandi’s posts are the **same lawful shape** — own device, agent, a rebuild you can read — without being an REA case log. If you want that Evidence loop on a target you own, install REA and keep the human in charge of approval.',
+        '**Install.** Paste into your agent, or run it yourself: `npx rea-agents@latest setup`. Then restart the client. Walkthrough: [/docs/install/](/docs/install/) · Codex demo: [/docs/install-demo/](/docs/install-demo/).',
+        '**A REA-named twin.** [@thinkszyg’s toilet BLE remote](/showcase/thinkszyg-toilet-ble/) is the nearby case where the author **does** name Codex + REA on hardware they own.',
+        '## What to copy (authorized hardware only)',
+        '- [ ] The scale is yours, or you have written permission\n- [ ] You scope the listener to your unit (the repo’s own docs warn that another scale in range can appear)\n- [ ] You do not publish secrets, account tokens, or a neighbor’s measurements\n- [ ] If you add REA, you ask for Evidence and unknowns — not a vibe-only story\n- [ ] Medical claims stay out; bioimpedance is an estimate',
+      ],
+      takeaways: [
+        'Credit @BrOrlandi: one-prompt agent app for his own Xiaomi scale, then an MIT repo.',
+        'The source posts do not name REA — do not invent that attribution.',
+        'Same lawful shape as other own-device cases; install REA when you want Evidence on targets you may analyze.',
+      ],
+    },
+    zh: {
+      title: '自有小米体脂秤、一条智能体提示：BrOrlandi 的本地蓝牙看板',
+      summary:
+        '@BrOrlandi 用编程智能体处理自有 Mi Body Composition Scale 2，并开源 miscale-dashboard。帖子未点名 REA——本页说明它和安装 REA 的关系。',
+      lede:
+        'Bruno Orlandi（@BrOrlandi）公开了一条智能体逆向：为已经拥有的小米体脂秤做本地看板，一条编程智能体提示起步，再以 MIT 协议放出源码。rea.run 署名作者，并不声称他使用了 REA。',
+      body: [
+        '## 短摘要',
+        '他想把秤的读数放到自己的服务器上——结合手表里的训练、再谈这周吃什么——而不必停在厂商 App 里。后续演示称一条提示就做出了他觉得比官方更好用的应用。仓库是自托管监听：有人站上**他的**秤时，旁边的电脑收到蓝牙广播，浏览器显示体重与体成分。这条路径不登录小米账号，也不走厂商云。',
+        '## 归因（先读）',
+        '**署名：** Bruno Orlandi，[@BrOrlandi](https://x.com/BrOrlandi/status/2109533877744128247)。演示帖、更早的「我想逆向这台秤」说明，以及 GitHub 仓库都是他的。**这些帖子没有点名 REA。** 本页不得写成「用 REA 做的」。',
+        '## 演示了什么',
+        '1. **自有设备。** Mi Body Composition Scale 2（仓库中型号写为 XMTZC05HM）。\n2. **智能体会话。** 他描述第一条演示来自一条编程智能体提示、大约几分钟——不是一份公开的 REA 记录。\n3. **软件做什么。** 本地看板把一次称重对到档案、保存历史，并可选地把**他本人**的一周数字交给他配置的模型写短评。README 将体成分公式署名为公开项目（openScale 等），而不是私有破解。\n4. **他怎么描述连接。** 帖内回复写连接是蓝牙低功耗（Bluetooth Low Energy），秤的广播不难收到。README 写明秤不配对；有人站上去时才广播。\n5. **官方产物。** 仓库 [BrOrlandi/miscale-dashboard](https://github.com/BrOrlandi/miscale-dashboard)（MIT、Python；2026-10-13 快照 46 星）。宣传片：[YouTube](https://youtu.be/ajvoJN0Qh_4)。',
+        '## 公开指标（快照 2026-10-13）',
+        '| 指标 | 数字 | 说明 |\n|---|---|---|\n| 浏览 | ~55.6k | 演示帖 |\n| 赞 | 1,263 | 演示帖 |\n| 书签 | 494 | 演示帖 |\n| 转发 | 34 | 演示帖 |\n| 来源 | [@BrOrlandi](https://x.com/BrOrlandi/status/2109533877744128247) | **未**点名 REA |\n| 仓库 | [miscale-dashboard](https://github.com/BrOrlandi/miscale-dashboard) | 46★ · MIT · Python |',
+        '## 这和 REA / 安装的关系',
+        'REA 是本地 MCP／CLI：让编程智能体检查你有权分析的软件，并返回 Evidence 与未知项。BrOrlandi 的帖子是**同一种合法形态**——自有设备、智能体、可读的重建——但不是一份 REA 案例日志。若你要在自有目标上走这条 Evidence 回路，先安装 REA，批准权留在人这边。',
+        '**安装。** 贴进智能体，或自己执行：`npx rea-agents@latest setup`。然后重启客户端。跟练：[/zh/docs/install/](/zh/docs/install/) · Codex 演示：[/zh/docs/install-demo/](/zh/docs/install-demo/)。',
+        '**点名 REA 的邻近案例。** [@thinkszyg 的马桶蓝牙遥控](/zh/showcase/thinkszyg-toilet-ble/) 里，作者**明确**写了在自有硬件上使用 Codex + REA。',
+        '## 可以照做的边界（仅授权硬件）',
+        '- [ ] 秤是你的，或有书面许可\n- [ ] 监听范围收在你自己的设备上（仓库文档提醒：范围内另一台秤也会出现）\n- [ ] 不公开密钥、账号令牌或邻居的测量\n- [ ] 若加上 REA，要 Evidence 与未知项，而不是只有 vibe\n- [ ] 不做医疗承诺；生物电阻是估计值',
+      ],
+      takeaways: [
+        '署名 @BrOrlandi：一条提示为自有小米体脂秤做应用，随后放出 MIT 仓库。',
+        '来源帖未点名 REA——不要编造这一归因。',
+        '与其他自有设备案例同属合法形态；要在可分析目标上拿 Evidence 时再安装 REA。',
+      ],
+    },
+  },
+  {
     id: 'thinkszyg-toilet-ble',
     date: '2026-10-12',
     status: 'published',
