@@ -1,11 +1,25 @@
+import { TRADING_RESEARCH_POST } from './blogTradingResearchDesk';
+
+export type BlogCover = {
+  src: string;
+  width: number;
+  height: number;
+  altEn: string;
+  altZh: string;
+  captionEn: string;
+  captionZh: string;
+};
+
 export type BlogPost = {
   slug: string;
   date: string;
+  cover?: BlogCover;
   en: { title: string; description: string; h1: string; body: string[] };
   zh: { title: string; description: string; h1: string; body: string[] };
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  TRADING_RESEARCH_POST,
   {
     slug: 'rea-agents-6-4-0',
     date: '2026-10-12',

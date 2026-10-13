@@ -9,8 +9,11 @@ interface Props {
   description: string;
   path: string;
   noindex?: boolean;
+  /** Site-relative image path, e.g. `/media/blog/cover.jpg`. */
+  image?: string;
 }
-const { lang = 'en', title, description, path, noindex = false } = Astro.props;
+const { lang = 'en', title, description, path, noindex = false, image } = Astro.props;
+const imageUrl = image ? new URL(image, SITE.url).href : undefined;
 const canonical = new URL(pathFor(lang, path), SITE.url).href;
 const enUrl = new URL(pathFor('en', path), SITE.url).href;
 const zhUrl = new URL(pathFor('zh', path), SITE.url).href;
@@ -38,7 +41,9 @@ const isActive = (href: string) => {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    {imageUrl && <meta property="og:image" content={imageUrl} />}
     <meta name="twitter:card" content="summary_large_image" />
+    {imageUrl && <meta name="twitter:image" content={imageUrl} />}
     {SITE.gscVerification && <meta name="google-site-verification" content={SITE.gscVerification} />}
     {SITE.bingVerification && <meta name="msvalidate.01" content={SITE.bingVerification} />}
     {SITE.ga4Id && (
