@@ -1,3 +1,4 @@
+import { DUAL_AGENT_WORKTREE_POST } from './blogDualAgentWorktree';
 import { TRADING_RESEARCH_POST } from './blogTradingResearchDesk';
 
 export type BlogCover = {
@@ -19,6 +20,7 @@ export type BlogPost = {
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  DUAL_AGENT_WORKTREE_POST,
   TRADING_RESEARCH_POST,
   {
     slug: 'rea-agents-6-4-0',

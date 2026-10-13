@@ -1,4 +1,4 @@
-/** Minimal body renderer: headings, markdown tables, paragraphs; fenced ``` blocks; inline `code` and [links](url). */
+/** Minimal body renderer: headings, markdown tables, paragraphs; fenced ``` blocks; inline `code` and [links](url); a paragraph that is `![alt](src)` renders as an image. */
 export function renderBody(paragraphs: string[]): string {
   return paragraphs
     .map((raw) => {
@@ -20,6 +20,8 @@ export function renderBody(paragraphs: string[]): string {
       if (trimmed.startsWith('- ') || trimmed.startsWith('1. ')) {
         return renderList(trimmed);
       }
+      const image = renderImageParagraph(trimmed);
+      if (image) return image;
       return `<p>${inline(trimmed)}</p>`;
     })
     .join('\n');
@@ -47,6 +49,25 @@ function renderTable(raw: string): string {
     .map((cells) => `<tr>${cells.map((c) => `<td>${inline(c)}</td>`).join('')}</tr>`)
     .join('');
   return `<div class="not-prose overflow-x-auto my-4"><table class="compare-table"><thead><tr>${th}</tr></thead><tbody>${trs}</tbody></table></div>`;
+}
+
+/** Paragraph is exactly `![alt](src)`, or starts with that pattern. Src matches the link allowlist: https? or a same-site path. */
+function renderImageParagraph(raw: string): string | null {
+  const trimmed = raw.trim();
+  const m = /^!\[([^\]]*)\]\(([^)\s]+)\)([\s\S]*)$/.exec(trimmed);
+  if (!m) return null;
+  const alt = m[1];
+  const src = m[2];
+  if (!isSafeImgSrc(src)) return null;
+  const rest = m[3].trim();
+  const tag = `<img alt="${escapeAttr(alt)}" src="${escapeAttr(src)}">`;
+  if (!rest) return `<p>${tag}</p>`;
+  return `<p>${tag} ${inline(rest)}</p>`;
+}
+
+function isSafeImgSrc(src: string): boolean {
+  if (src.startsWith('/') && !src.startsWith('//') && !src.startsWith('/\\')) return true;
+  return /^https?:\/\//i.test(src);
 }
 
 function renderList(raw: string): string {
