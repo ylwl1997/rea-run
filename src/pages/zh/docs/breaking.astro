@@ -1,0 +1,240 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+const toc = [
+  { id: 'policy', label: 'always-bump-minor' },
+  { id: 'steps', label: '升级步骤' },
+  { id: 'map', label: '会坏什么' },
+  { id: 'paths', label: '6.0 绝对路径' },
+  { id: 'hopper', label: '6.1 Hopper' },
+  { id: 'evidence', label: '6.2 Evidence' },
+  { id: 'captures', label: '6.3 捕获记账' },
+  { id: 'sockets', label: '6.4 WebSocket 字段' },
+  { id: 'related', label: '相关' },
+];
+---
+<BaseLayout
+  lang="zh"
+  title="REA 升级手册：6.0–6.4.0 破坏性变更 | rea.run"
+  description="rea-agents 6.0 至 6.4.0 运维手册：MCP 绝对路径、Evidence 的 normalized_result、捕获记账、websocket_connections，以及 always-bump-minor。"
+  path="/docs/breaking/"
+>
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <div class="docs-layout">
+      <aside class="docs-toc hidden md:block">
+        <p class="section-kicker mb-3">本页目录</p>
+        {toc.map((item) => <a href={`#${item.id}`}>{item.label}</a>)}
+      </aside>
+      <article class="prose-page">
+        <p class="text-sm"><a class="quiet-link" href="/zh/changelog/">← 更新日志</a></p>
+        <p class="badge badge-accent mt-4">文档 · 钉 6.4.0</p>
+        <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">升级时怎样不弄坏 runbook</h1>
+        <p class="lede mt-4 !max-w-none">
+          从 <strong>6.0.0</strong>（2026-10-08）到 <strong>6.4.0</strong>（2026-10-11），几次次版本发行改了 MCP 输入、Evidence 形状和已保存的捕获。
+          本页是这些破坏性变更的运维清单。日期取自 GitHub 发行的 <code>published_at</code>。rea.run 的教学钉版本是 <code>rea-agents@6.4.0</code>。
+        </p>
+
+        <h2 id="policy">always-bump-minor 不是兼容承诺</h2>
+        <p>
+          上游 6.2 迁移指南用一句话写了策略：仓库使用 <code>always-bump-minor</code>，<strong>包括破坏性发行</strong>。次版本号并不表示旧脚本、旧 Evidence 文件或旧捕获仍然能通过校验。
+          2026-10-13 时 npm <code>latest</code> 仍是 <code>6.4.0</code>。runbook 里漂浮的 <code>@latest</code> 会在下一次次版本发布时跟上，破坏性变更也一起跟上。
+        </p>
+        <p>
+          Factory Droid（<code>droid</code>）和 DeepSeek Harness（<code>dsh</code>）只在 <code>main</code> 上，要等到 6.4.0 <em>之后</em>的 npm 发行。不要把它们写进 6.4.0 的 setup 计划。
+        </p>
+
+        <h2 id="steps">升级步骤</h2>
+        <ol>
+          <li>记下你今天跑的钉版本：MCP <code>args</code> 里的版本，以及全局 CLI 的 <code>npm view rea-agents version</code>。两者可以不同。</li>
+          <li>读下面表格里你将跨过的每一行。从 6.1 直接跳到 6.4.0，仍然包含 6.2 和 6.3 的合同。</li>
+          <li>把 Evidence 包、分析快照和进程捕获复制到旁边的目录。不要就地改写。</li>
+          <li>
+            把客户端指到该钉版本，并批准一份有范围的 setup 计划：
+            <pre><code>{`npx -y rea-agents@6.4.0 setup --client codex --dry-run --json
+# 审阅后再：
+npx -y rea-agents@6.4.0 setup --client codex --yes --json`}</code></pre>
+          </li>
+          <li>重启或重连智能体。上一包缓存的 <code>tools/list</code> schema 是常见的第一处失败。</li>
+          <li>运行 <code>npx -y rea-agents@6.4.0 doctor --json</code>，把 JSON 附在变更单上。</li>
+          <li>对一个你已经理解的授权目标重跑一次。先比对字段名，再相信仪表板或脚本。</li>
+          <li>若消费者仍读取 <code>structuredContent.result</code>，改为 <code>normalized_result</code>（6.2）。若仍读取 <code>network.websocket_events</code>，改为 <code>network.websocket_connections</code>（6.4）。WebSocket 字段没有旧别名。</li>
+        </ol>
+        <p>该钉版本的手动 MCP JSON：</p>
+        <pre><code>{`{
+  "mcpServers": {
+    "rea": {
+      "command": "npx",
+      "args": ["-y", "rea-agents@6.4.0", "mcp"]
+    }
+  }
+}`}</code></pre>
+
+        <h2 id="map">运维会碰到的破坏，6.0 至 6.4.0</h2>
+        <div class="not-prose overflow-x-auto my-6">
+          <table class="compare-table">
+            <thead>
+              <tr><th>版本</th><th>发布时间（UTC）</th><th>脚本会注意到什么</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>6.0.0</td>
+                <td>2026-10-08 09:40</td>
+                <td>MCP 文件系统输入必须是主机绝对路径。CLI 相对路径仍然可用。</td>
+              </tr>
+              <tr>
+                <td>6.1.0</td>
+                <td>2026-10-09 01:08</td>
+                <td>Hopper 正则改为 ECMAScript Unicode，工作线程截止 5 秒。<code>set_current_document</code> 已删除。</td>
+              </tr>
+              <tr>
+                <td>6.2.0</td>
+                <td>2026-10-09 16:51</td>
+                <td>成功的 Evidence 就是结构化载荷。读 <code>normalized_result</code>。旧包装、快照和 v3 捕获不能靠填字段迁移。</td>
+              </tr>
+              <tr>
+                <td>6.3.0</td>
+                <td>2026-10-09 23:56</td>
+                <td>捕获需要当前的生产者记账和事务身份。不要编造缺失的网页差异维度。</td>
+              </tr>
+              <tr>
+                <td>6.4.0</td>
+                <td>2026-10-11 03:58</td>
+                <td><code>network.websocket_connections</code> 取代 <code>network.websocket_events</code>。若干已存储的图 schema 也变了。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>同一十天里更早的主版本（4.0.0、5.0.0）另有破坏性变更，列在 <a href="/zh/changelog/">更新日志</a>。本手册从 MCP 路径和 Evidence 消费者通常开始坏掉的地方写起：6.0。</p>
+
+        <h2 id="paths">6.0.0 — MCP 绝对路径</h2>
+        <p>
+          发布于 2026-10-08。MCP 文件系统输入必须是主机绝对路径。包括目标与快照路径、Evidence 包路径、托管代码与固件输入、浏览器与 Electron 启动路径，以及期望的服务器路径。
+          可选路径仍然可选。形如 <code>open_binary</code> 且路径为 <code>"./app"</code> 的调用，必须改成 <code>/home/analyst/app</code> 或 <code>C:\analysis\app</code>。
+          CLI 仍接受操作者的相对路径。从相对工作区根拼 MCP 参数的智能体，需要接上 <code>pwd</code>，而不是模型编出来的字符串。
+        </p>
+        <p>来源：<a href="https://github.com/morluto/rea/pull/948" rel="noopener noreferrer" target="_blank">#948</a>、<a href="https://github.com/morluto/rea/pull/1004" rel="noopener noreferrer" target="_blank">#1004</a>、发行 <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.0.0" rel="noopener noreferrer" target="_blank">rea-agents-6.0.0</a>。</p>
+
+        <h2 id="hopper">6.1.0 — Hopper 调用方</h2>
+        <p>
+          发布于 2026-10-09。若你经 REA 驱动 Hopper 搜索：正则模式是 ECMAScript Unicode 语法，不是 Python <code>re</code>。匹配在可取消的工作线程里跑，截止 5 秒。字面量模式仍做 Unicode 大小写折叠匹配。
+          <code>set_current_document</code> 已删除。用 <code>open_binary</code> 切换目标。文档参数的范围是当前活动目标。
+        </p>
+
+        <h2 id="evidence">6.2.0 — Evidence、快照与已保存清单</h2>
+        <p>
+          发布于 2026-10-09。升级消费者之前，先读 6.4.0 标签上的 <a href="https://github.com/morluto/rea/blob/rea-agents-6.4.0/docs/migration-6.2.md" rel="noopener noreferrer" target="_blank">docs/migration-6.2.md</a>。下面是运维摘录。合同变更见提交 <a href="https://github.com/morluto/rea/commit/63bf91405cf97b114a84f337fb1272d98a267999" rel="noopener noreferrer" target="_blank">63bf914</a> 与 <a href="https://github.com/morluto/rea/pull/1277" rel="noopener noreferrer" target="_blank">#1277</a>。
+        </p>
+        <h3>成功载荷</h3>
+        <p>产出 Evidence 的工具把完整 Evidence 记录放进 <code>structuredContent</code>，也放进 JSON 文本。旧的 <code>{`{ result, evidence_id, evidence }`}</code> 包装没有了。</p>
+        <pre><code>{`// 6.1
+const value = reply.structuredContent.result;
+const evidence = reply.structuredContent.evidence;
+
+// 6.2 及以后，包括 6.4.0
+const evidence = reply.structuredContent;
+const value = evidence.normalized_result;
+const evidenceId = evidence.evidence_id;`}</code></pre>
+        <p>
+          读成功字段之前先看 <code>isError</code>。错误把 <code>isError</code> 设为 <code>true</code>，把类型化诊断放进文本内容块，并省略 <code>structuredContent</code>，这样它们不必匹配成功 schema。
+          生命周期和其它非 Evidence 工具仍使用自己的输出合同。不要假设每个成功工具都是 Evidence。
+        </p>
+        <p>
+          每条 Evidence 都要求 <code>analysis_profile</code>：观察到的 profile 对象，或 <code>null</code>。该字段参与 Evidence 身份。
+          往旧文件里插入 <code>null</code> <strong>不会</strong>保留旧的 <code>evidence_id</code>。保留原件，用 6.2 或更新版本重新生成。已经符合完整规范合同的记录仍可使用。
+        </p>
+        <p>
+          <code>binary_session</code> 不再有顶层 <code>provider</code> 与 <code>providers</code> 别名。改读 <code>analysis_provider_binding</code>、<code>analysis_provider_candidates</code>，以及每次操作的 <code>capabilities</code>。
+          用 <code>open_binary.provider_id</code> 或 CLI <code>--provider</code> 选择深度提供者。
+        </p>
+        <p>
+          传输层 <code>resource_constraint</code> 可以带上 <code>details.reported_limits.evidence_reference</code>。在同一连接上用 <code>inspect_analysis_view</code> 或 <code>export_evidence_bundle</code> 消费保留的 Evidence。
+          响应预算在服务器启动时固定。要改预算就重建服务器。提高服务器预算不会提高客户端的接收上限。
+        </p>
+        <h3>快照与制品角色</h3>
+        <p>快照要求 <code>workflow_entries</code>，并且每个缓存查询都有一条绑定 profile 的 Evidence。导入会拒绝不完整的绑定。保留旧快照，写到新路径，例如：</p>
+        <pre><code>npx -y rea-agents@6.4.0 analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program-6.4.json</code></pre>
+        <p>在 MCP 中，打开时不要带上不兼容的 <code>snapshot_path</code>，跑完查询后经 <code>close_binary.snapshot_path</code> 保存。不要编造缺失的提供者 profile。</p>
+        <div class="not-prose overflow-x-auto my-6">
+          <table class="compare-table">
+            <thead><tr><th>6.2 之前读</th><th>6.2 及以后读</th></tr></thead>
+            <tbody>
+              <tr><td><code>nodes[].kind</code></td><td><code>occurrences[].artifact_kind</code></td></tr>
+              <tr><td>依路径的 <code>nodes[].format</code></td><td><code>occurrences[].artifact_format</code></td></tr>
+              <tr><td><code>nodes[].executable</code></td><td><code>occurrences[].executable</code></td></tr>
+              <tr><td>内容身份与字节格式</td><td><code>nodes[].artifact_id</code>、<code>sha256</code>、<code>format</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>用 <code>artifact_id</code> 把出现位置连到内容节点。相同字节可以共用一个节点，同时保留不同的路径角色。合并后的内容节点恢复不了当初没存下来的按路径事实。旧清单需要重新生成。</p>
+        <h3>其它 6.2 消费者破坏</h3>
+        <ul>
+          <li><strong>进程捕获。</strong>导入时不再转换旧版 v3（<a href="https://github.com/morluto/rea/commit/2a7746998d47446c4db6d4f524e0f183d6803f3f" rel="noopener noreferrer" target="_blank">2a77469</a>）。捕获需要明确的选定／启动可执行身份和 <code>event_journal</code>。空日志有效；省略字段无效。旧捕获留作历史，需要当前对比时重新捕获。不要用后来的摘要编造启动身份，也不要从分开的日志编造事件顺序。</li>
+          <li><strong>文件系统效果</strong>在无法判定创建或删除时，可以报告 <code>status: "unknown"</code> 并给出原因。未知不是「不存在」。</li>
+          <li><strong>清理。</strong>一次性分析在提供者清理失败时，可以报告 <code>cleanup_incomplete</code>，而不是静默成功（<a href="https://github.com/morluto/rea/pull/1211" rel="noopener noreferrer" target="_blank">#1211</a>）。保留 <code>details.partial_observation</code> 或主要诊断。观察成功不能证明清理成功。</li>
+          <li><strong>JavaScript 投影</strong>要求 <code>presence</code> 为 <code>present</code>、<code>absent</code> 或 <code>unknown-coverage</code>。未知的值与未知的存在性是两回事。对象操作使用 <code>properties.property_path</code>（路径段或 <code>null</code>），不是压扁的名字。</li>
+          <li><strong>函数对比</strong>使用 <code>unchanged</code>、<code>changed</code> 或 <code>unknown</code>。<code>truncated</code> 状态和 <code>summary.truncated</code> 计数器已删除。</li>
+          <li><strong>符号链接</strong>在 <code>target_state</code> 为 <code>unreadable</code> 或 <code>unknown</code> 时要求 <code>target: null</code>。外部目标保留观察到的绝对路径。像 <code>&lt;outside-root&gt;</code> 这样的显示占位符不能当查找数据。这些图需要重新导入。</li>
+        </ul>
+
+        <h2 id="captures">6.3.0 — 捕获的生产者记账</h2>
+        <p>
+          发布于 2026-10-09。缺少当前生产者记账或事务身份的历史捕获会被拒绝；缺少无障碍或存储维度的网页差异也会被拒绝
+          （<a href="https://github.com/morluto/rea/commit/3283a45d09457c79e3adadb50a48620926d4bc5b" rel="noopener noreferrer" target="_blank">3283a45</a>）。
+          保留原始捕获，用当前生产者重新捕获。对比消费者必须包含每一个维度。不要为了让差异还能画出来而补一条没观察到的记录。
+        </p>
+        <p>同一发行里，若你存储这些对象，下面几条同样可见：</p>
+        <ul>
+          <li>JSON 形状路径使用带类型的属性段和数组元素段。WebMCP 的 <code>input_schema_shape</code> 改为 <code>input_schema</code> 与 <code>input_schema_sha256</code>。</li>
+          <li>文件系统摘要省略项要求 <code>system_code</code>。预算与已改文件的省略用 null。不可用文件的省略保留操作系统错误码。</li>
+          <li>提供者分析输出必须显式给出过去用默认值修补的元数据。不支持的可空侧面是 <code>null</code>，不是省略。</li>
+          <li>JavaScript 语义图存储 Evidence 上下文 ID 与位置，结果需要内联的 <code>evidence_contexts</code> 表。</li>
+          <li>source map URL 位于由 <code>declared_url_sha256</code> 选定的目标观察上。doctor 的 skill 身份不再发出 <code>installed_catalog_digest</code>；改用 <code>identity.skill.state</code>。</li>
+          <li>JavaScript 应用分析里从未递增的 <code>truncated_scopes</code> 统计已删除。</li>
+        </ul>
+
+        <h2 id="sockets">6.4.0 — WebSocket 结果与已存储的图</h2>
+        <p>发布于 2026-10-11。2026-10-13 核对时的 npm latest。发行：<a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">rea-agents-6.4.0</a>。</p>
+        <h3>WebSocket 字段改名</h3>
+        <p>
+          读 <code>network.websocket_connections</code>。不要读 <code>network.websocket_events</code>。没有旧别名
+          （<a href="https://github.com/morluto/rea/commit/db4e3608465486466591b594cf77037ac150c988" rel="noopener noreferrer" target="_blank">db4e360</a>）。
+          每条连接含 <code>request_id</code>、<code>url</code> 和 <code>events</code>。大小未知时 <code>payload_bytes</code> 可以是 <code>null</code>。先改仪表板，再把缺字段说成捕获失败。
+        </p>
+        <h3>已存储的 Evidence 与图</h3>
+        <ul>
+          <li><strong>已保存的引用图。</strong>排除项需要匹配的 <code>pattern</code>，并区分 <code>project-ignored</code> 与 <code>default-ignored</code>。缺少该来源的图要重新导入（<a href="https://github.com/morluto/rea/commit/6585293c562853b95c3a70df02c12ad8cc17afc4" rel="noopener noreferrer" target="_blank">6585293</a>）。</li>
+          <li><strong>制品图的边。</strong>子制品 ID 与路径来自由 <code>occurrence_id</code> 选定的出现位置，不是边字段 <code>child_artifact_id</code>／<code>logical_path</code>。更早的清单 Evidence 不再符合新承诺（<a href="https://github.com/morluto/rea/pull/1493" rel="noopener noreferrer" target="_blank">#1493</a>）。</li>
+          <li><strong>语义图 schema。</strong>节点和关系不再包含 <code>identifier_strategy</code>，关系 ID 也不再对其做哈希。更早的 Evidence 不再通过校验（<a href="https://github.com/morluto/rea/pull/1474" rel="noopener noreferrer" target="_blank">#1474</a>）。</li>
+          <li><strong>语义身份。</strong>从父图选择 ID。事件名读 <code>event_name</code>，端点读 <code>endpoint</code>，字面量读 <code>properties.value</code>。新分析对过长或保留的名字使用基于摘要的 ID。先前存储的图保留原 ID，仍是有效的工作流输入（<a href="https://github.com/morluto/rea/pull/1427" rel="noopener noreferrer" target="_blank">#1427</a> 及相关）。</li>
+          <li><strong>使用自定义规范化的捕获对比</strong>必须用 <code>literal-replacements-v1</code> 重新捕获两侧。无版本的旧模式捕获仍可读，但不能与新模式捕获对比。没有模式的捕获不受影响（<a href="https://github.com/morluto/rea/pull/1456" rel="noopener noreferrer" target="_blank">#1456</a>）。</li>
+          <li><strong>终端捕获</strong>用 <code>columns × (rows + scrollback)</code> 把初始缓冲区和调整后的缓冲区限制在 1,000,000 个单元格内。过大的场景在启动前被拒绝。</li>
+        </ul>
+        <h3>库作者，不是 MCP JSON</h3>
+        <p>
+          进程内的直接资源 API 现在要调用方持有的 <code>ArtifactResourceScope</code>（清单、提取、JavaScript 分析、引用导入、网页导出）。对 <code>readJavaScriptArtifactFiles</code>，scope 是第三个参数，中止信号是第四个。
+          <strong>这些操作的 CLI 与 MCP 输入没有变。</strong>若你只通过 stdio 调用工具，不要往工具参数里加 scope 对象。
+        </p>
+        <p>可选的智能体验证报告接受 schema 版本 4。该报告的生产 CLI 与 MCP 合同没有变。</p>
+
+        <h2 id="related">相关</h2>
+        <ul>
+          <li><a href="/zh/changelog/">更新日志，3.2.0 至 6.4.0</a></li>
+          <li><a href="/zh/docs/install/">安装，钉在 6.4.0</a></li>
+          <li><a href="/zh/docs/clients/">6.4.0 客户端矩阵</a></li>
+          <li><a href="/zh/blog/rea-agents-6-4-0/">6.4.0 运维指南（ADB、JEB、compact schema）</a></li>
+          <li><a href="/zh/docs/jeb/">JEB，自备许可</a></li>
+          <li><a href="/zh/docs/android-adb/">Android ADB 设备通道</a></li>
+        </ul>
+
+        <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+          <p class="text-xs uppercase tracking-wider">来源</p>
+          <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.4.0/docs/migration-6.2.md" rel="noopener noreferrer" target="_blank">rea-agents-6.4.0 的 docs/migration-6.2.md</a></li>
+            <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.0.0" rel="noopener noreferrer" target="_blank">6.0.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.1.0" rel="noopener noreferrer" target="_blank">6.1.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.2.0" rel="noopener noreferrer" target="_blank">6.2.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.3.0" rel="noopener noreferrer" target="_blank">6.3.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">6.4.0</a></li>
+            <li>2026-10-13 核对的 npm <code>rea-agents</code> latest：6.4.0</li>
+          </ol>
+          <p class="mt-4"><a class="quiet-link" href="/zh/compliance/">合规</a></p>
+        </footer>
+      </article>
+    </div>
+  </div>
+</BaseLayout>

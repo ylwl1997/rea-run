@@ -1,0 +1,29 @@
+---
+import { CLIENTS_640 } from '../data/clients64';
+
+interface Props {
+  lang?: 'en' | 'zh';
+}
+const { lang = 'en' } = Astro.props;
+const zh = lang === 'zh';
+---
+<div class="not-prose overflow-x-auto my-6">
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>{zh ? '客户端' : 'Client'}</th>
+        <th><code>--client</code></th>
+        <th>{zh ? '6.4.0 接线' : '6.4.0 wiring'}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {CLIENTS_640.map((row) => (
+        <tr>
+          <td>{row.name}</td>
+          <td><code>{row.id}</code></td>
+          <td>{zh ? row.noteZh : row.noteEn}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

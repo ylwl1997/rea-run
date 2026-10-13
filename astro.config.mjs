@@ -14,7 +14,7 @@ export default defineConfig({
         locales: { en: 'en', zh: 'zh-CN' },
       },
       changefreq: 'weekly',
-      lastmod: new Date('2026-10-10T00:00:00Z'),
+      lastmod: new Date('2026-10-13T00:00:00Z'),
       serialize(item) {
         const slash = (href) => {
           const url = new URL(href);

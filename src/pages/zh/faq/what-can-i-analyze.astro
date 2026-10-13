@@ -22,7 +22,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
           <tr><td>.NET</td><td>托管／原生路径以上游为准</td><td>NativeAOT 可能落到原生提供者</td></tr>
           <tr><td>Android（静态）</td><td>JADX（自备）+ Java</td><td>Linux／macOS 更顺；Windows 常提示「此处不可用」</td></tr>
           <tr><td>Android（设备）</td><td>ADB 通道（6.4+）+ Apktool 资源</td><td>仅<strong>你的</strong>设备／模拟器——检查／分体 APK／日志／截图；见 <a href="/zh/docs/android-adb/">Android ADB</a></td></tr>
-          <tr><td>JEB</td><td>调用方启动的 MCP（自备已授权 JEB）</td><td>6.4+ 提供者路径；REA 不附带 JEB</td></tr>
+          <tr><td>JEB</td><td>调用方启动的 MCP（自备已授权 JEB）</td><td>6.4.0 提供者路径；REA 不附带 JEB。<a href="/zh/docs/jeb/">JEB 指南</a></td></tr>
           <tr><td>固件／包</td><td>可选解包器（自备）</td><td>额外前置；勿臆造安装步骤</td></tr>
           <tr><td>浏览器／页面</td><td>本机 Chrome 系 + REA 浏览器工具</td><td>可能需 <code>REA_BROWSER_EXECUTABLE</code>；注意配置隔离</td></tr>
         </tbody>

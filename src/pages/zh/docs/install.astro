@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CommunityClip from '../../../components/CommunityClip.astro';
+import ClientMatrix from '../../../components/ClientMatrix.astro';
 import { zhInstallVideoGallery } from '../../../data/communityClips';
 import { SITE } from '../../../lib/site';
 const lang = 'zh' as const;
@@ -54,13 +55,22 @@ const toc = [
         <h2 id="requirements">环境要求</h2>
         <div class="mt-4 grid gap-3 sm:grid-cols-3">
           <div class="step-card"><span class="step-num">1</span><div><strong class="text-[var(--color-ink)]">Node</strong><p class="mt-1 !text-sm">22（22.19+）、24（24.11+）或 26+，以及 npm（以上游为准）。</p></div></div>
-          <div class="step-card"><span class="step-num">2</span><div><strong class="text-[var(--color-ink)]">MCP 客户端</strong><p class="mt-1 !text-sm">Claude Code、Codex、Cursor、Gemini CLI、Windsurf、Grok Build 等，或仅用 CLI。</p></div></div>
-          <div class="step-card"><span class="step-num">3</span><div><strong class="text-[var(--color-ink)]">原生引擎</strong><p class="mt-1 !text-sm">深度原生分析需自备 Hopper / Ghidra / IDA。静态 JS／Electron 通常不需要。</p></div></div>
+          <div class="step-card"><span class="step-num">2</span><div><strong class="text-[var(--color-ink)]">MCP 客户端</strong><p class="mt-1 !text-sm"><code>rea-agents@6.4.0</code> 的 17 个 <code>--client</code> ID，含 Pi、Hermes、Qwen Code、Copilot CLI，或仅用 CLI。表在下方。</p></div></div>
+          <div class="step-card"><span class="step-num">3</span><div><strong class="text-[var(--color-ink)]">原生引擎</strong><p class="mt-1 !text-sm">深度原生分析需自备 Hopper／Ghidra／IDA。JEB 是另一条自备 MCP。静态 JS／Electron 通常不需要。</p></div></div>
         </div>
+        <h3>客户端矩阵（<code>rea-agents@6.4.0</code>）</h3>
+        <p>
+          各行对应上游标签 <code>rea-agents-6.4.0</code> 的 <code>docs/installation.md</code> 受支持智能体表。
+          2026-10-13 的 npm <code>latest</code> 仍是 6.4.0；本站 runbook 仍然钉版本。
+          MCP Registry 标识：<code>io.github.morluto/rea</code>。
+          Factory Droid（<code>droid</code>）和 DeepSeek Harness（<code>dsh</code>）要等到 6.4.0 之后的下一次 npm 发行——它们不是这里的行。
+        </p>
+        <ClientMatrix lang="zh" />
+        <p class="text-sm">路径、Copilot schema 上限，以及 Grok Bot 的手动连接器：<a href="/zh/docs/clients/">客户端矩阵页</a>。skill 目录：<a href="/zh/docs/mcp-clients/">skill 路径</a>。</p>
 
         <h2 id="connect">连接编程智能体</h2>
-        <p>可让智能体在批准后执行 setup，或自行运行：</p>
-        <pre><code>npx rea-agents@latest setup</code></pre>
+        <p>可让智能体在批准后执行 setup，或自行运行。本指南钉的是本站其余页面教学用的包：</p>
+        <pre><code>npx -y rea-agents@6.4.0 setup</code></pre>
         <p>
           选择客户端、审阅计划并批准变更。setup 会注册 MCP 与配套调查 skill，并备份现有配置。完成后请<strong>重启客户端</strong>。
         </p>
@@ -69,11 +79,11 @@ const toc = [
   "mcpServers": {
     "rea": {
       "command": "npx",
-      "args": ["-y", "rea-agents@latest", "mcp"]
+      "args": ["-y", "rea-agents@6.4.0", "mcp"]
     }
   }
 }`}</code></pre>
-        <p>需要可复现安装时，请钉死 <code>rea-agents@VERSION</code>。</p>
+        <p>上面的片段已经钉在 <code>rea-agents@6.4.0</code>。2026-10-13 的 <code>@latest</code> 也是这个版本，下一次次版本可能破坏合同（<a href="/zh/docs/breaking/">always-bump-minor</a>）。</p>
 
         <h2 id="cli">可选：全局 CLI</h2>
         <pre><code>npm install --global rea-agents</code></pre>
@@ -82,8 +92,8 @@ const toc = [
         <p>REA 不会安装 Ghidra 或 Java。导出绝对路径后，先 doctor 再 setup：</p>
         <pre><code>{`export GHIDRA_INSTALL_DIR=/absolute/path/to/ghidra_PUBLIC
 export JAVA_HOME=/absolute/path/to/jdk-21
-npx -y rea-agents@latest doctor --provider ghidra --json
-npx rea-agents@latest setup`}</code></pre>
+npx -y rea-agents@6.4.0 doctor --provider ghidra --json
+npx -y rea-agents@6.4.0 setup`}</code></pre>
         <p>
           受支持的主机／Ghidra／JDK 组合以上游为准，见仓库内
           <a href="https://github.com/morluto/rea/blob/main/docs/installation.md">docs/installation.md</a>。
@@ -147,7 +157,7 @@ npx rea-agents@latest setup`}</code></pre>
           想要一次性云端环境？在 Codespaces 打开公开实验仓
           <a href="https://github.com/ylwl1997/rea-run-lab">ylwl1997/rea-run-lab</a>
           （Node 22 Dev Container），然后对<strong>仓内自有 Electron 风格演示</strong>运行
-          <code>npx rea-agents@latest setup</code>。
+          <code>npx -y rea-agents@6.4.0 setup</code>。
         </p>
         <p class="text-sm text-[var(--color-muted)]">与上方 Actions 同一实验仓——需要交互 shell 时再开。</p>
         <ul>
@@ -162,8 +172,12 @@ npx rea-agents@latest setup`}</code></pre>
           <li><a href="/zh/showcase/greco-dev-tv/">案例：greco 自有电视</a></li>
           <li><a href="/zh/showcase/brorlandi-miscale/">案例：BrOrlandi 自有体脂秤</a></li>
           <li><a href="/zh/docs/install-demo/">Codex 安装演示 — 恐龙加速规则</a></li>
-          <li><a href="/zh/docs/mcp-clients/">MCP 客户端安装矩阵与 skill 路径</a></li>
+          <li><a href="/zh/docs/clients/">rea-agents@6.4.0 客户端矩阵</a></li>
+          <li><a href="/zh/docs/mcp-clients/">MCP skill 路径</a></li>
           <li><a href="/zh/docs/android-adb/">Android ADB 设备通道（6.4+）</a></li>
+          <li><a href="/zh/docs/jeb/">JEB，自备许可</a></li>
+          <li><a href="/zh/docs/breaking/">6.0–6.4.0 破坏性变更</a></li>
+          <li><a href="/zh/changelog/">直到 6.4.0 的更新日志</a></li>
           <li><a href="/zh/faq/setup-vs-providers/">setup 会装 Ghidra／Hopper／IDA 吗？</a></li>
           <li><a href="/zh/faq/macos-ghidra-decompiler/">macOS Ghidra 反编译器缺失</a></li>
           <li><a href="/zh/blog/rea-agents-6-4-0/">REA 6.4.0 运维指南</a></li>

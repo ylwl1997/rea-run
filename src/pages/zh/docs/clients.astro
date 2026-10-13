@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ClientMatrix from '../../../components/ClientMatrix.astro';
+import { CLIENTS_640, MCP_REGISTRY_ID, NODE_ENGINES } from '../../../data/clients64';
+const toc = [
+  { id: 'pin', label: '钉版本与引擎' },
+  { id: 'matrix', label: '17 个客户端 ID' },
+  { id: 'verify', label: '核对一个客户端' },
+  { id: 'copilot', label: 'Copilot CLI schema' },
+  { id: 'manual', label: '不是 --client 行' },
+  { id: 'pending', label: '6.4.0 之后才待发布' },
+  { id: 'related', label: '相关' },
+];
+---
+<BaseLayout
+  lang="zh"
+  title="REA 6.4.0 客户端矩阵 | rea.run"
+  description="rea-agents@6.4.0 的 17 个 setup --client ID，含 Pi、Hermes、Qwen Code 与 Copilot CLI。doctor 检查与 MCP Registry 标识。"
+  path="/docs/clients/"
+>
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <div class="docs-layout">
+      <aside class="docs-toc hidden md:block">
+        <p class="section-kicker mb-3">本页目录</p>
+        {toc.map((item) => <a href={`#${item.id}`}>{item.label}</a>)}
+      </aside>
+      <article class="prose-page">
+        <p class="text-sm"><a class="quiet-link" href="/zh/docs/install/">← 安装</a></p>
+        <p class="badge badge-accent mt-4">文档 · 6.4.0</p>
+        <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">rea-agents 6.4.0 的客户端矩阵</h1>
+        <p class="lede mt-4 !max-w-none">
+          <code>rea-agents@6.4.0</code> 的 setup 可以把 REA 的本地 stdio MCP 服务器登记到 <strong>{CLIENTS_640.length} 个客户端 ID</strong>。
+          表与标签 <code>rea-agents-6.4.0</code> 上的 <code>docs/installation.md</code> 一致。
+          skill 目录的坑仍在 <a href="/zh/docs/mcp-clients/">MCP 客户端与 skill 路径</a>。
+        </p>
+
+        <h2 id="pin">钉版本与引擎</h2>
+        <p>该包的 Node：<code>{NODE_ENGINES}</code>。注册表标识：<code>{MCP_REGISTRY_ID}</code>。注册表条目用 <code>npx</code> 和 <code>mcp</code> 命令启动同一个 npm 包。它不是第二份发行物。</p>
+        <pre><code>{`npx -y rea-agents@6.4.0 setup
+npx -y rea-agents@6.4.0 doctor --client codex --json
+npx -y rea-agents@6.4.0 doctor --skill --json`}</code></pre>
+        <p>
+          <code>rea setup</code> 以多选列出这些智能体。已有的 REA 登记默认选中。新检测到的客户端可选但不预选：检测只提供上下文，不是写入新登记的许可。
+          显式 <code>--client</code> 会跳过这个问题。先批准 dry-run，再 <code>--yes</code>。之后重启客户端。持久登记会钉在执行 setup 的那个包版本上。
+        </p>
+        <p>
+          <code>npx skills add morluto/rea --skill reverse-engineer-anything</code> 只安装说明。它不登记 MCP，也不安装 Ghidra、JEB、IDA 或 Hopper。
+        </p>
+
+        <h2 id="matrix">受支持的 <code>--client</code> 值</h2>
+        <p>
+          Pi、Hermes 和 Qwen Code 在这个 npm 发行里。6.4.0 发行说明（2026-10-11）把它们的 setup 列为新增
+          （<a href="https://github.com/morluto/rea/pull/1376" rel="noopener noreferrer" target="_blank">#1376</a>、
+          <a href="https://github.com/morluto/rea/pull/1403" rel="noopener noreferrer" target="_blank">#1403</a>、
+          <a href="https://github.com/morluto/rea/pull/1415" rel="noopener noreferrer" target="_blank">#1415</a>）。
+          同一标签的安装文档里有一段写于 npm latest 仍是 6.3.0 的文字，说这三个 ID 不在<em>那个</em> tarball 里。不要把 6.3.0 的句子用到 <code>@6.4.0</code> 钉版本上。
+          <code>main</code> 上更晚的说明（不是更新的 npm 版本）写到，已发布的 6.4.0 包接受了这 17 个 ID 的 dry-run 计划，包括 Qwen Code、Pi 和 Hermes。在你的机器上用 doctor 确认。
+        </p>
+        <ClientMatrix lang="zh" />
+
+        <h2 id="verify">核对一个客户端</h2>
+        <p>换成表中的 ID。写入之前先检查。下面的命令用 Pi；Hermes 是 <code>hermes</code>，Qwen Code 是 <code>qwen_code</code>，Copilot CLI 是 <code>copilot_cli</code>。</p>
+        <pre><code>npx -y rea-agents@6.4.0 setup --client pi --dry-run --json
+npx -y rea-agents@6.4.0 setup --client pi --yes --json
+npx -y rea-agents@6.4.0 doctor --client pi --json</code></pre>
+        <ol>
+          <li>Pi 把 <code>mcp.json</code> 当成严格 JSON。注释、尾随逗号、字节顺序标记或空文件都无效。setup 会报告它们，而不是改写文件。先修成普通 JSON 再重跑。设置了 <code>PI_CODING_AGENT_DIR</code> 时跟随它。会话外改完配置后，重载已有的 Pi 会话。项目里的 <code>.pi/mcp.json</code> 可以盖住用户条目。</li>
+          <li>Qwen Code：<code>~/.qwen/settings.json</code> 里的 <code>mcpServers.rea</code>，或 <code>$QWEN_HOME/settings.json</code>。个人 skill 在 <code>~/.agents/skills</code> 下被发现。</li>
+          <li>Hermes：<code>config.yaml</code> 里的 <code>mcp_servers.rea</code>，从 <code>HERMES_HOME</code> 或平台默认目录解析（Windows 为 <code>%LOCALAPPDATA%\hermes</code>，其它为 <code>~/.hermes</code>），包括 <code>HERMES_DATA_DIR_SUFFIX</code>。setup 跟随 <code>active_profile</code>。无效的粘滞配置档会被报告，不会悄悄写进默认主目录。</li>
+          <li>OMP：每个配置档一份登记。对每个应加载 REA 的 <code>OMP_PROFILE</code> 或 <code>PI_PROFILE</code> 跑一次 setup。<code>disabledServers</code> 会藏起 <code>rea</code>；setup 会从它编辑的文件里去掉这个名字。</li>
+          <li>OpenCode 在 6.4.0 会遵守 <code>OPENCODE_CONFIG_DIR</code>。npm 6.3.0 不会。</li>
+        </ol>
+
+        <h2 id="copilot">Copilot CLI 与 schema 体积</h2>
+        <p>
+          对 GitHub Copilot CLI 1.0.95，<code>gpt-4.1</code> 的模型元数据可能在发出模型请求之前，就用 REA 的完整输入 schema 挡住普通聊天（<code>compaction_static_context_blocked</code>，<a href="https://github.com/morluto/rea/issues/1554" rel="noopener noreferrer" target="_blank">#1554</a>）。
+          在上游的 Linux 回环夹具里，compact profile 以完整工具清单通过了本地聊天和分析。setup 之后，把下面这项加进 Copilot <code>mcp-config.json</code> 里 <code>mcpServers.rea</code> 的 <code>env</code>，保留其它设置，然后重启：
+        </p>
+        <pre><code>{`"REA_MCP_INPUT_SCHEMA_PROFILE": "compact"`}</code></pre>
+        <p>compact 广告可以减少嵌套的 schema 约束。REA 仍按规范输入做校验。同一个环境变量也是 6.4.0 里给其它有体积上限的宿主（Kimi／Moonshot）的开关。它不是改发另一个工具的许可。</p>
+
+        <h2 id="manual">Grok Bot 不在这 17 个文件里</h2>
+        <p>
+          6.4.0 安装文档把 Grok Bot（<code>grok_bot</code>）写成手动的托管连接器。setup 不调用账户连接器 API，也不把 <code>~/.grokbot</code> 当成已对齐。
+          请在 Grok Bot 对话里添加一个名为 <code>rea</code>、跑在 Bot 电脑上的自定义 MCP 服务器：<code>npx -y rea-agents@6.4.0 mcp</code>。
+          不要把凭据放进该命令。<code>rea doctor --client grok_bot</code> 会报告这个手动步骤。<code>rea uninstall</code> 不会移除账户连接器。
+          Grok Build（<code>grok_build</code>）不同：它是表中的一行，使用本地 <code>config.toml</code>。
+        </p>
+
+        <h2 id="pending">待 6.4.0 之后的下一次 npm 发行</h2>
+        <p>
+          Factory Droid（<code>droid</code>）和 DeepSeek Harness（<code>dsh</code>）只在 <code>main</code> 上，直到 6.4.0 之后的发行。
+          不要把它们写成 <code>rea-agents@6.4.0</code> 的客户端。对该钉版本执行 <code>setup --client dsh</code> 会报告不支持的客户端。
+          Qoder、Trae、ZCode 出现在更晚的 <code>main</code> 文档里，方式相同：不在 6.4.0 的表中，所以也不在这个矩阵里。
+        </p>
+
+        <h2 id="related">相关</h2>
+        <ul>
+          <li><a href="/zh/docs/install/">安装指南</a></li>
+          <li><a href="/zh/docs/mcp-clients/">skill 路径，以及 Claude Code 目录坑</a></li>
+          <li><a href="/zh/docs/breaking/">若你正跨过 6.0–6.4，看升级手册</a></li>
+          <li><a href="/zh/changelog/">直到 6.4.0 的更新日志</a></li>
+          <li><a href="/zh/faq/setup-vs-providers/">setup 不安装引擎</a></li>
+        </ul>
+
+        <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+          <p class="text-xs uppercase tracking-wider">来源</p>
+          <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.4.0/docs/installation.md" rel="noopener noreferrer" target="_blank">rea-agents-6.4.0 的 docs/installation.md</a> — 受支持智能体表与 MCP Registry 一节</li>
+            <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">6.4.0 发行</a> — Pi、Hermes、Qwen Code setup</li>
+            <li><a href="https://www.npmjs.com/package/rea-agents" rel="noopener noreferrer" target="_blank">npm rea-agents</a> — 2026-10-13 的 latest 为 6.4.0</li>
+          </ol>
+          <p class="mt-4"><a class="quiet-link" href="/zh/compliance/">合规</a></p>
+        </footer>
+      </article>
+    </div>
+  </div>
+</BaseLayout>

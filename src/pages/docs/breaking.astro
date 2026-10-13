@@ -1,0 +1,240 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const toc = [
+  { id: 'policy', label: 'always-bump-minor' },
+  { id: 'steps', label: 'Upgrade steps' },
+  { id: 'map', label: 'What breaks' },
+  { id: 'paths', label: '6.0 absolute paths' },
+  { id: 'hopper', label: '6.1 Hopper' },
+  { id: 'evidence', label: '6.2 Evidence' },
+  { id: 'captures', label: '6.3 capture accounting' },
+  { id: 'sockets', label: '6.4 WebSocket field' },
+  { id: 'related', label: 'Related' },
+];
+---
+<BaseLayout
+  lang="en"
+  title="REA upgrade runbook: breaking changes 6.0–6.4.0 | rea.run"
+  description="Operator runbook for rea-agents 6.0 through 6.4.0: absolute MCP paths, Evidence normalized_result, capture accounting, websocket_connections, and always-bump-minor."
+  path="/docs/breaking/"
+>
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <div class="docs-layout">
+      <aside class="docs-toc hidden md:block">
+        <p class="section-kicker mb-3">On this page</p>
+        {toc.map((item) => <a href={`#${item.id}`}>{item.label}</a>)}
+      </aside>
+      <article class="prose-page">
+        <p class="text-sm"><a class="quiet-link" href="/changelog/">← Changelog</a></p>
+        <p class="badge badge-accent mt-4">Docs · pin 6.4.0</p>
+        <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">Upgrade without breaking your runbooks</h1>
+        <p class="lede mt-4 !max-w-none">
+          From <strong>6.0.0</strong> (2026-10-08) through <strong>6.4.0</strong> (2026-10-11), several minor releases changed MCP inputs, Evidence shape, and saved captures.
+          This page is the operator checklist for those breaks. Dates are GitHub release <code>published_at</code> values. The teaching pin on rea.run is <code>rea-agents@6.4.0</code>.
+        </p>
+
+        <h2 id="policy">always-bump-minor is not a compatibility promise</h2>
+        <p>
+          Upstream’s 6.2 migration guide states the policy in one sentence: the repository uses <code>always-bump-minor</code>, <strong>including breaking releases</strong>. A minor number does not mean old scripts, old Evidence files, or old captures still validate.
+          npm <code>latest</code> on 2026-10-13 was still <code>6.4.0</code>. Floating <code>@latest</code> in a runbook will pick up the next minor whenever it publishes, breaks included.
+        </p>
+        <p>
+          Factory Droid (<code>droid</code>) and DeepSeek Harness (<code>dsh</code>) are on <code>main</code> only until an npm release <em>after</em> 6.4.0. Do not add them to a 6.4.0 setup plan.
+        </p>
+
+        <h2 id="steps">Upgrade steps</h2>
+        <ol>
+          <li>Record the pin you run today: the version in MCP <code>args</code>, and <code>npm view rea-agents version</code> if you use a global CLI. They can differ.</li>
+          <li>Read every row you will cross in the table below. Jumping 6.1 → 6.4.0 still includes the 6.2 and 6.3 contracts.</li>
+          <li>Copy Evidence bundles, analysis snapshots, and process captures to a side directory. Do not rewrite them in place.</li>
+          <li>
+            Point the client at the pin and approve a scoped setup plan:
+            <pre><code>{`npx -y rea-agents@6.4.0 setup --client codex --dry-run --json
+# review, then:
+npx -y rea-agents@6.4.0 setup --client codex --yes --json`}</code></pre>
+          </li>
+          <li>Restart or reconnect the agent. Cached <code>tools/list</code> schemas from the previous package are a common first failure.</li>
+          <li>Run <code>npx -y rea-agents@6.4.0 doctor --json</code> and attach the JSON to the change ticket.</li>
+          <li>Re-run one authorized target you already understand. Diff field names before you trust a dashboard or a script.</li>
+          <li>If a consumer still reads <code>structuredContent.result</code>, switch it to <code>normalized_result</code> (6.2). If it reads <code>network.websocket_events</code>, switch it to <code>network.websocket_connections</code> (6.4). There is no legacy alias for the WebSocket field.</li>
+        </ol>
+        <p>Manual MCP JSON for this pin:</p>
+        <pre><code>{`{
+  "mcpServers": {
+    "rea": {
+      "command": "npx",
+      "args": ["-y", "rea-agents@6.4.0", "mcp"]
+    }
+  }
+}`}</code></pre>
+
+        <h2 id="map">Operator-relevant breaks, 6.0 through 6.4.0</h2>
+        <div class="not-prose overflow-x-auto my-6">
+          <table class="compare-table">
+            <thead>
+              <tr><th>Version</th><th>Published (UTC)</th><th>What your scripts notice</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>6.0.0</td>
+                <td>2026-10-08 09:40</td>
+                <td>MCP filesystem inputs must be absolute host paths. CLI relative paths still work.</td>
+              </tr>
+              <tr>
+                <td>6.1.0</td>
+                <td>2026-10-09 01:08</td>
+                <td>Hopper regex is ECMAScript Unicode, with a five-second worker deadline. <code>set_current_document</code> is gone.</td>
+              </tr>
+              <tr>
+                <td>6.2.0</td>
+                <td>2026-10-09 16:51</td>
+                <td>Success Evidence is the structured payload. Read <code>normalized_result</code>. Old wrappers, snapshots, and v3 captures do not migrate by field-stuffing.</td>
+              </tr>
+              <tr>
+                <td>6.3.0</td>
+                <td>2026-10-09 23:56</td>
+                <td>Captures need current producer accounting and transaction identity. Do not synthesize missing web-diff dimensions.</td>
+              </tr>
+              <tr>
+                <td>6.4.0</td>
+                <td>2026-10-11 03:58</td>
+                <td><code>network.websocket_connections</code> replaces <code>network.websocket_events</code>. Several stored graph schemas also change.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Earlier majors in the same ten days (4.0.0, 5.0.0) have their own breaks. They are listed on the <a href="/changelog/">changelog</a>. This runbook starts where MCP path and Evidence consumers usually break: 6.0.</p>
+
+        <h2 id="paths">6.0.0 — absolute MCP paths</h2>
+        <p>
+          Published 2026-10-08. MCP filesystem inputs require absolute host paths. That includes target and snapshot paths, Evidence bundle paths, managed and firmware inputs, browser and Electron launch paths, and expected server paths.
+          Optional paths stay optional. A call shaped like <code>open_binary</code> with <code>"./app"</code> must send <code>/home/analyst/app</code> or <code>C:\analysis\app</code>.
+          The CLI still accepts operator-relative paths. Agents that build MCP arguments from a relative workspace root need <code>pwd</code> joined in, not a string the model invented.
+        </p>
+        <p>Sources: <a href="https://github.com/morluto/rea/pull/948" rel="noopener noreferrer" target="_blank">#948</a>, <a href="https://github.com/morluto/rea/pull/1004" rel="noopener noreferrer" target="_blank">#1004</a>, release <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.0.0" rel="noopener noreferrer" target="_blank">rea-agents-6.0.0</a>.</p>
+
+        <h2 id="hopper">6.1.0 — Hopper callers</h2>
+        <p>
+          Published 2026-10-09. If you drive Hopper search from REA: regex mode is ECMAScript Unicode syntax, not Python <code>re</code>. Matching runs in a cancellable worker with a five-second deadline. Literal mode keeps Unicode casefold matching.
+          <code>set_current_document</code> is removed. Switch targets with <code>open_binary</code>. Document arguments are scoped to the active target.
+        </p>
+
+        <h2 id="evidence">6.2.0 — Evidence, snapshots, and saved inventories</h2>
+        <p>
+          Published 2026-10-09. Read <a href="https://github.com/morluto/rea/blob/rea-agents-6.4.0/docs/migration-6.2.md" rel="noopener noreferrer" target="_blank">docs/migration-6.2.md</a> on the 6.4.0 tag before you upgrade a consumer. The notes below are the operator extract. Commit <a href="https://github.com/morluto/rea/commit/63bf91405cf97b114a84f337fb1272d98a267999" rel="noopener noreferrer" target="_blank">63bf914</a> and <a href="https://github.com/morluto/rea/pull/1277" rel="noopener noreferrer" target="_blank">#1277</a> are the contract change.
+        </p>
+        <h3>Success payload</h3>
+        <p>Evidence-producing tools return the complete Evidence record in <code>structuredContent</code> and in the JSON text. The old <code>{`{ result, evidence_id, evidence }`}</code> wrapper is gone.</p>
+        <pre><code>{`// 6.1
+const value = reply.structuredContent.result;
+const evidence = reply.structuredContent.evidence;
+
+// 6.2 and later, including 6.4.0
+const evidence = reply.structuredContent;
+const value = evidence.normalized_result;
+const evidenceId = evidence.evidence_id;`}</code></pre>
+        <p>
+          Check <code>isError</code> before success fields. Errors set <code>isError: true</code>, put the typed diagnostic in a text content block, and omit <code>structuredContent</code> so they do not have to match the success schema.
+          Lifecycle and other non-Evidence tools keep their own output contracts. Do not assume every successful tool is Evidence.
+        </p>
+        <p>
+          Every Evidence record requires <code>analysis_profile</code>: the observed profile object, or <code>null</code>. The field is part of Evidence identity.
+          Inserting <code>null</code> into an old file does <strong>not</strong> preserve the old <code>evidence_id</code>. Keep the original and regenerate with 6.2 or later. Records that already match the full canonical contract stay usable.
+        </p>
+        <p>
+          <code>binary_session</code> no longer has top-level <code>provider</code> and <code>providers</code> aliases. Read <code>analysis_provider_binding</code>, <code>analysis_provider_candidates</code>, and per-operation <code>capabilities</code>.
+          Select a deep provider with <code>open_binary.provider_id</code> or CLI <code>--provider</code>.
+        </p>
+        <p>
+          A transport <code>resource_constraint</code> can carry <code>details.reported_limits.evidence_reference</code>. Consume the retained Evidence on the same connection with <code>inspect_analysis_view</code> or <code>export_evidence_bundle</code>.
+          Response budgets are fixed when the server starts. Recreate the server to change them. Raising the server budget does not raise the client’s receive limit.
+        </p>
+        <h3>Snapshots and artifact roles</h3>
+        <p>Snapshots require <code>workflow_entries</code> and a profile-bound Evidence record for every cached query. Import rejects incomplete bindings. Keep the old snapshot and write a new path, for example:</p>
+        <pre><code>npx -y rea-agents@6.4.0 analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program-6.4.json</code></pre>
+        <p>In MCP, open without the incompatible <code>snapshot_path</code>, run the queries, then save through <code>close_binary.snapshot_path</code>. Do not invent missing provider profiles.</p>
+        <div class="not-prose overflow-x-auto my-6">
+          <table class="compare-table">
+            <thead><tr><th>Read before 6.2</th><th>Read in 6.2+</th></tr></thead>
+            <tbody>
+              <tr><td><code>nodes[].kind</code></td><td><code>occurrences[].artifact_kind</code></td></tr>
+              <tr><td>Path-specific <code>nodes[].format</code></td><td><code>occurrences[].artifact_format</code></td></tr>
+              <tr><td><code>nodes[].executable</code></td><td><code>occurrences[].executable</code></td></tr>
+              <tr><td>Content identity and byte format</td><td><code>nodes[].artifact_id</code>, <code>sha256</code>, <code>format</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Join an occurrence to its content node with <code>artifact_id</code>. Identical bytes can share a node and still have different path roles. A merged content node cannot recover per-path facts that were never stored. Regenerate old inventories.</p>
+        <h3>Other 6.2 consumer breaks</h3>
+        <ul>
+          <li><strong>Process captures.</strong> Legacy v3 conversion on import is gone (<a href="https://github.com/morluto/rea/commit/2a7746998d47446c4db6d4f524e0f183d6803f3f" rel="noopener noreferrer" target="_blank">2a77469</a>). Captures need explicit selected/launch executable identity and <code>event_journal</code>. An empty journal is valid; an omitted journal is not. Keep old captures as history and recapture when you need a current comparison. Do not invent launch identity from a later digest, or event order from separate logs.</li>
+          <li><strong>Filesystem effects</strong> may report <code>status: "unknown"</code> with a reason. Unknown is not “absent”.</li>
+          <li><strong>Cleanup.</strong> A finished one-shot analysis can report <code>cleanup_incomplete</code> instead of silent success when provider cleanup fails (<a href="https://github.com/morluto/rea/pull/1211" rel="noopener noreferrer" target="_blank">#1211</a>). Keep <code>details.partial_observation</code> or the primary diagnostic. A good observation does not prove cleanup.</li>
+          <li><strong>JavaScript projections</strong> require <code>presence</code> of <code>present</code>, <code>absent</code>, or <code>unknown-coverage</code>. Unknown values and unknown presence are different. Object operations use <code>properties.property_path</code> (segments or <code>null</code>), not a flattened name.</li>
+          <li><strong>Function comparisons</strong> use <code>unchanged</code>, <code>changed</code>, or <code>unknown</code>. The <code>truncated</code> status and <code>summary.truncated</code> counter are gone.</li>
+          <li><strong>Symlinks</strong> with <code>target_state</code> <code>unreadable</code> or <code>unknown</code> require <code>target: null</code>. External targets keep the observed absolute path. A display placeholder such as <code>&lt;outside-root&gt;</code> is not lookup data. Reimport those graphs.</li>
+        </ul>
+
+        <h2 id="captures">6.3.0 — capture producer accounting</h2>
+        <p>
+          Published 2026-10-09. Historical captures that lack current producer accounting or transaction identity are rejected, and web diffs that omit accessibility or storage dimensions are rejected
+          (<a href="https://github.com/morluto/rea/commit/3283a45d09457c79e3adadb50a48620926d4bc5b" rel="noopener noreferrer" target="_blank">3283a45</a>).
+          Preserve the original capture and recapture with the current producer. Comparison consumers must include every dimension. Do not fill a missing observation so the diff still renders.
+        </p>
+        <p>Same release, still operator-visible if you store these objects:</p>
+        <ul>
+          <li>JSON shape paths use typed property and array-element segments. WebMCP <code>input_schema_shape</code> is replaced by <code>input_schema</code> and <code>input_schema_sha256</code>.</li>
+          <li>Filesystem digest omissions require <code>system_code</code>. Budget and changed-file omissions use null. Unavailable-file omissions keep the operating-system error code.</li>
+          <li>Provider analysis outputs must supply metadata that used to be repaired with defaults. Unsupported nullable facets are <code>null</code>, not omitted.</li>
+          <li>JavaScript semantic graphs store evidence context IDs and locations, and results require an inline <code>evidence_contexts</code> table.</li>
+          <li>Source-map URLs live on target observations selected by <code>declared_url_sha256</code>. Doctor skill identity no longer emits <code>installed_catalog_digest</code>; use <code>identity.skill.state</code>.</li>
+          <li>The never-incremented <code>truncated_scopes</code> statistic is removed from JavaScript application analysis.</li>
+        </ul>
+
+        <h2 id="sockets">6.4.0 — WebSocket results and stored graphs</h2>
+        <p>Published 2026-10-11. Current npm latest as checked 2026-10-13. Release: <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">rea-agents-6.4.0</a>.</p>
+        <h3>WebSocket field rename</h3>
+        <p>
+          Read <code>network.websocket_connections</code>. Do not read <code>network.websocket_events</code>. No legacy alias remains
+          (<a href="https://github.com/morluto/rea/commit/db4e3608465486466591b594cf77037ac150c988" rel="noopener noreferrer" target="_blank">db4e360</a>).
+          Each connection has <code>request_id</code>, <code>url</code>, and <code>events</code>. <code>payload_bytes</code> may be <code>null</code> when the size is unknown. Update dashboards before you call a missing field a capture failure.
+        </p>
+        <h3>Stored Evidence and graphs</h3>
+        <ul>
+          <li><strong>Saved reference graphs.</strong> Exclusions need their matching <code>pattern</code> and must distinguish <code>project-ignored</code> from <code>default-ignored</code>. Re-import graphs that lack that provenance (<a href="https://github.com/morluto/rea/commit/6585293c562853b95c3a70df02c12ad8cc17afc4" rel="noopener noreferrer" target="_blank">6585293</a>).</li>
+          <li><strong>Artifact graph edges.</strong> Child artifact IDs and paths come from the occurrence selected by <code>occurrence_id</code>, not from edge fields <code>child_artifact_id</code> / <code>logical_path</code>. Older inventory Evidence does not validate against the new commitment (<a href="https://github.com/morluto/rea/pull/1493" rel="noopener noreferrer" target="_blank">#1493</a>).</li>
+          <li><strong>Semantic graph schema.</strong> Nodes and relations no longer include <code>identifier_strategy</code>, and relation IDs no longer hash it. Older Evidence does not validate (<a href="https://github.com/morluto/rea/pull/1474" rel="noopener noreferrer" target="_blank">#1474</a>).</li>
+          <li><strong>Semantic identities.</strong> Select IDs from the parent graph. Read event names from <code>event_name</code>, endpoints from <code>endpoint</code>, and literal values from <code>properties.value</code>. New analyses use digest-based IDs for long or reserved names. Previously stored graphs keep their original IDs and remain valid workflow inputs (<a href="https://github.com/morluto/rea/pull/1427" rel="noopener noreferrer" target="_blank">#1427</a> and related).</li>
+          <li><strong>Capture comparisons</strong> that use custom normalization must recapture both sides with <code>literal-replacements-v1</code>. Legacy unversioned pattern captures stay readable but cannot be compared with new pattern captures. Captures without patterns are unaffected (<a href="https://github.com/morluto/rea/pull/1456" rel="noopener noreferrer" target="_blank">#1456</a>).</li>
+          <li><strong>Terminal captures</strong> keep the initial and resized buffers within 1,000,000 cells using <code>columns × (rows + scrollback)</code>. Oversized scenarios are rejected before launch.</li>
+        </ul>
+        <h3>Library authors, not MCP JSON</h3>
+        <p>
+          Direct in-process resource APIs now take a caller-owned <code>ArtifactResourceScope</code> (inventory, extraction, JavaScript analysis, reference imports, web exports). For <code>readJavaScriptArtifactFiles</code>, scope is argument three and the abort signal is argument four.
+          <strong>CLI and MCP inputs for those operations are unchanged.</strong> If you only call tools over stdio, do not add a scope object to the tool arguments.
+        </p>
+        <p>Optional agent-verification reports accept schema version 4. Production CLI and MCP contracts for that report are unchanged.</p>
+
+        <h2 id="related">Related</h2>
+        <ul>
+          <li><a href="/changelog/">Changelog, 3.2.0 through 6.4.0</a></li>
+          <li><a href="/docs/install/">Install, pinned to 6.4.0</a></li>
+          <li><a href="/docs/clients/">Client matrix for 6.4.0</a></li>
+          <li><a href="/blog/rea-agents-6-4-0/">6.4.0 operator guide (ADB, JEB, compact schema)</a></li>
+          <li><a href="/docs/jeb/">JEB, bring your own license</a></li>
+          <li><a href="/docs/android-adb/">Android ADB device lane</a></li>
+        </ul>
+
+        <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+          <p class="text-xs uppercase tracking-wider">Sources</p>
+          <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.4.0/docs/migration-6.2.md" rel="noopener noreferrer" target="_blank">docs/migration-6.2.md at rea-agents-6.4.0</a></li>
+            <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.0.0" rel="noopener noreferrer" target="_blank">6.0.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.1.0" rel="noopener noreferrer" target="_blank">6.1.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.2.0" rel="noopener noreferrer" target="_blank">6.2.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.3.0" rel="noopener noreferrer" target="_blank">6.3.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">6.4.0</a></li>
+            <li>npm <code>rea-agents</code> latest checked 2026-10-13: 6.4.0</li>
+          </ol>
+          <p class="mt-4"><a class="quiet-link" href="/compliance/">Compliance</a></p>
+        </footer>
+      </article>
+    </div>
+  </div>
+</BaseLayout>

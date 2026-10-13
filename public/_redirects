@@ -1,3 +1,9 @@
+# Legacy Android URL → the real ADB guide (permanent)
+/docs/adb-device-analysis /docs/android-adb/ 301
+/docs/adb-device-analysis/ /docs/android-adb/ 301
+/zh/docs/adb-device-analysis /zh/docs/android-adb/ 301
+/zh/docs/adb-device-analysis/ /zh/docs/android-adb/ 301
+
 # Life Process taken down 2026-10-12 — keep URLs from hanging on stale edge HTML
 /life-process /showcase/ 301
 /life-process/ /showcase/ 301
