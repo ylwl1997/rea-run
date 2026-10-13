@@ -1403,9 +1403,117 @@ html.nav-open .burger-lines::after { top: 0; transform: rotate(-45deg); }
   gap: 0.85rem;
   margin-top: 1rem;
 }
-@media (min-width: 640px) {
-  .showcase-media-grid { grid-template-columns: 1fr 1fr; }
+.showcase-media-grid.is-single {
+  grid-template-columns: 1fr;
 }
+@media (min-width: 640px) {
+  .showcase-media-grid:not(.is-single) { grid-template-columns: 1fr 1fr; }
+}
+.aegis-clock {
+  margin-top: 1.75rem;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-lg);
+  background: var(--color-panel);
+  padding: 1.15rem 1.2rem 1.25rem;
+  box-shadow: var(--shadow-soft);
+}
+.aegis-clock-title {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  letter-spacing: -0.02em;
+  margin-top: 0.35rem;
+}
+.aegis-clock-note,
+.aegis-clock-status,
+.aegis-clock-check p {
+  margin-top: 0.55rem;
+  color: var(--color-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+.aegis-clock-slider {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  font-size: 0.92rem;
+}
+.aegis-clock-slider input[type="range"] {
+  width: 100%;
+  accent-color: var(--color-accent);
+}
+.aegis-clock-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+.aegis-clock-presets button,
+.aegis-clock-check button {
+  border: 1px solid var(--color-line);
+  background: var(--color-paper);
+  border-radius: 999px;
+  padding: 0.28rem 0.7rem;
+  font: inherit;
+  font-size: 0.82rem;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+.aegis-clock-presets button:disabled,
+.aegis-clock-check button:disabled,
+.aegis-clock-slider input:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+.aegis-clock-steps {
+  list-style: none;
+  display: grid;
+  gap: 0.7rem;
+  margin: 1rem 0 0;
+  padding: 0;
+}
+@media (min-width: 720px) {
+  .aegis-clock-steps { grid-template-columns: repeat(3, 1fr); }
+}
+.aegis-clock-steps li {
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-md);
+  background: #fff;
+  padding: 0.75rem 0.8rem;
+}
+.aegis-clock-steps li > span {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--color-accent);
+}
+.aegis-clock-steps p {
+  margin: 0.2rem 0;
+  color: var(--color-muted);
+  font-size: 0.78rem;
+}
+.aegis-clock-steps strong {
+  display: block;
+  font-size: 1.05rem;
+}
+.aegis-code {
+  font-family: var(--font-mono);
+  font-size: 1.55rem !important;
+  letter-spacing: 0.04em;
+}
+.aegis-clock-steps code,
+.aegis-clock-steps small {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--color-ink-soft);
+  font-size: 0.78rem;
+}
+.aegis-clock-check {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+.aegis-clock-check p { margin: 0; }
 .showcase-media-grid img {
   display: block;
   width: 100%;

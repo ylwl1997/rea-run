@@ -42,6 +42,8 @@ export type ShowcaseRelated = { href: string; labelEn: string; labelZh: string }
 /** Self-hosted media under /public (no X hotlinks). */
 export type ShowcaseMediaImage = {
   src: string;
+  /** Chinese-locale figure when the SVG itself contains translated labels. */
+  srcZh?: string;
   altEn: string;
   altZh: string;
 };
