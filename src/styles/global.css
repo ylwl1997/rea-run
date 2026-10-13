@@ -1372,6 +1372,15 @@ html.nav-open .burger-lines::after { top: 0; transform: rotate(-45deg); }
   background: #0b0e14;
   border: 1px solid var(--color-line);
 }
+.community-clip.is-portrait .community-clip-media {
+  display: flex;
+  justify-content: center;
+}
+.community-clip.is-portrait .community-clip-media video {
+  width: auto;
+  max-width: min(100%, 22rem);
+  max-height: min(72vh, 36rem);
+}
 .showcase-media {
   margin: 1.5rem 0 0;
 }

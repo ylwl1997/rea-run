@@ -14,6 +14,8 @@ interface Props {
   hrefLabel?: string;
   attribution: string;
   note?: string;
+  /** Vertical phone clips stay a column; landscape / square clips stay full width. */
+  frame?: 'portrait' | 'landscape';
 }
 const {
   lang = 'en',
@@ -26,9 +28,10 @@ const {
   hrefLabel,
   attribution,
   note,
+  frame,
 } = Astro.props;
 ---
-<aside class="community-clip" data-lang={lang}>
+<aside class:list={['community-clip', frame === 'portrait' && 'is-portrait']} data-lang={lang}>
   <div class="community-clip-copy">
     <p class="kicker">{kicker}</p>
     <h2 class="community-clip-title">{title}</h2>
