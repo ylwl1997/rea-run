@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import CommunityClip from '../components/CommunityClip.astro';
 import { SITE, pathFor } from '../lib/site';
 import { EXAMPLES } from '../data/examples';
 const lang = 'en' as const;
@@ -68,19 +67,36 @@ const puzzlePrompt =
     </div>
   </section>
 
-  <section class="mx-auto max-w-6xl px-4 pb-4">
-    <CommunityClip
-      lang="en"
-      src="/media/x-cases/icanberk-ac.gif.mp4"
-      poster="/media/x-cases/icanberk-poster.jpg"
-      kicker="Community social proof"
-      title="Status-bar AC remote vibe (~1M views)"
-      blurb="A viral own-device remote clip, hosted on rea.run next to other status-bar remotes on the showcase wall."
-      href="/showcase/icanberk-ac-statusbar/"
-      hrefLabel="Case card →"
-      attribution="@icanberk · self-hosted on rea.run · metrics snapshot 2026-10-12"
-      note="Own or authorized HVAC only."
-    />
+  <section class="mx-auto max-w-6xl px-4 pb-4 pt-6" aria-labelledby="en-featured-case">
+    <div class="home-featured">
+      <article class="card">
+        <p class="kicker">Featured case</p>
+        <h2 id="en-featured-case" class="display mt-2 text-3xl tracking-tight">
+          Status-bar toilet remote: REA + Codex on your own Bluetooth
+        </h2>
+        <p class="mt-3 max-w-3xl text-sm leading-7 text-[var(--color-muted)]">
+          @thinkszyg used Codex + REA to recover a smart-toilet Bluetooth protocol from a WeChat miniprogram and built a desktop status-bar remote in about half an hour. Public demo on the author's own device — reverse only hardware you own or are authorized to analyze. Full write-up and credit are on the case page.
+        </p>
+        <div class="cta-row mt-5">
+          <a class="btn" href={pathFor(lang, '/showcase/thinkszyg-toilet-ble/')}>Read the case</a>
+          <a class="btn-secondary" href={pathFor(lang, '/docs/install/')}>Install REA</a>
+        </div>
+      </article>
+      <figure class="home-mini-clip">
+        <video
+          controls
+          playsinline
+          preload="metadata"
+          poster="/media/x-cases/thinkszyg-poster.jpg"
+          src="/media/x-cases/thinkszyg-toilet.mp4"
+          width="720"
+          height="720"
+        >
+          <a href="/media/x-cases/thinkszyg-toilet.mp4">Download the video</a>
+        </video>
+        <figcaption>Author demo: status-bar remote flipping a toilet lid. Hosted on rea.run.</figcaption>
+      </figure>
+    </div>
   </section>
 
   <!-- What is RE + interactive backoff lab -->
