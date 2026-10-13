@@ -74,7 +74,7 @@ a:hover { text-decoration: underline; }
   max-width: 72rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   padding: 0.7rem 1rem;
 }
 .brand-link { flex-shrink: 0; }
@@ -201,6 +201,102 @@ a:hover { text-decoration: underline; }
 .lang-opt.is-on {
   color: var(--color-paper);
   background: var(--color-ink);
+}
+
+.social-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 2.15rem;
+  height: 2.15rem;
+  padding: 0;
+  border: 1px solid var(--color-line);
+  border-radius: 0.65rem;
+  background: var(--color-panel);
+  color: var(--color-ink);
+  text-decoration: none;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.75) inset;
+  transition: background 140ms ease, border-color 140ms ease;
+}
+.social-btn:hover {
+  text-decoration: none;
+  color: var(--color-ink);
+  background: #fff;
+  border-color: color-mix(in oklab, var(--color-ink) 16%, var(--color-line));
+}
+.social-btn:focus-visible {
+  outline: 2px solid var(--color-accent-2);
+  outline-offset: 2px;
+}
+.social-btn svg {
+  display: block;
+  flex-shrink: 0;
+}
+.social-btn-github {
+  width: auto;
+  min-width: 2.15rem;
+  padding-inline: 0.55rem;
+  gap: 0.4rem;
+}
+.social-github-count {
+  font-size: 0.78rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: inherit;
+}
+.nav-drawer-social {
+  display: flex;
+  align-items: center;
+  margin-top: 0.35rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed var(--color-line);
+}
+.nav-drawer-social .social-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.nav-drawer-social .social-btn-github {
+  width: auto;
+  padding-inline: 0.7rem;
+}
+/* Phone header stays brand + language + sign-in + burger. Social moves into the drawer. */
+@media (max-width: 719px) {
+  .nav-utils .social-links { display: none; }
+}
+@media (min-width: 720px) {
+  .nav-drawer-social { display: none; }
+}
+/* Burger row: icon buttons only, so sign-in and the menu control stay on screen. */
+@media (min-width: 720px) and (max-width: 1099px) {
+  .nav-utils .social-github-count { display: none; }
+  .nav-utils .social-btn-github {
+    width: 2.15rem;
+    padding-inline: 0;
+    gap: 0;
+  }
+}
+/* Keep brand, nav, star count, and sign-in inside the 72rem bar. */
+@media (min-width: 1100px) {
+  .nav-primary { gap: 0; padding: 0.22rem; }
+  .nav-link {
+    padding: 0.42rem 0.48rem;
+    font-size: 0.78rem;
+  }
+  .nav-utils { gap: 0.4rem; }
+  .auth-login-btn { padding-inline: 0.55rem; }
+}
+@media (min-width: 1100px) and (max-width: 1240px) {
+  .nav-link { padding-inline: 0.32rem; font-size: 0.74rem; }
+  .nav-util.quiet { display: none; }
 }
 
 .nav-burger {
