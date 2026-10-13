@@ -16,23 +16,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     <h2>Setup in one line</h2>
     <p>Most hosts should use the package runner so the version matches what you expect:</p>
-    <pre><code>npx rea-agents@latest setup</code></pre>
+    <pre><code>npx -y rea-agents@6.4.0 setup</code></pre>
     <p>Review the plan, approve changes, then <strong>restart or reconnect</strong> the client. README / FAQ debt notes that docs sometimes say <code>rea setup</code> after a global install — both shapes exist; pin a version when you need reproducibility.</p>
 
-    <h2>Client matrix (illustrative)</h2>
-    <p>Upstream setup historically targets MCP-capable agents such as Claude Code, Claude Desktop, Codex, Cursor, Gemini CLI, Qwen Code, Grok Build, Windsurf, and other stdio MCP clients. Exact support moves with releases — treat this table as orientation, then confirm with <code>doctor --client …</code>.</p>
-    <div class="not-prose overflow-x-auto my-6">
-      <table class="compare-table">
-        <thead><tr><th>Client family</th><th>Typical path</th><th>Check</th></tr></thead>
-        <tbody>
-          <tr><td>CLI agents (Claude Code, Gemini CLI, …)</td><td><code>npx rea-agents@latest setup</code> → pick client</td><td><code>doctor --client …</code></td></tr>
-          <tr><td>IDE MCP (Cursor, Windsurf, …)</td><td>Setup or manual <code>mcp</code> stdio entry</td><td>Reconnect MCP; list tools</td></tr>
-          <tr><td>Desktop chat hosts</td><td>Follow setup plan for that host</td><td>Restart app after skill/MCP write</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-        <p><strong>6.4+ footnote.</strong> Client coverage continues to expand (including Pi / Hermes / Qwen Code-class hosts). Treat the matrix as orientation — confirm with <code>doctor --client …</code> after upgrading. See <a href="/blog/rea-agents-6-4-0/">6.4.0 ops guide</a>.</p>
+    <h2>Client IDs live on the matrix page</h2>
+    <p>
+      <code>rea-agents@6.4.0</code> setup accepts 17 <code>--client</code> values, including Pi (<code>pi</code>), Hermes (<code>hermes</code>), Qwen Code (<code>qwen_code</code>), and GitHub Copilot CLI (<code>copilot_cli</code>).
+      The full table, config paths, and the note that Factory Droid and <code>dsh</code> are pending the next npm release after 6.4.0 are on <a href="/docs/clients/">the client matrix</a>.
+      Confirm a registration with <code>npx -y rea-agents@6.4.0 doctor --client … --json</code>.
+    </p>
     <h2>Skill path pitfall</h2>
     <p>Setup may write an investigation skill to a directory the <em>package</em> considers canonical (for example under <code>~/.agents/skills</code>), while a specific client only auto-loads skills from its own tree (for example Claude Code reading <code>~/.claude/skills</code>). Symptom: MCP tools appear, but the agent never picks up REA’s workflow instructions.</p>
     <ul>
@@ -40,15 +32,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <li>If the client ignores that path, copy or symlink into the client’s skills directory — or re-run setup after upgrading past fixes that align discovery.</li>
       <li>Third-party skill installers (for example skills.sh-style flows) may install <strong>instructions only</strong> and <strong>do not</strong> register the MCP server. You still need MCP registration via setup or manual JSON.</li>
     </ul>
-    <pre><code>npx -y rea-agents@latest doctor --client claude_code --json
-npx -y rea-agents@latest doctor --skill --json</code></pre>
+    <pre><code>npx -y rea-agents@6.4.0 doctor --client claude_code --json
+npx -y rea-agents@6.4.0 doctor --skill --json</code></pre>
 
     <h2>Manual MCP shape</h2>
     <pre><code>{`{
   "mcpServers": {
     "rea": {
       "command": "npx",
-      "args": ["-y", "rea-agents@latest", "mcp"]
+      "args": ["-y", "rea-agents@6.4.0", "mcp"]
     }
   }
 }`}</code></pre>

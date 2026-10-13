@@ -52,6 +52,7 @@ export const SHOWCASE_LAB_CASES: ShowcaseCase[] = [
         label: 'Aegis 3.4.3 release APK (not mirrored here)',
         url: 'https://github.com/beemdevelopment/Aegis/releases/download/v3.4.3/aegis-v3.4.3.apk',
       },
+      { label: 'rea-agents 6.4.0 (pin for this study)', url: 'https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0' },
       { label: 'RFC 6238 (TOTP)', url: 'https://datatracker.ietf.org/doc/html/rfc6238' },
       {
         label: 'RFC 6238 SHA-1 vectors used by the clock',
@@ -63,9 +64,9 @@ export const SHOWCASE_LAB_CASES: ShowcaseCase[] = [
       },
     ],
     complianceEn:
-      'Use the official release or another build you are allowed to inspect. Reconstructing TOTP on GPL software is interoperability study. Harvesting live account seeds from devices you do not own is not part of this case.',
+      'Use the official release or another build you are allowed to inspect. Reconstructing TOTP on GPL software is interoperability study. Harvesting live account seeds from devices you do not own is not part of this case. This page does not attach ADB to a phone that stores authenticator secrets.',
     complianceZh:
-      '请使用官方发行版或其它你获准检查的构建。在 GPL 软件上重建 TOTP 是互操作研究。从你不拥有的设备收割在用账户种子不属于本案例。',
+      '请使用官方发行版或其它你获准检查的构建。在 GPL 软件上重建 TOTP 是互操作研究。从你不拥有的设备收割在用账户种子不属于本案例。本页不把 ADB 接到存放验证器密钥的手机上。',
     en: {
       title: 'How an authenticator generates a login code',
       summary:
@@ -86,8 +87,13 @@ export const SHOWCASE_LAB_CASES: ShowcaseCase[] = [
           ', plus the jadx helper jar named in the footnotes. Point REA at that jar and the APK you downloaded yourself:',
         fence(
           'bash',
-          'REA_JADX_MCP_JAR="$PWD/jadx-headless-mcp-0.7.1-all.jar" \\\nnpx rea-agents@latest inspect-android-package \\\n  ./aegis-v3.4.3.apk --format json --full-output',
+          'REA_JADX_MCP_JAR="$PWD/jadx-headless-mcp-0.7.1-all.jar" \\\nnpx -y rea-agents@6.4.0 inspect-android-package \\\n  ./aegis-v3.4.3.apk --format json --full-output',
         ),
+        '## Pin for this study',
+        'The commands on this page use **rea-agents@6.4.0** (npm latest on 2026-10-13, published 2026-10-11). Do not swap in `@latest` if you want the same tool list later. Node engines for that tarball are `^22.19.0 || ^24.11.0 || >=26.0.0`.',
+        '| Piece | Pin used here |\n| --- | --- |\n| REA | `rea-agents@6.4.0` |\n| JDK | 17+ required since 5.0.0; this pass used 21 |\n| Android helper | `jadx-headless-mcp` 0.7.1, via `REA_JADX_MCP_JAR` |\n| APK | Aegis Authenticator **3.4.3** official release, GPL-3.0, about 6.9 MB |\n| Clock check | RFC 6238 appendix B SHA-1 vectors, self-hosted JSON |',
+        '1. Download `aegis-v3.4.3.apk` from the project’s own release. Record `sha256sum` before you open it. This site does not mirror the APK.\n2. Select JDK 21 (or another full JDK 17+) with `JAVA_HOME`.\n3. Pin `npx -y rea-agents@6.4.0` and point `REA_JADX_MCP_JAR` at the helper jar you downloaded.\n4. Ask for the six-digit rule, not for an account bypass.\n5. Rebuild the clock and check it against the RFC vectors before you trust one screenshot.\n6. Stop if the file is not a build you are allowed to inspect.',
+        'This pass is static. It does not use the 6.4.0 ADB device lane, and it does not open a live authenticator database. Device work on an emulator or handset you control is a separate guide: [/docs/android-adb/](/docs/android-adb/). A licensed JEB MCP is also optional and separate: [/docs/jeb/](/docs/jeb/). Neither is required to read `TotpInfo` with the JADX helper.',
 
         '## Three classes out of 3,077',
         'A package inventory names ' +
@@ -221,12 +227,15 @@ code = pad_with_zeroes(number % 1_000_000, 6)`,
           '[test-vectors.json](/media/showcase-cases/aegis/test-vectors.json)' +
           '. The APK was inspected statically. The verification runs the extracted methods and this demo, not a logged-in Aegis account.',
         'A useful next question, still inside the same authorized APK: what changes when an account asks for eight digits, or for a period other than 30 seconds? The defaults are in the constructors; the digit count and period are already parameters.',
+        '## What this study does not claim',
+        'The six-digit strings above are outputs of the public RFC 6238 test key on a clock you can move. They are not codes from a real account. Sliding the control does not talk to Aegis, to a phone, or to an issuer. If a later `rea-agents` minor changes Evidence field names, keep this pin until you have read [/docs/breaking/](/docs/breaking/) — `always-bump-minor` can break consumers between 6.0 and 6.4.0.',
       ],
       takeaways: [
         'Search first: three Totp classes, one generator.',
         'Period 30, HMAC-SHA1, six digits, zero-padded.',
+        'Pin rea-agents@6.4.0, JDK 21, jadx-headless-mcp 0.7.1, Aegis 3.4.3.',
         'Check the rebuild on RFC 6238 before trusting a single screenshot.',
-        'GPL release APK only. This is not an account-seed harvest.',
+        'Official GPL APK only. No ADB against a live vault.',
       ],
     },
     zh: {
@@ -249,8 +258,13 @@ code = pad_with_zeroes(number % 1_000_000, 6)`,
           ' 选中，再加上脚注里的 jadx 辅助 JAR。把 REA 指到你自己下载的 JAR 和 APK：',
         fence(
           'bash',
-          'REA_JADX_MCP_JAR="$PWD/jadx-headless-mcp-0.7.1-all.jar" \\\nnpx rea-agents@latest inspect-android-package \\\n  ./aegis-v3.4.3.apk --format json --full-output',
+          'REA_JADX_MCP_JAR="$PWD/jadx-headless-mcp-0.7.1-all.jar" \\\nnpx -y rea-agents@6.4.0 inspect-android-package \\\n  ./aegis-v3.4.3.apk --format json --full-output',
         ),
+        '## 本研究的钉版本',
+        '本页命令使用 **rea-agents@6.4.0**（2026-10-13 的 npm latest，2026-10-11 发布）。若以后还要同一份工具列表，不要改成 `@latest`。该 tarball 的 Node 引擎是 `^22.19.0 || ^24.11.0 || >=26.0.0`。',
+        '| 部件 | 这里钉的版本 |\n| --- | --- |\n| REA | `rea-agents@6.4.0` |\n| JDK | 5.0.0 起需要 17+；这一趟用的是 21 |\n| Android 辅助 | `jadx-headless-mcp` 0.7.1，经 `REA_JADX_MCP_JAR` |\n| APK | Aegis Authenticator **3.4.3** 官方发行版，GPL-3.0，约 6.9 MB |\n| 时钟核对 | RFC 6238 附录 B 的 SHA-1 向量，JSON 放在本站 |',
+        '1. 从项目自己的发行页下载 `aegis-v3.4.3.apk`。打开之前记下 `sha256sum`。本站不镜像该 APK。\n2. 用 `JAVA_HOME` 选中 JDK 21（或其它完整的 JDK 17+）。\n3. 钉 `npx -y rea-agents@6.4.0`，并把 `REA_JADX_MCP_JAR` 指到你下载的辅助 JAR。\n4. 要的是六位码的规则，不是账户绕过。\n5. 先重建时钟并用 RFC 向量核对，再相信一张截图。\n6. 若文件不是你获准检查的构建，就停。',
+        '这一趟是静态的。它不用 6.4.0 的 ADB 设备通道，也不打开在用的验证器数据库。你控制的模拟器或手机是另一份指南：[/zh/docs/android-adb/](/zh/docs/android-adb/)。已获许可的 JEB MCP 也是可选且分开的：[/zh/docs/jeb/](/zh/docs/jeb/)。用 JADX 辅助读 `TotpInfo` 时，两者都不是必需的。',
 
         '## 3,077 个类里的三个',
         '包清单给出 ' +
@@ -383,12 +397,15 @@ code = pad_with_zeroes(number % 1_000_000, 6)`,
           '[test-vectors.json](/media/showcase-cases/aegis/test-vectors.json)' +
           '。APK 只做了静态检查。验证跑的是抽出的方法和这个演示，不是已登录的 Aegis 账户。',
         '仍在同一份授权 APK 里的下一个问题：账户要求八位，或周期不是 30 秒时，会变什么？默认值在构造函数里；位数和周期本来就是参数。',
+        '## 本研究不声称什么',
+        '上面的六位串是公开的 RFC 6238 测试密钥在可移动时钟上的输出。它们不是真实账户的验证码。拨动控件不会连接 Aegis、手机或发行方。若以后的 `rea-agents` 次版本改了 Evidence 字段名，在读完 [/zh/docs/breaking/](/zh/docs/breaking/) 之前保持这个钉版本——`always-bump-minor` 可以在 6.0 到 6.4.0 之间弄坏消费者。',
       ],
       takeaways: [
         '先搜索：三个 Totp 类，一个生成器。',
         '周期 30、HMAC-SHA1、六位、前导补零。',
+        '钉 rea-agents@6.4.0、JDK 21、jadx-headless-mcp 0.7.1、Aegis 3.4.3。',
         '先用 RFC 6238 核对重建，再相信单张截图。',
-        '只用 GPL 发行版 APK。这不是账户种子收割。',
+        '只用官方 GPL APK。不对在用保险库使用 ADB。',
       ],
     },
   },

@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+const toc = [
+  { id: 'boundary', label: 'REA 不做什么' },
+  { id: 'pin', label: '钉版本' },
+  { id: 'start', label: '自己启动 JEB' },
+  { id: 'ops', label: '操作' },
+  { id: 'semantics', label: '语义' },
+  { id: 'steps', label: '运维步骤' },
+  { id: 'related', label: '相关' },
+];
+---
+<BaseLayout
+  lang="zh"
+  title="REA 6.4.0 与 JEB — 自备许可 | rea.run"
+  description="REA 6.4.0 的 JEB MCP 运维指南：由你启动的本地引擎、回环 URL、只读工具。REA 不附带、也不启动 JEB。"
+  path="/docs/jeb/"
+>
+  <div class="mx-auto max-w-6xl px-4 py-12">
+    <div class="docs-layout">
+      <aside class="docs-toc hidden md:block">
+        <p class="section-kicker mb-3">本页目录</p>
+        {toc.map((item) => <a href={`#${item.id}`}>{item.label}</a>)}
+      </aside>
+      <article class="prose-page">
+        <p class="text-sm"><a class="quiet-link" href="/zh/docs/install/">← 安装</a></p>
+        <p class="badge badge-accent mt-4">文档 · 6.4.0</p>
+        <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">REA 与 JEB（自备许可）</h1>
+        <p class="lede mt-4 !max-w-none">
+          <code>rea-agents@6.4.0</code> 可以通过<strong>你已经启动的 JEB MCP</strong>浏览工程单元，并反编译选定项。
+          REA 不安装 JEB，不启动它，也不会自己打开 <code>.jdb2</code> 数据库。
+        </p>
+        <p class="text-sm text-[var(--color-muted)]">
+          请在你获准检查的制品上使用已获许可的 JEB。
+          <a class="quiet-link" href="/zh/compliance/">合规说明</a>
+        </p>
+
+        <h2 id="boundary">REA 不做什么</h2>
+        <ul>
+          <li>不下载 JEB，不修改试用版，不接收许可密钥。</li>
+          <li>不启动图形界面，也不启动无界面引擎。你先开 MCP，再把回环 URL 交给 REA。</li>
+          <li>引擎上有重命名、注释、<code>save_project</code>、<code>close_project</code>。REA 6.4.0 不暴露这些修改类工具。</li>
+          <li>端点不可达是提供者可用性失败。REA 不会通过再拉起 JEB 来重试。</li>
+        </ul>
+
+        <h2 id="pin">钉版本</h2>
+        <p>本站教学与 CI 使用 2026-10-13 核对过的 npm 发行：</p>
+        <pre><code>npx -y rea-agents@6.4.0 doctor --json</code></pre>
+        <p>
+          JEB 支持是 6.4.0 的亮点（<a href="https://github.com/morluto/rea/pull/1536" rel="noopener noreferrer" target="_blank">#1536</a>，2026-10-11 发布）。
+          标签 <code>rea-agents-6.4.0</code> 上的上游文档写明：该通道对照的是 JEB <strong>5.48.0</strong>（Linux x64，已许可构建），经可流式 HTTP 提供 <code>jeb-mcp-server</code> <strong>1.3.0</strong>。
+          把这当作上游检查点，再用你自己的构建跑 <code>inspect_jeb_client</code> 确认。
+        </p>
+
+        <h2 id="start">自己启动 JEB</h2>
+        <ol>
+          <li>从厂商处安装你持有许可的 JEB。走编程接口时，把客户端放进 classpath。</li>
+          <li>图形界面里，从文件菜单启动 MCP 服务器（或以 JEB 文档中的助手启动）。</li>
+          <li>无界面：使用 JEB 文档中的 <code>JebMcpServerInstance</code> API。上游注明 JEB 5.48 的 <code>-c</code> 无界面模式<strong>不</strong>直接接受 <code>--mcp</code>。</li>
+          <li>默认端点：<code>http://127.0.0.1:8425/mcp</code>。用 <code>REA_JEB_MCP_URL</code> 覆盖。</li>
+        </ol>
+        <p>覆盖值必须是绝对的 <code>http</code> 或 <code>https</code> URL，主机字面量为 <code>127.0.0.1</code> 或 <code>[::1]</code>。重定向、远程主机、凭据、查询串和片段会被拒绝，而不是被剥掉后继续使用。</p>
+        <pre><code>export REA_JEB_MCP_URL=http://127.0.0.1:8425/mcp
+npx -y rea-agents@6.4.0 doctor --json</code></pre>
+
+        <h2 id="ops">6.4.0 中的操作</h2>
+        <p>这四个表面对目标文件是只读的。只有 <code>open_jeb_project</code> 会改变引擎侧工程状态。Evidence 记录端点、你传入的参数，以及引擎报告的摘要。</p>
+        <div class="not-prose overflow-x-auto my-6">
+          <table class="compare-table">
+            <thead>
+              <tr><th>MCP 工具</th><th>CLI</th><th>用途</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>inspect_jeb_client</code></td>
+                <td><code>inspect-jeb-client</code></td>
+                <td>引擎版本、图形或无界面、启动时间</td>
+              </tr>
+              <tr>
+                <td><code>open_jeb_project</code></td>
+                <td><code>open-jeb-project</code></td>
+                <td>在引擎主机上从制品或 <code>.jdb2</code> 打开或创建工程。返回输入的 SHA-256 与顶层单元。</td>
+              </tr>
+              <tr>
+                <td><code>list_jeb_units</code></td>
+                <td><code>list-jeb-units</code></td>
+                <td>按稳定路径和类型分页（<code>filter</code>、<code>parent-unit-path</code>、<code>index</code>、<code>count</code>）</td>
+              </tr>
+              <tr>
+                <td><code>decompile_jeb_item</code></td>
+                <td><code>decompile-jeb-item</code></td>
+                <td>把一个类型或方法反编译成引擎伪代码</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          <strong>无界面覆盖范围（上游，JEB 5.48.0）。</strong>
+          无界面 MCP 实例不广告 <code>open_project</code>。请在引擎客户端启动时选定目标（编程启动器上的 <code>--infile</code>，或在图形界面中打开文件）。
+          只有引擎广告该工具时，<code>open_jeb_project</code> 才会完成。REA 保留引擎给出的拒绝原因。
+        </p>
+
+        <h2 id="semantics">值得写进 runbook 的语义</h2>
+        <ul>
+          <li><code>open_jeb_project</code> 里的路径由 <strong>JEB 进程</strong>解析，不是 REA。制品不必放在跑 REA 的那台机器上。</li>
+          <li>引擎把 <code>list_units</code> 的页大小限制在 100。满页记为 <code>coverage: "partial"</code>，因为后面可能还有单元。只有返回数量少于请求数量时，空的余量才是 <code>complete</code>。</li>
+          <li>若 <code>decompile_jeb_item</code> 省略 <code>unit_path</code>，引擎可能选用工程的第一个代码单元。REA 报告 <code>unit_path: null</code> 和一条限制，不会猜单元。</li>
+          <li>引擎信封 <code>success: false</code> 会保持为不支持目标的错误，并带上引擎自己的消息（例如不存在的项地址）。</li>
+        </ul>
+
+        <h2 id="steps">运维步骤</h2>
+        <ol>
+          <li>确认目标是你的、你构建的 debug 包，或其它你获准用已许可反编译器打开的制品。</li>
+          <li>钉 <code>rea-agents@6.4.0</code>。钉版本后刷新 MCP 工具定义。若脚本仍期待 6.2 之前的 Evidence 包装，先看 <a href="/zh/docs/breaking/">6.0–6.4 升级手册</a>。</li>
+          <li>在回环地址启动 JEB MCP。只有改了端口时才导出 <code>REA_JEB_MCP_URL</code>。</li>
+          <li>调用 <code>inspect_jeb_client</code>，记下版本、模式和你使用的 URL。</li>
+          <li>在广告了 <code>open_project</code> 的图形界面里打开工程，或在无界面启动时已经选定文件。</li>
+          <li>分页列出单元，再用明确的 <code>unit_path</code> 反编译一个具名项。</li>
+          <li>保留 Evidence。不要把别人商业产品的伪代码贴进公开工单。</li>
+        </ol>
+        <p>
+          不需要 JEB 的 Android 静态工作仍走 JADX。本站的 Aegis 研究就是这条路径，并钉在同一个包上：
+          <a href="/zh/showcase/aegis-totp/">验证器登录码案例</a>。
+          设备侧是另一条通道：<a href="/zh/docs/android-adb/">Android ADB</a>，仅你的模拟器或设备。
+        </p>
+
+        <h2 id="related">相关</h2>
+        <ul>
+          <li><a href="/zh/blog/rea-agents-6-4-0/">6.4.0 运维指南</a></li>
+          <li><a href="/zh/docs/android-adb/">Android ADB 设备通道</a></li>
+          <li><a href="/zh/docs/breaking/">6.0–6.4.0 破坏性变更</a></li>
+          <li><a href="/zh/faq/what-can-i-analyze/">能力矩阵</a></li>
+          <li><a href="/zh/faq/setup-vs-providers/">setup 不会安装 JEB</a></li>
+        </ul>
+
+        <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+          <p class="text-xs uppercase tracking-wider">来源</p>
+          <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
+            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.4.0/docs/jeb-analysis.md" rel="noopener noreferrer" target="_blank">rea-agents-6.4.0 的 docs/jeb-analysis.md</a></li>
+            <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">rea-agents 6.4.0 发行（2026-10-11）</a></li>
+            <li><a href="https://github.com/morluto/rea/pull/1536" rel="noopener noreferrer" target="_blank">#1536 — 由调用方启动的 JEB MCP</a></li>
+          </ol>
+          <p class="mt-4"><a class="quiet-link" href="/zh/compliance/">合规</a></p>
+        </footer>
+      </article>
+    </div>
+  </div>
+</BaseLayout>
