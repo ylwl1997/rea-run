@@ -5,6 +5,8 @@ export const SITE = {
   descriptionDefault:
     'Bilingual community docs for REA: install, examples, what reverse engineering means for agents, and comparisons. Legal authorized research only.',
   upstreamRepo: 'https://github.com/morluto/rea',
+  upstreamDiscord: 'https://discord.gg/GkcryMnJDM',
+  upstreamX: 'https://x.com/reatools',
   upstreamNpm: 'https://www.npmjs.com/package/rea-agents',
   disclaimer:
     'Unofficial community site. Not affiliated with morluto or the REA maintainers. For legal, authorized reverse engineering and security research only. No crack, keygen, or DRM-circumvention content.',

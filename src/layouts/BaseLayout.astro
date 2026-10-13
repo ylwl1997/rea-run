@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import BrandLogo from '../components/BrandLogo.astro';
+import HeaderSocial from '../components/HeaderSocial.astro';
 import { SITE, type Lang, pathFor, NAV } from '../lib/site';
 
 interface Props {
@@ -95,6 +96,7 @@ const isActive = (href: string) => {
               lang="zh-CN"
             >中文</a>
           </div>
+          <HeaderSocial lang={lang} />
           <div class="auth-slot" data-auth-root></div>
           <button
             type="button"
@@ -117,6 +119,9 @@ const isActive = (href: string) => {
             </a>
           ))}
         </nav>
+        <div class="nav-drawer-social">
+          <HeaderSocial lang={lang} />
+        </div>
         <div class="nav-drawer-foot">
           <div class="auth-slot" data-auth-root></div>
           <a href={pathFor(lang, '/compliance/')} class="nav-util quiet no-underline hover:no-underline">
