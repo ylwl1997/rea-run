@@ -2,11 +2,13 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CommunityClip from '../../components/CommunityClip.astro';
 import ClientMatrix from '../../components/ClientMatrix.astro';
+import OfficialInstallNotice from '../../components/OfficialInstallNotice.astro';
 import { installVideoGallery } from '../../data/communityClips';
 import { SITE } from '../../lib/site';
 const lang = 'en' as const;
 const videoGallery = installVideoGallery(lang);
 const toc = [
+  { id: 'official-sources', label: 'Official sources' },
   { id: 'install-demo', label: 'Codex walkthrough' },
   { id: 'requirements', label: 'Requirements' },
   { id: 'connect', label: 'Connect agent' },
@@ -24,7 +26,7 @@ const toc = [
 <BaseLayout
   lang={lang}
   title="Install REA (rea-agents) — community guide | rea.run"
-  description="Install REA with npx rea-agents setup, MCP registration, and bring-your-own Ghidra. Community paraphrase of upstream; verify on GitHub."
+  description="Install REA with npx rea-agents setup, MCP registration, and bring-your-own Ghidra. Official sources only: npm rea-agents and github.com/morluto/rea. Community paraphrase of upstream."
   path="/docs/install/"
 >
   <div class="mx-auto max-w-6xl px-4 py-12">
@@ -43,6 +45,8 @@ const toc = [
           <a href={SITE.upstreamRepo}>github.com/morluto/rea</a>
           and the <code>rea-agents</code> package on npm. Versions change — re-check before you automate.
         </p>
+
+        <OfficialInstallNotice lang={lang} />
 
         <p class="text-sm text-[var(--color-muted)]">Use on software you are authorized to analyze. <a class="quiet-link" href="/compliance/">Compliance</a></p>
 

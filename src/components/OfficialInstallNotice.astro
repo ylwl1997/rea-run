@@ -1,0 +1,70 @@
+---
+import { SITE, type Lang } from '../lib/site';
+
+interface Props {
+  lang: Lang;
+  /** Full banner on install pages; one paragraph where a page already says where the package comes from. */
+  variant?: 'banner' | 'brief';
+}
+
+const { lang, variant = 'banner' } = Astro.props;
+const zh = lang === 'zh';
+const repo = SITE.upstreamRepo;
+const releases = `${SITE.upstreamRepo}/releases`;
+const report = `${SITE.upstreamRepo}/issues/2424`;
+const installHref = zh ? '/zh/docs/install/#official-sources' : '/docs/install/#official-sources';
+---
+
+{variant === 'banner' ? (
+  <aside class="callout official-install-notice mt-6" id="official-sources">
+    <p><strong>{zh ? '只从官方来源安装。' : 'Install only from official sources.'}</strong></p>
+    <ul>
+      <li>
+        {zh ? (
+          <>
+            官方安装：仅限 npm 包 <code>rea-agents</code>，以及
+            <a href={repo}>github.com/morluto/rea</a> 上的 <a href={releases}>GitHub Releases</a>。
+          </>
+        ) : (
+          <>
+            Official install: the npm package <code>rea-agents</code> and
+            <a href={releases}>GitHub Releases</a> on <a href={repo}>github.com/morluto/rea</a> only.
+          </>
+        )}
+      </li>
+      <li>
+        {zh
+          ? '不要下载第三方「Windows 独立版 .exe／便携版」镜像，尤其是仿冒 rea.tools 命名的组织。'
+          : 'Do not download third-party “Windows standalone .exe / portable” mirrors, especially organizations that mimic rea.tools naming.'}
+      </li>
+      <li>
+        {zh
+          ? '本社区站点为非官方，与 REA 维护者无关联。'
+          : 'This community site is unofficial and is not affiliated with the REA maintainers.'}
+      </li>
+    </ul>
+    <p class="official-install-notice-source">
+      {zh ? '上游说明：' : 'Upstream report: '}
+      <a href={report}>morluto/rea#2424</a>
+    </p>
+  </aside>
+) : (
+  <aside class="callout official-install-notice mt-6">
+    <p>
+      {zh ? (
+        <>
+          官方安装仅限 npm 包 <code>rea-agents</code> 与 <a href={repo}>github.com/morluto/rea</a> 上的
+          <a href={releases}>GitHub Releases</a>。不要下载第三方「Windows 独立版 .exe／便携版」镜像。
+          <a href={installHref}>安装页上的完整说明</a>。
+        </>
+      ) : (
+        <>
+          Official install is the npm package <code>rea-agents</code> and
+          <a href={releases}>GitHub Releases</a> on <a href={repo}>github.com/morluto/rea</a> only.
+          Do not download third-party “Windows standalone .exe / portable” mirrors.
+          <a href={installHref}>Full note on the install page</a>.
+        </>
+      )}
+    </p>
+  </aside>
+)}

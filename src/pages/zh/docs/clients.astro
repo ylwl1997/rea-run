@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ClientMatrix from '../../../components/ClientMatrix.astro';
+import OfficialInstallNotice from '../../../components/OfficialInstallNotice.astro';
 import { CLIENTS_640, MCP_REGISTRY_ID, NODE_ENGINES } from '../../../data/clients64';
 const toc = [
   { id: 'pin', label: '钉版本与引擎' },
@@ -36,6 +37,7 @@ const toc = [
 
         <h2 id="pin">钉版本与引擎</h2>
         <p>该包的 Node：<code>{NODE_ENGINES}</code>。注册表标识：<code>{MCP_REGISTRY_ID}</code>。注册表条目用 <code>npx</code> 和 <code>mcp</code> 命令启动同一个 npm 包。它不是第二份发行物。</p>
+        <OfficialInstallNotice lang="zh" variant="brief" />
         <pre><code>{`npx -y rea-agents@6.4.0 setup
 npx -y rea-agents@6.4.0 doctor --client codex --json
 npx -y rea-agents@6.4.0 doctor --skill --json`}</code></pre>
