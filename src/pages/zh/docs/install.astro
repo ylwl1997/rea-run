@@ -1,8 +1,10 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import CommunityClip from '../../../components/CommunityClip.astro';
+import { zhInstallVideoGallery } from '../../../data/communityClips';
 import { SITE } from '../../../lib/site';
 const lang = 'zh' as const;
+const videoGallery = zhInstallVideoGallery();
 const toc = [
   { id: 'install-demo', label: 'Codex 跟练' },
   { id: 'requirements', label: '环境要求' },
@@ -11,6 +13,7 @@ const toc = [
   { id: 'ghidra', label: 'Ghidra（自备）' },
   { id: 'first', label: '第一次提问' },
   { id: 'see-others', label: '看别人怎么用' },
+  { id: 'related-videos', label: '相关视频' },
   { id: 'actions-demo', label: 'Actions 演示' },
   { id: 'codespaces', label: 'Codespaces 试跑' },
   { id: 'related', label: '相关指南' },
@@ -92,19 +95,24 @@ npx rea-agents@latest setup`}</code></pre>
 
 
         <h2 id="see-others">看别人怎么用</h2>
-        <p>安装完成后，可以先看社区用 Codex + REA 在<strong>自有设备</strong>上做出状态栏遥控的短片（站内托管，非 X 热链）：</p>
-        <CommunityClip
-          lang="zh"
-          src="/media/x-cases/thinkszyg-toilet.mp4"
-          poster="/media/x-cases/thinkszyg-poster.jpg"
-          kicker="社区引导视频"
-          title="状态栏马桶遥控（@thinkszyg）"
-          blurb="作者称用 Codex + REA 逆向微信小程序蓝牙协议，约半小时 vibe 出桌面状态栏遥控器。仅作授权／自有设备灵感。"
-          href="/zh/showcase/thinkszyg-toilet-ble/"
-          hrefLabel="打开完整案例 →"
-          attribution="来源：@thinkszyg · 指标快照约 10.9k 浏览／52 赞／47 书签（2026-10-12）"
-          note="合法边界：只分析你拥有或获准的设备与小程序资产。"
-        />
+        <p>安装完成后，可以先看社区在<strong>自有设备</strong>上的演示短片（站内托管，非 X 热链）。每条视频是否点名 REA，以该卡片署名为准。</p>
+        <div id="related-videos">
+          {videoGallery.map((clip) => (
+            <CommunityClip
+              lang="zh"
+              src={clip.src}
+              poster={clip.poster}
+              frame={clip.frame}
+              kicker={clip.kicker}
+              title={clip.title}
+              blurb={clip.blurb}
+              href={clip.href}
+              hrefLabel={clip.hrefLabel}
+              attribution={clip.attribution}
+              note={clip.note}
+            />
+          ))}
+        </div>
 
         <div class="card mt-6">
           <p class="kicker">案例墙</p>
