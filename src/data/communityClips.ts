@@ -36,7 +36,7 @@ export const ZH_INSTALL_VIDEO_GALLERY: ZhInstallClip[] = [
     blurb:
       '@greco_dev 在葡萄牙语帖子里写「usei o rea」，并链到 GitHub 上的 REA。功能是作者自己的电视：切换应用／输入源、音量、遥控、镜像 Mac 屏幕、屏幕时间、亮度与对比度。仅作授权／自有设备灵感。',
     hrefLabel: '打开完整案例 →',
-    attribution: '来源：@greco_dev · 原帖点名 REA · 快照 10,112 展示／379 赞／25 转发／287 书签（2026-10-13）',
+    attribution: '来源：@greco_dev · 快照 10,112 展示／379 赞／25 转发／287 书签（2026-10-13）',
     note: '合法边界：只分析你拥有或获准的电视、配套应用或固件。',
     frame: 'portrait',
   },
@@ -45,20 +45,10 @@ export const ZH_INSTALL_VIDEO_GALLERY: ZhInstallClip[] = [
     kicker: '社区引导视频',
     title: 'BrOrlandi：自有体脂秤（@BrOrlandi）',
     blurb:
-      '@BrOrlandi 用一条编程智能体提示，为自有小米体脂秤做了本地蓝牙看板，并开源 miscale-dashboard。原帖未点名 REA。仅作自有设备灵感，不是 REA 成功声明。',
+      '@BrOrlandi 用一条编程智能体提示，为自有小米体脂秤做了本地蓝牙看板，并开源 miscale-dashboard。仅作自有设备灵感。',
     hrefLabel: '打开完整案例 →',
-    attribution: '来源：@BrOrlandi · 原帖未点名 REA · 快照约 55.6k 浏览／1,263 赞／494 书签（2026-10-13）',
+    attribution: '来源：@BrOrlandi · 快照约 55.6k 浏览／1,263 赞／494 书签（2026-10-13）',
     note: '合法边界：只分析你拥有或获准的秤。勿抓他人广播或绕过账号。',
-  },
-  {
-    caseId: 'yurirdev-home-iot',
-    kicker: '社区引导视频',
-    title: 'YuriRDev：自有家居物联网（@YuriRDev）',
-    blurb:
-      '@YuriRDev 用葡萄牙语写：家里原先跑在专有软件上的物联网，用 AI 逆向后从电脑控制，全程不到 12 小时。灯带、自有 Intelbras 摄像头、自有空调。原帖点名 Claude，没有点名 REA，也故意不开源。',
-    hrefLabel: '打开完整案例 →',
-    attribution: '来源：@YuriRDev · 原帖未点名 REA · 快照 20,320 展示／610 赞／209 书签（2026-10-13）',
-    note: '合法边界：只分析你拥有或获准的灯、摄像头与空调。不教账号绕过，也不控制别人的设备。',
   },
 ];
 
