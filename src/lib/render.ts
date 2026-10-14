@@ -1,4 +1,4 @@
-/** Minimal body renderer: headings, markdown tables, paragraphs; fenced ``` blocks; inline `code` and [links](url); a paragraph that is `![alt](src)` renders as an image. */
+/** Minimal body renderer: headings, markdown tables, paragraphs; fenced ``` blocks; inline `code` and [links](url); a paragraph that is `![alt](src)` renders as an image. `!figure[caption](/path.jpg)` and `!video[caption](/path.mp4)(/poster.jpg)` render same-site media only. */
 export function renderBody(paragraphs: string[]): string {
   return paragraphs
     .map((raw) => {
@@ -20,6 +20,10 @@ export function renderBody(paragraphs: string[]): string {
       if (trimmed.startsWith('- ') || trimmed.startsWith('1. ')) {
         return renderList(trimmed);
       }
+      const video = renderVideoParagraph(trimmed);
+      if (video) return video;
+      const figure = renderFigureParagraph(trimmed);
+      if (figure) return figure;
       const image = renderImageParagraph(trimmed);
       if (image) return image;
       return `<p>${inline(trimmed)}</p>`;
@@ -68,6 +72,35 @@ function renderImageParagraph(raw: string): string | null {
 function isSafeImgSrc(src: string): boolean {
   if (src.startsWith('/') && !src.startsWith('//') && !src.startsWith('/\\')) return true;
   return /^https?:\/\//i.test(src);
+}
+
+/** `!figure[caption](/media/....jpg)` — same-site image as a figure. Caption is also the alt text. */
+function renderFigureParagraph(raw: string): string | null {
+  const m = /^!figure\[([^\]]*)\]\(([^)\s]+)\)$/.exec(raw.trim());
+  if (!m) return null;
+  const caption = m[1];
+  const src = m[2];
+  if (!isSameSiteMedia(src, ['.jpg', '.jpeg', '.png', '.webp', '.gif'])) return null;
+  return `<figure class="blog-cover"><img alt="${escapeAttr(caption)}" src="${escapeAttr(src)}" decoding="async" /><figcaption>${inline(caption)}</figcaption></figure>`;
+}
+
+/** `!video[caption](/media/....mp4)(/media/....jpg)` — playable same-site video. Remote URLs are rejected. */
+function renderVideoParagraph(raw: string): string | null {
+  const m = /^!video\[([^\]]*)\]\(([^)\s]+)\)\(([^)\s]+)\)$/.exec(raw.trim());
+  if (!m) return null;
+  const caption = m[1];
+  const src = m[2];
+  const poster = m[3];
+  if (!isSameSiteMedia(src, ['.mp4'])) return null;
+  if (!isSameSiteMedia(poster, ['.jpg', '.jpeg', '.png', '.webp'])) return null;
+  return `<figure class="blog-clip"><video controls playsinline preload="metadata" width="960" height="986" poster="${escapeAttr(poster)}" src="${escapeAttr(src)}"><a href="${escapeAttr(src)}">Download video</a></video><figcaption>${inline(caption)}</figcaption></figure>`;
+}
+
+function isSameSiteMedia(src: string, exts: string[]): boolean {
+  if (!src.startsWith('/') || src.startsWith('//') || src.startsWith('/\\')) return false;
+  if (src.includes('..') || src.includes('\\') || src.includes('?') || src.includes('#')) return false;
+  const lower = src.toLowerCase();
+  return exts.some((ext) => lower.endsWith(ext));
 }
 
 function renderList(raw: string): string {
