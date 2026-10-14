@@ -1,3 +1,4 @@
+import { BLOOMBERG_TERMINAL_POST } from './blogBloombergTerminal';
 import { DUAL_AGENT_WORKTREE_POST } from './blogDualAgentWorktree';
 import { TRADING_RESEARCH_POST } from './blogTradingResearchDesk';
 
@@ -20,6 +21,7 @@ export type BlogPost = {
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  BLOOMBERG_TERMINAL_POST,
   DUAL_AGENT_WORKTREE_POST,
   TRADING_RESEARCH_POST,
   {

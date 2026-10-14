@@ -600,6 +600,24 @@ html.nav-open .burger-lines::after { top: 0; transform: rotate(-45deg); }
   line-height: 1.6;
   color: var(--color-muted);
 }
+.blog-clip {
+  margin: 1.35rem 0 0.5rem;
+}
+.blog-clip video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 1rem;
+  border: 1px solid var(--color-line);
+  background: #0b0e14;
+  box-shadow: var(--shadow-soft);
+}
+.blog-clip figcaption {
+  margin-top: 0.65rem;
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--color-muted);
+}
 .blog-card-thumb {
   display: block;
   width: 100%;
