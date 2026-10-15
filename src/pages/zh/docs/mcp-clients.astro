@@ -15,14 +15,14 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     <p class="lede mt-4 !max-w-none">把 REA 注册进编程智能体——并确认调查 skill 写在客户端真正会加载的目录。</p>
 
     <h2>一行 setup</h2>
-    <pre><code>npx -y rea-agents@6.4.0 setup</code></pre>
-    <p>审阅计划、批准变更，然后<strong>重启或重连</strong>客户端。文档有时在全局安装后写 <code>rea setup</code>——两种形态都存在。本站教学钉 <code>rea-agents@6.4.0</code>。</p>
+    <pre><code>npx -y rea-agents@6.5.0 setup</code></pre>
+    <p>审阅计划、批准变更，然后<strong>重启或重连</strong>客户端。文档有时在全局安装后写 <code>rea setup</code>——两种形态都存在。本站教学钉 <code>rea-agents@6.5.0</code>。</p>
 
     <h2>客户端 ID 在矩阵页</h2>
     <p>
-      <code>rea-agents@6.4.0</code> 的 setup 接受 17 个 <code>--client</code> 值，包括 Pi（<code>pi</code>）、Hermes（<code>hermes</code>）、Qwen Code（<code>qwen_code</code>）和 GitHub Copilot CLI（<code>copilot_cli</code>）。
-      完整表格、配置路径，以及 Factory Droid 与 <code>dsh</code> 要等到 6.4.0 之后的下一次 npm 发行，都在 <a href="/zh/docs/clients/">客户端矩阵</a>。
-      用 <code>npx -y rea-agents@6.4.0 doctor --client … --json</code> 确认登记。
+      <code>rea-agents@6.5.0</code> 的 setup 接受 24 个 <code>--client</code> 值，包括 Qoder、Trae、ZCode、DeepSeek Harness（<code>dsh</code>）、Kimi Code（<code>kimi</code>）、Factory Droid（<code>droid</code>）和 WorkBuddy。
+      完整表格与配置路径见 <a href="/zh/docs/clients/">客户端矩阵</a>。
+      用 <code>npx -y rea-agents@6.5.0 doctor --client … --json</code> 确认登记。
     </p>
 <h2>Skill 路径坑</h2>
     <p>setup 可能把调查 skill 写到软件包认为规范的目录（例如 <code>~/.agents/skills</code>），而某客户端只从自己的树加载（例如 Claude Code 读 <code>~/.claude/skills</code>）。症状：MCP 工具在，但智能体从不采用 REA 工作流说明。</p>
@@ -31,15 +31,15 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
       <li>若客户端忽略该路径，复制／符号链接到客户端 skills 目录——或升级到已对齐发现逻辑的版本后再跑 setup。</li>
       <li>第三方 skill 安装器可能<strong>只装指令、不注册 MCP</strong>。仍需 setup 或手写 JSON 注册 MCP。</li>
     </ul>
-    <pre><code>npx -y rea-agents@6.4.0 doctor --client claude_code --json
-npx -y rea-agents@6.4.0 doctor --skill --json</code></pre>
+    <pre><code>npx -y rea-agents@6.5.0 doctor --client claude_code --json
+npx -y rea-agents@6.5.0 doctor --skill --json</code></pre>
 
     <h2>手动 MCP 形态</h2>
     <pre><code>{`{
   "mcpServers": {
     "rea": {
       "command": "npx",
-      "args": ["-y", "rea-agents@6.4.0", "mcp"]
+      "args": ["-y", "rea-agents@6.5.0", "mcp"]
     }
   }
 }`}</code></pre>

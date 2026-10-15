@@ -1,8 +1,9 @@
 /**
- * Setup clients accepted by rea-agents@6.4.0.
- * Source: docs/installation.md at tag rea-agents-6.4.0 (supported-agents table)
- * plus the 6.4.0 release note that Pi, Hermes, and Qwen Code setup shipped
- * in that npm version. Factory Droid and dsh are intentionally absent.
+ * Setup clients accepted by rea-agents@6.5.0.
+ * Source: docs/installation.md at tag rea-agents-6.5.0 (supported-agents table)
+ * plus the 6.5.0 release note that Qoder, Trae, ZCode, DeepSeek Harness,
+ * Kimi Code, Factory Droid, and WorkBuddy setup ship in that npm version.
+ * Grok Bot remains a manual hosted connector (not a --client row).
  */
 export type ClientRow = {
   name: string;
@@ -11,11 +12,15 @@ export type ClientRow = {
   noteZh: string;
 };
 
-export const REA_PIN = 'rea-agents@6.4.0';
+export const REA_PIN = 'rea-agents@6.5.0';
+export const REA_PIN_VERSION = '6.5.0';
 export const NODE_ENGINES = '^22.19.0 || ^24.11.0 || >=26.0.0';
+/** SQLite snapshot lane needs DatabaseSync.limits (release 6.5.0). */
+export const SQLITE_NODE_NOTE =
+  'SQLite snapshots need Node 24.x ≥24.15 or 26+; Node 22 and earlier 24 cannot use that lane.';
 export const MCP_REGISTRY_ID = 'io.github.morluto/rea';
 
-export const CLIENTS_640: ClientRow[] = [
+export const CLIENTS_650: ClientRow[] = [
   {
     name: 'Claude Code',
     id: 'claude_code',
@@ -61,8 +66,8 @@ export const CLIENTS_640: ClientRow[] = [
   {
     name: 'OpenCode',
     id: 'opencode',
-    noteEn: '6.4.0 setup honors OPENCODE_CONFIG_DIR. npm 6.3.0 did not.',
-    noteZh: '6.4.0 的 setup 会遵守 OPENCODE_CONFIG_DIR。npm 6.3.0 不会。',
+    noteEn: 'Setup honors OPENCODE_CONFIG_DIR (fixed since 6.4.0). Confirm with doctor after setup.',
+    noteZh: 'setup 会遵守 OPENCODE_CONFIG_DIR（6.4.0 起已修复）。setup 后用 doctor 确认。',
   },
   {
     name: 'Antigravity',
@@ -79,14 +84,20 @@ export const CLIENTS_640: ClientRow[] = [
   {
     name: 'Command Code',
     id: 'commandcode',
-    noteEn: 'Setup client since 4.1.0. Still confirm with doctor on 6.4.0.',
-    noteZh: '4.1.0 起可由 setup 登记。在 6.4.0 上仍用 doctor 确认。',
+    noteEn: 'Setup client since 4.1.0. Confirm with doctor on 6.5.0.',
+    noteZh: '4.1.0 起可由 setup 登记。在 6.5.0 上用 doctor 确认。',
   },
   {
     name: 'Qwen Code',
     id: 'qwen_code',
     noteEn: 'Added in 6.4.0. User settings: ~/.qwen/settings.json, or $QWEN_HOME/settings.json.',
     noteZh: '6.4.0 新增。用户设置：~/.qwen/settings.json，或 $QWEN_HOME/settings.json。',
+  },
+  {
+    name: 'Kimi Code',
+    id: 'kimi',
+    noteEn: 'Added in 6.5.0. Confirm with setup --dry-run and doctor; compact schema profile often needed for size-capped hosts.',
+    noteZh: '6.5.0 新增。用 setup --dry-run 与 doctor 确认；体量受限的主机常需 compact schema profile。',
   },
   {
     name: 'VS Code',
@@ -117,5 +128,41 @@ export const CLIENTS_640: ClientRow[] = [
     id: 'hermes',
     noteEn: 'Added in 6.4.0. mcp_servers.rea in config.yaml under HERMES_HOME; active profile is followed.',
     noteZh: '6.4.0 新增。HERMES_HOME 下 config.yaml 的 mcp_servers.rea；会跟随活动配置档。',
+  },
+  {
+    name: 'Qoder',
+    id: 'qoder',
+    noteEn: 'Added in 6.5.0 via scoped setup. Confirm with doctor after setup.',
+    noteZh: '6.5.0 起可由 scoped setup 登记。setup 后用 doctor 确认。',
+  },
+  {
+    name: 'Factory Droid',
+    id: 'droid',
+    noteEn: 'Added in 6.5.0. Was pending on main after 6.4.0; confirm with doctor.',
+    noteZh: '6.5.0 新增。6.4.0 之后曾只在 main；用 doctor 确认。',
+  },
+  {
+    name: 'Trae',
+    id: 'trae',
+    noteEn: 'Added in 6.5.0. Live Trae API integration remains unverified upstream.',
+    noteZh: '6.5.0 新增。上游注明 live Trae API 集成仍未核验。',
+  },
+  {
+    name: 'WorkBuddy',
+    id: 'workbuddy',
+    noteEn: 'Added in 6.5.0. Confirm with setup --dry-run and doctor.',
+    noteZh: '6.5.0 新增。用 setup --dry-run 与 doctor 确认。',
+  },
+  {
+    name: 'ZCode',
+    id: 'zcode',
+    noteEn: 'Added in 6.5.0 via scoped setup. Confirm with doctor after setup.',
+    noteZh: '6.5.0 起可由 scoped setup 登记。setup 后用 doctor 确认。',
+  },
+  {
+    name: 'DeepSeek Harness',
+    id: 'dsh',
+    noteEn: 'Included from 6.5.0. Live DeepSeek API integration remains unverified upstream. See Cordis patch notes in client-configuration.md.',
+    noteZh: '自 6.5.0 起包含。上游注明 live DeepSeek API 集成仍未核验。见 client-configuration.md 中的 Cordis 补丁说明。',
   },
 ];

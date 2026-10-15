@@ -52,29 +52,30 @@ const toc = [
 
         <h2 id="install-demo">Codex walkthrough</h2>
         <p>
-          Want the whole loop in one sitting? The install demo pins <code>rea-agents@6.4.0</code>, checks Node, registers Codex, opens Chrome on port 9222, and has Codex recover the public dinosaur game’s acceleration rule — then build a one-file game with a speed slider.
+          Want the whole loop in one sitting? The install demo pins <code>rea-agents@6.5.0</code>, checks Node, registers Codex, opens Chrome on port 9222, and has Codex recover the public dinosaur game’s acceleration rule — then build a one-file game with a speed slider.
         </p>
         <p><a class="btn" href="/docs/install-demo/">Open the Codex install demo</a></p>
 
         <h2 id="requirements">Requirements</h2>
         <div class="mt-4 grid gap-3 sm:grid-cols-3">
-          <div class="step-card"><span class="step-num">1</span><div><strong class="text-[var(--color-ink)]">Node</strong><p class="mt-1 !text-sm">22 (22.19+), 24 (24.11+), or 26+ plus npm (per upstream).</p></div></div>
-          <div class="step-card"><span class="step-num">2</span><div><strong class="text-[var(--color-ink)]">MCP client</strong><p class="mt-1 !text-sm">17 <code>--client</code> IDs in <code>rea-agents@6.4.0</code>, including Pi, Hermes, Qwen Code, and Copilot CLI — or CLI alone. Table below.</p></div></div>
+          <div class="step-card"><span class="step-num">1</span><div><strong class="text-[var(--color-ink)]">Node</strong><p class="mt-1 !text-sm">22 (22.19+), 24 (24.11+), or 26+ plus npm (per upstream). SQLite snapshots need 24.15+ or 26+.</p></div></div>
+          <div class="step-card"><span class="step-num">2</span><div><strong class="text-[var(--color-ink)]">MCP client</strong><p class="mt-1 !text-sm">24 <code>--client</code> IDs in <code>rea-agents@6.5.0</code>, including Qoder, Trae, ZCode, DeepSeek Harness, Kimi Code, Factory Droid, and WorkBuddy — or CLI alone. Table below.</p></div></div>
           <div class="step-card"><span class="step-num">3</span><div><strong class="text-[var(--color-ink)]">Native engines</strong><p class="mt-1 !text-sm">Deep native analysis needs existing Hopper, Ghidra, or IDA. JEB is a separate BYO MCP. Static JS/Electron does not.</p></div></div>
         </div>
-        <h3>Client matrix (<code>rea-agents@6.4.0</code>)</h3>
+        <h3>Client matrix (<code>rea-agents@6.5.0</code>)</h3>
         <p>
-          Rows are the supported-agents table in upstream <code>docs/installation.md</code> at tag <code>rea-agents-6.4.0</code>.
-          npm <code>latest</code> on 2026-10-13 was still 6.4.0; runbooks on this site pin the version anyway.
+          Rows are the supported-agents table in upstream <code>docs/installation.md</code> at tag <code>rea-agents-6.5.0</code>.
+          npm <code>latest</code> checked on <strong>2026-10-15</strong> was <strong>6.5.0</strong>; runbooks on this site still pin the version.
           MCP Registry id: <code>io.github.morluto/rea</code>.
-          Factory Droid (<code>droid</code>) and DeepSeek Harness (<code>dsh</code>) are pending the next npm release after 6.4.0 — they are not rows here.
+          SQLite snapshot inspection needs Node <strong>24.x ≥24.15 or 26+</strong> (<code>DatabaseSync.limits</code>); Node 22 / earlier 24 can run the rest of the package.
+          New in 6.5.0: Qoder, Trae, ZCode, DeepSeek Harness (<code>dsh</code>), Kimi Code (<code>kimi</code>), Factory Droid (<code>droid</code>), WorkBuddy — see the matrix.
         </p>
         <ClientMatrix lang="en" />
         <p class="text-sm">Paths, Copilot schema limits, and the Grok Bot manual connector: <a href="/docs/clients/">client matrix page</a>. Skill directories: <a href="/docs/mcp-clients/">skill paths</a>.</p>
 
         <h2 id="connect">Connect your coding agent</h2>
         <p>Ask your agent to run setup with approval, or run it yourself. This guide pins the package the rest of the site teaches:</p>
-        <pre><code>npx -y rea-agents@6.4.0 setup</code></pre>
+        <pre><code>npx -y rea-agents@6.5.0 setup</code></pre>
         <p>
           Choose your client, review the plan, and approve changes. Setup registers the MCP server and matching investigation skill, backing up existing config. <strong>Restart the client</strong> afterward.
         </p>
@@ -83,11 +84,11 @@ const toc = [
   "mcpServers": {
     "rea": {
       "command": "npx",
-      "args": ["-y", "rea-agents@6.4.0", "mcp"]
+      "args": ["-y", "rea-agents@6.5.0", "mcp"]
     }
   }
 }`}</code></pre>
-        <p>The snippets above already pin <code>rea-agents@6.4.0</code>. <code>@latest</code> tracked that same version on 2026-10-13, and the next minor can break contracts (<a href="/docs/breaking/">always-bump-minor</a>).</p>
+        <p>The snippets above already pin <code>rea-agents@6.5.0</code>. <code>@latest</code> matched that version on 2026-10-15, and the next minor can break contracts (<a href="/docs/breaking/">always-bump-minor</a>).</p>
 
         <h2 id="cli">Optional: global CLI</h2>
         <pre><code>npm install --global rea-agents</code></pre>
@@ -96,8 +97,8 @@ const toc = [
         <p>REA does not install Ghidra or Java. Export absolute paths, then doctor + setup:</p>
         <pre><code>{`export GHIDRA_INSTALL_DIR=/absolute/path/to/ghidra_PUBLIC
 export JAVA_HOME=/absolute/path/to/jdk-21
-npx -y rea-agents@6.4.0 doctor --provider ghidra --json
-npx -y rea-agents@6.4.0 setup`}</code></pre>
+npx -y rea-agents@6.5.0 doctor --provider ghidra --json
+npx -y rea-agents@6.5.0 setup`}</code></pre>
         <p>
           Supported host / Ghidra / JDK combinations are defined upstream — see
           <a href="https://github.com/morluto/rea/blob/main/docs/installation.md">docs/installation.md</a> in the GitHub repo.
@@ -161,7 +162,7 @@ npx -y rea-agents@6.4.0 setup`}</code></pre>
           Prefer a disposable cloud shell? Open the public lab
           <a href="https://github.com/ylwl1997/rea-run-lab">ylwl1997/rea-run-lab</a>
           in Codespaces (Node 22 Dev Container), then run
-          <code>npx -y rea-agents@6.4.0 setup</code> against the <strong>bundled self-owned Electron-shaped demo</strong> only.
+          <code>npx -y rea-agents@6.5.0 setup</code> against the <strong>bundled self-owned Electron-shaped demo</strong> only.
         </p>
         <p class="text-sm text-[var(--color-muted)]">Same lab as the Actions track above — interactive shell when you want it.</p>
         <ul>
@@ -176,12 +177,12 @@ npx -y rea-agents@6.4.0 setup`}</code></pre>
           <li><a href="/showcase/greco-dev-tv/">Case: greco’s own TV</a></li>
           <li><a href="/showcase/brorlandi-miscale/">Case: BrOrlandi’s own scale</a></li>
           <li><a href="/docs/install-demo/">Codex install demo — dinosaur speed rule</a></li>
-          <li><a href="/docs/clients/">Client matrix for rea-agents@6.4.0</a></li>
+          <li><a href="/docs/clients/">Client matrix for rea-agents@6.5.0</a></li>
           <li><a href="/docs/mcp-clients/">MCP skill paths</a></li>
           <li><a href="/docs/android-adb/">Android ADB device lane (6.4+)</a></li>
           <li><a href="/docs/jeb/">JEB, bring your own license</a></li>
-          <li><a href="/docs/breaking/">Breaking changes 6.0–6.4.0</a></li>
-          <li><a href="/changelog/">Changelog through 6.4.0</a></li>
+          <li><a href="/docs/breaking/">Breaking changes 6.0–6.5.0</a></li>
+          <li><a href="/changelog/">Changelog through 6.5.0</a></li>
           <li><a href="/faq/setup-vs-providers/">Does setup install Ghidra/Hopper/IDA?</a></li>
           <li><a href="/faq/macos-ghidra-decompiler/">macOS Ghidra decompiler missing</a></li>
           <li><a href="/blog/rea-agents-6-4-0/">REA 6.4.0 operator guide</a></li>

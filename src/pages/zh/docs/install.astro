@@ -52,29 +52,30 @@ const toc = [
 
         <h2 id="install-demo">Codex 跟练</h2>
         <p>
-          想一次走完？安装演示钉死 <code>rea-agents@6.4.0</code>：检查 Node，登记 Codex，用 9222 打开 Chrome，让 Codex 读公开恐龙页的加速规则，再做一个带速度滑块的单文件小游戏。
+          想一次走完？安装演示钉死 <code>rea-agents@6.5.0</code>：检查 Node，登记 Codex，用 9222 打开 Chrome，让 Codex 读公开恐龙页的加速规则，再做一个带速度滑块的单文件小游戏。
         </p>
         <p><a class="btn" href="/zh/docs/install-demo/">打开 Codex 安装演示</a></p>
 
         <h2 id="requirements">环境要求</h2>
         <div class="mt-4 grid gap-3 sm:grid-cols-3">
-          <div class="step-card"><span class="step-num">1</span><div><strong class="text-[var(--color-ink)]">Node</strong><p class="mt-1 !text-sm">22（22.19+）、24（24.11+）或 26+，以及 npm（以上游为准）。</p></div></div>
-          <div class="step-card"><span class="step-num">2</span><div><strong class="text-[var(--color-ink)]">MCP 客户端</strong><p class="mt-1 !text-sm"><code>rea-agents@6.4.0</code> 的 17 个 <code>--client</code> ID，含 Pi、Hermes、Qwen Code、Copilot CLI，或仅用 CLI。表在下方。</p></div></div>
+          <div class="step-card"><span class="step-num">1</span><div><strong class="text-[var(--color-ink)]">Node</strong><p class="mt-1 !text-sm">22（22.19+）、24（24.11+）或 26+，以及 npm（以上游为准）。SQLite 快照需要 24.15+ 或 26+。</p></div></div>
+          <div class="step-card"><span class="step-num">2</span><div><strong class="text-[var(--color-ink)]">MCP 客户端</strong><p class="mt-1 !text-sm"><code>rea-agents@6.5.0</code> 的 24 个 <code>--client</code> ID，含 Qoder、Trae、ZCode、DeepSeek Harness、Kimi Code、Factory Droid、WorkBuddy，或仅用 CLI。表在下方。</p></div></div>
           <div class="step-card"><span class="step-num">3</span><div><strong class="text-[var(--color-ink)]">原生引擎</strong><p class="mt-1 !text-sm">深度原生分析需自备 Hopper／Ghidra／IDA。JEB 是另一条自备 MCP。静态 JS／Electron 通常不需要。</p></div></div>
         </div>
-        <h3>客户端矩阵（<code>rea-agents@6.4.0</code>）</h3>
+        <h3>客户端矩阵（<code>rea-agents@6.5.0</code>）</h3>
         <p>
-          各行对应上游标签 <code>rea-agents-6.4.0</code> 的 <code>docs/installation.md</code> 受支持智能体表。
-          2026-10-13 的 npm <code>latest</code> 仍是 6.4.0；本站 runbook 仍然钉版本。
+          各行对应上游标签 <code>rea-agents-6.5.0</code> 的 <code>docs/installation.md</code> 受支持智能体表。
+          本站于 <strong>2026-10-15</strong> 核对 npm <code>latest</code> 为 <strong>6.5.0</strong>；runbook 仍然钉版本。
           MCP Registry 标识：<code>io.github.morluto/rea</code>。
-          Factory Droid（<code>droid</code>）和 DeepSeek Harness（<code>dsh</code>）要等到 6.4.0 之后的下一次 npm 发行——它们不是这里的行。
+          SQLite 快照检查需要 Node <strong>24.x ≥24.15 或 26+</strong>（<code>DatabaseSync.limits</code>）；Node 22／更早的 24 仍可跑包的其余部分。
+          6.5.0 新增：Qoder、Trae、ZCode、DeepSeek Harness（<code>dsh</code>）、Kimi Code（<code>kimi</code>）、Factory Droid（<code>droid</code>）、WorkBuddy——见表。
         </p>
         <ClientMatrix lang="zh" />
         <p class="text-sm">路径、Copilot schema 上限，以及 Grok Bot 的手动连接器：<a href="/zh/docs/clients/">客户端矩阵页</a>。skill 目录：<a href="/zh/docs/mcp-clients/">skill 路径</a>。</p>
 
         <h2 id="connect">连接编程智能体</h2>
         <p>可让智能体在批准后执行 setup，或自行运行。本指南钉的是本站其余页面教学用的包：</p>
-        <pre><code>npx -y rea-agents@6.4.0 setup</code></pre>
+        <pre><code>npx -y rea-agents@6.5.0 setup</code></pre>
         <p>
           选择客户端、审阅计划并批准变更。setup 会注册 MCP 与配套调查 skill，并备份现有配置。完成后请<strong>重启客户端</strong>。
         </p>
@@ -83,11 +84,11 @@ const toc = [
   "mcpServers": {
     "rea": {
       "command": "npx",
-      "args": ["-y", "rea-agents@6.4.0", "mcp"]
+      "args": ["-y", "rea-agents@6.5.0", "mcp"]
     }
   }
 }`}</code></pre>
-        <p>上面的片段已经钉在 <code>rea-agents@6.4.0</code>。2026-10-13 的 <code>@latest</code> 也是这个版本，下一次次版本可能破坏合同（<a href="/zh/docs/breaking/">always-bump-minor</a>）。</p>
+        <p>上面的片段已经钉在 <code>rea-agents@6.5.0</code>。2026-10-15 的 <code>@latest</code> 与该版本一致，下一次次版本可能破坏合同（<a href="/zh/docs/breaking/">always-bump-minor</a>）。</p>
 
         <h2 id="cli">可选：全局 CLI</h2>
         <pre><code>npm install --global rea-agents</code></pre>
@@ -96,8 +97,8 @@ const toc = [
         <p>REA 不会安装 Ghidra 或 Java。导出绝对路径后，先 doctor 再 setup：</p>
         <pre><code>{`export GHIDRA_INSTALL_DIR=/absolute/path/to/ghidra_PUBLIC
 export JAVA_HOME=/absolute/path/to/jdk-21
-npx -y rea-agents@6.4.0 doctor --provider ghidra --json
-npx -y rea-agents@6.4.0 setup`}</code></pre>
+npx -y rea-agents@6.5.0 doctor --provider ghidra --json
+npx -y rea-agents@6.5.0 setup`}</code></pre>
         <p>
           受支持的主机／Ghidra／JDK 组合以上游为准，见仓库内
           <a href="https://github.com/morluto/rea/blob/main/docs/installation.md">docs/installation.md</a>。
@@ -161,7 +162,7 @@ npx -y rea-agents@6.4.0 setup`}</code></pre>
           想要一次性云端环境？在 Codespaces 打开公开实验仓
           <a href="https://github.com/ylwl1997/rea-run-lab">ylwl1997/rea-run-lab</a>
           （Node 22 Dev Container），然后对<strong>仓内自有 Electron 风格演示</strong>运行
-          <code>npx -y rea-agents@6.4.0 setup</code>。
+          <code>npx -y rea-agents@6.5.0 setup</code>。
         </p>
         <p class="text-sm text-[var(--color-muted)]">与上方 Actions 同一实验仓——需要交互 shell 时再开。</p>
         <ul>
@@ -176,12 +177,12 @@ npx -y rea-agents@6.4.0 setup`}</code></pre>
           <li><a href="/zh/showcase/greco-dev-tv/">案例：greco 自有电视</a></li>
           <li><a href="/zh/showcase/brorlandi-miscale/">案例：BrOrlandi 自有体脂秤</a></li>
           <li><a href="/zh/docs/install-demo/">Codex 安装演示 — 恐龙加速规则</a></li>
-          <li><a href="/zh/docs/clients/">rea-agents@6.4.0 客户端矩阵</a></li>
+          <li><a href="/zh/docs/clients/">rea-agents@6.5.0 客户端矩阵</a></li>
           <li><a href="/zh/docs/mcp-clients/">MCP skill 路径</a></li>
           <li><a href="/zh/docs/android-adb/">Android ADB 设备通道（6.4+）</a></li>
           <li><a href="/zh/docs/jeb/">JEB，自备许可</a></li>
-          <li><a href="/zh/docs/breaking/">6.0–6.4.0 破坏性变更</a></li>
-          <li><a href="/zh/changelog/">直到 6.4.0 的更新日志</a></li>
+          <li><a href="/zh/docs/breaking/">6.0–6.5.0 破坏性变更</a></li>
+          <li><a href="/zh/changelog/">直到 6.5.0 的更新日志</a></li>
           <li><a href="/zh/faq/setup-vs-providers/">setup 会装 Ghidra／Hopper／IDA 吗？</a></li>
           <li><a href="/zh/faq/macos-ghidra-decompiler/">macOS Ghidra 反编译器缺失</a></li>
           <li><a href="/zh/blog/rea-agents-6-4-0/">REA 6.4.0 运维指南</a></li>

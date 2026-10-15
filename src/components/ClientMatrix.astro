@@ -1,5 +1,5 @@
 ---
-import { CLIENTS_640 } from '../data/clients64';
+import { CLIENTS_650, REA_PIN_VERSION } from '../data/clients65';
 
 interface Props {
   lang?: 'en' | 'zh';
@@ -13,11 +13,11 @@ const zh = lang === 'zh';
       <tr>
         <th>{zh ? '客户端' : 'Client'}</th>
         <th><code>--client</code></th>
-        <th>{zh ? '6.4.0 接线' : '6.4.0 wiring'}</th>
+        <th>{zh ? `${REA_PIN_VERSION} 接线` : `${REA_PIN_VERSION} wiring`}</th>
       </tr>
     </thead>
     <tbody>
-      {CLIENTS_640.map((row) => (
+      {CLIENTS_650.map((row) => (
         <tr>
           <td>{row.name}</td>
           <td><code>{row.id}</code></td>
