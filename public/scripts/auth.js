@@ -59,8 +59,8 @@
       '<div class="auth-dropdown" data-auth-dropdown hidden>' +
       '<p class="auth-dropdown-note">' +
       t(
-        'Community session · unofficial rea.run',
-        '社区会话 · 非官方 rea.run',
+        'Community session · rea.run',
+        '社区会话 · rea.run',
       ) +
       '</p>' +
       '<a class="auth-dropdown-item" href="' +
