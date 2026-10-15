@@ -9,13 +9,14 @@ const toc = [
   { id: 'evidence', label: '6.2 Evidence' },
   { id: 'captures', label: '6.3 capture accounting' },
   { id: 'sockets', label: '6.4 WebSocket field' },
+  { id: 'nulls', label: '6.5 nulls & contracts' },
   { id: 'related', label: 'Related' },
 ];
 ---
 <BaseLayout
   lang="en"
-  title="REA upgrade runbook: breaking changes 6.0–6.4.0 | rea.run"
-  description="Operator runbook for rea-agents 6.0 through 6.4.0: absolute MCP paths, Evidence normalized_result, capture accounting, websocket_connections, and always-bump-minor."
+  title="REA upgrade runbook: breaking changes 6.0–6.5.0 | rea.run"
+  description="Operator runbook for rea-agents 6.0 through 6.5.0: absolute MCP paths, Evidence normalized_result, capture accounting, websocket_connections, attached/null contracts, call-graph shape, and always-bump-minor."
   path="/docs/breaking/"
 >
   <div class="mx-auto max-w-6xl px-4 py-12">
@@ -26,35 +27,35 @@ const toc = [
       </aside>
       <article class="prose-page">
         <p class="text-sm"><a class="quiet-link" href="/changelog/">← Changelog</a></p>
-        <p class="badge badge-accent mt-4">Docs · pin 6.4.0</p>
+        <p class="badge badge-accent mt-4">Docs · pin 6.5.0</p>
         <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">Upgrade without breaking your runbooks</h1>
         <p class="lede mt-4 !max-w-none">
-          From <strong>6.0.0</strong> (2026-10-08) through <strong>6.4.0</strong> (2026-10-11), several minor releases changed MCP inputs, Evidence shape, and saved captures.
-          This page is the operator checklist for those breaks. Dates are GitHub release <code>published_at</code> values. The teaching pin on rea.run is <code>rea-agents@6.4.0</code>.
+          From <strong>6.0.0</strong> (2026-10-08) through <strong>6.5.0</strong> (2026-10-14), several minor releases changed MCP inputs, Evidence shape, and saved captures.
+          This page is the operator checklist for those breaks. Dates are GitHub release <code>published_at</code> values. The teaching pin on rea.run is <code>rea-agents@6.5.0</code>.
         </p>
 
         <h2 id="policy">always-bump-minor is not a compatibility promise</h2>
         <p>
           Upstream’s 6.2 migration guide states the policy in one sentence: the repository uses <code>always-bump-minor</code>, <strong>including breaking releases</strong>. A minor number does not mean old scripts, old Evidence files, or old captures still validate.
-          npm <code>latest</code> on 2026-10-13 was still <code>6.4.0</code>. Floating <code>@latest</code> in a runbook will pick up the next minor whenever it publishes, breaks included.
+          npm <code>latest</code> checked on <strong>2026-10-15</strong> was <code>6.5.0</code>. Floating <code>@latest</code> in a runbook will pick up the next minor whenever it publishes, breaks included.
         </p>
         <p>
-          Factory Droid (<code>droid</code>) and DeepSeek Harness (<code>dsh</code>) are on <code>main</code> only until an npm release <em>after</em> 6.4.0. Do not add them to a 6.4.0 setup plan.
+          Client IDs added in 6.5.0 (Qoder, Trae, ZCode, DeepSeek Harness, Kimi Code, Factory Droid, WorkBuddy) are on the <a href="/docs/clients/">client matrix</a>. Confirm with doctor before treating a registration as aligned.
         </p>
 
         <h2 id="steps">Upgrade steps</h2>
         <ol>
           <li>Record the pin you run today: the version in MCP <code>args</code>, and <code>npm view rea-agents version</code> if you use a global CLI. They can differ.</li>
-          <li>Read every row you will cross in the table below. Jumping 6.1 → 6.4.0 still includes the 6.2 and 6.3 contracts.</li>
+          <li>Read every row you will cross in the table below. Jumping 6.1 → 6.5.0 still includes the 6.2, 6.3, and 6.4 contracts.</li>
           <li>Copy Evidence bundles, analysis snapshots, and process captures to a side directory. Do not rewrite them in place.</li>
           <li>
             Point the client at the pin and approve a scoped setup plan:
-            <pre><code>{`npx -y rea-agents@6.4.0 setup --client codex --dry-run --json
+            <pre><code>{`npx -y rea-agents@6.5.0 setup --client codex --dry-run --json
 # review, then:
-npx -y rea-agents@6.4.0 setup --client codex --yes --json`}</code></pre>
+npx -y rea-agents@6.5.0 setup --client codex --yes --json`}</code></pre>
           </li>
           <li>Restart or reconnect the agent. Cached <code>tools/list</code> schemas from the previous package are a common first failure.</li>
-          <li>Run <code>npx -y rea-agents@6.4.0 doctor --json</code> and attach the JSON to the change ticket.</li>
+          <li>Run <code>npx -y rea-agents@6.5.0 doctor --json</code> and attach the JSON to the change ticket.</li>
           <li>Re-run one authorized target you already understand. Diff field names before you trust a dashboard or a script.</li>
           <li>If a consumer still reads <code>structuredContent.result</code>, switch it to <code>normalized_result</code> (6.2). If it reads <code>network.websocket_events</code>, switch it to <code>network.websocket_connections</code> (6.4). There is no legacy alias for the WebSocket field.</li>
         </ol>
@@ -63,12 +64,12 @@ npx -y rea-agents@6.4.0 setup --client codex --yes --json`}</code></pre>
   "mcpServers": {
     "rea": {
       "command": "npx",
-      "args": ["-y", "rea-agents@6.4.0", "mcp"]
+      "args": ["-y", "rea-agents@6.5.0", "mcp"]
     }
   }
 }`}</code></pre>
 
-        <h2 id="map">Operator-relevant breaks, 6.0 through 6.4.0</h2>
+        <h2 id="map">Operator-relevant breaks, 6.0 through 6.5.0</h2>
         <div class="not-prose overflow-x-auto my-6">
           <table class="compare-table">
             <thead>
@@ -100,6 +101,11 @@ npx -y rea-agents@6.4.0 setup --client codex --yes --json`}</code></pre>
                 <td>2026-10-11 03:58</td>
                 <td><code>network.websocket_connections</code> replaces <code>network.websocket_events</code>. Several stored graph schemas also change.</td>
               </tr>
+              <tr>
+                <td>6.5.0</td>
+                <td>2026-10-14 12:32</td>
+                <td><code>attached</code> / source name / segment length / <code>command_path</code> may be null; <code>--filter-output</code> emits JSON null; call-graph <code>{"{"} graph, limitations {"}"}</code>; <code>binary_session</code> drops repeated tools catalog; ADB <code>replace_requested</code> / nullable <code>replaced</code>.</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -121,7 +127,7 @@ npx -y rea-agents@6.4.0 setup --client codex --yes --json`}</code></pre>
 
         <h2 id="evidence">6.2.0 — Evidence, snapshots, and saved inventories</h2>
         <p>
-          Published 2026-10-09. Read <a href="https://github.com/morluto/rea/blob/rea-agents-6.4.0/docs/migration-6.2.md" rel="noopener noreferrer" target="_blank">docs/migration-6.2.md</a> on the 6.4.0 tag before you upgrade a consumer. The notes below are the operator extract. Commit <a href="https://github.com/morluto/rea/commit/63bf91405cf97b114a84f337fb1272d98a267999" rel="noopener noreferrer" target="_blank">63bf914</a> and <a href="https://github.com/morluto/rea/pull/1277" rel="noopener noreferrer" target="_blank">#1277</a> are the contract change.
+          Published 2026-10-09. Read <a href="https://github.com/morluto/rea/blob/rea-agents-6.5.0/docs/migration-6.2.md" rel="noopener noreferrer" target="_blank">docs/migration-6.2.md</a> on the 6.5.0 tag before you upgrade a consumer. The notes below are the operator extract. Commit <a href="https://github.com/morluto/rea/commit/63bf91405cf97b114a84f337fb1272d98a267999" rel="noopener noreferrer" target="_blank">63bf914</a> and <a href="https://github.com/morluto/rea/pull/1277" rel="noopener noreferrer" target="_blank">#1277</a> are the contract change.
         </p>
         <h3>Success payload</h3>
         <p>Evidence-producing tools return the complete Evidence record in <code>structuredContent</code> and in the JSON text. The old <code>{`{ result, evidence_id, evidence }`}</code> wrapper is gone.</p>
@@ -129,7 +135,7 @@ npx -y rea-agents@6.4.0 setup --client codex --yes --json`}</code></pre>
 const value = reply.structuredContent.result;
 const evidence = reply.structuredContent.evidence;
 
-// 6.2 and later, including 6.4.0
+// 6.2 and later, including 6.5.0
 const evidence = reply.structuredContent;
 const value = evidence.normalized_result;
 const evidenceId = evidence.evidence_id;`}</code></pre>
@@ -151,7 +157,7 @@ const evidenceId = evidence.evidence_id;`}</code></pre>
         </p>
         <h3>Snapshots and artifact roles</h3>
         <p>Snapshots require <code>workflow_entries</code> and a profile-bound Evidence record for every cached query. Import rejects incomplete bindings. Keep the old snapshot and write a new path, for example:</p>
-        <pre><code>npx -y rea-agents@6.4.0 analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program-6.4.json</code></pre>
+        <pre><code>npx -y rea-agents@6.5.0 analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program-6.4.json</code></pre>
         <p>In MCP, open without the incompatible <code>snapshot_path</code>, run the queries, then save through <code>close_binary.snapshot_path</code>. Do not invent missing provider profiles.</p>
         <div class="not-prose overflow-x-auto my-6">
           <table class="compare-table">
@@ -192,7 +198,7 @@ const evidenceId = evidence.evidence_id;`}</code></pre>
         </ul>
 
         <h2 id="sockets">6.4.0 — WebSocket results and stored graphs</h2>
-        <p>Published 2026-10-11. Current npm latest as checked 2026-10-13. Release: <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">rea-agents-6.4.0</a>.</p>
+        <p>Published 2026-10-11. Release: <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">rea-agents-6.4.0</a>.</p>
         <h3>WebSocket field rename</h3>
         <p>
           Read <code>network.websocket_connections</code>. Do not read <code>network.websocket_events</code>. No legacy alias remains
@@ -215,11 +221,74 @@ const evidenceId = evidence.evidence_id;`}</code></pre>
         </p>
         <p>Optional agent-verification reports accept schema version 4. Production CLI and MCP contracts for that report are unchanged.</p>
 
+
+        <h2 id="nulls">6.5.0 — null states, filtered JSON, call graphs, MCP discovery, ADB</h2>
+        <p>
+          Body date 2026-10-13; GitHub <code>published_at</code> 2026-10-14 12:32 UTC (2026-10-14 20:32 UTC+8).
+          Release: <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.5.0" rel="noopener noreferrer" target="_blank">rea-agents-6.5.0</a>.
+          Contribution record in the release footer: <strong>893</strong> commits and <strong>529</strong> merged PRs.
+          npm <code>latest</code> checked on this site on <strong>2026-10-15</strong> was <strong>6.5.0</strong>.
+          Rows below are paraphrased from the release <code>BREAKING CHANGES</code> section — do not invent additional breaks.
+        </p>
+        <div class="not-prose overflow-x-auto my-6">
+          <table class="compare-table">
+            <thead>
+              <tr><th>Break</th><th>Operator impact</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Runtime attachment state</td>
+                <td><code>attached</code> may be <code>null</code> in JavaScript, browser, and Electron discovery/inspection. Treat null as unknown; do <strong>not</strong> coerce it to false. (e55ef72)</td>
+              </tr>
+              <tr>
+                <td>Source maps</td>
+                <td>Original-source and mapping rows keep a null source name when unavailable. Handle null; do not invent an unknown-source string. New index fields remain optional when reading older Evidence. (ee50ed1)</td>
+              </tr>
+              <tr>
+                <td>Streamed filtered JSON</td>
+                <td><code>--filter-output</code> emits JSON <code>null</code> instead of <code>{"{}"}</code> when the selected value is null. Distinguish present null from a missing selection. Use <code>--full-output</code> when an object envelope is required. (#2333)</td>
+              </tr>
+              <tr>
+                <td>Call graphs</td>
+                <td><code>get_call_graph.normalized_result</code> is now <code>{"{"} graph, limitations {"}"}</code>. Read traversal-depth groups under <code>graph</code> and retain relationship-specific caveats. (5dfb9d0)</td>
+              </tr>
+              <tr>
+                <td>MCP discovery</td>
+                <td><code>binary_session</code> no longer repeats <code>server_identity.catalog.tools</code>. Use the connected server tool list, grouped <code>tool_availability</code>, and provider capabilities. (#1988)</td>
+              </tr>
+              <tr>
+                <td>Provider admission</td>
+                <td>MIPS targets with unresolved GNU ABI attributes are refused — supply supported ABI declarations. Saved Hopper databases on macOS are unavailable (launcher cannot run the analysis bridge when opening a database); select an executable target instead. (d4bd65c)</td>
+              </tr>
+              <tr>
+                <td>Segment extents</td>
+                <td><code>binary_overview</code> segment length may be null when Hopper cannot establish a finite extent. Preserve unknown; do not coerce to 0 or a saturated value. (36db19c)</td>
+              </tr>
+              <tr>
+                <td>Invocation identity</td>
+                <td><code>server.command_path</code> may be null; registration/setup statuses or doctor classifications may be unknown. Establish the actual invocation before treating a registration as aligned. (187f113)</td>
+              </tr>
+              <tr>
+                <td>ADB installation</td>
+                <td>Optional <code>replace</code> input is unchanged. Results now require <code>replace_requested</code> for the requested <code>adb install -r</code> mode; <code>replaced</code> is nullable because prior device package state was not observed. Do not treat reinstall intent as proof of replacement. (864314a)</td>
+              </tr>
+              <tr>
+                <td>Managed/native verification</td>
+                <td>Unresolved P/Invoke may retain <code>matched_native</code> and candidates when module identity is unknown. Interpret <code>status</code>, <code>basis</code>, and <code>limitations</code>; unknown module ≠ empty observations. (3f6b575)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          SQLite snapshot inspection in 6.5.0 needs Node <strong>24.x ≥24.15 or 26+</strong> with <code>DatabaseSync.limits</code>. That is a capability gate, not listed under <code>BREAKING CHANGES</code>, but operators on Node 22 / earlier 24 will see the lane refuse.
+        </p>
+        <p>Also update ADB result readers: see <a href="/docs/android-adb/">Android ADB</a>. Call-graph and MCP discovery consumers should re-check field paths before trusting dashboards built on 6.4.0 shapes.</p>
+
         <h2 id="related">Related</h2>
         <ul>
-          <li><a href="/changelog/">Changelog, 3.2.0 through 6.4.0</a></li>
-          <li><a href="/docs/install/">Install, pinned to 6.4.0</a></li>
-          <li><a href="/docs/clients/">Client matrix for 6.4.0</a></li>
+          <li><a href="/changelog/">Changelog, 3.2.0 through 6.5.0</a></li>
+          <li><a href="/docs/install/">Install, pinned to 6.5.0</a></li>
+          <li><a href="/docs/clients/">Client matrix for 6.5.0</a></li>
           <li><a href="/blog/rea-agents-6-4-0/">6.4.0 operator guide (ADB, JEB, compact schema)</a></li>
           <li><a href="/docs/jeb/">JEB, bring your own license</a></li>
           <li><a href="/docs/android-adb/">Android ADB device lane</a></li>
@@ -228,9 +297,9 @@ const evidenceId = evidence.evidence_id;`}</code></pre>
         <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
           <p class="text-xs uppercase tracking-wider">Sources</p>
           <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
-            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.4.0/docs/migration-6.2.md" rel="noopener noreferrer" target="_blank">docs/migration-6.2.md at rea-agents-6.4.0</a></li>
-            <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.0.0" rel="noopener noreferrer" target="_blank">6.0.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.1.0" rel="noopener noreferrer" target="_blank">6.1.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.2.0" rel="noopener noreferrer" target="_blank">6.2.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.3.0" rel="noopener noreferrer" target="_blank">6.3.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">6.4.0</a></li>
-            <li>npm <code>rea-agents</code> latest checked 2026-10-13: 6.4.0</li>
+            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.5.0/docs/migration-6.2.md" rel="noopener noreferrer" target="_blank">docs/migration-6.2.md at rea-agents-6.5.0</a></li>
+            <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.0.0" rel="noopener noreferrer" target="_blank">6.0.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.1.0" rel="noopener noreferrer" target="_blank">6.1.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.2.0" rel="noopener noreferrer" target="_blank">6.2.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.3.0" rel="noopener noreferrer" target="_blank">6.3.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">6.4.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.5.0" rel="noopener noreferrer" target="_blank">6.5.0</a></li>
+            <li>npm <code>rea-agents</code> latest checked 2026-10-15: 6.5.0</li>
           </ol>
           <p class="mt-4"><a class="quiet-link" href="/compliance/">Compliance</a></p>
         </footer>

@@ -2,16 +2,16 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 const toc = [
   { id: 'pin', label: 'Pin' },
-  { id: 'velocity', label: '3.2.0–6.4.0' },
+  { id: 'velocity', label: '3.2.0–6.5.0' },
   { id: 'policy', label: 'Minor bumps' },
-  { id: 'not-yet', label: 'Not in 6.4.0' },
+  { id: 'added-650', label: 'Added in 6.5.0' },
   { id: 'read', label: 'Where to read next' },
 ];
 ---
 <BaseLayout
   lang="en"
-  title="REA changelog for operators (3.2.0–6.4.0) | rea.run"
-  description="Operator changelog for rea-agents from 3.2.0 through npm 6.4.0, with publish times and the always-bump-minor caveat. Not a paste of every PR."
+  title="REA changelog for operators (3.2.0–6.5.0) | rea.run"
+  description="Operator changelog for rea-agents from 3.2.0 through npm 6.5.0, with publish times and the always-bump-minor caveat. Not a paste of every PR."
   path="/changelog/"
 >
   <div class="mx-auto max-w-6xl px-4 py-12">
@@ -22,20 +22,20 @@ const toc = [
       </aside>
       <article class="prose-page">
         <p class="badge">Changelog</p>
-        <h1 class="mt-4 text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">What shipped, through rea-agents 6.4.0</h1>
+        <h1 class="mt-4 text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">What shipped, through rea-agents 6.5.0</h1>
         <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--color-muted)]">
-          Community index of GitHub releases from <strong>3.2.0</strong> (2026-10-03) through <strong>6.4.0</strong> (2026-10-11).
-          Times are release <code>published_at</code> in UTC. npm <code>latest</code> checked on <strong>2026-10-13</strong> was <strong>6.4.0</strong>.
+          Community index of GitHub releases from <strong>3.2.0</strong> (2026-10-03) through <strong>6.5.0</strong> (2026-10-14).
+          Times are release <code>published_at</code> in UTC. npm <code>latest</code> checked on <strong>2026-10-15</strong> was <strong>6.5.0</strong>.
           Feature sentences are shortened from those release bodies. The upgrade procedure lives on the <a href="/docs/breaking/">breaking-change runbook</a>.
         </p>
 
         <h2 id="pin">Pin this site teaches</h2>
-        <pre><code>npx -y rea-agents@6.4.0 setup
-npx -y rea-agents@6.4.0 doctor --json</code></pre>
+        <pre><code>npx -y rea-agents@6.5.0 setup
+npx -y rea-agents@6.5.0 doctor --json</code></pre>
         <p>
           Node engines for that tarball: <code>^22.19.0 || ^24.11.0 || &gt;=26.0.0</code>.
           MCP Registry id: <code>io.github.morluto/rea</code> (the registry installs the same npm package; it is not a second artifact).
-          Client IDs: <a href="/docs/clients/">6.4.0 matrix</a>.
+          Client IDs: <a href="/docs/clients/">6.5.0 matrix</a>.
         </p>
 
         <h2 id="velocity">Release index</h2>
@@ -98,13 +98,18 @@ npx -y rea-agents@6.4.0 doctor --json</code></pre>
               <tr>
                 <td><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0">6.4.0</a></td>
                 <td>2026-10-11 03:58</td>
-                <td>Current npm latest. Android ADB lane, caller-started JEB MCP, Pi / Hermes / Qwen Code setup, compact MCP schemas, large Evidence views. Breaking: <code>network.websocket_connections</code> replaces <code>network.websocket_events</code>. <a href="/docs/breaking/#sockets">Steps</a>.</td>
+                <td>Android ADB lane, caller-started JEB MCP, Pi / Hermes / Qwen Code setup, compact MCP schemas, large Evidence views. Breaking: <code>network.websocket_connections</code> replaces <code>network.websocket_events</code>. <a href="/docs/breaking/#sockets">Steps</a>.</td>
+              </tr>
+              <tr>
+                <td><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.5.0">6.5.0</a></td>
+                <td>2026-10-14 12:32</td>
+                <td>Current npm latest (checked 2026-10-15). Body date 2026-10-13. JS selection / retained Evidence paging; packet/signal/HAR/QUIC/SAZ; SQLite (Node ≥24.15 or 26+); WASM/Rust/Electron fuses; new clients (Qoder, Trae, ZCode, dsh, kimi, droid, workbuddy). Breaking: null <code>attached</code>/source names; <code>--filter-output</code> null; call-graph <code>{"{"} graph, limitations {"}"}</code>; ADB <code>replace_requested</code>. Release footer: 893 commits / 529 PRs. <a href="/docs/breaking/#nulls">Steps</a>.</td>
               </tr>
             </tbody>
           </table>
         </div>
         <p>
-          Seven tags from 3.2.0 (3 Oct) through 6.0.0 (8 Oct), then 6.1.0–6.4.0 on 9–11 Oct.
+          Seven tags from 3.2.0 (3 Oct) through 6.0.0 (8 Oct), then 6.1.0–6.4.0 on 9–11 Oct, then 6.5.0 on 14 Oct.
           That pace is why a floating install in CI is a behavior change, not a refresh.
         </p>
 
@@ -117,21 +122,19 @@ npx -y rea-agents@6.4.0 doctor --json</code></pre>
           <li>Re-run <code>doctor --json</code> on the pin and store the output with the ticket.</li>
         </ol>
 
-        <h2 id="not-yet">Not in npm 6.4.0</h2>
+        <h2 id="added-650">Added in npm 6.5.0</h2>
         <p>
-          <code>main</code> after the 6.4.0 tag is not a release. As of the install doc on <code>main</code> checked 2026-10-13, Factory Droid (<code>droid</code>) and DeepSeek Harness (<code>dsh</code>) are pending a later npm publish.
-          <code>rea setup --client dsh</code> against <code>rea-agents@6.4.0</code> is an unsupported client. Do not document them as available on this pin.
-          Open pull requests (CodeBuddy setup, WebAssembly components, and others) are the same: wait until they merge <em>and</em> ship in an npm version above 6.4.0.
+          Factory Droid (<code>droid</code>), DeepSeek Harness (<code>dsh</code>), Qoder (<code>qoder</code>), Trae (<code>trae</code>), ZCode (<code>zcode</code>), Kimi Code (<code>kimi</code>), and WorkBuddy (<code>workbuddy</code>) ship in the 6.5.0 supported-agents table.
+          DeepSeek is included from 6.5.0; live Trae and DeepSeek API integration remain unverified upstream.
+          Confirm with <code>setup --dry-run</code> and <code>doctor --client &lt;id&gt; --json</code>. Full table: <a href="/docs/clients/">client matrix</a>.
         </p>
         <p>
-          The supported-agents table inside tag <code>rea-agents-6.4.0</code> still has a paragraph written while npm latest was 6.3.0, saying Pi, Hermes, and Qwen Code were not in that older tarball.
-          The 6.4.0 release notes list those three setups as added, and a later <code>main</code> note says the published 6.4.0 package accepted dry-run plans for the 17 client IDs in that release.
-          Use the <a href="/docs/clients/">client matrix</a>, then <code>doctor --client &lt;id&gt; --json</code>.
+          Pi, Hermes, and Qwen Code already shipped in 6.4.0 (17 IDs). 6.5.0 expands the matrix to 24 <code>--client</code> values. Grok Bot remains a manual hosted connector, not a setup row.
         </p>
 
         <h2 id="read">Where to read next</h2>
         <ul>
-          <li><a href="/docs/breaking/">Upgrade runbook, 6.0–6.4.0</a></li>
+          <li><a href="/docs/breaking/">Upgrade runbook, 6.0–6.5.0</a></li>
           <li><a href="/blog/rea-agents-6-4-0/">6.4.0 operator guide</a> — ADB, JEB, compact schema, Evidence views</li>
           <li><a href="/docs/install/">Install</a> · <a href="/docs/clients/">clients</a> · <a href="/docs/jeb/">JEB</a> · <a href="/docs/android-adb/">Android ADB</a></li>
           <li><a href="/showcase/aegis-totp/">Aegis login-code study</a>, pinned to <code>rea-agents@6.4.0</code></li>
@@ -141,8 +144,8 @@ npx -y rea-agents@6.4.0 doctor --json</code></pre>
           <p class="text-xs uppercase tracking-wider">Sources</p>
           <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
             <li><a href="https://github.com/morluto/rea/releases" rel="noopener noreferrer" target="_blank">GitHub releases for morluto/rea</a> — publish times in the table</li>
-            <li><a href="https://www.npmjs.com/package/rea-agents" rel="noopener noreferrer" target="_blank">npm rea-agents</a> — latest 6.4.0 on 2026-10-13</li>
-            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.4.0/docs/migration-6.2.md" rel="noopener noreferrer" target="_blank">docs/migration-6.2.md at rea-agents-6.4.0</a></li>
+            <li><a href="https://www.npmjs.com/package/rea-agents" rel="noopener noreferrer" target="_blank">npm rea-agents</a> — latest 6.5.0 on 2026-10-15</li>
+            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.5.0/docs/migration-6.2.md" rel="noopener noreferrer" target="_blank">docs/migration-6.2.md at rea-agents-6.5.0</a></li>
           </ol>
           <p class="mt-4"><a class="quiet-link" href="/compliance/">Compliance</a></p>
         </footer>

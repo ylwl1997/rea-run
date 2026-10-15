@@ -2,21 +2,21 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ClientMatrix from '../../components/ClientMatrix.astro';
 import OfficialInstallNotice from '../../components/OfficialInstallNotice.astro';
-import { CLIENTS_640, MCP_REGISTRY_ID, NODE_ENGINES } from '../../data/clients64';
+import { CLIENTS_650, MCP_REGISTRY_ID, NODE_ENGINES, REA_PIN } from '../../data/clients65';
 const toc = [
   { id: 'pin', label: 'Pin and engines' },
-  { id: 'matrix', label: '17 client IDs' },
+  { id: 'matrix', label: `${CLIENTS_650.length} client IDs` },
   { id: 'verify', label: 'Verify one client' },
   { id: 'copilot', label: 'Copilot CLI schemas' },
   { id: 'manual', label: 'Not a --client row' },
-  { id: 'pending', label: 'Pending after 6.4.0' },
+  { id: 'added-650', label: 'Added in 6.5.0' },
   { id: 'related', label: 'Related' },
 ];
 ---
 <BaseLayout
   lang="en"
-  title="REA 6.4.0 client matrix | rea.run"
-  description="The 17 setup --client IDs in rea-agents@6.4.0, including Pi, Hermes, Qwen Code, and Copilot CLI. Doctor checks and the MCP Registry id."
+  title="REA 6.5.0 client matrix | rea.run"
+  description="The 24 setup --client IDs in rea-agents@6.5.0, including Qoder, Trae, ZCode, DeepSeek Harness, Kimi Code, Factory Droid, and WorkBuddy. Doctor checks and the MCP Registry id."
   path="/docs/clients/"
 >
   <div class="mx-auto max-w-6xl px-4 py-12">
@@ -27,20 +27,23 @@ const toc = [
       </aside>
       <article class="prose-page">
         <p class="text-sm"><a class="quiet-link" href="/docs/install/">← Install</a></p>
-        <p class="badge badge-accent mt-4">Docs · 6.4.0</p>
-        <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">Client matrix for rea-agents 6.4.0</h1>
+        <p class="badge badge-accent mt-4">Docs · 6.5.0</p>
+        <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">Client matrix for rea-agents 6.5.0</h1>
         <p class="lede mt-4 !max-w-none">
-          Setup in <code>rea-agents@6.4.0</code> can register REA’s local stdio MCP server with <strong>{CLIENTS_640.length} client IDs</strong>.
-          The table matches <code>docs/installation.md</code> at tag <code>rea-agents-6.4.0</code>.
+          Setup in <code>{REA_PIN}</code> can register REA’s local stdio MCP server with <strong>{CLIENTS_650.length} client IDs</strong>.
+          The table matches <code>docs/installation.md</code> at tag <code>rea-agents-6.5.0</code>.
           Skill-directory pitfalls stay on <a href="/docs/mcp-clients/">MCP clients and skill paths</a>.
         </p>
 
         <h2 id="pin">Pin and engines</h2>
         <p>Node for this package: <code>{NODE_ENGINES}</code>. Registry id: <code>{MCP_REGISTRY_ID}</code>. The registry entry launches the same npm package with <code>npx</code> and the <code>mcp</code> command. It is not a second distribution.</p>
+        <p class="text-sm">
+          SQLite snapshot inspection (new in 6.5.0) needs <strong>Node 24.x ≥24.15 or 26+</strong> with <code>DatabaseSync.limits</code>. Node 22 and earlier 24 can still run the rest of the package; that lane alone refuses.
+        </p>
         <OfficialInstallNotice lang="en" variant="brief" />
-        <pre><code>{`npx -y rea-agents@6.4.0 setup
-npx -y rea-agents@6.4.0 doctor --client codex --json
-npx -y rea-agents@6.4.0 doctor --skill --json`}</code></pre>
+        <pre><code>{`npx -y rea-agents@6.5.0 setup
+npx -y rea-agents@6.5.0 doctor --client codex --json
+npx -y rea-agents@6.5.0 doctor --skill --json`}</code></pre>
         <p>
           <code>rea setup</code> offers these agents in a multi-select. Existing REA registrations start selected. Newly detected clients stay available but unselected: detection is context, not permission to write a new registration.
           Explicit <code>--client</code> skips the question. Approve the dry-run before <code>--yes</code>. Restart the client afterward. Persistent registrations pin the package version that performed setup.
@@ -51,26 +54,31 @@ npx -y rea-agents@6.4.0 doctor --skill --json`}</code></pre>
 
         <h2 id="matrix">Supported <code>--client</code> values</h2>
         <p>
-          Pi, Hermes, and Qwen Code are in this npm release. The 6.4.0 release notes (2026-10-11) list their setup as added
-          (<a href="https://github.com/morluto/rea/pull/1376" rel="noopener noreferrer" target="_blank">#1376</a>,
-          <a href="https://github.com/morluto/rea/pull/1403" rel="noopener noreferrer" target="_blank">#1403</a>,
-          <a href="https://github.com/morluto/rea/pull/1415" rel="noopener noreferrer" target="_blank">#1415</a>).
-          A paragraph in the same tag’s install doc was written while npm latest was still 6.3.0 and said those three IDs were absent from <em>that</em> tarball. Do not apply the 6.3.0 sentence to a <code>@6.4.0</code> pin.
-          A later note on <code>main</code> (not a newer npm version) says the published 6.4.0 package accepted dry-run plans for these 17 IDs, including Qwen Code, Pi, and Hermes. Confirm on your machine with doctor.
+          The 6.5.0 release (body date 2026-10-13, published 2026-10-14) adds setup for Qoder, Trae, ZCode, DeepSeek Harness, Kimi Code, Factory Droid, and WorkBuddy
+          (<a href="https://github.com/morluto/rea/pull/1564" rel="noopener noreferrer" target="_blank">#1564</a>,
+          <a href="https://github.com/morluto/rea/pull/1572" rel="noopener noreferrer" target="_blank">#1572</a>,
+          <a href="https://github.com/morluto/rea/pull/1573" rel="noopener noreferrer" target="_blank">#1573</a>,
+          <a href="https://github.com/morluto/rea/pull/1929" rel="noopener noreferrer" target="_blank">#1929</a>,
+          <a href="https://github.com/morluto/rea/pull/2744" rel="noopener noreferrer" target="_blank">#2744</a>,
+          <a href="https://github.com/morluto/rea/pull/2309" rel="noopener noreferrer" target="_blank">#2309</a>,
+          <a href="https://github.com/morluto/rea/pull/3041" rel="noopener noreferrer" target="_blank">#3041</a>).
+          DeepSeek is included from 6.5.0; live Trae and DeepSeek API integration remain unverified upstream.
+          Confirm each ID on your machine with <code>setup --dry-run</code> and <code>doctor</code>.
         </p>
         <ClientMatrix lang="en" />
 
         <h2 id="verify">Verify one client</h2>
-        <p>Substitute the ID from the table. Inspect before you write. The commands below use Pi; Hermes is <code>hermes</code>, Qwen Code is <code>qwen_code</code>, Copilot CLI is <code>copilot_cli</code>.</p>
-        <pre><code>npx -y rea-agents@6.4.0 setup --client pi --dry-run --json
-npx -y rea-agents@6.4.0 setup --client pi --yes --json
-npx -y rea-agents@6.4.0 doctor --client pi --json</code></pre>
+        <p>Substitute the ID from the table. Inspect before you write. The commands below use DeepSeek Harness; Kimi is <code>kimi</code>, Factory Droid is <code>droid</code>, WorkBuddy is <code>workbuddy</code>.</p>
+        <pre><code>npx -y rea-agents@6.5.0 setup --client dsh --dry-run --json
+npx -y rea-agents@6.5.0 setup --client dsh --yes --json
+npx -y rea-agents@6.5.0 doctor --client dsh --json</code></pre>
         <ol>
           <li>Pi reads <code>mcp.json</code> as strict JSON. Comments, trailing commas, a byte-order mark, or an empty file are invalid. Setup reports them instead of rewriting the file. Repair to plain JSON, then rerun. Follow <code>PI_CODING_AGENT_DIR</code> when it is set. Reload an existing Pi session after out-of-band edits. A project <code>.pi/mcp.json</code> can hide the user entry.</li>
           <li>Qwen Code: <code>mcpServers.rea</code> in <code>~/.qwen/settings.json</code>, or <code>$QWEN_HOME/settings.json</code>. Personal skills are discovered under <code>~/.agents/skills</code>.</li>
           <li>Hermes: <code>mcp_servers.rea</code> in <code>config.yaml</code>, resolved from <code>HERMES_HOME</code> or the platform default (<code>%LOCALAPPDATA%\hermes</code> on Windows, <code>~/.hermes</code> elsewhere), including <code>HERMES_DATA_DIR_SUFFIX</code>. Setup follows <code>active_profile</code>. An invalid sticky profile is reported; it is not silently written into the default home.</li>
           <li>OMP: one registration per profile. Run setup under each <code>OMP_PROFILE</code> or <code>PI_PROFILE</code> that should load REA. <code>disabledServers</code> hides <code>rea</code>; setup removes that name from the file it edits.</li>
-          <li>OpenCode on 6.4.0 honors <code>OPENCODE_CONFIG_DIR</code>. npm 6.3.0 did not.</li>
+          <li>OpenCode honors <code>OPENCODE_CONFIG_DIR</code> (fixed since 6.4.0).</li>
+          <li>DeepSeek Harness: follow the Cordis patch and launcher notes in upstream <code>docs/client-configuration.md</code>. <code>!!js</code> environment expressions stay unevaluated at registration time.</li>
         </ol>
 
         <h2 id="copilot">Copilot CLI and schema size</h2>
@@ -79,38 +87,38 @@ npx -y rea-agents@6.4.0 doctor --client pi --json</code></pre>
           The compact profile passed native chat and analysis with the full tool inventory on Linux in upstream’s loopback fixture. After setup, add this to the <code>env</code> object of <code>mcpServers.rea</code> in Copilot’s <code>mcp-config.json</code>, keep the other settings, and restart:
         </p>
         <pre><code>{`"REA_MCP_INPUT_SCHEMA_PROFILE": "compact"`}</code></pre>
-        <p>Compact advertisements can drop nested schema constraints. REA still validates canonical inputs. The same environment variable is the 6.4.0 switch for other size-capped hosts (Kimi / Moonshot). It is not a license to send a different tool than the one you named.</p>
+        <p>Compact advertisements can drop nested schema constraints. REA still validates canonical inputs. The same environment variable is the switch for other size-capped hosts (Kimi / Moonshot). It is not a license to send a different tool than the one you named.</p>
 
-        <h2 id="manual">Grok Bot is not one of the 17 files</h2>
+        <h2 id="manual">Grok Bot is not one of the {CLIENTS_650.length} files</h2>
         <p>
-          Grok Bot (<code>grok_bot</code>) is described in the 6.4.0 install doc as a manual hosted connector. Setup does not call the account connector API and does not treat <code>~/.grokbot</code> as aligned.
-          Ask the Grok Bot chat to add a custom MCP server named <code>rea</code> that runs on the Bot’s computer: <code>npx -y rea-agents@6.4.0 mcp</code>.
+          Grok Bot (<code>grok_bot</code>) is described in the 6.5.0 install doc as a manual hosted connector. Setup does not call the account connector API and does not treat <code>~/.grokbot</code> as aligned.
+          Ask the Grok Bot chat to add a custom MCP server named <code>rea</code> that runs on the Bot’s computer: <code>npx -y rea-agents@6.5.0 mcp</code>.
           Do not put credentials in that command. <code>rea doctor --client grok_bot</code> reports the manual step. <code>rea uninstall</code> does not remove the account connector.
           Grok Build (<code>grok_build</code>) is different: it is a row in the table and uses local <code>config.toml</code>.
         </p>
 
-        <h2 id="pending">Pending the next npm release after 6.4.0</h2>
+        <h2 id="added-650">Added in npm 6.5.0</h2>
         <p>
-          Factory Droid (<code>droid</code>) and DeepSeek Harness (<code>dsh</code>) are on <code>main</code> only until a release after 6.4.0.
-          Do not list them as clients of <code>rea-agents@6.4.0</code>. <code>setup --client dsh</code> against this pin reports an unsupported client.
-          Qoder, Trae, and ZCode appear in later <code>main</code> docs the same way: not in the 6.4.0 table, so not in this matrix.
+          These IDs were pending after 6.4.0 and are rows in the 6.5.0 supported-agents table:
+          Factory Droid (<code>droid</code>), DeepSeek Harness (<code>dsh</code>), Qoder (<code>qoder</code>), Trae (<code>trae</code>), ZCode (<code>zcode</code>), Kimi Code (<code>kimi</code>), and WorkBuddy (<code>workbuddy</code>).
+          Upstream still notes that live Trae and DeepSeek API integration remain unverified. Dry-run and doctor before you treat a registration as aligned.
         </p>
 
         <h2 id="related">Related</h2>
         <ul>
           <li><a href="/docs/install/">Install guide</a></li>
           <li><a href="/docs/mcp-clients/">Skill paths and the Claude Code directory pitfall</a></li>
-          <li><a href="/docs/breaking/">Upgrade runbook if you are crossing 6.0–6.4</a></li>
-          <li><a href="/changelog/">Changelog through 6.4.0</a></li>
+          <li><a href="/docs/breaking/">Upgrade runbook if you are crossing 6.0–6.5</a></li>
+          <li><a href="/changelog/">Changelog through 6.5.0</a></li>
           <li><a href="/faq/setup-vs-providers/">Setup does not install engines</a></li>
         </ul>
 
         <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
           <p class="text-xs uppercase tracking-wider">Sources</p>
           <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
-            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.4.0/docs/installation.md" rel="noopener noreferrer" target="_blank">docs/installation.md at rea-agents-6.4.0</a> — supported-agents table and MCP Registry section</li>
-            <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">6.4.0 release</a> — Pi, Hermes, Qwen Code setup</li>
-            <li><a href="https://www.npmjs.com/package/rea-agents" rel="noopener noreferrer" target="_blank">npm rea-agents</a> — latest 6.4.0 on 2026-10-13</li>
+            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.5.0/docs/installation.md" rel="noopener noreferrer" target="_blank">docs/installation.md at rea-agents-6.5.0</a> — supported-agents table and MCP Registry section</li>
+            <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.5.0" rel="noopener noreferrer" target="_blank">6.5.0 release</a> — new client setup; 893 commits / 529 merged PRs</li>
+            <li><a href="https://www.npmjs.com/package/rea-agents" rel="noopener noreferrer" target="_blank">npm rea-agents</a> — latest 6.5.0 on 2026-10-15</li>
           </ol>
           <p class="mt-4"><a class="quiet-link" href="/compliance/">Compliance</a></p>
         </footer>

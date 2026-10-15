@@ -23,10 +23,18 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     <h2>最低卫生</h2>
     <ol>
       <li>安装 platform-tools；确认 <code>adb devices</code> 显示你控制且已授权的设备／模拟器。</li>
-      <li>钉 <code>rea-agents@6.4.0</code>（或更新），按上游文档跑提供者／设备 doctor。</li>
+      <li>钉 <code>rea-agents@6.5.0</code>（或更新），按上游文档跑提供者／设备 doctor。</li>
       <li>目标限于你拥有的应用、自建 debug 包、或明确授权的夹具。</li>
       <li>不信任 APK 优先用一次性模拟器。</li>
     </ol>
+
+
+    <h2 id="replace-650">6.5.0 安装结果字段</h2>
+    <p>
+      自 <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.5.0" rel="noopener noreferrer" target="_blank">rea-agents 6.5.0</a> 起，ADB 安装结果要求 <code>replace_requested</code> 记录是否请求了 <code>adb install -r</code>。
+      <code>replaced</code> 可空，因为未观察设备上先前的包状态。不要把重装意图当成已替换的证据。
+      完整破坏列表见 <a href="/zh/docs/breaking/#nulls">升级手册 · 6.5.0</a>。
+    </p>
 
     <h2>相关</h2>
     <ul>

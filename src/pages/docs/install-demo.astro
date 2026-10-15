@@ -19,8 +19,8 @@ const toc = [
 
 const nodeCmd = `node --version
 npm --version`;
-const dryRunCmd = `npx -y rea-agents@6.4.0 setup --client codex --dry-run --json`;
-const applyCmd = `npx -y rea-agents@6.4.0 setup --client codex --yes --json`;
+const dryRunCmd = `npx -y rea-agents@6.5.0 setup --client codex --dry-run --json`;
+const applyCmd = `npx -y rea-agents@6.5.0 setup --client codex --yes --json`;
 const macChrome = `REA_BROWSER_DIR=$(mktemp -d /tmp/rea-dino-browser.XXXXXX)
 "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \\
   --remote-debugging-address=127.0.0.1 \\
@@ -48,7 +48,7 @@ const inspectPrompt = `Use REA to inspect this dinosaur page: https://wayou.gith
 const inspectFollowup = `Split the answer into three lines: starting speed, how it accelerates, and the stop condition. For each line, cite where in index.js you read it.`;
 const buildPrompt = `Using the acceleration rule REA just recovered, create dino-demo.html in this practice folder: a dinosaur game that opens directly in a browser. Keep everything in one file. Do not install packages or download assets. The dinosaur can jump, and cacti come in from the right. Add buttons labeled Start, Jump, and Restart. Space also jumps. A collision shows game over. Add a speed slider from 2 to 18 and show the current speed beside it. Dragging the slider selects a fixed speed. Also add an Auto-accelerate option that starts again at 6 when turned on. Auto-accelerate keeps the original check on each update without a collision: if speed < 13, add 0.001. The new game runs 60 logic updates per second. You implement drawing, jumping, and collision, and you label which parts follow the original rule and which parts are new. Then check that the page runs, tell me the absolute path, and give the exact steps to open it in Chrome. Do not ask me to edit the code.`;
 const verifyPrompt = `Check the acceleration function that the generated dino-demo.html actually runs. Start at speed 6, with collisions excluded, and report the speed after 0, 1000, 4000, and 10000 updates. Keep three decimal places and compare each value with 6.000, 7.000, 10.000, and 13.001. Reply with a table, say what you executed, and if any row differs, fix it and run the check again.`;
-const stuckPrompt = `I am following the rea.run Codex dinosaur install demo, pinned to rea-agents@6.4.0. In [terminal / Codex / Chrome] I just did [action], and got this output: [paste]. Explain the cause, then tell me the next action, which window to use, and what I should see when it works. This session only analyzes the public dinosaur page.`;
+const stuckPrompt = `I am following the rea.run Codex dinosaur install demo, pinned to rea-agents@6.5.0. In [terminal / Codex / Chrome] I just did [action], and got this output: [paste]. Explain the cause, then tell me the next action, which window to use, and what I should see when it works. This session only analyzes the public dinosaur page.`;
 const ruleSnippet = `if (this.currentSpeed < this.config.MAX_SPEED) {
   this.currentSpeed += this.config.ACCELERATION;
 }`;
@@ -59,7 +59,7 @@ const advanceSnippet = `function advanceSpeed(speed) {
 <BaseLayout
   lang={lang}
   title="Install demo: Codex walkthrough for the dinosaur speed rule | rea.run"
-  description="Pin rea-agents 6.4.0. Check Node, connect REA to Codex, read the public dinosaur page over Chrome remote debugging, then build a one-file game with a speed slider and check the acceleration checkpoints."
+  description="Pin rea-agents 6.5.0. Check Node, connect REA to Codex, read the public dinosaur page over Chrome remote debugging, then build a one-file game with a speed slider and check the acceleration checkpoints."
   path="/docs/install-demo/"
 >
   <div class="mx-auto max-w-6xl px-4 py-12">
@@ -75,7 +75,7 @@ const advanceSnippet = `function advanceSpeed(speed) {
         <p class="badge badge-accent mt-4">Install demo · Codex</p>
         <h1 class="mt-4 text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">Follow along: install REA, then read why the dinosaur speeds up</h1>
         <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--color-muted)]">
-          This is a full install track on rea.run. The package pin is <code>rea-agents@6.4.0</code>. You ask questions and play the result. Codex explains the rule and writes the file. REA reads the script that is actually running. Chrome hosts the original game.
+          This is a full install track on rea.run. The package pin is <code>rea-agents@6.5.0</code>. You ask questions and play the result. Codex explains the rule and writes the file. REA reads the script that is actually running. Chrome hosts the original game.
         </p>
         <p class="text-sm text-[var(--color-muted)]">
           The target is the public page
@@ -88,7 +88,7 @@ const advanceSnippet = `function advanceSpeed(speed) {
         <div class="not-prose mt-4 grid gap-3 sm:grid-cols-2">
           <div class="card !p-4"><p class="kicker">You</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">Create the practice folder, paste commands, open the result, try the buttons and the slider.</p></div>
           <div class="card !p-4"><p class="kicker">Codex</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">Read the script REA returns, explain the rule, and write a one-file game.</p></div>
-          <div class="card !p-4"><p class="kicker">REA 6.4.0</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">Connects over MCP to the local debugging port, lists the page, and reads index.js. It does not approve setup for you.</p></div>
+          <div class="card !p-4"><p class="kicker">REA 6.5.0</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">Connects over MCP to the local debugging port, lists the page, and reads index.js. It does not approve setup for you.</p></div>
           <div class="card !p-4"><p class="kicker">Chrome</p><p class="mt-2 text-sm leading-6 text-[var(--color-ink-soft)]">Runs the original game from a separate profile on port 9222. A normal window has no analysis endpoint.</p></div>
         </div>
         <figure class="step-figure">
@@ -120,10 +120,10 @@ const advanceSnippet = `function advanceSpeed(speed) {
         <h2 id="node">2. Check Node</h2>
         <p>The next sections are four actions: the practice folder, a Node check, REA connected to Codex, then a debug Chrome window.</p>
         <figure class="step-figure">
-          <img src="/media/install-demo/en/04-four-actions.jpg" alt="Four setup actions. Open the practice folder in Codex. Check node and npm in the terminal. Connect REA with rea-agents 6.4.0 and restart Codex. Open debug Chrome from the terminal." width="1199" height="675" loading="lazy" decoding="async" />
+          <img src="/media/install-demo/en/04-four-actions.jpg" alt="Four setup actions. Open the practice folder in Codex. Check node and npm in the terminal. Connect REA with rea-agents 6.5.0 and restart Codex. Open debug Chrome from the terminal." width="1199" height="675" loading="lazy" decoding="async" />
         </figure>
         <p>Open a local folder in Codex. The chat and <code>dino-demo.html</code> stay there. A desktop folder named <code>rea-dino-practice</code> is enough.</p>
-        <p>The engines field on <code>rea-agents@6.4.0</code> is <code>^22.19.0 || ^24.11.0 || &gt;=26.0.0</code>. This track recommends <strong>24.x at 24.11 or newer</strong>. Node 22.19+ and 26+ also pass. Anything older stops setup before a plan exists.</p>
+        <p>The engines field on <code>rea-agents@6.5.0</code> is <code>^22.19.0 || ^24.11.0 || &gt;=26.0.0</code>. This track recommends <strong>24.x at 24.11 or newer</strong>. Node 22.19+ and 26+ also pass. Anything older stops setup before a plan exists.</p>
         <div class="copy-row">
           <pre class="code-well" id="en-node-cmd"><code>{nodeCmd}</code></pre>
           <button type="button" class="copy-btn" data-copy="#en-node-cmd" data-copied-label="Copied">Copy</button>
@@ -132,7 +132,7 @@ const advanceSnippet = `function advanceSpeed(speed) {
         <p>Outside that range, <code>--dry-run --json</code> returns <code>"status":"needs_human"</code> with an empty <code>plannedActions</code> array and a <code>remediation</code> that names the three Node lines. Switch Node before you run <code>--yes</code>.</p>
 
         <h2 id="setup">3. Connect REA to Codex</h2>
-        <p>Read the plan first. This downloads 6.4.0, prints JSON, and does <strong>not</strong> write Codex config.</p>
+        <p>Read the plan first. This downloads 6.5.0, prints JSON, and does <strong>not</strong> write Codex config.</p>
         <div class="copy-row">
           <pre class="code-well" id="en-dry-run"><code>{dryRunCmd}</code></pre>
           <button type="button" class="copy-btn" data-copy="#en-dry-run" data-copied-label="Copied">Copy</button>
@@ -289,7 +289,7 @@ const advanceSnippet = `function advanceSpeed(speed) {
 
         <h2 id="upstream">Upstream</h2>
         <ul>
-          <li><a href="https://www.npmjs.com/package/rea-agents/v/6.4.0">npm: rea-agents@6.4.0</a></li>
+          <li><a href="https://www.npmjs.com/package/rea-agents/v/6.5.0">npm: rea-agents@6.5.0</a></li>
           <li><a href={SITE.upstreamRepo}>GitHub: morluto/rea</a></li>
           <li><a href="https://rea.tools/examples/dino-lab/">rea.tools dinosaur speed lab</a></li>
           <li><a href="https://wayou.github.io/t-rex-runner/">Public page under inspection</a></li>
