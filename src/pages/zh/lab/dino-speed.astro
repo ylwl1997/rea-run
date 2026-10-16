@@ -20,8 +20,7 @@ const lang = 'zh' as const;
     <p class="kicker mt-4">实验室 · 浏览器目标</p>
     <h1 class="display mt-3 text-4xl">恐龙为何越跑越快 —— 试玩还原规则</h1>
     <p class="lede mt-4">
-      Chromium 离线 T-Rex 会随奔跑加速。REA 可从公开 HTTP 版读取已加载脚本、还原常数，并帮你重建带速度控制的小游戏。本页在 rea.run（静态 Pages）托管该教学重建。运维向原创文案——不是
-      <a href="https://rea.tools/zh-CN/examples/dino-lab/">rea.tools dino-lab</a> 营销页的拷贝。
+      Chromium 离线 T-Rex 会随奔跑加速。REA 可从公开 HTTP 版读取已加载脚本、还原常数，并帮你重建带速度控制的小游戏。本页在 rea.run（静态 Pages）托管该教学重建——先试玩还原规则，再按下方运维步骤复现。
     </p>
 
     <DinoDemo lang="zh" />
@@ -93,8 +92,7 @@ const lang = 'zh' as const;
       <ul>
         <li>
           速度规则节选：<strong>Chromium Authors</strong>，BSD 风格条款 —
-          <a href="/licenses/dinosaur-bsd.txt">/licenses/dinosaur-bsd.txt</a>
-          （亦见 <a href="https://rea.tools/assets/licenses/dinosaur.txt">rea.tools</a>）。
+          <a href="/licenses/dinosaur-bsd.txt">/licenses/dinosaur-bsd.txt</a>。
         </li>
         <li>常见独立提取：<a href="https://github.com/wayou/t-rex-runner">wayou/t-rex-runner</a>。</li>
         <li>本小游戏的画面／跳跃／碰撞为 rea.run 教学代码；再分发时请保留规则署名。</li>
@@ -108,7 +106,6 @@ const lang = 'zh' as const;
           <tr><td>计算器 % 实验室</td><td><a href={pathFor(lang, '/lab/calculator-percent/')}>/zh/lab/calculator-percent/</a></td></tr>
           <tr><td>Codex 安装演示</td><td><a href={pathFor(lang, '/docs/install-demo/')}>/zh/docs/install-demo/</a></td></tr>
           <tr><td>DX-Ball Evidence</td><td><a href={pathFor(lang, '/showcase/dx-ball/')}>/zh/showcase/dx-ball/</a></td></tr>
-          <tr><td>官方产品实验室</td><td><a href="https://rea.tools/zh-CN/examples/dino-lab/">rea.tools dino-lab</a></td></tr>
           <tr><td>英文孪生</td><td><a href={pathFor('en', '/lab/dino-speed/')}>/lab/dino-speed/</a></td></tr>
         </tbody>
       </table>
