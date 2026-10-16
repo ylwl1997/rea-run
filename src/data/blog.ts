@@ -7,6 +7,7 @@ import { HERMES_REA_PLUGIN_POST } from './blogHermesReaPlugin';
 import { DX_BALL_POST } from './blogDxBall';
 import { REA_BEGINNER_GUIDE_POST } from './blogReaBeginnerGuide';
 import { ELEVEN_REA_WORKBENCH_POST } from './blogElevenReaWorkbench';
+import { CALIF_HEXACON_POST } from './blogCalifHexacon';
 
 export type BlogCover = {
   src: string;
@@ -27,6 +28,7 @@ export type BlogPost = {
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  CALIF_HEXACON_POST,
   ELEVEN_REA_WORKBENCH_POST,
   REA_BEGINNER_GUIDE_POST,
   DX_BALL_POST,
