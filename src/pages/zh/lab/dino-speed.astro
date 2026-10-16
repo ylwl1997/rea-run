@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import DinoDemo from '../../../components/showcase/DinoDemo.astro';
+import { pathFor } from '../../../lib/site';
+
+const lang = 'zh' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="恐龙速度实验室：滑块 + 还原加速 | rea.run"
+  description="自托管 Chromium 恐龙教学小游戏与速度滑块。规则：从 6 起步，低于 13 时每次更新 +0.001。含 BSD 署名、可核对检查点，并链到 REA 与安装演示。"
+  path="/lab/dino-speed/"
+>
+  <article class="mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm">
+      <a class="quiet-link" href={pathFor(lang, '/lab/')}>← 实验室</a>
+      {' · '}
+      <a class="quiet-link" href={pathFor('en', '/lab/dino-speed/')}>English</a>
+    </p>
+    <p class="kicker mt-4">实验室 · 浏览器目标</p>
+    <h1 class="display mt-3 text-4xl">恐龙为何越跑越快 —— 试玩还原规则</h1>
+    <p class="lede mt-4">
+      Chromium 离线 T-Rex 会随奔跑加速。REA 可从公开 HTTP 版读取已加载脚本、还原常数，并帮你重建带速度控制的小游戏。本页在 rea.run（静态 Pages）托管该教学重建。运维向原创文案——不是
+      <a href="https://rea.tools/zh-CN/examples/dino-lab/">rea.tools dino-lab</a> 营销页的拷贝。
+    </p>
+
+    <DinoDemo lang="zh" />
+
+    <section class="prose-page mt-10">
+      <h2>还原设定（可核对）</h2>
+      <table>
+        <thead><tr><th>符号</th><th>值</th><th>含义</th></tr></thead>
+        <tbody>
+          <tr><td><code>SPEED</code></td><td><strong>6</strong></td><td>起始速度</td></tr>
+          <tr><td><code>ACCELERATION</code></td><td><strong>0.001</strong></td><td>每次合格更新增加量</td></tr>
+          <tr><td><code>MAX_SPEED</code> 判断</td><td><strong>13</strong></td><td>达到／超过后停止加速</td></tr>
+          <tr><td>逻辑速率（本演示）</td><td><strong>60</strong> 次／秒</td><td>固定仿真节拍；绘制与之分离</td></tr>
+        </tbody>
+      </table>
+      <pre><code>if (this.currentSpeed &lt; this.config.MAX_SPEED) &#123;
+  this.currentSpeed += this.config.ACCELERATION;
+&#125;</code></pre>
+      <p>
+        检查目标：<a href="https://wayou.github.io/t-rex-runner/">wayou 的 Chromium 衍生浏览器版</a>（HTTP）。
+        勿与 <code>chrome://dino</code> 混为一谈，除非会话文档写明该 URL。
+      </p>
+
+      <h2>哪些是新写／哪些是还原</h2>
+      <table>
+        <thead><tr><th>部分</th><th>来源</th></tr></thead>
+        <tbody>
+          <tr><td>加速规则（6／0.001／13）</td><td>从检查到的 <code>index.js</code> 还原</td></tr>
+          <tr><td>画布绘制、跳跃物理、仙人掌碰撞、障碍间距</td><td>本站<strong>新写教学实现</strong></td></tr>
+          <tr><td>速度滑块 + 自动加速勾选</td><td>教学控件（原游戏 UI 没有）</td></tr>
+        </tbody>
+      </table>
+
+      <h2>检查点表（受控重放）</h2>
+      <p>在原游戏受控核对（关闭障碍与自动调度）中记录了 N 次无碰撞更新后的速度。点击可在浏览器重放同一规则：</p>
+      <div class="speed-check-panel" data-locale="zh">
+        <table class="speed-check-table">
+          <thead>
+            <tr><th>更新次数</th><th>参考值</th><th>本页</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>6.000</td><td data-speed-updates="0">—</td></tr>
+            <tr><td>1,000</td><td>7.000</td><td data-speed-updates="1000">—</td></tr>
+            <tr><td>4,000</td><td>10.000</td><td data-speed-updates="4000">—</td></tr>
+            <tr><td>10,000</td><td>13.001</td><td data-speed-updates="10000">—</td></tr>
+          </tbody>
+        </table>
+        <p class="mt-3">
+          <button type="button" class="chip" data-speed-check hidden>重放检查点</button>
+        </p>
+        <p class="text-sm text-[var(--color-muted)]" data-speed-check-status role="status"></p>
+      </div>
+      <p class="text-sm text-[var(--color-muted)]">
+        说明：10,000 次更新后浮点保留三位小数为 <code>13.001</code>——阈值判断是 <code>&lt; 13</code>，因此在停止累加前还可能越过 13。
+      </p>
+
+      <h2>运维步骤（授权公开页）</h2>
+      <ol>
+        <li>有意钉住 <code>rea-agents</code>（站内教学常钉 <strong>6.5.0</strong>；以你的会话为准）。</li>
+        <li>用远程调试端口启动 Chrome，并打开公开 t-rex-runner URL（模板见 <a href={pathFor(lang, '/docs/install-demo/')}>/zh/docs/install-demo/</a>）。</li>
+        <li>让智能体 <code>list_browser_targets</code>，再 <code>inspect_web_page</code>（含脚本源），读取已加载 <code>index.js</code>。</li>
+        <li>要求起始速度、增量与上限判断并带引用——先只要规则，再建游戏。</li>
+        <li>重建带滑块的单文件游戏；核对上表四个检查点。</li>
+      </ol>
+      <pre><code>用 REA 检查这个恐龙游戏。它为什么越来越快？
+给出速度规则，然后做一个带可调速度的小版本。</code></pre>
+
+      <h2>许可与署名</h2>
+      <ul>
+        <li>
+          速度规则节选：<strong>Chromium Authors</strong>，BSD 风格条款 —
+          <a href="/licenses/dinosaur-bsd.txt">/licenses/dinosaur-bsd.txt</a>
+          （亦见 <a href="https://rea.tools/assets/licenses/dinosaur.txt">rea.tools</a>）。
+        </li>
+        <li>常见独立提取：<a href="https://github.com/wayou/t-rex-runner">wayou/t-rex-runner</a>。</li>
+        <li>本小游戏的画面／跳跃／碰撞为 rea.run 教学代码；再分发时请保留规则署名。</li>
+      </ul>
+
+      <h2>相关</h2>
+      <table>
+        <thead><tr><th>资源</th><th>链接</th></tr></thead>
+        <tbody>
+          <tr><td>实验室枢纽</td><td><a href={pathFor(lang, '/lab/')}>/zh/lab/</a></td></tr>
+          <tr><td>计算器 % 实验室</td><td><a href={pathFor(lang, '/lab/calculator-percent/')}>/zh/lab/calculator-percent/</a></td></tr>
+          <tr><td>Codex 安装演示</td><td><a href={pathFor(lang, '/docs/install-demo/')}>/zh/docs/install-demo/</a></td></tr>
+          <tr><td>DX-Ball Evidence</td><td><a href={pathFor(lang, '/showcase/dx-ball/')}>/zh/showcase/dx-ball/</a></td></tr>
+          <tr><td>官方产品实验室</td><td><a href="https://rea.tools/zh-CN/examples/dino-lab/">rea.tools dino-lab</a></td></tr>
+          <tr><td>英文孪生</td><td><a href={pathFor('en', '/lab/dino-speed/')}>/lab/dino-speed/</a></td></tr>
+        </tbody>
+      </table>
+    </section>
+  </article>
+</BaseLayout>

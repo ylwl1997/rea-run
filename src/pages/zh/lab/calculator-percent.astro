@@ -1,0 +1,136 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PercentDemo from '../../../components/showcase/PercentDemo.astro';
+import { pathFor } from '../../../lib/site';
+
+const lang = 'zh' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="计算器 % 实验室：双规则 +/−× 试玩 | rea.run"
+  description="自托管 Windows 计算器风格百分号教学演示：加法后取第一个操作数的百分比；乘法后除以 100。链到 Microsoft 开源与 REA。"
+  path="/lab/calculator-percent/"
+>
+  <article class="mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm">
+      <a class="quiet-link" href={pathFor(lang, '/lab/')}>← 实验室</a>
+      {' · '}
+      <a class="quiet-link" href={pathFor('en', '/lab/calculator-percent/')}>English</a>
+    </p>
+    <p class="kicker mt-4">实验室 · 原生对照</p>
+    <h1 class="display mt-3 text-4xl">重建计算器的 % 键 —— 试玩两条规则</h1>
+    <p class="lede mt-4">
+      为何 <strong>200 + 10%</strong> 得到 <strong>220</strong>，而 <strong>200 × 10%</strong> 得到
+      <strong>20</strong>？百分号依赖运算符。Microsoft 公开了 Calculator 源码，可用具名符号裁决 REA 发现。本页托管运维向双规则试玩——原创文案，不是
+      <a href="https://rea.tools/">rea.tools</a> 首页的克隆。
+    </p>
+
+    <dl class="mt-8 grid gap-4 sm:grid-cols-2 text-sm">
+      <div class="rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-4">
+        <dt class="kicker">遇到 +</dt>
+        <dd class="mt-2 text-[var(--color-ink-soft)]">
+          取第一个数的 10%。<br />
+          <code>200 的 10% = 20 → 200 + 20 = 220</code>
+        </dd>
+      </div>
+      <div class="rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-4">
+        <dt class="kicker">遇到 ×</dt>
+        <dd class="mt-2 text-[var(--color-ink-soft)]">
+          把 10% 变成 0.1。<br />
+          <code>200 × 0.1 = 20</code>
+        </dd>
+      </div>
+    </dl>
+
+    <PercentDemo lang="zh" />
+
+    <section class="prose-page mt-10">
+      <h2>可读规则（教学摘要）</h2>
+      <pre><code>if (operation == multiply || operation == divide) &#123;
+  percent = current / 100;
+&#125; else &#123;
+  percent = current * previous / 100;
+&#125;</code></pre>
+      <p>
+        当 <code>previous = 200</code>、<code>current = 10</code>：加法路径得到 <strong>20</strong> 再得
+        <strong>220</strong>；乘法路径得到 <strong>0.1</strong> 再得 <strong>20</strong>。
+      </p>
+
+      <h2>开源裁决</h2>
+      <table>
+        <thead><tr><th>项</th><th>值／链接</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>公开树</td>
+            <td><a href="https://github.com/microsoft/calculator">microsoft/calculator</a>（MIT）</td>
+          </tr>
+          <tr>
+            <td>处理函数（钉住的提交）</td>
+            <td>
+              <a href="https://github.com/microsoft/calculator/blob/d125246a4e19842ce1332e6c7839cf0e110027d8/src/CalcManager/CEngine/scifunc.cpp#L98-L111">scifunc.cpp · IDC_PERCENT</a>
+            </td>
+          </tr>
+          <tr>
+            <td>单元测试（钉住）</td>
+            <td>
+              <a href="https://github.com/microsoft/calculator/blob/d125246a4e19842ce1332e6c7839cf0e110027d8/src/CalculatorUnitTests/CalculatorManagerTest.cpp#L350-L370">CalculatorManagerTest.cpp</a>
+            </td>
+          </tr>
+          <tr>
+            <td>命令 ID</td>
+            <td><code>IDC_MUL 92 (0x5c)</code>、<code>IDC_DIV 91 (0x5b)</code>、<code>IDC_PERCENT 118 (0x76)</code>；常数 <code>0x64 = 100</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <pre><code>case IDC_PERCENT:
+&#123;
+  // 乘／除 → X [op] (Y%)
+  // 其他 → X [op] (X * Y%)
+  if (m_nOpCode == IDC_MUL || m_nOpCode == IDC_DIV)
+    result = rat / 100;
+  else
+    result = rat * (m_lastVal / 100);
+  break;
+&#125;</code></pre>
+
+      <h2>可核对试玩矩阵</h2>
+      <table>
+        <thead><tr><th>表达式</th><th>期望 %</th><th>期望结果</th><th>本页操作</th></tr></thead>
+        <tbody>
+          <tr><td>200 + 10%</td><td>20</td><td>220</td><td>选 +，按 %，按 =</td></tr>
+          <tr><td>200 × 10%</td><td>0.1</td><td>20</td><td>选 ×，按 %，按 =</td></tr>
+        </tbody>
+      </table>
+
+      <h2>运维步骤</h2>
+      <ol>
+        <li>先读案例墙短摘要：<a href={pathFor(lang, '/showcase/windows-calculator-percent/')}>/zh/showcase/windows-calculator-percent/</a>。</li>
+        <li>打开上方钉住的 <code>scifunc.cpp</code> 与测试；在信任截图前先点名分支。</li>
+        <li>若用 REA 检查已安装 Calculator 二进制，请把 Evidence 与公开源码并排。</li>
+        <li>只重建你可控的教学演示——不是教你去改无权修改的系统组件。</li>
+      </ol>
+      <pre><code>用 REA 检查 Windows 计算器的 % 键。
+还原 + 与 × 之后的规则，然后做一个同时使用两条规则的小计算器。</code></pre>
+
+      <h2>教学披露</h2>
+      <ul>
+        <li>本小部件是百分号规则的<strong>交互示意</strong>——不是 Windows 计算器界面。</li>
+        <li>主张冲突时，优先以 Microsoft 公开 MIT 树为裁决层。</li>
+        <li>仅授权／教育／互操作研究。见 <a href={pathFor(lang, '/compliance/')}>/zh/compliance/</a> 与 <a href={pathFor(lang, '/faq/legal-boundary/')}>/zh/faq/legal-boundary/</a>。</li>
+      </ul>
+
+      <h2>相关</h2>
+      <table>
+        <thead><tr><th>资源</th><th>链接</th></tr></thead>
+        <tbody>
+          <tr><td>实验室枢纽</td><td><a href={pathFor(lang, '/lab/')}>/zh/lab/</a></td></tr>
+          <tr><td>恐龙速度实验室</td><td><a href={pathFor(lang, '/lab/dino-speed/')}>/zh/lab/dino-speed/</a></td></tr>
+          <tr><td>案例墙摘要</td><td><a href={pathFor(lang, '/showcase/windows-calculator-percent/')}>/zh/showcase/windows-calculator-percent/</a></td></tr>
+          <tr><td>DX-Ball Evidence</td><td><a href={pathFor(lang, '/showcase/dx-ball/')}>/zh/showcase/dx-ball/</a></td></tr>
+          <tr><td>官方 REA</td><td><a href="https://rea.tools/">rea.tools</a></td></tr>
+          <tr><td>英文孪生</td><td><a href={pathFor('en', '/lab/calculator-percent/')}>/lab/calculator-percent/</a></td></tr>
+        </tbody>
+      </table>
+    </section>
+  </article>
+</BaseLayout>

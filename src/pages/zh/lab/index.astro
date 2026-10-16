@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { pathFor } from '../../../lib/site';
+
+const lang = 'zh' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="交互实验室：恐龙速度与计算器 % | rea.run"
+  description="rea.run 自托管交互演示枢纽：Chromium 恐龙速度滑块与计算器双规则百分号。适合 Cloudflare Pages 静态离线试玩。"
+  path="/lab/"
+>
+  <article class="mx-auto max-w-3xl px-4 py-14">
+    <p class="kicker">实验室枢纽</p>
+    <h1 class="display mt-3 text-4xl">可离线试玩的交互实验室</h1>
+    <p class="lede mt-4">
+      这里托管两个教学小部件（Cloudflare Pages 静态资源）：带<strong>速度滑块</strong>的恐龙小游戏（还原加速规则），以及<strong>计算器 %</strong>双规则试玩。文案是 rea.run 运维向原创——不是
+      <a href="https://rea.tools/">rea.tools</a> 营销页的镜像。
+    </p>
+
+    <div class="lab-card-grid mt-10">
+      <a class="lab-card" href={pathFor(lang, '/lab/dino-speed/')}>
+        <p class="kicker">01 · 浏览器</p>
+        <h2>恐龙速度规则</h2>
+        <p>用滑块试玩。自动加速：从 6 起步，低于 13 时每次 +0.001。BSD 署名保留。</p>
+      </a>
+      <a class="lab-card" href={pathFor(lang, '/lab/calculator-percent/')}>
+        <p class="kicker">02 · 原生对照</p>
+        <h2>计算器 % 双规则</h2>
+        <p>试 200 + 10% 与 200 × 10%。教学披露指向 Microsoft 公开 Calculator 源码。</p>
+      </a>
+    </div>
+
+    <section class="mt-12 prose-page">
+      <h2>这个枢纽做什么</h2>
+      <table>
+        <thead>
+          <tr><th>目标</th><th>用法</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>感受还原出的规则</td>
+            <td>打开实验室页，按「开始」／%，无需安装</td>
+          </tr>
+          <tr>
+            <td>用 REA 复现</td>
+            <td>按各页可核对步骤（浏览器调试或 Calculator 对照）</td>
+          </tr>
+          <tr>
+            <td>自己生成教学文件</td>
+            <td>Codex 走读：<a href={pathFor(lang, '/docs/install-demo/')}>/zh/docs/install-demo/</a></td>
+          </tr>
+          <tr>
+            <td>更大的游戏 Evidence</td>
+            <td><a href={pathFor(lang, '/showcase/dx-ball/')}>/zh/showcase/dx-ball/</a>（声像 0x406400）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>合规快照</h2>
+      <ul>
+        <li>公开 HTTP 恐龙版／开源 Calculator——仅授权教学目标。</li>
+        <li>本站恐龙的绘制、跳跃与碰撞是<strong>新写教学代码</strong>；仅加速常数来自还原。</li>
+        <li>百分号小部件示意「依赖运算符」的语义；<strong>不是</strong> Windows 计算器克隆。</li>
+        <li>页脚免责声明保持低调。无破解／注册机／DRM 规避内容。</li>
+      </ul>
+
+      <h2>本站相关</h2>
+      <table>
+        <thead><tr><th>主题</th><th>URL</th></tr></thead>
+        <tbody>
+          <tr><td>恐龙安装 + Codex 演示</td><td><a href={pathFor(lang, '/docs/install-demo/')}>/zh/docs/install-demo/</a></td></tr>
+          <tr><td>计算器 % 案例墙摘要</td><td><a href={pathFor(lang, '/showcase/windows-calculator-percent/')}>/zh/showcase/windows-calculator-percent/</a></td></tr>
+          <tr><td>DX-Ball Evidence</td><td><a href={pathFor(lang, '/showcase/dx-ball/')}>/zh/showcase/dx-ball/</a></td></tr>
+          <tr><td>官方 REA 产品站</td><td><a href="https://rea.tools/">rea.tools</a> · <a href="https://rea.tools/zh-CN/examples/dino-lab/">dino-lab</a></td></tr>
+          <tr><td>英文孪生</td><td><a href={pathFor('en', '/lab/')}>/lab/</a></td></tr>
+        </tbody>
+      </table>
+    </section>
+  </article>
+</BaseLayout>

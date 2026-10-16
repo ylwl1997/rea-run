@@ -1,0 +1,72 @@
+---
+interface Props {
+  lang: 'en' | 'zh';
+}
+const { lang } = Astro.props;
+const zh = lang === 'zh';
+---
+<figure class="dino-demo lab-widget" data-dino-demo data-locale={lang}>
+  <div class="dino-stage">
+    <p class="dino-fallback">
+      {
+        zh
+          ? '需要 JavaScript 才能试玩。你仍可读速度规则，并打开下方源码与许可说明。'
+          : 'Enable JavaScript to play. You can still read the rule and open the source and license notes below.'
+      }
+    </p>
+    <canvas
+      width="600"
+      height="180"
+      tabindex="0"
+      hidden
+      role="img"
+      aria-label={
+        zh
+          ? '小型恐龙跑向仙人掌。还原速度：从 6 起步，低于 13 时每次更新加 0.001。'
+          : 'A small dinosaur running toward a cactus. Recovered speed: starts at 6, increases by 0.001 per update while below 13.'
+      }
+    ></canvas>
+  </div>
+  <div class="dino-controls" hidden>
+    <div class="dino-buttons">
+      <button class="dino-btn-primary" type="button" data-dino-start>
+        {zh ? '开始' : 'Play'}
+      </button>
+      <button type="button" data-dino-jump>{zh ? '跳跃 ↑' : 'Jump ↑'}</button>
+      <button type="button" data-dino-reset>{zh ? '重开' : 'Restart'}</button>
+    </div>
+    <label class="dino-speed-label">
+      <span>{zh ? '速度' : 'Speed'} <output data-dino-speed>6.0</output></span>
+      <input
+        type="range"
+        min="2"
+        max="18"
+        step="0.1"
+        value="6"
+        data-dino-slider
+        aria-valuemin="2"
+        aria-valuemax="18"
+        aria-valuenow="6"
+      />
+    </label>
+    <label class="dino-auto-label">
+      <input type="checkbox" data-dino-auto checked />
+      {zh ? '使用还原的加速规则' : 'Use the recovered acceleration rule'}
+    </label>
+  </div>
+  <p class="dino-status" data-dino-status role="status">
+    {
+      zh
+        ? '原规则：从 6 起步，向 13 爬升。'
+        : 'Original rule: start at 6, then increase toward 13.'
+    }
+  </p>
+  <figcaption>
+    {
+      zh
+        ? '教学小游戏：只还原加速规则；绘制、跳跃与碰撞为新写。拖动滑块可固定速度。空格或「跳跃」越过仙人掌。'
+        : 'Teaching mini-game: only the acceleration rule is reconstructed; drawing, jump, and collision are new. Drag the slider for a fixed speed. Space or Jump clears a cactus.'
+    }
+  </figcaption>
+</figure>
+<script is:inline type="module" src="/scripts/showcase/dino-demo.js"></script>
