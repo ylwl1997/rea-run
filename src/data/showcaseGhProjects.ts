@@ -2,10 +2,196 @@ import type { ShowcaseCase } from './showcaseTypes';
 
 /**
  * GitHub REA-related showcase entries (dshbase-style ratings).
- * Snapshot meta: 2026-10-10. Cards link only to on-site /showcase/<id>/.
+ * Snapshot meta: 2026-10-10; open-claude-ui + hermes-rea-plugin added 2026-10-16. Cards link only to on-site /showcase/<id>/.
  */
 export const SHOWCASE_GH_PROJECTS: ShowcaseCase[] = [
 
+  {
+    id: 'open-claude-ui',
+    date: '2026-10-16',
+    status: 'published',
+    attributionEn: 'Independent rea.run write-up · Caho1/open-claude-ui (MIT)',
+    attributionZh: 'rea.run 独立撰写 · Caho1/open-claude-ui（MIT）',
+    tags: ['case-study', 'ui', 'react', 'clean-room', 'rea', 'claude'],
+    relation: 'case-study',
+    github: {
+      url: 'https://github.com/Caho1/open-claude-ui',
+      stars: 736,
+      language: 'TypeScript',
+      license: 'MIT',
+      updated: '2026-10-15',
+    },
+    rating: {
+      score: 5,
+      labelEn: 'Claude desktop UI rebuild (clean-room)',
+      labelZh: 'Claude 桌面 UI 清洁室重建',
+      qualityEn: '30 React modules, 8 interaction algorithms, 3206-line CDS manual, offline storybook.',
+      qualityZh: '30 个 React 模块、8 项交互算法、3206 行 CDS 手册、离线 storybook。',
+      evidenceEn: 'Public MIT repo + storybook screenshots self-hosted on rea.run; X discovery post cited.',
+      evidenceZh: '公开 MIT 仓 + 站内托管 storybook 截图；引用 X 发现帖。',
+      limitsEn: 'Not Anthropic; stars snapshot 736 on 2026-10-16; study the MIT tree, do not treat as a crack of Claude.app.',
+      limitsZh: '非 Anthropic；2026-10-16 星标快照 736；学习 MIT 树，勿当成拆 Claude.app 的破解。',
+      audienceEn: 'Builders of Claude-feeling AI clients who need tokens, composers, and motion physics.',
+      audienceZh: '需要令牌、输入框与动效物理的 Claude 质感 AI 客户端建造者。',
+    },
+    complianceEn:
+      'MIT clean-room UI library. Authorized/own/open targets only. Not affiliated with Anthropic. Primary deep dive: /blog/open-claude-ui-rea-case/.',
+    complianceZh:
+      'MIT 清洁室 UI 库。仅授权／自有／开源目标。与 Anthropic 无隶属。深读：/zh/blog/open-claude-ui-rea-case/。',
+    related: [
+      { href: '/blog/open-claude-ui-rea-case/', labelEn: 'Thick case study', labelZh: '加厚案例长文' },
+      { href: '/blog/hermes-agent-rea-plugin/', labelEn: 'Hermes REA plugin', labelZh: 'Hermes REA 插件' },
+      { href: '/docs/install/', labelEn: 'Install REA', labelZh: '安装 REA' },
+    ],
+    footnotes: [
+      { label: 'Caho1/open-claude-ui', url: 'https://github.com/Caho1/open-claude-ui' },
+      { label: '@xulijian1994 discovery post', url: 'https://x.com/xulijian1994/status/2110590027453669498' },
+    ],
+    media: {
+      images: [
+        {
+          src: '/media/blog/open-claude-ui/cover.jpg',
+          altEn: 'Offline CDS storybook overview from open-claude-ui.',
+          altZh: 'open-claude-ui 离线 CDS storybook 总览。',
+        },
+        {
+          src: '/media/blog/open-claude-ui/storybook-chat-section.jpg',
+          altEn: 'Chat core and composer section of the offline storybook.',
+          altZh: '离线 storybook 的对话核心与输入区。',
+        },
+      ],
+    },
+    en: {
+      title: 'Open Claude UI: 30-module Claude desktop design system via REA',
+      summary:
+        'MIT clean-room recreation of Claude Design System tokens, React components, and interaction physics — credited to REA — with an offline storybook.',
+      lede:
+        '**open-claude-ui** publishes a high-fidelity Claude-feeling UI kit: 30 TypeScript modules, eight interaction algorithms, and a 3000+ line CDS manual. rea.run hosts storybook screenshots and a thick bilingual case study.',
+      body: [
+        '**What it is.** Caho1’s MIT TypeScript repo (created 2026-10-14). Snapshot **736★ / 172 forks** on 2026-10-16. README credits REA for reverse derivation of production front-end architecture.',
+        '**Why operators care.** Copy-paste composers, MCP decision cards, scroll-fade masks, and spring presets beat guessing CSS from screenshots — while staying on a clean-room MIT tree.',
+        '**How to try.** (1) Read LICENSE + assets policy. (2) Open `docs/claude-components-storybook.html`. (3) Copy only modules you will maintain. (4) Do not point REA at a vendor binary you may not inspect. (5) Deep dive: [/blog/open-claude-ui-rea-case/](/blog/open-claude-ui-rea-case/).',
+        '**Limits.** Not Anthropic. Stars are discovery. UI modules ≠ Claude API.',
+      ],
+      takeaways: [
+        '30 modules + 8 algorithms + 3206-line CDS.full.md (2026-10-16 count).',
+        'Offline storybook needs no build for a first look.',
+        'REA attribution is reconstruction tooling — not a Claude.app crack.',
+      ],
+    },
+    zh: {
+      title: 'Open Claude UI：经 REA 的 30 模块 Claude 桌面设计系统',
+      summary:
+        'MIT 清洁室复刻 Claude Design System 令牌、React 组件与交互物理——致谢 REA——并带离线 storybook。',
+      lede:
+        '**open-claude-ui** 发布高保真 Claude 质感 UI 套件：30 个 TypeScript 模块、八项交互算法、3000+ 行 CDS 手册。rea.run 托管 storybook 截图与双语加厚案例。',
+      body: [
+        '**这是什么。**Caho1 的 MIT TypeScript 仓（2026-10-14 创建）。2026-10-16 快照 **736★／172 forks**。README 致谢 REA 用于生产前端架构的逆向推导。',
+        '**运维为何关心。**可复制的输入框、MCP 决策卡、滚动渐隐与弹簧预设，好过对着截图猜 CSS——同时留在清洁室 MIT 树上。',
+        '**怎么试。**(1) 读 LICENSE 与资产政策。(2) 打开 `docs/claude-components-storybook.html`。(3) 只复制你准备维护的模块。(4) 勿把 REA 指向无权检查的厂商二进制。(5) 深读：[/zh/blog/open-claude-ui-rea-case/](/zh/blog/open-claude-ui-rea-case/)。',
+        '**限制。**非 Anthropic。星标是发现信号。UI 模块 ≠ Claude API。',
+      ],
+      takeaways: [
+        '30 模块 + 8 算法 + 3206 行 CDS.full.md（2026-10-16 计数）。',
+        '离线 storybook 首次预览无需构建。',
+        'REA 致谢是重建工具链——不是拆 Claude.app。',
+      ],
+    },
+  },
+  {
+    id: 'hermes-rea-plugin',
+    date: '2026-10-16',
+    status: 'published',
+    attributionEn: 'Independent rea.run write-up · Official Hermes REA plugin (NousResearch)',
+    attributionZh: 'rea.run 独立撰写 · Hermes 官方 REA 插件（NousResearch）',
+    tags: ['hermes', 'plugin', 'mcp', 'rea', 'official', 'nous'],
+    relation: 'packaging',
+    github: {
+      url: 'https://github.com/NousResearch/hermes-official-plugins/tree/main/rea',
+      stars: 293,
+      language: 'TypeScript',
+      license: 'MIT',
+      updated: '2026-10-15',
+    },
+    rating: {
+      score: 5,
+      labelEn: 'Official Hermes REA MCP + skill',
+      labelZh: 'Hermes 官方 REA MCP + skill',
+      qualityEn: 'Catalog install; pins rea-agents@6.4.0; ~170 tools; adapted reverse-engineer-anything skill.',
+      qualityZh: '目录安装；钉 rea-agents@6.4.0；约 170 工具；改编 reverse-engineer-anything skill。',
+      evidenceEn: 'Public docs + mcp.json + plugin.json + Teknium announcement; catalog PR #138225.',
+      evidenceZh: '公开文档 + mcp.json + plugin.json + Teknium 公告；目录 PR #138225。',
+      limitsEn: 'BYO Ghidra/Hopper/IDA; mutating tools undisclosed by Hermes UI prompts; pin is 6.4.0 not latest.',
+      limitsZh: '自备 Ghidra／Hopper／IDA；变更类工具 Hermes UI 不预提示；钉版是 6.4.0 而非 latest。',
+      audienceEn: 'Hermes Agent operators who want REA without hand-editing mcp_servers.',
+      audienceZh: '想免手改 mcp_servers 就接入 REA 的 Hermes Agent 运维者。',
+    },
+    complianceEn:
+      'Authorized targets only. Do not also run rea-agents setup --client hermes. Deep dive: /blog/hermes-agent-rea-plugin/.',
+    complianceZh:
+      '仅授权目标。不要同时跑 rea-agents setup --client hermes。深读：/zh/blog/hermes-agent-rea-plugin/。',
+    related: [
+      { href: '/blog/hermes-agent-rea-plugin/', labelEn: 'Thick operator guide', labelZh: '加厚运维长文' },
+      { href: '/blog/rea-agents-6-4-0/', labelEn: 'REA 6.4.0 guide', labelZh: 'REA 6.4.0 指南' },
+      { href: '/docs/clients/', labelEn: 'Client matrix', labelZh: '客户端矩阵' },
+    ],
+    footnotes: [
+      { label: 'Hermes REA plugin docs', url: 'https://hermes-agent.nousresearch.com/docs/plugins/rea' },
+      { label: 'hermes-official-plugins/rea', url: 'https://github.com/NousResearch/hermes-official-plugins/tree/main/rea' },
+      { label: '@Teknium announcement', url: 'https://x.com/Teknium/status/2110736682207355062' },
+      { label: 'Catalog PR #138225', url: 'https://github.com/NousResearch/hermes-agent/pull/138225' },
+    ],
+    media: {
+      images: [
+        {
+          src: '/media/blog/hermes-rea/cover.jpg',
+          altEn: 'Official Hermes REA plugin announcement art.',
+          altZh: 'Hermes REA 官方插件公告图。',
+        },
+        {
+          src: '/media/blog/hermes-rea/docs-og.png',
+          altEn: 'Hermes docs open-graph strip for the REA plugin.',
+          altZh: 'Hermes 文档中 REA 插件的 open-graph 条。',
+        },
+      ],
+    },
+    en: {
+      title: 'Hermes Agent REA plugin: official MCP + skill from Nous',
+      summary:
+        'Install with hermes plugins install rea: pinned rea-agents@6.4.0 over npx stdio, adapted reverse-engineer-anything skill, ~170 on-demand tools.',
+      lede:
+        'Teknium shipped an **official** Hermes plugin so operators get REA MCP and a usage skill without editing `config.yaml`. Pin stays on **6.4.0** until Nous re-pins.',
+      body: [
+        '**What it is.** Portable Agent Plugins v1 package under NousResearch/hermes-official-plugins `/rea` (plugin 0.1.0, MIT). Catalog added 2026-10-15; announcement by @Teknium.',
+        '**Install.** `hermes plugins install rea` then `enable`, new session. Node 22.19+/24.11+/26+. Do **not** run `npx rea-agents setup --client hermes`.',
+        '**Ops detail.** ~170 tools behind Hermes tool search (~460 KB schemas). Ghidra startup env 900 s. Read the mutating-tool disclosure before unattended runs. Thick guide: [/blog/hermes-agent-rea-plugin/](/blog/hermes-agent-rea-plugin/).',
+        '**Limits.** BYO native engines. Stars on hermes-official-plugins (**293** snapshot) are not an install SLA.',
+      ],
+      takeaways: [
+        'Catalog install beats hand-wired mcp_servers for Hermes.',
+        'Pinned rea-agents@6.4.0 — leave @latest alone.',
+        'Ask before capture/ADB/export tools; skip them unattended.',
+      ],
+    },
+    zh: {
+      title: 'Hermes Agent REA 插件：Nous 官方 MCP + skill',
+      summary:
+        '用 hermes plugins install rea 安装：钉死 rea-agents@6.4.0（npx stdio）、改编 reverse-engineer-anything skill、约 170 个按需工具。',
+      lede:
+        'Teknium 发布了**官方** Hermes 插件，让运维无需改 `config.yaml` 即可获得 REA MCP 与使用 skill。钉版在 Nous 重新钉之前保持 **6.4.0**。',
+      body: [
+        '**这是什么。**NousResearch/hermes-official-plugins `/rea` 下的可移植 Agent Plugins v1 包（插件 0.1.0，MIT）。目录加入于 2026-10-15；@Teknium 发公告。',
+        '**安装。**`hermes plugins install rea` 再 `enable`，新开会话。Node 22.19+／24.11+／26+。**不要**跑 `npx rea-agents setup --client hermes`。',
+        '**运维细节。**约 170 工具放在 Hermes 工具搜索后（schema 约 460 KB）。Ghidra 启动环境变量 900 秒。无人值守前先读变更类工具披露。加厚指南：[/zh/blog/hermes-agent-rea-plugin/](/zh/blog/hermes-agent-rea-plugin/)。',
+        '**限制。**原生引擎自备。hermes-official-plugins 星标（快照 **293**）不是安装 SLA。',
+      ],
+      takeaways: [
+        '对 Hermes 而言，目录安装优于手写 mcp_servers。',
+        '钉死 rea-agents@6.4.0——不要改成 @latest。',
+        '捕获／ADB／导出工具先问人；无人值守跳过。',
+      ],
+    },
+  },
   {
     id: 'rea-lab',
     date: '2026-10-12',
