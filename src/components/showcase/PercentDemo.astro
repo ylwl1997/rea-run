@@ -1,0 +1,39 @@
+---
+interface Props {
+  lang: 'en' | 'zh';
+}
+const { lang } = Astro.props;
+const zh = lang === 'zh';
+---
+<figure class="percent-figure lab-widget" data-percent-demo data-locale={lang}>
+  <div class="percent-operation" hidden>
+    <button type="button" data-percent-operation="add" aria-pressed="true">
+      200 + 10%
+    </button>
+    <button type="button" data-percent-operation="multiply" aria-pressed="false">
+      200 × 10%
+    </button>
+  </div>
+  <div class="percent-display">
+    <span class="percent-expression" data-percent-expression>200 +</span>
+    <strong data-percent-display>10</strong>
+  </div>
+  <div class="percent-controls" hidden>
+    <button class="percent-key" type="button" data-percent-key="percent">%</button>
+    <button class="percent-key" type="button" data-percent-key="equals" disabled>=</button>
+    <button class="percent-reset" type="button" data-percent-key="reset">
+      {zh ? '重置' : 'Reset'}
+    </button>
+  </div>
+  <p class="percent-status" data-percent-status role="status">
+    {zh ? '按 % 看 10 会变成什么。' : 'Press % to see what happens to 10.'}
+  </p>
+  <figcaption>
+    {
+      zh
+        ? '交互示意：依赖运算符的百分号规则（对照 Microsoft Calculator 公开源码中的 IDC_PERCENT 分支）。非 Windows 计算器应用克隆。'
+        : 'Interactive illustration of the operator-dependent percent rule (aligned with Microsoft Calculator’s public IDC_PERCENT branch). Not a clone of the Windows Calculator app.'
+    }
+  </figcaption>
+</figure>
+<script is:inline type="module" src="/scripts/showcase/percent-demo.js"></script>

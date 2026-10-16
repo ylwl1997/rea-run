@@ -1,0 +1,123 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import DinoDemo from '../../components/showcase/DinoDemo.astro';
+import { pathFor } from '../../lib/site';
+
+const lang = 'en' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="Dinosaur speed lab: slider + recovered acceleration | rea.run"
+  description="Self-hosted Chromium-dino teaching mini-game with speed slider. Rule: start at 6, +0.001 per update while below 13. BSD attribution, verifiable checkpoints, links to REA and install-demo."
+  path="/lab/dino-speed/"
+>
+  <article class="mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm">
+      <a class="quiet-link" href={pathFor(lang, '/lab/')}>← Lab</a>
+      {' · '}
+      <a class="quiet-link" href={pathFor('zh', '/lab/dino-speed/')}>中文</a>
+    </p>
+    <p class="kicker mt-4">Lab · browser target</p>
+    <h1 class="display mt-3 text-4xl">Why the dinosaur gets faster — play the recovered rule</h1>
+    <p class="lede mt-4">
+      Offline Chromium’s T-Rex runner accelerates as you run. REA can read the loaded script from a public HTTP
+      edition, recover the constants, and help you rebuild a tiny game with a speed control. This page hosts that
+      teaching rebuild on rea.run (static Pages). Original operator prose — not a copy of the
+      <a href="https://rea.tools/examples/dino-lab/">rea.tools dino-lab</a> marketing page.
+    </p>
+
+    <DinoDemo lang="en" />
+
+    <section class="prose-page mt-10">
+      <h2>Recovered settings (verifiable)</h2>
+      <table>
+        <thead><tr><th>Symbol</th><th>Value</th><th>Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>SPEED</code></td><td><strong>6</strong></td><td>Starting speed</td></tr>
+          <tr><td><code>ACCELERATION</code></td><td><strong>0.001</strong></td><td>Added each eligible update</td></tr>
+          <tr><td><code>MAX_SPEED</code> check</td><td><strong>13</strong></td><td>Stop accelerating once at/above this threshold</td></tr>
+          <tr><td>Logic rate (this demo)</td><td><strong>60</strong> updates/s</td><td>Fixed simulation tick; drawing is separate</td></tr>
+        </tbody>
+      </table>
+      <pre><code>if (this.currentSpeed &lt; this.config.MAX_SPEED) &#123;
+  this.currentSpeed += this.config.ACCELERATION;
+&#125;</code></pre>
+      <p>
+        Inspected target: <a href="https://wayou.github.io/t-rex-runner/">wayou’s Chromium-derived browser edition</a>
+        (HTTP). Do not confuse with <code>chrome://dino</code> unless your session documents that URL.
+      </p>
+
+      <h2>What is new vs reconstructed</h2>
+      <table>
+        <thead><tr><th>Piece</th><th>Source</th></tr></thead>
+        <tbody>
+          <tr><td>Acceleration rule (6 / 0.001 / 13)</td><td>Reconstructed from inspected <code>index.js</code></td></tr>
+          <tr><td>Canvas drawing, jump physics, cactus collision, obstacle spacing</td><td><strong>New teaching implementation</strong> on this site</td></tr>
+          <tr><td>Speed slider + auto-accelerate checkbox</td><td>Teaching controls (not in the original game UI)</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Checkpoint table (controlled replay)</h2>
+      <p>
+        A controlled original-game check (obstacles and auto-scheduling disabled) recorded these speeds after N
+        collision-free updates. Click to replay the same rule in the browser:
+      </p>
+      <div class="speed-check-panel" data-locale="en">
+        <table class="speed-check-table">
+          <thead>
+            <tr><th>Updates</th><th>Reference</th><th>This page</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>6.000</td><td data-speed-updates="0">—</td></tr>
+            <tr><td>1,000</td><td>7.000</td><td data-speed-updates="1000">—</td></tr>
+            <tr><td>4,000</td><td>10.000</td><td data-speed-updates="4000">—</td></tr>
+            <tr><td>10,000</td><td>13.001</td><td data-speed-updates="10000">—</td></tr>
+          </tbody>
+        </table>
+        <p class="mt-3">
+          <button type="button" class="chip" data-speed-check hidden>Replay checkpoints</button>
+        </p>
+        <p class="text-sm text-[var(--color-muted)]" data-speed-check-status role="status"></p>
+      </div>
+      <p class="text-sm text-[var(--color-muted)]">
+        Note: after 10,000 updates the float lands at <code>13.001</code> when rounded to three decimals — the
+        threshold check uses <code>&lt; 13</code>, so one more increment can pass 13 before the branch stops adding.
+      </p>
+
+      <h2>Operator steps (authorized public page)</h2>
+      <ol>
+        <li>Pin <code>rea-agents</code> deliberately (teaching pin elsewhere often <strong>6.5.0</strong>; match your session).</li>
+        <li>Launch Chrome with a remote-debugging port and open the public t-rex-runner URL (templates on <a href={pathFor(lang, '/docs/install-demo/')}>/docs/install-demo/</a>).</li>
+        <li>Ask the agent to <code>list_browser_targets</code>, then <code>inspect_web_page</code> with script sources, and read loaded <code>index.js</code>.</li>
+        <li>Demand the start speed, increment, and cap check with citations — rules only before any rebuild.</li>
+        <li>Rebuild a one-file game with a slider; verify the four checkpoints above.</li>
+      </ol>
+      <pre><code>Use REA to inspect this dinosaur game. Why does it get faster?
+Show the speed rule, then build a small version with an adjustable speed.</code></pre>
+
+      <h2>License &amp; attribution</h2>
+      <ul>
+        <li>
+          Selected speed-rule excerpts: <strong>Chromium Authors</strong>, BSD-style terms —
+          <a href="/licenses/dinosaur-bsd.txt">/licenses/dinosaur-bsd.txt</a>
+          (also documented on <a href="https://rea.tools/assets/licenses/dinosaur.txt">rea.tools</a>).
+        </li>
+        <li>Standalone extraction commonly cited: <a href="https://github.com/wayou/t-rex-runner">wayou/t-rex-runner</a>.</li>
+        <li>This mini-game’s graphics / jump / collision are teaching code for rea.run; redistribute with attribution for the rule.</li>
+      </ul>
+
+      <h2>Related</h2>
+      <table>
+        <thead><tr><th>Resource</th><th>Link</th></tr></thead>
+        <tbody>
+          <tr><td>Lab hub</td><td><a href={pathFor(lang, '/lab/')}>/lab/</a></td></tr>
+          <tr><td>Calculator % lab</td><td><a href={pathFor(lang, '/lab/calculator-percent/')}>/lab/calculator-percent/</a></td></tr>
+          <tr><td>Codex install demo</td><td><a href={pathFor(lang, '/docs/install-demo/')}>/docs/install-demo/</a></td></tr>
+          <tr><td>DX-Ball Evidence</td><td><a href={pathFor(lang, '/showcase/dx-ball/')}>/showcase/dx-ball/</a></td></tr>
+          <tr><td>Official product lab</td><td><a href="https://rea.tools/examples/dino-lab/">rea.tools/examples/dino-lab/</a></td></tr>
+          <tr><td>Chinese twin</td><td><a href={pathFor('zh', '/lab/dino-speed/')}>/zh/lab/dino-speed/</a></td></tr>
+        </tbody>
+      </table>
+    </section>
+  </article>
+</BaseLayout>

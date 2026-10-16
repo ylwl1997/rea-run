@@ -101,6 +101,12 @@ const SHOWCASE_CORE: ShowcaseCase[] = [
     },
     footnotes: [
       { label: 'Microsoft Calculator (open source)', url: 'https://github.com/microsoft/calculator' },
+      { label: 'On-site % dual-rule lab', url: '/lab/calculator-percent/' },
+    ],
+    related: [
+      { href: '/lab/calculator-percent/', labelEn: 'Interactive % lab', labelZh: '交互 % 实验室' },
+      { href: '/lab/', labelEn: 'Lab hub', labelZh: '实验室枢纽' },
+      { href: '/lab/dino-speed/', labelEn: 'Dino speed lab', labelZh: '恐龙速度实验室' },
     ],
     en: {
       title: 'Windows Calculator %: open-source contrast for a familiar quirk',

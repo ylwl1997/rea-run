@@ -1,0 +1,137 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PercentDemo from '../../components/showcase/PercentDemo.astro';
+import { pathFor } from '../../lib/site';
+
+const lang = 'en' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="Calculator % lab: dual-rule +/−× trial | rea.run"
+  description="Self-hosted teaching demo for Windows Calculator–style percent: after + take percent of the first operand; after × divide by 100. Links to Microsoft open source and REA."
+  path="/lab/calculator-percent/"
+>
+  <article class="mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm">
+      <a class="quiet-link" href={pathFor(lang, '/lab/')}>← Lab</a>
+      {' · '}
+      <a class="quiet-link" href={pathFor('zh', '/lab/calculator-percent/')}>中文</a>
+    </p>
+    <p class="kicker mt-4">Lab · native contrast</p>
+    <h1 class="display mt-3 text-4xl">Rebuild Calculator’s % button — try both rules</h1>
+    <p class="lede mt-4">
+      Why does <strong>200 + 10%</strong> become <strong>220</strong>, while <strong>200 × 10%</strong> becomes
+      <strong>20</strong>? The percent key is operator-dependent. Microsoft publishes Calculator sources, so you can
+      arbitrate REA findings against named symbols. This page hosts a small dual-rule trial for operators — original
+      rea.run prose, not a clone of the <a href="https://rea.tools/">rea.tools</a> homepage.
+    </p>
+
+    <dl class="mt-8 grid gap-4 sm:grid-cols-2 text-sm">
+      <div class="rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-4">
+        <dt class="kicker">With +</dt>
+        <dd class="mt-2 text-[var(--color-ink-soft)]">
+          Take 10% of the first number.<br />
+          <code>10% of 200 = 20 → 200 + 20 = 220</code>
+        </dd>
+      </div>
+      <div class="rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-4">
+        <dt class="kicker">With ×</dt>
+        <dd class="mt-2 text-[var(--color-ink-soft)]">
+          Turn 10% into 0.1.<br />
+          <code>200 × 0.1 = 20</code>
+        </dd>
+      </div>
+    </dl>
+
+    <PercentDemo lang="en" />
+
+    <section class="prose-page mt-10">
+      <h2>Readable rule (teaching summary)</h2>
+      <pre><code>if (operation == multiply || operation == divide) &#123;
+  percent = current / 100;
+&#125; else &#123;
+  percent = current * previous / 100;
+&#125;</code></pre>
+      <p>
+        For <code>previous = 200</code>, <code>current = 10</code>: add path yields <strong>20</strong> then
+        <strong>220</strong>; multiply path yields <strong>0.1</strong> then <strong>20</strong>.
+      </p>
+
+      <h2>Open-source arbitration</h2>
+      <table>
+        <thead><tr><th>Item</th><th>Value / link</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Public tree</td>
+            <td><a href="https://github.com/microsoft/calculator">microsoft/calculator</a> (MIT)</td>
+          </tr>
+          <tr>
+            <td>Handler (pinned commit)</td>
+            <td>
+              <a href="https://github.com/microsoft/calculator/blob/d125246a4e19842ce1332e6c7839cf0e110027d8/src/CalcManager/CEngine/scifunc.cpp#L98-L111">scifunc.cpp · IDC_PERCENT</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Unit tests (pinned)</td>
+            <td>
+              <a href="https://github.com/microsoft/calculator/blob/d125246a4e19842ce1332e6c7839cf0e110027d8/src/CalculatorUnitTests/CalculatorManagerTest.cpp#L350-L370">CalculatorManagerTest.cpp</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Command IDs</td>
+            <td><code>IDC_MUL 92 (0x5c)</code>, <code>IDC_DIV 91 (0x5b)</code>, <code>IDC_PERCENT 118 (0x76)</code>; constant <code>0x64 = 100</code></td>
+          </tr>
+        </tbody>
+      </table>
+      <pre><code>case IDC_PERCENT:
+&#123;
+  // multiply/divide → X [op] (Y%)
+  // otherwise → X [op] (X * Y%)
+  if (m_nOpCode == IDC_MUL || m_nOpCode == IDC_DIV)
+    result = rat / 100;
+  else
+    result = rat * (m_lastVal / 100);
+  break;
+&#125;</code></pre>
+
+      <h2>Verifiable trial matrix</h2>
+      <table>
+        <thead><tr><th>Expression</th><th>Expected %</th><th>Expected result</th><th>Check on this page</th></tr></thead>
+        <tbody>
+          <tr><td>200 + 10%</td><td>20</td><td>220</td><td>Select +, press %, press =</td></tr>
+          <tr><td>200 × 10%</td><td>0.1</td><td>20</td><td>Select ×, press %, press =</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Operator steps</h2>
+      <ol>
+        <li>Read the short showcase summary: <a href={pathFor(lang, '/showcase/windows-calculator-percent/')}>/showcase/windows-calculator-percent/</a>.</li>
+        <li>Open the pinned <code>scifunc.cpp</code> and tests above; name the branch before trusting a screenshot.</li>
+        <li>If you inspect an installed Calculator binary with REA, keep Evidence + public source side by side.</li>
+        <li>Rebuild only teaching demos you control — not advice to tamper with OS components you are not authorized to modify.</li>
+      </ol>
+      <pre><code>Use REA to inspect Windows Calculator’s % button.
+Recover the rules after + and ×, then build a small calculator that uses both.</code></pre>
+
+      <h2>Teaching disclosures</h2>
+      <ul>
+        <li>This widget is an <strong>interactive illustration</strong> of the inspected percentage rule — not the Windows Calculator UI.</li>
+        <li>Prefer Microsoft’s public MIT tree as the arbitration layer when claims conflict.</li>
+        <li>Authorized / educational / interoperability study only. See <a href={pathFor(lang, '/compliance/')}>/compliance/</a> and <a href={pathFor(lang, '/faq/legal-boundary/')}>/faq/legal-boundary/</a>.</li>
+      </ul>
+
+      <h2>Related</h2>
+      <table>
+        <thead><tr><th>Resource</th><th>Link</th></tr></thead>
+        <tbody>
+          <tr><td>Lab hub</td><td><a href={pathFor(lang, '/lab/')}>/lab/</a></td></tr>
+          <tr><td>Dino speed lab</td><td><a href={pathFor(lang, '/lab/dino-speed/')}>/lab/dino-speed/</a></td></tr>
+          <tr><td>Showcase summary</td><td><a href={pathFor(lang, '/showcase/windows-calculator-percent/')}>/showcase/windows-calculator-percent/</a></td></tr>
+          <tr><td>DX-Ball Evidence</td><td><a href={pathFor(lang, '/showcase/dx-ball/')}>/showcase/dx-ball/</a></td></tr>
+          <tr><td>Official REA</td><td><a href="https://rea.tools/">rea.tools</a></td></tr>
+          <tr><td>Chinese twin</td><td><a href={pathFor('zh', '/lab/calculator-percent/')}>/zh/lab/calculator-percent/</a></td></tr>
+        </tbody>
+      </table>
+    </section>
+  </article>
+</BaseLayout>

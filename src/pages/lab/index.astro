@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { pathFor } from '../../lib/site';
+
+const lang = 'en' as const;
+---
+<BaseLayout
+  lang={lang}
+  title="Interactive labs: dino speed & Calculator % | rea.run"
+  description="Operator hub for self-hosted interactive demos ported from REA teaching examples: Chromium dinosaur speed slider and Calculator dual-rule percent. Offline-friendly static Pages builds."
+  path="/lab/"
+>
+  <article class="mx-auto max-w-3xl px-4 py-14">
+    <p class="kicker">Lab hub</p>
+    <h1 class="display mt-3 text-4xl">Interactive labs you can play offline-ish</h1>
+    <p class="lede mt-4">
+      Two teaching widgets live here as static assets on Cloudflare Pages: a dinosaur mini-game with a
+      <strong>speed slider</strong> (recovered acceleration rule), and a <strong>Calculator %</strong> dual-rule
+      trial. This hub is operator prose for rea.run — not a mirror of
+      <a href="https://rea.tools/">rea.tools</a> marketing copy.
+    </p>
+
+    <div class="lab-card-grid mt-10">
+      <a class="lab-card" href={pathFor(lang, '/lab/dino-speed/')}>
+        <p class="kicker">01 · Browser</p>
+        <h2>Dinosaur speed rule</h2>
+        <p>Play with a slider. Auto-accelerate uses start 6, +0.001 while &lt; 13. BSD attribution for the inspected rule.</p>
+      </a>
+      <a class="lab-card" href={pathFor(lang, '/lab/calculator-percent/')}>
+        <p class="kicker">02 · Native contrast</p>
+        <h2>Calculator % dual rule</h2>
+        <p>Try 200 + 10% vs 200 × 10%. Teaching disclosures point at Microsoft’s public Calculator sources.</p>
+      </a>
+    </div>
+
+    <section class="mt-12 prose-page">
+      <h2>What this hub is for</h2>
+      <table>
+        <thead>
+          <tr><th>Goal</th><th>Use</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Feel the recovered rule</td>
+            <td>Open a lab page, press Play / %, no install required</td>
+          </tr>
+          <tr>
+            <td>Reproduce with REA</td>
+            <td>Follow verifiable steps on each lab page (browser debug or Calculator contrast)</td>
+          </tr>
+          <tr>
+            <td>Ship your own teaching file</td>
+            <td>Codex walkthrough: <a href={pathFor(lang, '/docs/install-demo/')}>/docs/install-demo/</a></td>
+          </tr>
+          <tr>
+            <td>Larger game Evidence</td>
+            <td><a href={pathFor(lang, '/showcase/dx-ball/')}>/showcase/dx-ball/</a> (sound-pan 0x406400)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Compliance snapshot</h2>
+      <ul>
+        <li>Public HTTP dinosaur edition / open Calculator sources — authorized teaching targets only.</li>
+        <li>Dino drawing, jump, and collision on these pages are <strong>new teaching code</strong>; only the acceleration constants are reconstructed.</li>
+        <li>Percent widget illustrates operator-dependent semantics; it is <strong>not</strong> a Windows Calculator clone.</li>
+        <li>Footer disclaimer stays low-key. No crack / keygen / DRM content.</li>
+      </ul>
+
+      <h2>Related on rea.run</h2>
+      <table>
+        <thead><tr><th>Topic</th><th>URL</th></tr></thead>
+        <tbody>
+          <tr><td>Dino install + Codex demo</td><td><a href={pathFor(lang, '/docs/install-demo/')}>/docs/install-demo/</a></td></tr>
+          <tr><td>Calculator % showcase summary</td><td><a href={pathFor(lang, '/showcase/windows-calculator-percent/')}>/showcase/windows-calculator-percent/</a></td></tr>
+          <tr><td>DX-Ball Evidence</td><td><a href={pathFor(lang, '/showcase/dx-ball/')}>/showcase/dx-ball/</a></td></tr>
+          <tr><td>Official REA product site</td><td><a href="https://rea.tools/">rea.tools</a> · <a href="https://rea.tools/examples/dino-lab/">dino-lab</a></td></tr>
+          <tr><td>Chinese twin</td><td><a href={pathFor('zh', '/lab/')}>/zh/lab/</a></td></tr>
+        </tbody>
+      </table>
+    </section>
+  </article>
+</BaseLayout>

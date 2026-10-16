@@ -1728,3 +1728,208 @@ html.nav-open .burger-lines::after { top: 0; transform: rotate(-45deg); }
   border-radius: 0.65rem;
   border: 1px solid var(--color-line);
 }
+
+/* Lab interactive demos (dino speed + calculator %) — self-hosted teaching widgets */
+.lab-widget {
+  min-width: 0;
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  border: 1px solid var(--color-line);
+  border-radius: 0.65rem;
+  background: var(--color-panel);
+}
+.percent-operation,
+.percent-controls,
+.dino-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.percent-operation button,
+.percent-controls button,
+.dino-buttons button {
+  min-height: 44px;
+  border: 1px solid var(--color-line);
+  border-radius: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--color-ink);
+  background: var(--color-paper);
+  cursor: pointer;
+}
+.percent-operation button[aria-pressed="true"],
+.dino-buttons .dino-btn-primary {
+  color: #fff;
+  border-color: var(--color-ink);
+  background: var(--color-ink);
+}
+.percent-operation button[aria-pressed="true"] {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  background: color-mix(in oklab, var(--color-accent) 12%, var(--color-panel));
+}
+.percent-display {
+  padding: 1.2rem;
+  margin-block: 1rem;
+  border-radius: 0.4rem;
+  background: var(--color-paper-2);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.percent-expression {
+  display: block;
+  min-height: 1.5rem;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+.percent-display strong {
+  font-size: 3rem;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  color: var(--color-ink);
+}
+.percent-controls .percent-key {
+  min-width: 68px;
+  font-size: 1.25rem;
+  color: var(--color-accent);
+  border-color: color-mix(in oklab, var(--color-accent) 35%, var(--color-line));
+}
+.percent-controls button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.percent-controls .percent-reset {
+  margin-left: auto;
+  border-color: transparent;
+  color: var(--color-muted);
+  background: transparent;
+}
+.percent-status,
+.dino-status {
+  min-height: 2.6rem;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+.lab-widget figcaption {
+  margin-top: 0.8rem;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+.dino-stage {
+  --dino-ground: #b7c0c9;
+  --dino-ink: #5b6570;
+  --dino-player: #294f82;
+  --dino-crash: #8c4b40;
+  --dino-eye: #ffffff;
+  overflow: hidden;
+  margin-block: 0.8rem;
+  background: var(--color-paper-2);
+  border-radius: 0.4rem;
+  color: var(--color-muted);
+}
+.dino-stage canvas,
+.dino-fallback {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.dino-stage canvas {
+  touch-action: manipulation;
+}
+.dino-fallback {
+  margin: 0;
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+.dino-controls {
+  display: grid;
+  gap: 1.2rem;
+}
+.dino-speed-label {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-ink-soft);
+}
+.dino-speed-label output {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-accent);
+}
+.dino-speed-label input {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin: 0;
+  min-height: 30px;
+  accent-color: var(--color-accent);
+}
+.dino-auto-label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 36px;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+.dino-auto-label input {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  accent-color: var(--color-accent);
+}
+.lab-card-grid {
+  display: grid;
+  gap: 1rem;
+}
+@media (min-width: 720px) {
+  .lab-card-grid { grid-template-columns: 1fr 1fr; }
+}
+.lab-card {
+  display: block;
+  padding: 1.25rem;
+  border: 1px solid var(--color-line);
+  border-radius: 0.65rem;
+  background: var(--color-panel);
+  text-decoration: none;
+  color: inherit;
+}
+.lab-card:hover {
+  border-color: color-mix(in oklab, var(--color-accent) 40%, var(--color-line));
+}
+.lab-card h2 {
+  margin: 0.35rem 0 0.5rem;
+  font-size: 1.15rem;
+  color: var(--color-ink);
+}
+.lab-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+.speed-check-panel {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--color-line);
+  border-radius: 0.65rem;
+  background: var(--color-panel);
+}
+.speed-check-panel table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+.speed-check-panel th,
+.speed-check-panel td {
+  border-bottom: 1px solid var(--color-line);
+  padding: 0.45rem 0.5rem;
+  text-align: left;
+}
+.speed-check-panel td:last-child,
+.speed-check-panel th:last-child {
+  text-align: right;
+}
