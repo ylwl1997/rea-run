@@ -4,6 +4,7 @@ import { TRADING_RESEARCH_POST } from './blogTradingResearchDesk';
 import { REA_AGENTS_650_POST } from './blogReaAgents650';
 import { OPEN_CLAUDE_UI_POST } from './blogOpenClaudeUi';
 import { HERMES_REA_PLUGIN_POST } from './blogHermesReaPlugin';
+import { DX_BALL_POST } from './blogDxBall';
 
 export type BlogCover = {
   src: string;
@@ -24,6 +25,7 @@ export type BlogPost = {
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  DX_BALL_POST,
   HERMES_REA_PLUGIN_POST,
   OPEN_CLAUDE_UI_POST,
   REA_AGENTS_650_POST,
