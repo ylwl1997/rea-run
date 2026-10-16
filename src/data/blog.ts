@@ -6,6 +6,7 @@ import { OPEN_CLAUDE_UI_POST } from './blogOpenClaudeUi';
 import { HERMES_REA_PLUGIN_POST } from './blogHermesReaPlugin';
 import { DX_BALL_POST } from './blogDxBall';
 import { REA_BEGINNER_GUIDE_POST } from './blogReaBeginnerGuide';
+import { ELEVEN_REA_WORKBENCH_POST } from './blogElevenReaWorkbench';
 
 export type BlogCover = {
   src: string;
@@ -26,6 +27,7 @@ export type BlogPost = {
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  ELEVEN_REA_WORKBENCH_POST,
   REA_BEGINNER_GUIDE_POST,
   DX_BALL_POST,
   HERMES_REA_PLUGIN_POST,
