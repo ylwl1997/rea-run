@@ -2,6 +2,8 @@ import { BLOOMBERG_TERMINAL_POST } from './blogBloombergTerminal';
 import { DUAL_AGENT_WORKTREE_POST } from './blogDualAgentWorktree';
 import { TRADING_RESEARCH_POST } from './blogTradingResearchDesk';
 import { REA_AGENTS_650_POST } from './blogReaAgents650';
+import { OPEN_CLAUDE_UI_POST } from './blogOpenClaudeUi';
+import { HERMES_REA_PLUGIN_POST } from './blogHermesReaPlugin';
 
 export type BlogCover = {
   src: string;
@@ -22,6 +24,8 @@ export type BlogPost = {
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  HERMES_REA_PLUGIN_POST,
+  OPEN_CLAUDE_UI_POST,
   REA_AGENTS_650_POST,
   BLOOMBERG_TERMINAL_POST,
   DUAL_AGENT_WORKTREE_POST,
