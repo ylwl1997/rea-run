@@ -8,6 +8,7 @@ import { DX_BALL_POST } from './blogDxBall';
 import { REA_BEGINNER_GUIDE_POST } from './blogReaBeginnerGuide';
 import { ELEVEN_REA_WORKBENCH_POST } from './blogElevenReaWorkbench';
 import { CALIF_HEXACON_POST } from './blogCalifHexacon';
+import { REA_REVERSE_ENGINEERING_STUDIO_POST } from './blogReaReverseEngineeringStudio';
 
 export type BlogCover = {
   src: string;
@@ -28,6 +29,7 @@ export type BlogPost = {
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  REA_REVERSE_ENGINEERING_STUDIO_POST,
   CALIF_HEXACON_POST,
   ELEVEN_REA_WORKBENCH_POST,
   REA_BEGINNER_GUIDE_POST,
