@@ -168,6 +168,7 @@ export const SHOWCASE_X_CASES: ShowcaseCase[] = [
     related: [
       { href: '/docs/install/', labelEn: 'Install REA', labelZh: '安装 REA' },
       { href: '/docs/install-demo/', labelEn: 'Codex install walkthrough', labelZh: 'Codex 安装跟练' },
+      { href: '/showcase/android-tv-adb-rea-ops/', labelEn: 'Own-TV ADB ops loop', labelZh: '自有电视 ADB 运维' },
       { href: '/showcase/thinkszyg-toilet-ble/', labelEn: 'BLE toilet remote', labelZh: '蓝牙马桶遥控' },
       { href: '/showcase/brorlandi-miscale/', labelEn: 'Own-scale dashboard', labelZh: '自有体脂秤看板' },
       { href: '/faq/legal-boundary/', labelEn: 'Legal boundary', labelZh: '合法边界' },
