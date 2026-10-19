@@ -18,6 +18,152 @@ function fence(lang: string, code: string): string {
  */
 export const SHOWCASE_LAB_CASES: ShowcaseCase[] = [
   {
+    id: 'android-tv-adb-rea-ops',
+    date: '2026-10-19',
+    status: 'published',
+    attributionEn:
+      'Independent rea.run teaching case · own Android TV / ADB-authorized device ops (not affiliated with any vendor or upstream maintainer)',
+    attributionZh:
+      'rea.run 独立教学案例 · 自有 Android TV／已授权 ADB 设备运维（与任何厂商或上游维护者无隶属）',
+    tags: ['android-tv', 'adb', 'own-device', 'authorized', 'ops'],
+    relation: 'case-study',
+    github: {
+      url: 'https://github.com/morluto/rea',
+      language: 'TypeScript',
+      license: 'MIT',
+      updated: '2026-10-19',
+    },
+    rating: {
+      score: 5,
+      labelEn: 'Own-TV ADB ops loop',
+      labelZh: '自有电视 ADB 运维闭环',
+      qualityEn:
+        'Executable checklist: same Wi-Fi, developer mode, approve, package hygiene, open-source sideload, optional REA APK inspect.',
+      qualityZh: '可执行清单：同网、开发者模式、批准、包清理、开源侧载、可选 REA APK 检查。',
+      evidenceEn:
+        'Public ADB / pm disable-user patterns plus optional inspect_android_package on APKs you chose.',
+      evidenceZh: '公开 ADB／pm disable-user 模式，外加对你自选 APK 的可选 inspect_android_package。',
+      limitsEn: 'Own/authorized sets only. Not DRM cracks, not unpaid streaming, not third-party device takeover.',
+      limitsZh: '仅自有／授权设备。不是 DRM 破解、不是未付费串流、不是接管第三方设备。',
+      audienceEn: 'Builders who already own an Android TV / Google TV box and can approve ADB on the screen.',
+      audienceZh: '已拥有 Android TV／Google TV 盒子并能在屏幕上批准 ADB 的建造者。',
+    },
+    footnotes: [
+      { label: 'REA upstream (morluto/rea)', url: 'https://github.com/morluto/rea' },
+      { label: 'rea-agents 6.5.0 pin', url: 'https://github.com/morluto/rea/releases/tag/rea-agents-6.5.0' },
+      { label: 'Android ADB device lane (rea.run)', url: '/docs/android-adb/' },
+      { label: 'Android Debug Bridge (platform-tools)', url: 'https://developer.android.com/tools/adb' },
+      { label: 'Jellyfin Android TV (GPL-2.0, example OSS client)', url: 'https://github.com/jellyfin/jellyfin-androidtv' },
+    ],
+    media: {
+      video: {
+        src: '/media/showcase-cases/android-tv-adb-rea-ops/demo.mp4',
+        poster: '/media/showcase-cases/android-tv-adb-rea-ops/poster.jpg',
+        captionEn:
+          'Self-hosted ~23s demo of an authorized Android TV ADB ops loop (agent + on-device approve). Not a DRM or piracy walkthrough.',
+        captionZh:
+          '站内托管约 23 秒演示：已授权 Android TV 的 ADB 运维闭环（智能体 + 设备端批准）。不是 DRM 或盗版教程。',
+      },
+    },
+    complianceEn:
+      'Own or explicitly authorized Android TV / Google TV / set-top box only. The human must enable developer options and approve the ADB or network-debugging prompt on the TV. “Ads” here means disabling preinstalled ad/bloat packages on that device (public ADB pm disable-user / similar). It does not mean cracking ad SDKs, DRM, or paid streaming clients. Sideload only clearly open-source, user-chosen APKs (for example an official Jellyfin Android TV client or a well-documented open-source launcher). Community clients such as SmartTube-style YouTube front-ends remain optional and ToS/copyright risk stays with the operator. Forbidden: DRM/paid-stream cracks, piracy sources, auth bypass, and unauthorized third-party devices. Differentiates from the greco own-TV remote/mirror case: this page is a one-prompt-style clear-shell + sideload ops loop, not a custom remote UI.',
+    complianceZh:
+      '仅限自有或明确授权的 Android TV／Google TV／机顶盒。必须由人在电视上开启开发者选项并批准 ADB／网络调试提示。「广告」在此指对本机预装广告／臃肿包做禁用（公开 ADB 的 pm disable-user 等），不是破解广告 SDK、DRM 或付费串流客户端。只侧载你明确选择的开源 APK（例如 Jellyfin Android TV 官方客户端，或文档齐全的开源启动器）。SmartTube 类社区 YouTube 前端可选，ToS／版权风险由操作者自负。禁止：DRM／付费串流破解、盗版源、鉴权绕过、未授权第三方设备。与 greco 自有电视遥控／镜像案例区分：本页是「清壳 + 侧载」运维闭环，不是自定义遥控 UI。',
+    related: [
+      { href: '/docs/android-adb/', labelEn: 'Android ADB device lane', labelZh: 'Android ADB 设备通道' },
+      { href: '/showcase/greco-dev-tv/', labelEn: 'Own-TV remote (greco)', labelZh: '自有电视遥控（greco）' },
+      { href: '/showcase/aegis-totp/', labelEn: 'Static APK study (Aegis)', labelZh: '静态 APK 研读（Aegis）' },
+      { href: '/blog/rea-reverse-engineering-studio/', labelEn: 'REA studio (Android lane)', labelZh: 'REA 工作室（Android 通道）' },
+      { href: '/compliance/', labelEn: 'Compliance', labelZh: '合规' },
+      { href: '/faq/legal-boundary/', labelEn: 'Legal boundary', labelZh: '合法边界' },
+    ],
+    en: {
+      title: 'Own Android TV ops with ADB + REA: clear shell, speed UI, sideload OSS',
+      summary:
+        'Same Wi-Fi → enable developer mode → approve on the TV → ADB package hygiene and open-source sideload. Optional REA inspect_android_package on APKs you chose. Pin rea-agents@6.5.0.',
+      lede:
+        'A practical own-device loop for Android TV / Google TV boxes you already own: put the PC and the set on the same network, turn on developer options yourself, approve the debugging prompt on the TV screen, then let a coding agent drive public ADB commands to disable preinstall ad/bloat shells, tidy the launcher surface, and sideload open-source clients you pick. REA is optional for understanding those APKs — the main path is agent + ADB ops. This is not the greco remote/mirror story; it is a clear-shell + sideload ops checklist.',
+      body: [
+        '## What this case is (and is not)',
+        '**Is:** authorized lab ops on **your** Android TV-class device. Human enables developer mode and taps **Allow** on the TV. Agent uses stock `adb` against that approved session. “Clear ads” means `pm disable-user` (or equivalent public package disable) on preinstalled ad/bloat packages — not cracking ad networks.',
+        '**Is not:** DRM or paid-streaming cracks; piracy APK markets; auth bypass; controlling a neighbor’s or store-floor set; a universal remote UI (see [/showcase/greco-dev-tv/](/showcase/greco-dev-tv/) for an own-TV remote/mirror narrative).',
+        '## Step checklist',
+        '| Step | Do this | Stop if… |\n|---|---|---|\n| 1. Same network | PC and TV on the same LAN / Wi-Fi | You cannot reach the TV without VPN tricks aimed at someone else’s gear |\n| 2. Developer options | On the TV: Settings → About → build number (or vendor equivalent) until developer mode unlocks | The UI never offers developer / USB or network debugging |\n| 3. Debugging | Enable **USB debugging** and/or **network debugging** / wireless debugging as your firmware exposes | You would need a vendor unlock exploit |\n| 4. Approve on TV | From the PC run `adb connect <tv-ip>:5555` (or USB); on the TV tap **Allow** / approve the RSA fingerprint | No prompt appears and you consider bypassing pairing |\n| 5. Verify session | `adb devices` shows `device` (authorized), not `unauthorized` | Status stays unauthorized |\n| 6. Inventory | `adb shell pm list packages` (optionally `-3` for third-party) | You plan to scrape accounts or DRM keys |\n| 7. Disable bloat | For packages **you** identify as preinstall ad/bloat: `adb shell pm disable-user --user 0 <package>` (re-enable with `pm enable`) | The package is a paid app, DRM stack, or not yours to alter |\n| 8. Sideload OSS | `adb install -r ./chosen-open-source.apk` from a release you trust | The APK is a gray film aggregator or unpaid stream crack |\n| 9. Verify | Launch the app from the TV launcher; confirm `adb shell pm path <package>` | Behavior depends on a pirated backend |\n| 10. Optional REA | `inspect_android_package` on the APK file **before** install | You skip Evidence and ask for “make Netflix free” |',
+        '## REA roles (optional but useful)',
+        'Main path = coding agent + platform-tools ADB. REA deepens **understanding** of packages you already chose:',
+        '| Role | Tool / pin | When |\n|---|---|---|\n| Setup | `npx -y rea-agents@6.5.0 setup` then restart the MCP host | First time, or after Node upgrades |\n| Doctor | Upstream Android / ADB doctor checks | Before mutating a device |\n| Static APK map | `inspect_android_package` on an APK path you downloaded | Permissions, SDK level, exported components, referenced domains |\n| Device lane | REA 6.4+ ADB helpers on **your** authorized session | Logs, screenshots, lifecycle — see [/docs/android-adb/](/docs/android-adb/) |\n| Evidence habit | Ask for Evidence + unknowns, not vibes | Every mutating step |\n| Studio context | [/blog/rea-reverse-engineering-studio/](/blog/rea-reverse-engineering-studio/) Android lane | When you want the wider lab map |',
+        fence(
+          'bash',
+          'npx -y rea-agents@6.5.0 setup\n# After MCP restart, optional static pass on an APK you already chose:\nREA_JADX_MCP_JAR="$PWD/jadx-headless-mcp-0.7.1-all.jar" \\\nnpx -y rea-agents@6.5.0 inspect-android-package \\\n  ./jellyfin-androidtv-release.apk --format json --full-output',
+        ),
+        'Pin **rea-agents@6.5.0** for this page so tool names stay stable. Prefer `@6.5.0` over floating `@latest` when you need a reproducible checklist.',
+        '## Public ADB snippets (authorized session only)',
+        fence(
+          'bash',
+          '# After the TV shows Allow / RSA approve:\nadb devices\nadb shell pm list packages | head\n# Example shape only — replace with packages YOU identified as preinstall ad/bloat:\n# adb shell pm disable-user --user 0 com.example.preinstall.adshell\n# Sideload an open-source client you downloaded from its official release:\n# adb install -r ./jellyfin-androidtv-release.apk\nadb shell pm path <package.name>',
+        ),
+        'Reversibility matters: prefer `pm disable-user` over uninstall when you may want the package back. Record package names before you change them.',
+        '## Sideload policy (open-source, user-chosen)',
+        '| Allowed example | Why |\n|---|---|---|\n| [Jellyfin Android TV](https://github.com/jellyfin/jellyfin-androidtv) official client | GPL-2.0, you run **your** media server |\n| Documented open-source Android TV launcher | Clear license + release artifacts |\n| Optional community YouTube-style clients (e.g. SmartTube-class) | Only if **you** accept ToS/copyright risk; not endorsed here as a piracy path |\n| Gray “free film aggregator” APKs | **Forbidden** on this page |\n| DRM / paid-stream patches | **Forbidden** |',
+        '## Vs greco own-TV remote',
+        '| | This page (ADB ops) | [/showcase/greco-dev-tv/](/showcase/greco-dev-tv/) |\n|---|---|---|\n| Shape | Clear preinstall shells + sideload OSS via ADB | Personal remote / input / Mac-mirror control panel |\n| Primary tools | `adb` + optional REA APK inspect | Author’s REA-assisted remote UI (community credit) |\n| Human gate | Developer mode + on-TV approve | Own set; no DRM recipe |\n| Deliverable | Checklist + package hygiene | Demo of a control surface |',
+        '## Compliance links',
+        '- [/compliance/](/compliance/) — site standard\n- [/faq/legal-boundary/](/faq/legal-boundary/) — what REA is for\n- [/docs/android-adb/](/docs/android-adb/) — device lane hygiene\n- [/blog/rea-reverse-engineering-studio/](/blog/rea-reverse-engineering-studio/) — Android lab persona',
+        '## Demo media',
+        'The clip above is self-hosted (~23 seconds): an authorized approve-and-ops style loop. It is teaching media for this checklist — not a license to touch devices you do not own.',
+      ],
+      takeaways: [
+        'Same network + human developer mode + on-TV approve before any ADB mutators.',
+        '“Ads” = disable preinstall ad/bloat packages on your set — not ad-SDK or DRM cracks.',
+        'Sideload clearly open-source, user-chosen APKs; skip gray aggregators.',
+        'Optional REA inspect_android_package; pin rea-agents@6.5.0; Evidence over vibes.',
+      ],
+    },
+    zh: {
+      title: '自有 Android TV 运维：ADB + REA 清壳、顺手 UI、侧载开源',
+      summary:
+        '同网 → 开开发者模式 → 电视上批准 → ADB 包清理与开源侧载。可选对自选 APK 跑 REA inspect_android_package。钉 rea-agents@6.5.0。',
+      lede:
+        '面向你已拥有的 Android TV／Google TV 盒子的实操闭环：电脑与电视同一局域网，自己打开开发者选项，在电视屏幕上批准调试提示，再让编程智能体用公开 ADB 命令禁用预装广告／臃肿壳、整理启动器表面，并侧载你选定的开源客户端。REA 可选，用于理解这些 APK——主路径是智能体 + ADB 运维。这不是 greco 的遥控／镜像故事，而是「清壳 + 侧载」清单。',
+      body: [
+        '## 本案例是什么（以及不是什么）',
+        '**是：**对**你的** Android TV 类设备做授权实验室运维。由人开启开发者模式并在电视上点**允许**。智能体只对已批准会话使用原版 `adb`。「清广告」指对预装广告／臃肿包执行 `pm disable-user`（或等价的公开包禁用）——不是破解广告网络。',
+        '**不是：**DRM 或付费串流破解；盗版 APK 市场；鉴权绕过；控制邻居或卖场样机；通用遥控 UI（遥控／镜像叙事见 [/zh/showcase/greco-dev-tv/](/zh/showcase/greco-dev-tv/)）。',
+        '## 步骤清单',
+        '| 步骤 | 做什么 | 若出现则停止 |\n|---|---|---|\n| 1. 同网 | 电脑与电视同一局域网／Wi-Fi | 需要针对他人设备的 VPN／穿透才连得上 |\n| 2. 开发者选项 | 电视：设置 → 关于 → 版本号（或厂商等价入口）直到解锁开发者模式 | 系统从不提供开发者／USB 或网络调试 |\n| 3. 调试开关 | 打开 **USB 调试** 和／或固件提供的 **网络调试**／无线调试 | 需要厂商解锁漏洞才能继续 |\n| 4. 电视上批准 | 电脑执行 `adb connect <tv-ip>:5555`（或 USB）；在电视上点 **允许**／批准 RSA 指纹 | 无提示却打算绕过配对 |\n| 5. 确认会话 | `adb devices` 显示 `device`（已授权），不是 `unauthorized` | 一直停在 unauthorized |\n| 6. 盘点 | `adb shell pm list packages`（可用 `-3` 看第三方） | 计划刮账号或 DRM 密钥 |\n| 7. 禁用臃肿 | 对**你**认定的预装广告／臃肿包：`adb shell pm disable-user --user 0 <package>`（恢复用 `pm enable`） | 目标是付费应用、DRM 栈或无权改动的包 |\n| 8. 侧载开源 | `adb install -r ./chosen-open-source.apk`，来自你信任的发行版 | APK 是灰色影视聚合或未付费串流破解 |\n| 9. 验证 | 从电视启动器打开应用；确认 `adb shell pm path <package>` | 行为依赖盗版后端 |\n| 10. 可选 REA | 安装前对 APK 文件跑 `inspect_android_package` | 跳过 Evidence，改问「让 Netflix 免费」 |',
+        '## REA 角色（可选但有用）',
+        '主路径 = 编程智能体 + platform-tools ADB。REA 加深你对**已选定**包的理解：',
+        '| 角色 | 工具／钉版 | 何时 |\n|---|---|---|\n| 安装 | `npx -y rea-agents@6.5.0 setup` 后重启 MCP 宿主 | 首次或 Node 升级后 |\n| Doctor | 上游 Android／ADB doctor | 变更设备前 |\n| 静态 APK 地图 | 对你下载的 APK 路径跑 `inspect_android_package` | 权限、SDK、导出组件、引用域名 |\n| 设备通道 | REA 6.4+ 在**你已授权**会话上的 ADB 辅助 | 日志、截图、生命周期——见 [/zh/docs/android-adb/](/zh/docs/android-adb/) |\n| Evidence 习惯 | 要 Evidence + 未知项，不要只有 vibe | 每一步变更 |\n| 工作室语境 | [/zh/blog/rea-reverse-engineering-studio/](/zh/blog/rea-reverse-engineering-studio/) Android 通道 | 需要更大实验室地图时 |',
+        fence(
+          'bash',
+          'npx -y rea-agents@6.5.0 setup\n# MCP 重启后，可选对已选定的 APK 做静态检查：\nREA_JADX_MCP_JAR="$PWD/jadx-headless-mcp-0.7.1-all.jar" \\\nnpx -y rea-agents@6.5.0 inspect-android-package \\\n  ./jellyfin-androidtv-release.apk --format json --full-output',
+        ),
+        '本页钉 **rea-agents@6.5.0**，以便工具名稳定。需要可复现清单时，优先 `@6.5.0`，不要漂浮的 `@latest`。',
+        '## 公开 ADB 片段（仅已授权会话）',
+        fence(
+          'bash',
+          '# 电视出现允许／RSA 批准之后：\nadb devices\nadb shell pm list packages | head\n# 仅示意形状——换成你认定的预装广告／臃肿包名：\n# adb shell pm disable-user --user 0 com.example.preinstall.adshell\n# 侧载你从其官方发行版下载的开源客户端：\n# adb install -r ./jellyfin-androidtv-release.apk\nadb shell pm path <package.name>',
+        ),
+        '可逆很重要：可能还要恢复时，优先 `pm disable-user` 而不是卸载。变更前记下包名。',
+        '## 侧载策略（开源、用户自选）',
+        '| 允许示例 | 原因 |\n|---|---|---|\n| [Jellyfin Android TV](https://github.com/jellyfin/jellyfin-androidtv) 官方客户端 | GPL-2.0，你跑**自己的**媒体服务器 |\n| 文档齐全的开源 Android TV 启动器 | 许可证清晰 + 有发行产物 |\n| 可选的社区 YouTube 风格客户端（如 SmartTube 类） | 仅当你**自己**接受 ToS／版权风险；此处不把它当成盗版路径背书 |\n| 灰色「免费影视聚合」APK | **本页禁止** |\n| DRM／付费串流补丁 | **禁止** |',
+        '## 与 greco 自有电视遥控的对比',
+        '| | 本页（ADB 运维） | [/zh/showcase/greco-dev-tv/](/zh/showcase/greco-dev-tv/) |\n|---|---|---|\n| 形态 | 经 ADB 清预装壳 + 侧载开源 | 个人遥控／输入源／Mac 镜像控制面板 |\n| 主工具 | `adb` + 可选 REA APK 检查 | 作者以 REA 辅助的遥控 UI（社区署名） |\n| 人闸 | 开发者模式 + 电视上批准 | 自有设备；无 DRM 配方 |\n| 交付物 | 清单 + 包卫生 | 控制面演示 |',
+        '## 合规链接',
+        '- [/zh/compliance/](/zh/compliance/) — 站点标准\n- [/zh/faq/legal-boundary/](/zh/faq/legal-boundary/) — REA 用途边界\n- [/zh/docs/android-adb/](/zh/docs/android-adb/) — 设备通道卫生\n- [/zh/blog/rea-reverse-engineering-studio/](/zh/blog/rea-reverse-engineering-studio/) — Android 实验室角色',
+        '## 演示媒体',
+        '上方片段为站内托管（约 23 秒）：已授权批准与运维风格闭环。它是本清单的教学媒体——不是让你去碰不属于你的设备。',
+      ],
+      takeaways: [
+        '同网 + 人开开发者模式 + 电视上批准，才允许 ADB 变更。',
+        '「广告」= 禁用本机预装广告／臃肿包——不是广告 SDK 或 DRM 破解。',
+        '只侧载明确开源、用户自选的 APK；跳过灰色聚合。',
+        '可选 REA inspect_android_package；钉 rea-agents@6.5.0；Evidence 优于 vibe。',
+      ],
+    },
+  },
+
+  {
     id: 'aegis-totp',
     date: '2026-10-13',
     status: 'published',
@@ -67,6 +213,11 @@ export const SHOWCASE_LAB_CASES: ShowcaseCase[] = [
       'Use the official release or another build you are allowed to inspect. Reconstructing TOTP on GPL software is interoperability study. Harvesting live account seeds from devices you do not own is not part of this case. This page does not attach ADB to a phone that stores authenticator secrets.',
     complianceZh:
       '请使用官方发行版或其它你获准检查的构建。在 GPL 软件上重建 TOTP 是互操作研究。从你不拥有的设备收割在用账户种子不属于本案例。本页不把 ADB 接到存放验证器密钥的手机上。',
+    related: [
+      { href: '/showcase/android-tv-adb-rea-ops/', labelEn: 'Own Android TV ADB ops', labelZh: '自有 Android TV ADB 运维' },
+      { href: '/docs/android-adb/', labelEn: 'Android ADB device lane', labelZh: 'Android ADB 设备通道' },
+      { href: '/blog/rea-reverse-engineering-studio/', labelEn: 'REA studio (Android lane)', labelZh: 'REA 工作室（Android 通道）' },
+    ],
     en: {
       title: 'How an authenticator generates a login code',
       summary:

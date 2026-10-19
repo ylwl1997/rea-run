@@ -172,6 +172,11 @@ const SHOWCASE_CORE: ShowcaseCase[] = [
         url: 'https://github.com/morluto/rea/discussions/1406',
       },
     ],
+    related: [
+      { href: '/showcase/android-tv-adb-rea-ops/', labelEn: 'Own-device Android TV ADB ops', labelZh: '自有 Android TV ADB 运维' },
+      { href: '/compliance/', labelEn: 'Compliance', labelZh: '合规' },
+      { href: '/faq/legal-boundary/', labelEn: 'Legal boundary', labelZh: '合法边界' },
+    ],
     en: {
       title: 'Outside-in “leak check” of a production Next.js + Stripe app',
       summary:
