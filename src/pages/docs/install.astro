@@ -5,7 +5,7 @@ import ClientMatrix from '../../components/ClientMatrix.astro';
 import OfficialInstallNotice from '../../components/OfficialInstallNotice.astro';
 import { installVideoGallery } from '../../data/communityClips';
 import { SITE } from '../../lib/site';
-import { AGENTENV } from '../../data/environments';
+import { AGENTENV, agentenvBlogHref } from '../../data/environments';
 const lang = 'en' as const;
 const videoGallery = installVideoGallery(lang);
 const toc = [
@@ -177,7 +177,7 @@ npx -y rea-agents@6.5.0 setup`}</code></pre>
         <h2 id="agentenv">Next: turn REA captures into AgentEnv environments?</h2>
         <p>
           REA records browser sessions / HAR against targets you are authorized to analyze.
-          <a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Scale AgentEnv</a>
+          <a href={agentenvBlogHref('en')}>AgentEnv</a>
           exposes those captures as replay environments with MCP tools for training and eval.
           This site’s <a href="/environments/">Environments</a> page mirrors 50+ datasets published on Hugging Face by earakely-scale (Scale Labs) using REA —
           categories, notes, baselines, and outbound links. <strong>rea.run does not host the RL runtime</strong> or parquet/HAR blobs.
@@ -185,7 +185,7 @@ npx -y rea-agents@6.5.0 setup`}</code></pre>
         <ul>
           <li>Browse the mirror: <a href="/environments/">/environments/</a></li>
           <li>Source collection: <a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">REA Environments on AgentEnv (HF)</a></li>
-          <li>Product write-up: <a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Introducing AgentEnv</a></li>
+          <li>Product write-up: <a href={agentenvBlogHref('en')}>Introducing AgentEnv</a></li>
           <li>Authorized use only — <a href="/faq/legal-boundary/">legal boundary</a> · <a href="/faq/agentenv-rea/">What is AgentEnv + REA?</a></li>
         </ul>
 

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { AGENTENV, CHECKLIST } from '../../../data/environments';
+import { AGENTENV, CHECKLIST, agentenvBlogHref } from '../../../data/environments';
 import { pathFor } from '../../../lib/site';
 ---
 <BaseLayout
@@ -30,10 +30,10 @@ import { pathFor } from '../../../lib/site';
 
     <h2>接下来去哪</h2>
     <ul>
-      <li><a href={pathFor('zh', '/environments/')}>rea.run 上的 Environments 镜像</a></li>
+      <li><a href={pathFor('zh', '/environments/')}>rea.run 上的环境镜像</a></li>
       <li><a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">HF 合集</a></li>
       <li><a href={AGENTENV.space} rel="noopener noreferrer" target="_blank">HF Space 画廊</a></li>
-      <li><a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Introducing AgentEnv</a></li>
+      <li><a href={agentenvBlogHref('zh')}>AgentEnv 介绍</a></li>
       <li><a href={pathFor('zh', '/docs/install/')}>安装 REA</a></li>
       <li><a href={pathFor('zh', '/faq/agentenv-hosting/')}>你们托管 RL 环境吗？</a></li>
     </ul>

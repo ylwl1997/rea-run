@@ -1,7 +1,7 @@
 {
   "source_collection": "https://huggingface.co/collections/earakely-scale/rea-environments-on-agentenv",
   "source_space": "https://huggingface.co/spaces/earakely-scale/rea-environments",
-  "agentenv_blog": "https://labs.scale.com/blog/introducing-agentenv",
+  "agentenv_blog": "/blog/agentenv-rea/",
   "title": "REA Environments on AgentEnv",
   "description": "50 RL environments REA built from recorded browser sessions of 43 self-hosted apps and 7 public APIs, replayed as MCP tools on AgentEnv.",
   "attribution": "Environments by earakely-scale (Edgar Arakelyan / Scale Labs). Catalog mirrored on rea.run for REA community teaching; not affiliated. Datasets remain on Hugging Face.",
@@ -568,5 +568,6 @@
       "downloads": 337,
       "lastModified": "2026-10-19T01:13:38.000Z"
     }
-  ]
+  ],
+  "agentenv_blog_source": "https://labs.scale.com/blog/introducing-agentenv"
 }

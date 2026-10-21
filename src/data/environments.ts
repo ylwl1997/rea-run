@@ -3,6 +3,7 @@
  * Source of truth: ./rea-agentenv-hf-catalog.json — mirror only; no parquet/HAR on Pages.
  */
 import catalogJson from './rea-agentenv-hf-catalog.json';
+import { pathFor, type Lang } from '../lib/site';
 
 export type EnvCategory =
   | 'Other'
@@ -58,12 +59,20 @@ export type EnvironmentEntry = {
 export const AGENTENV = {
   collection: 'https://huggingface.co/collections/earakely-scale/rea-environments-on-agentenv',
   space: 'https://huggingface.co/spaces/earakely-scale/rea-environments',
-  blog: 'https://labs.scale.com/blog/introducing-agentenv',
+  /** On-site thick post path — pass through pathFor / agentenvBlogHref. */
+  blogPath: '/blog/agentenv-rea/',
+  /** Scale Labs original — Source/attribution only, never primary CTA. */
+  blogSource: 'https://labs.scale.com/blog/introducing-agentenv',
   publisher: 'earakely-scale (Scale Labs)',
   title: (catalogJson as { title: string }).title,
   description: (catalogJson as { description: string }).description,
   attribution: (catalogJson as { attribution: string }).attribution,
 } as const;
+
+/** Language-matched on-site AgentEnv intro (primary CTA). */
+export function agentenvBlogHref(lang: Lang): string {
+  return pathFor(lang, AGENTENV.blogPath);
+}
 
 export const CATEGORY_ORDER: EnvCategory[] = [
   'Other',

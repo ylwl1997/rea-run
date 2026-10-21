@@ -2,6 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import {
   AGENTENV,
+  agentenvBlogHref,
   CATEGORY_LABEL,
   CHECKLIST,
   ENVIRONMENTS,
@@ -33,7 +34,7 @@ const desc =
 >
   <article class="mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm">
-      <a class="quiet-link" href={pathFor('zh', '/environments/')}>← Environments</a>
+      <a class="quiet-link" href={pathFor('zh', '/environments/')}>← 环境</a>
     </p>
 
     <div class="mt-4 flex flex-wrap gap-2">
@@ -147,7 +148,7 @@ const desc =
         <li><a href={e.hfUrl} rel="noopener noreferrer" target="_blank">{e.hfUrl}</a></li>
         <li><a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">REA Environments on AgentEnv 合集</a></li>
         <li><a href={AGENTENV.space} rel="noopener noreferrer" target="_blank">earakely-scale/rea-environments Space</a></li>
-        <li><a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Introducing AgentEnv（Scale Labs）</a></li>
+        <li><a href={agentenvBlogHref('zh')}>AgentEnv 介绍</a></li>
       </ol>
       <p class="mt-4 text-xs">仅限授权使用。<a class="quiet-link" href={pathFor('zh', '/compliance/')}>合规</a></p>
     </footer>

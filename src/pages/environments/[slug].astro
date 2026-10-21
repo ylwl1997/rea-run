@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import {
   AGENTENV,
+  agentenvBlogHref,
   CATEGORY_LABEL,
   CHECKLIST,
   ENVIRONMENTS,
@@ -147,7 +148,7 @@ const desc =
         <li><a href={e.hfUrl} rel="noopener noreferrer" target="_blank">{e.hfUrl}</a></li>
         <li><a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">REA Environments on AgentEnv collection</a></li>
         <li><a href={AGENTENV.space} rel="noopener noreferrer" target="_blank">earakely-scale/rea-environments Space</a></li>
-        <li><a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Introducing AgentEnv (Scale Labs)</a></li>
+        <li><a href={agentenvBlogHref('en')}>Introducing AgentEnv</a></li>
       </ol>
       <p class="mt-4 text-xs">Authorized use only. <a class="quiet-link" href={pathFor('en', '/compliance/')}>Compliance</a></p>
     </footer>

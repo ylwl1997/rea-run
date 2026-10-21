@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { AGENTENV, CHECKLIST } from '../../data/environments';
+import { AGENTENV, CHECKLIST, agentenvBlogHref } from '../../data/environments';
 import { pathFor } from '../../lib/site';
 ---
 <BaseLayout
@@ -35,7 +35,7 @@ import { pathFor } from '../../lib/site';
       <li><a href={pathFor('en', '/environments/')}>Environments mirror on rea.run</a></li>
       <li><a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">HF collection</a></li>
       <li><a href={AGENTENV.space} rel="noopener noreferrer" target="_blank">HF Space gallery</a></li>
-      <li><a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Introducing AgentEnv</a></li>
+      <li><a href={agentenvBlogHref('en')}>Introducing AgentEnv</a></li>
       <li><a href={pathFor('en', '/docs/install/')}>Install REA</a></li>
       <li><a href={pathFor('en', '/faq/agentenv-hosting/')}>Do you host the RL envs?</a></li>
     </ul>

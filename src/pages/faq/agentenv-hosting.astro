@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { AGENTENV } from '../../data/environments';
+import { AGENTENV, agentenvBlogHref } from '../../data/environments';
 import { pathFor } from '../../lib/site';
 ---
 <BaseLayout
@@ -32,7 +32,7 @@ import { pathFor } from '../../lib/site';
     <h2>Where the data and runtime live</h2>
     <ul>
       <li>Datasets &amp; Space: <a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">HF collection</a> / <a href={AGENTENV.space} rel="noopener noreferrer" target="_blank">Space</a></li>
-      <li>Product context: <a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Introducing AgentEnv</a></li>
+      <li>Product context: <a href={agentenvBlogHref('en')}>Introducing AgentEnv</a></li>
       <li>Mirror index: <a href={pathFor('en', '/environments/')}>/environments/</a></li>
     </ul>
 

@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { AGENTENV } from '../../../data/environments';
+import { AGENTENV, agentenvBlogHref } from '../../../data/environments';
 import { pathFor } from '../../../lib/site';
 ---
 <BaseLayout
@@ -32,7 +32,7 @@ import { pathFor } from '../../../lib/site';
     <h2>数据与运行时在哪</h2>
     <ul>
       <li>数据集与 Space：<a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">HF 合集</a>／<a href={AGENTENV.space} rel="noopener noreferrer" target="_blank">Space</a></li>
-      <li>产品背景：<a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Introducing AgentEnv</a></li>
+      <li>产品背景：<a href={agentenvBlogHref('zh')}>AgentEnv 介绍</a></li>
       <li>镜像索引：<a href={pathFor('zh', '/environments/')}>/zh/environments/</a></li>
     </ul>
 

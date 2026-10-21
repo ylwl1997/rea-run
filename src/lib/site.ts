@@ -16,7 +16,9 @@ export const SITE = {
   gscVerification: 'zxsrPrghsvVVJ9bk7VaT1XI8xb-DNCbIvwvjTZ8UW4w',
   bingVerification: 'BAAF2C75632898C27CE0B8EF9179004C',
   ga4Id: 'G-0HSZFFGC6C',
-  agentenvBlog: 'https://labs.scale.com/blog/introducing-agentenv',
+  /** On-site thick post (use pathFor). Scale original is agentenvBlogSource. */
+  agentenvBlogPath: '/blog/agentenv-rea/',
+  agentenvBlogSource: 'https://labs.scale.com/blog/introducing-agentenv',
   agentenvSpace: 'https://huggingface.co/spaces/earakely-scale/rea-environments',
   agentenvCollection: 'https://huggingface.co/collections/earakely-scale/rea-environments-on-agentenv',
   agentenvAttribution:
@@ -37,12 +39,17 @@ export function pathFor(lang: Lang, path: string): string {
   return clean.endsWith('/') ? clean : `${clean}/`;
 }
 
+/** Language-matched on-site AgentEnv intro blog (not the Scale Labs outbound). */
+export function agentenvBlogHref(lang: Lang): string {
+  return pathFor(lang, SITE.agentenvBlogPath);
+}
+
 export const NAV = [
   { href: '/', labelEn: 'Home', labelZh: '首页' },
   { href: '/learn/what-is-reverse-engineering/', labelEn: 'What is RE', labelZh: '什么是逆向' },
   { href: '/examples/', labelEn: 'Examples', labelZh: '示例' },
   { href: '/showcase/', labelEn: 'Showcase', labelZh: '案例墙' },
-  { href: '/environments/', labelEn: 'Environments', labelZh: 'Environments' },
+  { href: '/environments/', labelEn: 'Environments', labelZh: '环境' },
   { href: '/lab/', labelEn: 'Lab', labelZh: '实验室' },
   { href: '/docs/install/', labelEn: 'Install', labelZh: '安装' },
   { href: '/faq/', labelEn: 'FAQ', labelZh: 'FAQ' },
