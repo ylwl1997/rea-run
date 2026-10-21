@@ -11,6 +11,7 @@ import { CALIF_HEXACON_POST } from './blogCalifHexacon';
 import { REA_REVERSE_ENGINEERING_STUDIO_POST } from './blogReaReverseEngineeringStudio';
 import { REA_CLAUDE_CODE_SURFACES_POST } from './blogReaClaudeCodeSurfaces';
 import { REA_OPENCODE_DUAL_MODEL_POST } from './blogReaOpencodeDualModel';
+import { CLAUDE_CODE_QUANT_TEAM_POST } from './blogClaudeCodeQuantTeam';
 import { AGENTENV_REA_POST } from './blogAgentenvRea';
 
 export type BlogCover = {
@@ -32,6 +33,7 @@ export type BlogPost = {
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  CLAUDE_CODE_QUANT_TEAM_POST,
   REA_OPENCODE_DUAL_MODEL_POST,
   REA_CLAUDE_CODE_SURFACES_POST,
   AGENTENV_REA_POST,
