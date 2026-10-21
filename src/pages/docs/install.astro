@@ -5,6 +5,7 @@ import ClientMatrix from '../../components/ClientMatrix.astro';
 import OfficialInstallNotice from '../../components/OfficialInstallNotice.astro';
 import { installVideoGallery } from '../../data/communityClips';
 import { SITE } from '../../lib/site';
+import { AGENTENV } from '../../data/environments';
 const lang = 'en' as const;
 const videoGallery = installVideoGallery(lang);
 const toc = [
@@ -19,6 +20,7 @@ const toc = [
   { id: 'related-videos', label: 'Related videos' },
   { id: 'actions-demo', label: 'Actions demo' },
   { id: 'codespaces', label: 'Codespaces lab' },
+  { id: 'agentenv', label: 'AgentEnv environments' },
   { id: 'related', label: 'Related guides' },
   { id: 'links', label: 'Upstream links' },
 ];
@@ -171,6 +173,22 @@ npx -y rea-agents@6.5.0 setup`}</code></pre>
           <li>Same lab repo as the Actions demo — two tracks, one <code>demo/</code>.</li>
         </ul>
 
+
+        <h2 id="agentenv">Next: turn REA captures into AgentEnv environments?</h2>
+        <p>
+          REA records browser sessions / HAR against targets you are authorized to analyze.
+          <a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Scale AgentEnv</a>
+          exposes those captures as replay environments with MCP tools for training and eval.
+          This site’s <a href="/environments/">Environments</a> page mirrors 50+ datasets published on Hugging Face by earakely-scale (Scale Labs) using REA —
+          categories, notes, baselines, and outbound links. <strong>rea.run does not host the RL runtime</strong> or parquet/HAR blobs.
+        </p>
+        <ul>
+          <li>Browse the mirror: <a href="/environments/">/environments/</a></li>
+          <li>Source collection: <a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">REA Environments on AgentEnv (HF)</a></li>
+          <li>Product write-up: <a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Introducing AgentEnv</a></li>
+          <li>Authorized use only — <a href="/faq/legal-boundary/">legal boundary</a> · <a href="/faq/agentenv-rea/">What is AgentEnv + REA?</a></li>
+        </ul>
+
         <h2 id="related">Related guides</h2>
         <ul>
           <li><a href="/showcase/thinkszyg-toilet-ble/">Case: status-bar toilet remote</a></li>
@@ -190,6 +208,7 @@ npx -y rea-agents@6.5.0 setup`}</code></pre>
           <li><a href="/docs/ghidra-large-binaries/">Large binaries &amp; Ghidra startup deadlines</a></li>
           <li><a href="/docs/linux-fedora/">Linux / Fedora install notes</a></li>
           <li><a href="/faq/tmpdir-dot-path/">TMPDIR / hidden-directory pitfalls</a></li>
+          <li><a href="/environments/">Environments (AgentEnv mirror)</a></li>
           <li><a href="/faq/">FAQ hub</a></li>
         </ul>
         <h2 id="links">Upstream links</h2>

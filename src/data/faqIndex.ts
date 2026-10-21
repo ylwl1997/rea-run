@@ -85,6 +85,18 @@ export const FAQ_LINKS: FaqLink[] = [
     zh: { title: '按域拆分 MCP 代理', blurb: '用 stdio 过滤代理按域组裁剪 REA 的 tools/list。' },
   },
   {
+    href: '/faq/agentenv-rea/',
+    priority: 'P0',
+    en: { title: 'What is AgentEnv + REA?', blurb: 'REA captures → AgentEnv MCP replay; rea.run mirrors the HF catalog.' },
+    zh: { title: '什么是 AgentEnv + REA？', blurb: 'REA 捕获 → AgentEnv MCP 回放；rea.run 镜像 HF 目录。' },
+  },
+  {
+    href: '/faq/agentenv-hosting/',
+    priority: 'P0',
+    en: { title: 'Do you host the RL envs?', blurb: 'Catalog + outbound HF links only; datasets stay on Hugging Face.' },
+    zh: { title: '你们托管 RL 环境吗？', blurb: '只有目录与 HF 外链；数据集留在 Hugging Face。' },
+  },
+  {
     href: '/docs/linux-fedora/',
     priority: 'P2',
     en: { title: 'Linux / Fedora install notes', blurb: 'Node lines, Ghidra+JDK, browser executable, host quirks.' },

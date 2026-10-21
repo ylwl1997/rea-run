@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { AGENTENV } from '../../data/environments';
+import { pathFor } from '../../lib/site';
+---
+<BaseLayout
+  lang="en"
+  title="Do you host the AgentEnv RL environments? FAQ | rea.run"
+  description="rea.run hosts a mirror catalog with outbound HF links. Datasets stay on Hugging Face; runtime is AgentEnv — not Pages."
+  path="/faq/agentenv-hosting/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm"><a class="quiet-link" href="/faq/">← FAQ hub</a></p>
+    <p class="badge badge-accent mt-4">FAQ · AgentEnv</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">Do you host the RL envs?</h1>
+    <p class="lede mt-4 !max-w-none">No. Catalog + outbound links only.</p>
+
+    <h2>What rea.run hosts</h2>
+    <ul>
+      <li>A thick HTML catalog and per-environment detail pages (category, license, tools/tasks, baselines parsed from HF notes).</li>
+      <li>Deep links to each Hugging Face dataset or Space.</li>
+      <li>Teaching copy: authorize → REA capture → AgentEnv MCP replay.</li>
+    </ul>
+
+    <h2>What we deliberately do not host</h2>
+    <ul>
+      <li>Parquet / HAR / large capture blobs (size + license).</li>
+      <li>The AgentEnv or Scale Labs RL runtime.</li>
+      <li>Any claim of affiliation with Scale Labs.</li>
+    </ul>
+
+    <h2>Where the data and runtime live</h2>
+    <ul>
+      <li>Datasets &amp; Space: <a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">HF collection</a> / <a href={AGENTENV.space} rel="noopener noreferrer" target="_blank">Space</a></li>
+      <li>Product context: <a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Introducing AgentEnv</a></li>
+      <li>Mirror index: <a href={pathFor('en', '/environments/')}>/environments/</a></li>
+    </ul>
+
+    <h2>Authorized use only</h2>
+    <p>
+      Training and eval still require authorized targets. See
+      <a href={pathFor('en', '/faq/legal-boundary/')}>legal boundary</a> and
+      <a href={pathFor('en', '/compliance/')}>compliance</a>.
+    </p>
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+      <p class="text-xs uppercase tracking-wider">Attribution</p>
+      <p class="mt-2">{AGENTENV.attribution}</p>
+    </footer>
+  </article>
+</BaseLayout>

@@ -1,0 +1,182 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import {
+  AGENTENV,
+  CATEGORY_LABEL,
+  CATEGORY_ORDER,
+  CHECKLIST,
+  ENVIRONMENTS,
+  categoryCounts,
+  formatLastModified,
+  type EnvCategory,
+} from '../../../data/environments';
+import { pathFor } from '../../../lib/site';
+
+const lang = 'zh' as const;
+const counts = categoryCounts();
+const total = ENVIRONMENTS.length;
+const datasets = ENVIRONMENTS.filter((e) => e.type === 'dataset').length;
+---
+<BaseLayout
+  lang={lang}
+  title="Environments — REA → AgentEnv 镜像目录 | rea.run"
+  description="Hugging Face 上 50+ REA 构建的 AgentEnv 回放环境社区镜像。分类、工具数、基线分数与外链——数据集仍在 HF。"
+  path="/environments/"
+>
+  <div class="mx-auto max-w-6xl px-4 py-14">
+    <header class="max-w-3xl">
+      <p class="badge badge-accent">目录 · 镜像</p>
+      <h1 class="display mt-4 text-4xl sm:text-5xl">REA → AgentEnv 环境</h1>
+      <p class="lede mt-4">
+        站内厚目录：<strong class="text-[var(--color-ink)]">{datasets} 个数据集环境</strong>
+        （外加入门 Space），由 {AGENTENV.publisher} 用 REA 录制并发布在 Hugging Face。
+        rea.run 是<strong class="text-[var(--color-ink)]">社区镜像目录</strong>——与 Scale 无关联。
+        我们<strong>不</strong>托管 parquet／HAR 或 RL 运行时。
+      </p>
+      <p class="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
+        <a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">HF 合集 ↗</a>
+        <a href={AGENTENV.space} rel="noopener noreferrer" target="_blank">HF Space 画廊 ↗</a>
+        <a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">AgentEnv 介绍博客 ↗</a>
+        <a href={pathFor(lang, '/faq/agentenv-rea/')}>什么是 AgentEnv + REA？</a>
+      </p>
+    </header>
+
+    <section class="mt-10 rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-5" aria-labelledby="checklist-h">
+      <h2 id="checklist-h" class="text-lg font-semibold text-[var(--color-ink)]">授权回放清单</h2>
+      <ol class="mt-4 grid gap-3 sm:grid-cols-3">
+        {CHECKLIST.zh.map((step, i) => (
+          <li class="step-card !items-start">
+            <span class="step-num">{i + 1}</span>
+            <p class="mt-0 !text-sm text-[var(--color-muted)]">{step}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="mt-4 text-xs text-[var(--color-muted)]">
+        仅限授权使用。<a class="quiet-link" href={pathFor(lang, '/faq/legal-boundary/')}>合法边界</a>
+        · <a class="quiet-link" href={pathFor(lang, '/compliance/')}>合规</a>
+      </p>
+    </section>
+
+    <section class="mt-10" aria-labelledby="cats-h">
+      <div class="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 id="cats-h" class="text-xl font-semibold text-[var(--color-ink)]">按分类浏览</h2>
+          <p class="mt-1 text-sm text-[var(--color-muted)]">{total} 条 · 前端筛选</p>
+        </div>
+      </div>
+      <div class="mt-4 flex flex-wrap gap-2" data-env-filters role="group" aria-label="分类筛选">
+        <button type="button" class="chip is-filter is-on" data-filter="all" aria-pressed="true">全部（{total}）</button>
+        {counts.map(({ category, count }) => (
+          <button type="button" class="chip is-filter" data-filter={category} aria-pressed="false">
+            {CATEGORY_LABEL[category].zh}（{count}）
+          </button>
+        ))}
+      </div>
+
+      <div class="mt-6 overflow-x-auto">
+        <table class="compare-table" data-env-table>
+          <thead>
+            <tr>
+              <th>环境</th>
+              <th>分类</th>
+              <th>工具／任务</th>
+              <th>基线</th>
+              <th>许可</th>
+              <th>HF</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ENVIRONMENTS.map((e) => {
+              const tools = e.parsed.tools != null ? String(e.parsed.tools) : '—';
+              const tasks = e.parsed.tasks != null ? String(e.parsed.tasks) : '—';
+              const baselines =
+                e.parsed.baselines.length > 0
+                  ? e.parsed.baselines.map((b) => `${b.model} ${b.score}`).join(' · ')
+                  : '—';
+              const blurb = e.parsed.summary || e.shortDescription || e.note.slice(0, 120);
+              return (
+                <tr data-category={e.category}>
+                  <td>
+                    <a class="font-semibold no-underline hover:underline" href={pathFor(lang, `/environments/${e.slug}/`)}>
+                      {e.title}
+                    </a>
+                    {e.type === 'space' && <span class="chip ml-2">Space</span>}
+                    <p class="mt-1 max-w-md text-xs text-[var(--color-muted)]">{blurb}</p>
+                  </td>
+                  <td>{CATEGORY_LABEL[e.category as EnvCategory].zh}</td>
+                  <td class="font-mono text-xs">{tools} / {tasks}</td>
+                  <td class="max-w-xs text-xs text-[var(--color-muted)]">{baselines}</td>
+                  <td class="text-xs">{e.parsed.license ?? '—'}</td>
+                  <td>
+                    <a href={e.hfUrl} rel="noopener noreferrer" target="_blank" class="whitespace-nowrap">打开 ↗</a>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {CATEGORY_ORDER.filter((c) => counts.some((x) => x.category === c)).map((cat) => {
+        const items = ENVIRONMENTS.filter((e) => e.category === cat);
+        return (
+          <div class="card !p-4">
+            <p class="section-kicker">{CATEGORY_LABEL[cat].zh}</p>
+            <p class="mt-1 font-mono text-2xl text-[var(--color-ink)]">{items.length}</p>
+            <ul class="mt-3 space-y-1 text-sm">
+              {items.slice(0, 5).map((e) => (
+                <li>
+                  <a href={pathFor(lang, `/environments/${e.slug}/`)}>{e.title}</a>
+                </li>
+              ))}
+              {items.length > 5 && <li class="text-[var(--color-muted)]">另有 {items.length - 5} 个</li>}
+            </ul>
+          </div>
+        );
+      })}
+    </section>
+
+    <footer class="mt-14 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)]">
+      <p class="text-xs uppercase tracking-wider">来源说明</p>
+      <p class="mt-2 max-w-3xl">{AGENTENV.attribution}</p>
+      <p class="mt-3 text-xs">
+        目录快照展示时间按 Asia/Shanghai（UTC+8）。各条目 lastModified 以 HF 为准。
+      </p>
+      <p class="mt-4">
+        <a href={pathFor(lang, '/docs/install/')}>安装 REA</a>
+        {' · '}
+        <a href={pathFor(lang, '/faq/agentenv-hosting/')}>你们托管 RL 环境吗？</a>
+      </p>
+    </footer>
+  </div>
+
+  <script is:inline>
+    (function () {
+      var root = document.querySelector('[data-env-filters]');
+      var table = document.querySelector('[data-env-table]');
+      if (!root || !table) return;
+      var rows = Array.prototype.slice.call(table.querySelectorAll('tbody tr'));
+      var buttons = Array.prototype.slice.call(root.querySelectorAll('[data-filter]'));
+      function apply(cat) {
+        rows.forEach(function (row) {
+          var match = cat === 'all' || row.getAttribute('data-category') === cat;
+          row.hidden = !match;
+        });
+        buttons.forEach(function (btn) {
+          var on = btn.getAttribute('data-filter') === cat;
+          btn.classList.toggle('is-on', on);
+          btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+      }
+      root.addEventListener('click', function (ev) {
+        var t = ev.target;
+        if (!t || !t.getAttribute) return;
+        var cat = t.getAttribute('data-filter');
+        if (!cat) return;
+        apply(cat);
+      });
+    })();
+  </script>
+</BaseLayout>

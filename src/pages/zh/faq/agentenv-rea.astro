@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { AGENTENV, CHECKLIST } from '../../../data/environments';
+import { pathFor } from '../../../lib/site';
+---
+<BaseLayout
+  lang="zh"
+  title="什么是 AgentEnv + REA？FAQ | rea.run"
+  description="REA 录制授权浏览器会话；Scale AgentEnv 把回放暴露为 MCP 工具。rea.run 镜像 HF 目录。"
+  path="/faq/agentenv-rea/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>
+    <p class="badge badge-accent mt-4">FAQ · AgentEnv</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">什么是 AgentEnv + REA？</h1>
+    <p class="lede mt-4 !max-w-none">录制的浏览器会话如何变成回放环境，以及 rea.run 提供／不提供什么。</p>
+
+    <h2>简短回答</h2>
+    <ul>
+      <li><strong>REA</strong> 可对你有权分析的目标录制浏览器会话／HAR。</li>
+      <li><strong>Scale AgentEnv</strong> 把这些捕获变成类 RL 环境，并以 <strong>MCP 工具</strong>暴露回放。</li>
+      <li><strong>earakely-scale（Scale Labs）</strong> 在 Hugging Face 发布了 50+ 此类环境。</li>
+      <li><strong>rea.run</strong> 为社区教学镜像该目录：分类、note、基线、深链——不是运行时。</li>
+    </ul>
+
+    <h2>建议路径</h2>
+    <ol>
+      {CHECKLIST.zh.map((s) => <li>{s}</li>)}
+    </ol>
+
+    <h2>接下来去哪</h2>
+    <ul>
+      <li><a href={pathFor('zh', '/environments/')}>rea.run 上的 Environments 镜像</a></li>
+      <li><a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">HF 合集</a></li>
+      <li><a href={AGENTENV.space} rel="noopener noreferrer" target="_blank">HF Space 画廊</a></li>
+      <li><a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Introducing AgentEnv</a></li>
+      <li><a href={pathFor('zh', '/docs/install/')}>安装 REA</a></li>
+      <li><a href={pathFor('zh', '/faq/agentenv-hosting/')}>你们托管 RL 环境吗？</a></li>
+    </ul>
+
+    <h2>仅限授权使用</h2>
+    <p>
+      只对自有软件、兼容许可的开源、合规实验室中的恶意样本，或有书面许可的目标进行捕获与回放。
+      见 <a href={pathFor('zh', '/faq/legal-boundary/')}>合法边界</a>。
+    </p>
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+      <p class="text-xs uppercase tracking-wider">来源说明</p>
+      <p class="mt-2">{AGENTENV.attribution}</p>
+      <p class="mt-4"><a class="quiet-link" href={pathFor('zh', '/compliance/')}>合规</a></p>
+    </footer>
+  </article>
+</BaseLayout>

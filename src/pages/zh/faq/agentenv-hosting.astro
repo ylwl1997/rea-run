@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { AGENTENV } from '../../../data/environments';
+import { pathFor } from '../../../lib/site';
+---
+<BaseLayout
+  lang="zh"
+  title="你们托管 AgentEnv RL 环境吗？FAQ | rea.run"
+  description="rea.run 只做镜像目录与 HF 外链。数据集在 Hugging Face；运行时是 AgentEnv——不在 Pages。"
+  path="/faq/agentenv-hosting/"
+>
+  <article class="prose-page mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>
+    <p class="badge badge-accent mt-4">FAQ · AgentEnv</p>
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">你们托管 RL 环境吗？</h1>
+    <p class="lede mt-4 !max-w-none">不托管。只有目录 + 外链。</p>
+
+    <h2>rea.run 托管什么</h2>
+    <ul>
+      <li>厚 HTML 目录与每个环境的详情页（分类、许可、工具／任务、从 HF note 解析的基线）。</li>
+      <li>指向各 Hugging Face 数据集或 Space 的深链。</li>
+      <li>教学文案：授权 → REA 捕获 → AgentEnv MCP 回放。</li>
+    </ul>
+
+    <h2>我们刻意不托管什么</h2>
+    <ul>
+      <li>Parquet／HAR／大型捕获文件（体积与许可）。</li>
+      <li>AgentEnv 或 Scale Labs 的 RL 运行时。</li>
+      <li>任何与 Scale Labs 的隶属声明。</li>
+    </ul>
+
+    <h2>数据与运行时在哪</h2>
+    <ul>
+      <li>数据集与 Space：<a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">HF 合集</a>／<a href={AGENTENV.space} rel="noopener noreferrer" target="_blank">Space</a></li>
+      <li>产品背景：<a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Introducing AgentEnv</a></li>
+      <li>镜像索引：<a href={pathFor('zh', '/environments/')}>/zh/environments/</a></li>
+    </ul>
+
+    <h2>仅限授权使用</h2>
+    <p>
+      训练与评测仍需要授权目标。见
+      <a href={pathFor('zh', '/faq/legal-boundary/')}>合法边界</a>与
+      <a href={pathFor('zh', '/compliance/')}>合规</a>。
+    </p>
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
+      <p class="text-xs uppercase tracking-wider">来源说明</p>
+      <p class="mt-2">{AGENTENV.attribution}</p>
+    </footer>
+  </article>
+</BaseLayout>

@@ -151,6 +151,7 @@ const isActive = (href: string) => {
             <a class="block text-[var(--color-ink-soft)] no-underline hover:text-[var(--color-accent)]" href={pathFor(lang, '/learn/what-is-reverse-engineering/')}>{lang === 'zh' ? '什么是逆向' : 'What is RE'}</a>
             <a class="block text-[var(--color-ink-soft)] no-underline hover:text-[var(--color-accent)]" href={pathFor(lang, '/examples/')}>{lang === 'zh' ? '示例' : 'Examples'}</a>
             <a class="block text-[var(--color-ink-soft)] no-underline hover:text-[var(--color-accent)]" href={pathFor(lang, '/showcase/')}>{lang === 'zh' ? '案例墙' : 'Showcase'}</a>
+            <a class="block text-[var(--color-ink-soft)] no-underline hover:text-[var(--color-accent)]" href={pathFor(lang, '/environments/')}>{lang === 'zh' ? 'Environments' : 'Environments'}</a>
             <a class="block text-[var(--color-ink-soft)] no-underline hover:text-[var(--color-accent)]" href={pathFor(lang, '/lab/')}>{lang === 'zh' ? '实验室' : 'Lab'}</a>
             <a class="block text-[var(--color-ink-soft)] no-underline hover:text-[var(--color-accent)]" href={pathFor(lang, '/docs/install/')}>{lang === 'zh' ? '安装' : 'Install'}</a>
             <a class="block text-[var(--color-ink-soft)] no-underline hover:text-[var(--color-accent)]" href={pathFor(lang, '/docs/clients/')}>{lang === 'zh' ? '客户端' : 'Clients'}</a>
@@ -167,7 +168,18 @@ const isActive = (href: string) => {
         </div>
       </div>
       <div class="border-t border-[var(--color-line)]">
-        <p class="mx-auto max-w-6xl px-4 py-4 font-mono text-xs text-[var(--color-muted)]">© {new Date().getFullYear()} rea.run community</p>
+        <div class="mx-auto max-w-6xl px-4 py-4 text-xs leading-6 text-[var(--color-muted)]">
+          <p>
+            {lang === 'zh' ? SITE.agentenvAttributionZh : SITE.agentenvAttribution}
+            {' '}
+            <a class="text-[var(--color-ink-soft)]" href={SITE.agentenvBlog} rel="noopener noreferrer" target="_blank">AgentEnv</a>
+            {' · '}
+            <a class="text-[var(--color-ink-soft)]" href={SITE.agentenvSpace} rel="noopener noreferrer" target="_blank">HF Space</a>
+            {' · '}
+            <a class="text-[var(--color-ink-soft)]" href={pathFor(lang, '/environments/')}>Environments</a>
+          </p>
+          <p class="mt-2 font-mono">© {new Date().getFullYear()} rea.run community</p>
+        </div>
       </div>
     </footer>
       <script src="/scripts/demos.js" defer></script>

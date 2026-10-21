@@ -5,6 +5,7 @@ import ClientMatrix from '../../../components/ClientMatrix.astro';
 import OfficialInstallNotice from '../../../components/OfficialInstallNotice.astro';
 import { zhInstallVideoGallery } from '../../../data/communityClips';
 import { SITE } from '../../../lib/site';
+import { AGENTENV } from '../../../data/environments';
 const lang = 'zh' as const;
 const videoGallery = zhInstallVideoGallery();
 const toc = [
@@ -19,6 +20,7 @@ const toc = [
   { id: 'related-videos', label: '相关视频' },
   { id: 'actions-demo', label: 'Actions 演示' },
   { id: 'codespaces', label: 'Codespaces 试跑' },
+  { id: 'agentenv', label: 'AgentEnv 环境' },
   { id: 'related', label: '相关指南' },
   { id: 'links', label: '上游链接' },
 ];
@@ -171,6 +173,22 @@ npx -y rea-agents@6.5.0 setup`}</code></pre>
           <li>与 Actions 演示同一实验仓——两条路径，一个 <code>demo/</code>。</li>
         </ul>
 
+
+        <h2 id="agentenv">下一步：把 REA 捕获变成 AgentEnv 环境？</h2>
+        <p>
+          REA 可对你有权分析的目标录制浏览器会话／HAR。
+          <a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Scale AgentEnv</a>
+          把这些捕获暴露为带 MCP 工具的回放环境，用于训练与评测。
+          本站 <a href="/zh/environments/">Environments</a> 镜像 earakely-scale（Scale Labs）用 REA 发布在 Hugging Face 上的 50+ 数据集——
+          含分类、note、基线与外链。<strong>rea.run 不托管 RL 运行时</strong>，也不托管 parquet／HAR。
+        </p>
+        <ul>
+          <li>浏览镜像：<a href="/zh/environments/">/zh/environments/</a></li>
+          <li>源合集：<a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">REA Environments on AgentEnv（HF）</a></li>
+          <li>产品介绍：<a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Introducing AgentEnv</a></li>
+          <li>仅限授权使用 — <a href="/zh/faq/legal-boundary/">合法边界</a> · <a href="/zh/faq/agentenv-rea/">什么是 AgentEnv + REA？</a></li>
+        </ul>
+
         <h2 id="related">相关指南</h2>
         <ul>
           <li><a href="/zh/showcase/thinkszyg-toilet-ble/">案例：状态栏马桶遥控</a></li>
@@ -190,6 +208,7 @@ npx -y rea-agents@6.5.0 setup`}</code></pre>
           <li><a href="/zh/docs/ghidra-large-binaries/">大二进制与 Ghidra 启动截止</a></li>
           <li><a href="/zh/docs/linux-fedora/">Linux／Fedora 安装手记</a></li>
           <li><a href="/zh/faq/tmpdir-dot-path/">TMPDIR／隐藏目录坑</a></li>
+          <li><a href="/zh/environments/">Environments（AgentEnv 镜像）</a></li>
           <li><a href="/zh/faq/">FAQ 枢纽</a></li>
         </ul>
         <h2 id="links">上游链接</h2>
