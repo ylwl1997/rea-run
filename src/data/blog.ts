@@ -10,6 +10,7 @@ import { ELEVEN_REA_WORKBENCH_POST } from './blogElevenReaWorkbench';
 import { CALIF_HEXACON_POST } from './blogCalifHexacon';
 import { REA_REVERSE_ENGINEERING_STUDIO_POST } from './blogReaReverseEngineeringStudio';
 import { REA_CLAUDE_CODE_SURFACES_POST } from './blogReaClaudeCodeSurfaces';
+import { REA_OPENCODE_DUAL_MODEL_POST } from './blogReaOpencodeDualModel';
 import { AGENTENV_REA_POST } from './blogAgentenvRea';
 
 export type BlogCover = {
@@ -31,6 +32,7 @@ export type BlogPost = {
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  REA_OPENCODE_DUAL_MODEL_POST,
   REA_CLAUDE_CODE_SURFACES_POST,
   AGENTENV_REA_POST,
   REA_REVERSE_ENGINEERING_STUDIO_POST,
