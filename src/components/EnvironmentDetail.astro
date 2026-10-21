@@ -1,0 +1,411 @@
+---
+/**
+ * Shared thick teaching template for /environments/<slug>/ (EN + ZH).
+ * Data from catalog + parsers — no parquet/HAR on Pages.
+ */
+import {
+  AGENTENV,
+  agentenvBlogHref,
+  CATEGORY_LABEL,
+  CHECKLIST,
+  ENVIRONMENTS,
+  captureLabel,
+  formatLastModified,
+  leadFor,
+  scenarioFor,
+  type EnvironmentEntry,
+  type EnvCategory,
+} from '../data/environments';
+import { pathFor, type Lang } from '../lib/site';
+import OfficialInstallNotice from './OfficialInstallNotice.astro';
+
+interface Props {
+  lang: Lang;
+  entry: EnvironmentEntry;
+}
+
+const { lang, entry: e } = Astro.props;
+const zh = lang === 'zh';
+const p = e.parsed;
+const catLabel = CATEGORY_LABEL[e.category as EnvCategory][lang];
+const related = ENVIRONMENTS.filter((x) => x.category === e.category && x.slug !== e.slug).slice(0, 6);
+const scenario = scenarioFor(e, lang);
+const lead = leadFor(e, lang);
+const product = p.productName || e.title;
+
+const copy = zh
+  ? {
+      back: '← 环境',
+      badgeSpace: 'HF Space',
+      badgeDataset: '数据集环境',
+      openHfTitle: '在 Hugging Face 打开',
+      openHfBody: '数据集与大型 HAR／parquet 留在 HF。本页只做教学镜像，不托管运行时。',
+      openSpace: '打开 HF Space ↗',
+      openDataset: '打开 HF 数据集 ↗',
+      metaTarget: '录制目标',
+      metaProduct: '产品',
+      metaVersion: '版本',
+      metaLicense: '许可',
+      metaHosting: '托管形态',
+      metaCapture: '捕获方式',
+      metaUpdated: '更新',
+      metaMetrics: 'AgentEnv 指标',
+      metaTools: 'MCP 工具数',
+      metaTasks: '检索任务',
+      metaDownloads: '下载（HF 快照）',
+      metaLikes: '点赞',
+      whatTitle: '这是什么',
+      capturedTitle: 'REA 捕获了什么',
+      practiceTitle: '在 AgentEnv 里练什么',
+      relationTitle: '与 REA 的关系',
+      licenseTitle: '许可与合规',
+      nextTitle: '下一步',
+      sameCat: '同分类',
+      baselinesTitle: '模型基线',
+      baselinesNote: '分数来自 HF note 快照（检索任务得分）。如何读：分子＝答对任务数，分母＝任务总数。',
+      noteTitle: 'HF note 原文（引用）',
+      noteCite: '以下为目录快照中的 note，非逐字转载长文档。',
+      attrTitle: '来源说明',
+      attrBody: `环境由 ${AGENTENV.publisher} 用 REA 在 Hugging Face 录制并发布。rea.run 是社区镜像目录，与 Scale Labs 无关联。`,
+      authOnly: '仅限授权使用。',
+      compliance: '合规',
+      hostingFaq: '托管 FAQ',
+      installH: '安装 AgentEnv／REA',
+      installP:
+        '要在本机用 REA 录制会话：按官方来源安装 rea-agents。AgentEnv 回放与评测在 Scale／HF 侧进行——不是本站。',
+      linkCatalog: '环境目录',
+      linkBlog: 'AgentEnv 介绍',
+      linkInstall: '安装 REA',
+      sourceNums: '数字与字段引自 Hugging Face note／目录快照。',
+    }
+  : {
+      back: '← Environments',
+      badgeSpace: 'HF Space',
+      badgeDataset: 'Dataset env',
+      openHfTitle: 'Open on Hugging Face',
+      openHfBody: 'Datasets and large HAR/parquet stay on HF. This page is a teaching mirror only — no runtime here.',
+      openSpace: 'Open HF Space ↗',
+      openDataset: 'Open HF dataset ↗',
+      metaTarget: 'Recorded target',
+      metaProduct: 'Product',
+      metaVersion: 'Version',
+      metaLicense: 'License',
+      metaHosting: 'Hosting',
+      metaCapture: 'Capture',
+      metaUpdated: 'Updated',
+      metaMetrics: 'AgentEnv metrics',
+      metaTools: 'MCP tools',
+      metaTasks: 'Retrieval tasks',
+      metaDownloads: 'Downloads (HF snapshot)',
+      metaLikes: 'Likes',
+      whatTitle: 'What this is',
+      capturedTitle: 'What REA captured',
+      practiceTitle: 'What you practice in AgentEnv',
+      relationTitle: 'Relation to REA',
+      licenseTitle: 'License & compliance',
+      nextTitle: 'Next steps',
+      sameCat: 'Same category',
+      baselinesTitle: 'Model baselines',
+      baselinesNote:
+        'Scores cited from the HF note snapshot (retrieval-task scores). How to read: numerator = tasks correct, denominator = task count.',
+      noteTitle: 'HF note (cited)',
+      noteCite: 'Snapshot text from the catalog note — not a verbatim dump of a long HF card.',
+      attrTitle: 'Attribution',
+      attrBody: `Environments recorded & published on Hugging Face by ${AGENTENV.publisher} using REA. rea.run is a community mirror catalog; not affiliated with Scale Labs.`,
+      authOnly: 'Authorized use only.',
+      compliance: 'Compliance',
+      hostingFaq: 'Hosting FAQ',
+      installH: 'Install AgentEnv / REA',
+      installP:
+        'To record sessions locally with REA, install rea-agents from official sources. AgentEnv replay and eval run on Scale / HF — not on this site.',
+      linkCatalog: 'Environments catalog',
+      linkBlog: 'Introducing AgentEnv',
+      linkInstall: 'Install REA',
+      sourceNums: 'Numbers and fields are cited from the Hugging Face note / catalog snapshot.',
+    };
+
+// Section body helpers
+const scenarioSentence = /[.。！？!?]$/.test(scenario.trim()) ? scenario.trim() : `${scenario.trim()}.`;
+const whatBody = zh
+  ? e.type === 'space'
+    ? `${e.title} 是 REA → AgentEnv 回放环境合集的入门 Space。${scenarioSentence} 关键词：AgentEnv、REA、回放环境、MCP 工具。`
+    : `${e.title}（${product}）是面向「${scenario.replace(/。$/, '')}」场景的 AgentEnv 回放环境。产品名与 Env 名保留英文；本页用中文说明教学要点。`
+  : e.type === 'space'
+    ? `${e.title} is the start-here Space for the REA → AgentEnv replay-environment collection. ${scenarioSentence} Keywords: AgentEnv, REA, replay environment, MCP tools.`
+    : `${e.title} is an AgentEnv replay environment for ${product}. Scenario: ${scenarioSentence} Teaching mirror on rea.run — practice keywords: AgentEnv, REA, replay environment, MCP tools.`;
+
+const capturedBullets: string[] = [];
+if (zh) {
+  capturedBullets.push(
+    `捕获形式：${captureLabel(p.captureKind, 'zh')}${p.capture ? `（note：${p.capture}）` : ''}。`,
+  );
+  if (p.productLine) capturedBullets.push(`目标产品／版本：${p.productLine}。`);
+  if (p.license) capturedBullets.push(`许可（HF note）：${p.license}。`);
+  if (p.hosting) capturedBullets.push(`托管／数据形态：${p.hosting}。`);
+  if (e.type === 'space') {
+    capturedBullets.push('本条目是 Space 画廊入口，不是单个数据集环境。');
+  } else {
+    capturedBullets.push('大型 HAR／parquet 文件在 Hugging Face 数据集中，不在本站 Pages。');
+  }
+} else {
+  capturedBullets.push(
+    `Capture form: ${captureLabel(p.captureKind, 'en')}${p.capture ? ` (note: ${p.capture})` : ''}.`,
+  );
+  if (p.productLine) capturedBullets.push(`Target product / version: ${p.productLine}.`);
+  if (p.license) capturedBullets.push(`License (HF note): ${p.license}.`);
+  if (p.hosting) capturedBullets.push(`Hosting / data shape: ${p.hosting}.`);
+  if (e.type === 'space') {
+    capturedBullets.push('This entry is the Space gallery entry point, not a single dataset env.');
+  } else {
+    capturedBullets.push('Large HAR/parquet files live in the Hugging Face dataset — not on these Pages.');
+  }
+}
+
+const practiceBody = zh
+  ? e.type === 'space'
+    ? '在 Space 画廊中浏览各数据集环境的工具数、任务数与基线，再跳转到具体 HF 数据集练习。'
+    : [
+        p.tools != null && p.tasks != null
+          ? `该环境暴露约 ${p.tools} 个 MCP 工具、${p.tasks} 个检索任务（HF note 快照）。`
+          : '工具数／任务数以 HF note 为准（本快照未解析到数字）。',
+        '检索任务：智能体通过 MCP 工具在回放环境中查找或操作信息；基线表给出公开模型的得分。',
+        '读基线表：分数形如 a/b —— a 为答对任务数，b 为任务总数；与上方任务数对照。',
+        '练习发生在 AgentEnv／HF，不在 rea.run。',
+      ].filter(Boolean).join(' ')
+  : e.type === 'space'
+    ? 'Browse tool counts, task counts, and baselines in the Space gallery, then jump to a concrete HF dataset to practice.'
+    : [
+        p.tools != null && p.tasks != null
+          ? `This env exposes about ${p.tools} MCP tools and ${p.tasks} retrieval tasks (HF note snapshot).`
+          : 'Tool/task counts follow the HF note (not parsed in this snapshot).',
+        'Retrieval tasks: the agent uses MCP tools to find or act on information inside the replay environment; the baseline table shows published model scores.',
+        'How to read baselines: scores look like a/b — a = tasks correct, b = task count; cross-check with the task total above.',
+        'Practice runs on AgentEnv / HF, not on rea.run.',
+      ].filter(Boolean).join(' ');
+
+const relationBody = zh
+  ? '链路：REA 捕获授权浏览器／API 会话 → 发布为 Hugging Face 数据集 → 在 Scale AgentEnv 上以 MCP 工具回放。rea.run 提供分类目录与教学说明，不是运行时，也不托管捕获文件。'
+  : 'Pipeline: REA captures an authorized browser/API session → published as a Hugging Face dataset → replayed as MCP tools on Scale AgentEnv. rea.run provides the categorized catalog and teaching copy — it is not the runtime and does not host capture files.';
+
+const licenseBody = zh
+  ? [
+      p.license ? `许可（引自 HF note）：${p.license}。` : '许可以 Hugging Face 数据集卡片为准。',
+      '仅限授权使用：自有系统、开源、书面许可或合规实验室。不要对未授权生产目标录制或回放。',
+      '本站不提供破解、绕过或未授权访问指导。',
+    ].join(' ')
+  : [
+      p.license ? `License (cited from HF note): ${p.license}.` : 'License is authoritative on the Hugging Face dataset card.',
+      'Authorized use only: own systems, OSS, written permission, or an approved lab. Do not record or replay against unauthorized production targets.',
+      'This site does not provide cracking, bypass, or unauthorized-access guidance.',
+    ].join(' ');
+---
+
+<article class="mx-auto max-w-3xl px-4 py-14" data-env-slug={e.slug}>
+  <p class="text-sm">
+    <a class="quiet-link" href={pathFor(lang, '/environments/')}>{copy.back}</a>
+  </p>
+
+  <div class="mt-4 flex flex-wrap gap-2">
+    <span class="badge">{e.type === 'space' ? copy.badgeSpace : copy.badgeDataset}</span>
+    <span class="chip">{catLabel}</span>
+    {p.license && <span class="chip">{p.license}</span>}
+    {p.captureKind && <span class="chip">{p.captureKind === 'HAR' ? 'HAR' : 'capture-browser-scenario'}</span>}
+  </div>
+
+  <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">{e.title}</h1>
+  <p class="lede mt-4 !max-w-none">{lead}</p>
+  <p class="mt-2 text-xs text-[var(--color-muted)]">{copy.sourceNums}</p>
+
+  <div class="mt-6 rounded-xl border border-[var(--color-accent)]/30 bg-[var(--color-panel)] p-4 text-sm">
+    <p class="font-semibold text-[var(--color-ink)]">{copy.openHfTitle}</p>
+    <p class="mt-1 text-[var(--color-muted)]">{copy.openHfBody}</p>
+    <p class="mt-3">
+      <a class="btn" href={e.hfUrl} rel="noopener noreferrer" target="_blank">
+        {e.type === 'space' ? copy.openSpace : copy.openDataset}
+      </a>
+    </p>
+  </div>
+
+  <div class="showcase-meta-panel mt-8 grid gap-4 rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-4 text-sm sm:grid-cols-2">
+    <div class="space-y-1.5 text-[var(--color-muted)]">
+      <p class="text-xs uppercase tracking-wider text-[var(--color-ink-soft)]">{copy.metaTarget}</p>
+      <p>{copy.metaProduct}: <span class="text-[var(--color-ink)]">{product}</span></p>
+      <p>{copy.metaVersion}: <span class="text-[var(--color-ink)]">{p.version ?? '—'}</span></p>
+      <p>{copy.metaLicense}: <span class="text-[var(--color-ink)]">{p.license ?? '—'}</span></p>
+      <p>{copy.metaHosting}: <span class="text-[var(--color-ink)]">{p.hosting ?? '—'}</span></p>
+      <p>{copy.metaCapture}: <span class="text-[var(--color-ink)]">{captureLabel(p.captureKind, lang)}</span></p>
+      <p>
+        {copy.metaUpdated}: <span class="text-[var(--color-ink)]">{formatLastModified(e.lastModified, lang)}</span>
+        <span class="text-xs">{zh ? '（Asia/Shanghai）' : '(Asia/Shanghai)'}</span>
+      </p>
+    </div>
+    <div class="space-y-1.5 text-[var(--color-muted)]">
+      <p class="text-xs uppercase tracking-wider text-[var(--color-ink-soft)]">{copy.metaMetrics}</p>
+      <p>{copy.metaTools}: <span class="text-[var(--color-ink)] font-semibold">{p.tools ?? '—'}</span></p>
+      <p>{copy.metaTasks}: <span class="text-[var(--color-ink)] font-semibold">{p.tasks ?? '—'}</span></p>
+      <p>{copy.metaDownloads}: <span class="text-[var(--color-ink)]">{e.downloads ?? '—'}</span></p>
+      <p>{copy.metaLikes}: <span class="text-[var(--color-ink)]">{e.likes ?? '—'}</span></p>
+      <p class="pt-1 font-mono text-xs break-all">id: {e.id}</p>
+    </div>
+  </div>
+
+  <section class="mt-10" aria-labelledby="what-h">
+    <h2 id="what-h" class="text-xl font-semibold text-[var(--color-ink)]">{copy.whatTitle}</h2>
+    <p class="mt-3 text-sm leading-7 text-[var(--color-ink-soft)]">{whatBody}</p>
+    <ul class="mt-3 list-disc space-y-1 pl-5 text-sm text-[var(--color-muted)]">
+      <li>{zh ? '产品' : 'Product'}: <strong class="text-[var(--color-ink)]">{product}</strong></li>
+      <li>{zh ? '场景' : 'Scenario'}: {scenario}</li>
+      <li>{zh ? '分类' : 'Category'}: {catLabel}</li>
+    </ul>
+  </section>
+
+  <section class="mt-10" aria-labelledby="captured-h">
+    <h2 id="captured-h" class="text-xl font-semibold text-[var(--color-ink)]">{copy.capturedTitle}</h2>
+    <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-7 text-[var(--color-ink-soft)]">
+      {capturedBullets.map((b) => <li>{b}</li>)}
+    </ul>
+  </section>
+
+  <section class="mt-10" aria-labelledby="practice-h">
+    <h2 id="practice-h" class="text-xl font-semibold text-[var(--color-ink)]">{copy.practiceTitle}</h2>
+    <p class="mt-3 text-sm leading-7 text-[var(--color-ink-soft)]">{practiceBody}</p>
+    {(p.tools != null || p.tasks != null) && (
+      <div class="mt-4 overflow-x-auto">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>{zh ? '指标' : 'Metric'}</th>
+              <th>{zh ? '数值（HF note）' : 'Value (HF note)'}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{copy.metaTools}</td>
+              <td class="font-mono">{p.tools ?? '—'}</td>
+            </tr>
+            <tr>
+              <td>{copy.metaTasks}</td>
+              <td class="font-mono">{p.tasks ?? '—'}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    )}
+  </section>
+
+  {p.baselines.length > 0 && (
+    <section class="mt-10" aria-labelledby="base-h">
+      <h2 id="base-h" class="text-xl font-semibold text-[var(--color-ink)]">{copy.baselinesTitle}</h2>
+      <p class="mt-2 text-sm text-[var(--color-muted)]">{copy.baselinesNote}</p>
+      <div class="mt-4 overflow-x-auto">
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th>{zh ? '模型' : 'Model'}</th>
+              <th>{zh ? '分数' : 'Score'}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {p.baselines.map((b) => (
+              <tr>
+                <td class="font-mono text-sm">{b.model}</td>
+                <td class="font-mono text-sm">{b.score}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  )}
+
+  <section class="mt-10" aria-labelledby="relation-h">
+    <h2 id="relation-h" class="text-xl font-semibold text-[var(--color-ink)]">{copy.relationTitle}</h2>
+    <p class="mt-3 text-sm leading-7 text-[var(--color-ink-soft)]">{relationBody}</p>
+    <ol class="mt-4 space-y-3">
+      {(zh ? CHECKLIST.zh : CHECKLIST.en).map((step, i) => (
+        <li class="step-card">
+          <span class="step-num">{i + 1}</span>
+          <p class="!mb-0 !text-sm text-[var(--color-muted)]">{step}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="mt-10" aria-labelledby="license-h">
+    <h2 id="license-h" class="text-xl font-semibold text-[var(--color-ink)]">{copy.licenseTitle}</h2>
+    <p class="mt-3 text-sm leading-7 text-[var(--color-ink-soft)]">{licenseBody}</p>
+    <p class="mt-2 text-sm">
+      <a class="quiet-link" href={pathFor(lang, '/compliance/')}>{copy.compliance}</a>
+      {' · '}
+      <a class="quiet-link" href={pathFor(lang, '/faq/legal-boundary/')}>
+        {zh ? '合法边界' : 'Legal boundary'}
+      </a>
+    </p>
+  </section>
+
+  <section class="mt-10 rounded-xl border border-[var(--color-line)] p-5" aria-labelledby="next-h">
+    <h2 id="next-h" class="text-lg font-semibold text-[var(--color-ink)]">{copy.nextTitle}</h2>
+    <ul class="mt-3 list-disc space-y-2 pl-5 text-sm text-[var(--color-muted)]">
+      <li><a href={pathFor(lang, '/environments/')}>{copy.linkCatalog}</a></li>
+      <li><a href={agentenvBlogHref(lang)}>{copy.linkBlog}</a></li>
+      <li><a href={pathFor(lang, '/docs/install/')}>{copy.linkInstall}</a></li>
+      <li>
+        <a href={e.hfUrl} rel="noopener noreferrer" target="_blank">
+          {e.type === 'space' ? copy.openSpace : copy.openDataset}
+        </a>
+      </li>
+      <li>
+        <a href={pathFor(lang, '/faq/agentenv-hosting/')}>{copy.hostingFaq}</a>
+      </li>
+    </ul>
+
+    <h3 class="mt-6 text-base font-semibold text-[var(--color-ink)]">{copy.installH}</h3>
+    <p class="mt-2 text-sm text-[var(--color-muted)]">{copy.installP}</p>
+    <OfficialInstallNotice lang={lang} variant="brief" />
+  </section>
+
+  <section class="mt-10" aria-labelledby="note-h">
+    <h2 id="note-h" class="text-xl font-semibold text-[var(--color-ink)]">{copy.noteTitle}</h2>
+    <p class="mt-2 text-xs text-[var(--color-muted)]">{copy.noteCite}</p>
+    <p class="mt-3 text-sm leading-7 text-[var(--color-ink-soft)]">{e.note}</p>
+  </section>
+
+  {related.length > 0 && (
+    <section class="mt-10" aria-labelledby="same-h">
+      <p id="same-h" class="kicker">{copy.sameCat}</p>
+      <ul class="mt-3 space-y-2 text-sm">
+        {related.map((r) => (
+          <li>
+            <a href={pathFor(lang, `/environments/${r.slug}/`)}>{r.title}</a>
+            {r.parsed.productName && (
+              <span class="text-[var(--color-muted)]"> — {r.parsed.productName}</span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)]">
+    <p class="text-xs uppercase tracking-wider">{copy.attrTitle}</p>
+    <p class="mt-2">{copy.attrBody}</p>
+    <ol class="mt-4 list-decimal space-y-1 pl-5 text-xs">
+      <li><a href={e.hfUrl} rel="noopener noreferrer" target="_blank">{e.hfUrl}</a></li>
+      <li>
+        <a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">
+          {zh ? 'REA Environments on AgentEnv 合集' : 'REA Environments on AgentEnv collection'}
+        </a>
+      </li>
+      <li>
+        <a href={AGENTENV.space} rel="noopener noreferrer" target="_blank">
+          earakely-scale/rea-environments Space
+        </a>
+      </li>
+      <li><a href={agentenvBlogHref(lang)}>{copy.linkBlog}</a></li>
+    </ol>
+    <p class="mt-4 text-xs">
+      {copy.authOnly}{' '}
+      <a class="quiet-link" href={pathFor(lang, '/compliance/')}>{copy.compliance}</a>
+    </p>
+  </footer>
+</article>

@@ -7,6 +7,8 @@ import {
   CATEGORY_ORDER,
   CHECKLIST,
   ENVIRONMENTS,
+  INDEX_FAQ,
+  INDEX_INTRO,
   categoryCounts,
   formatLastModified,
   type EnvCategory,
@@ -17,22 +19,25 @@ const lang = 'en' as const;
 const counts = categoryCounts();
 const total = ENVIRONMENTS.length;
 const datasets = ENVIRONMENTS.filter((e) => e.type === 'dataset').length;
+const intro = INDEX_INTRO.en;
 ---
 <BaseLayout
   lang={lang}
-  title="Environments — REA → AgentEnv mirror catalog | rea.run"
-  description="Community mirror of 50+ REA-built AgentEnv replay environments on Hugging Face. Categories, tools, baselines, and deep links — datasets stay on HF."
+  title="Environments — REA → AgentEnv replay catalog | rea.run"
+  description="Community teaching mirror of 50+ REA-built AgentEnv dataset environments on Hugging Face: tools, retrieval tasks, baselines, licenses — parquet/HAR stay on HF."
   path="/environments/"
 >
   <div class="mx-auto max-w-6xl px-4 py-14">
     <header class="max-w-3xl">
       <p class="badge badge-accent">Catalog · mirror</p>
-      <h1 class="display mt-4 text-4xl sm:text-5xl">REA → AgentEnv environments</h1>
-      <p class="lede mt-4">
-        Thick on-site catalog of <strong class="text-[var(--color-ink)]">{datasets} dataset environments</strong>
-        (+ start-here Space) recorded and published on Hugging Face by {AGENTENV.publisher} using REA.
-        rea.run is a <strong class="text-[var(--color-ink)]">community mirror</strong> — not affiliated with Scale.
-        We do <em>not</em> host parquet/HAR files or the RL runtime.
+      <h1 class="display mt-4 text-4xl sm:text-5xl">{intro.h1}</h1>
+      <p class="lede mt-4">{intro.lede}</p>
+      <ul class="mt-4 list-disc space-y-1.5 pl-5 text-sm text-[var(--color-muted)]">
+        {intro.bullets.map((b) => <li>{b}</li>)}
+      </ul>
+      <p class="mt-4 text-sm text-[var(--color-ink-soft)]">
+        <strong class="text-[var(--color-ink)]">{datasets} dataset environments</strong>
+        (+ start-here Space) in this snapshot · {total} catalog rows.
       </p>
       <p class="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-sm">
         <a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">HF collection ↗</a>
@@ -41,6 +46,24 @@ const datasets = ENVIRONMENTS.filter((e) => e.type === 'dataset').length;
         <a href={pathFor(lang, '/faq/agentenv-rea/')}>What is AgentEnv + REA?</a>
       </p>
     </header>
+
+    <section class="mt-10 rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-5" aria-labelledby="faq-h">
+      <h2 id="faq-h" class="text-lg font-semibold text-[var(--color-ink)]">FAQ</h2>
+      <dl class="mt-4 space-y-4">
+        {INDEX_FAQ.map((item) => (
+          <div class="border-b border-[var(--color-line)] pb-4 last:border-0 last:pb-0">
+            <dt class="font-semibold text-[var(--color-ink)]">{item.q.en}</dt>
+            <dd class="mt-1.5 text-sm leading-7 text-[var(--color-muted)]">{item.a.en}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="mt-4 text-xs text-[var(--color-muted)]">
+        More:{' '}
+        <a class="quiet-link" href={pathFor(lang, '/faq/agentenv-hosting/')}>Hosting FAQ</a>
+        {' · '}
+        <a class="quiet-link" href={agentenvBlogHref(lang)}>Introducing AgentEnv</a>
+      </p>
+    </section>
 
     <section class="mt-10 rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-5" aria-labelledby="checklist-h">
       <h2 id="checklist-h" class="text-lg font-semibold text-[var(--color-ink)]">Authorized replay checklist</h2>
