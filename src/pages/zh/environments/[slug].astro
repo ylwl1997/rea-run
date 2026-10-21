@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import {
+  AGENTENV,
+  CATEGORY_LABEL,
+  CHECKLIST,
+  ENVIRONMENTS,
+  formatLastModified,
+  getEnvironment,
+  type EnvCategory,
+} from '../../../data/environments';
+import { pathFor } from '../../../lib/site';
+
+export function getStaticPaths() {
+  return ENVIRONMENTS.map((e) => ({ params: { slug: e.slug } }));
+}
+
+const e = getEnvironment(Astro.params.slug!);
+if (!e) throw new Error('missing environment');
+const p = e.parsed;
+const catLabel = CATEGORY_LABEL[e.category as EnvCategory].zh;
+const related = ENVIRONMENTS.filter((x) => x.category === e.category && x.slug !== e.slug).slice(0, 6);
+const desc =
+  p.summary ||
+  e.shortDescription ||
+  `${e.title} — rea.run 上的 REA AgentEnv 镜像。数据集在 Hugging Face。`;
+---
+<BaseLayout
+  lang="zh"
+  title={`${e.title} — AgentEnv 环境 | rea.run`}
+  description={desc.slice(0, 160)}
+  path={`/environments/${e.slug}/`}
+>
+  <article class="mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm">
+      <a class="quiet-link" href={pathFor('zh', '/environments/')}>← Environments</a>
+    </p>
+
+    <div class="mt-4 flex flex-wrap gap-2">
+      <span class="badge">{e.type === 'space' ? 'HF Space' : '数据集环境'}</span>
+      <span class="chip">{catLabel}</span>
+      {p.license && <span class="chip">{p.license}</span>}
+    </div>
+
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">{e.title}</h1>
+    <p class="lede mt-4 !max-w-none">
+      {p.summary || e.shortDescription || 'REA 构建的 AgentEnv 回放环境，镜像自 Hugging Face。'}
+    </p>
+
+    <div class="mt-6 rounded-xl border border-[var(--color-accent)]/30 bg-[var(--color-panel)] p-4 text-sm">
+      <p class="font-semibold text-[var(--color-ink)]">在 Hugging Face 打开</p>
+      <p class="mt-1 text-[var(--color-muted)]">
+        数据集与大型 HAR／parquet 留在 HF。本页只做教学镜像。
+      </p>
+      <p class="mt-3">
+        <a class="btn" href={e.hfUrl} rel="noopener noreferrer" target="_blank">
+          {e.type === 'space' ? '打开 HF Space ↗' : '打开 HF 数据集 ↗'}
+        </a>
+      </p>
+    </div>
+
+    <div class="showcase-meta-panel mt-8 grid gap-4 rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-4 text-sm sm:grid-cols-2">
+      <div class="space-y-1.5 text-[var(--color-muted)]">
+        <p class="text-xs uppercase tracking-wider text-[var(--color-ink-soft)]">录制目标</p>
+        <p>产品：<span class="text-[var(--color-ink)]">{p.productLine ?? '—'}</span></p>
+        <p>许可：<span class="text-[var(--color-ink)]">{p.license ?? '—'}</span></p>
+        <p>托管形态：<span class="text-[var(--color-ink)]">{p.hosting ?? '—'}</span></p>
+        <p>捕获方式：<span class="text-[var(--color-ink)]">{p.capture ?? '—'}</span></p>
+        <p>更新：<span class="text-[var(--color-ink)]">{formatLastModified(e.lastModified, 'zh')}</span> <span class="text-xs">（Asia/Shanghai）</span></p>
+      </div>
+      <div class="space-y-1.5 text-[var(--color-muted)]">
+        <p class="text-xs uppercase tracking-wider text-[var(--color-ink-soft)]">AgentEnv 指标</p>
+        <p>工具数：<span class="text-[var(--color-ink)] font-semibold">{p.tools ?? '—'}</span></p>
+        <p>检索任务：<span class="text-[var(--color-ink)] font-semibold">{p.tasks ?? '—'}</span></p>
+        <p>下载（HF 快照）：<span class="text-[var(--color-ink)]">{e.downloads ?? '—'}</span></p>
+        <p>点赞：<span class="text-[var(--color-ink)]">{e.likes ?? '—'}</span></p>
+        <p class="pt-1 font-mono text-xs break-all">id: {e.id}</p>
+      </div>
+    </div>
+
+    {p.baselines.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-xl font-semibold text-[var(--color-ink)]">模型基线</h2>
+        <p class="mt-2 text-sm text-[var(--color-muted)]">从 HF note 解析（检索任务分数）。</p>
+        <div class="mt-4 overflow-x-auto">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>模型</th>
+                <th>分数</th>
+              </tr>
+            </thead>
+            <tbody>
+              {p.baselines.map((b) => (
+                <tr>
+                  <td class="font-mono text-sm">{b.model}</td>
+                  <td class="font-mono text-sm">{b.score}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    )}
+
+    <section class="mt-10">
+      <h2 class="text-xl font-semibold text-[var(--color-ink)]">完整 note</h2>
+      <p class="mt-3 text-sm leading-7 text-[var(--color-ink-soft)]">{e.note}</p>
+    </section>
+
+    <section class="mt-10 rounded-xl border border-[var(--color-line)] p-5">
+      <h2 class="text-lg font-semibold text-[var(--color-ink)]">把捕获变成 AgentEnv 环境</h2>
+      <ol class="mt-4 space-y-3">
+        {CHECKLIST.zh.map((step, i) => (
+          <li class="step-card">
+            <span class="step-num">{i + 1}</span>
+            <p class="!mb-0 !text-sm text-[var(--color-muted)]">{step}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="mt-4 text-sm text-[var(--color-muted)]">
+        训练与评测在 AgentEnv + Hugging Face 上进行。rea.run 不托管运行时。
+        <a href={pathFor('zh', '/faq/agentenv-hosting/')}>托管 FAQ</a>
+      </p>
+    </section>
+
+    {related.length > 0 && (
+      <section class="mt-10">
+        <p class="kicker">同分类</p>
+        <ul class="mt-3 space-y-2 text-sm">
+          {related.map((r) => (
+            <li>
+              <a href={pathFor('zh', `/environments/${r.slug}/`)}>{r.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)]">
+      <p class="text-xs uppercase tracking-wider">来源说明</p>
+      <p class="mt-2">
+        环境由 {AGENTENV.publisher} 用 REA 在 Hugging Face 录制并发布。
+        rea.run 是社区镜像目录，与 Scale Labs 无关联。
+      </p>
+      <ol class="mt-4 list-decimal space-y-1 pl-5 text-xs">
+        <li><a href={e.hfUrl} rel="noopener noreferrer" target="_blank">{e.hfUrl}</a></li>
+        <li><a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">REA Environments on AgentEnv 合集</a></li>
+        <li><a href={AGENTENV.space} rel="noopener noreferrer" target="_blank">earakely-scale/rea-environments Space</a></li>
+        <li><a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Introducing AgentEnv（Scale Labs）</a></li>
+      </ol>
+      <p class="mt-4 text-xs">仅限授权使用。<a class="quiet-link" href={pathFor('zh', '/compliance/')}>合规</a></p>
+    </footer>
+  </article>
+</BaseLayout>

@@ -786,6 +786,15 @@ html.nav-open .burger-lines::after { top: 0; transform: rotate(-45deg); }
   color: var(--color-muted);
   background: var(--color-panel);
 }
+button.chip.is-filter {
+  cursor: pointer;
+  font: inherit;
+}
+button.chip.is-filter.is-on {
+  border-color: var(--color-accent);
+  color: var(--color-ink);
+  background: color-mix(in srgb, var(--color-accent) 14%, var(--color-panel));
+}
 
 /* --- Motion demos --- */
 .demo-shell {

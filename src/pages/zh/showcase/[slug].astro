@@ -5,6 +5,7 @@ import PercentDemo from '../../../components/showcase/PercentDemo.astro';
 import { getShowcase, publishedCases } from '../../../data/showcase';
 import { pathFor } from '../../../lib/site';
 import { renderBody } from '../../../lib/render';
+import AgentEnvCallout from '../../../components/AgentEnvCallout.astro';
 
 export function getStaticPaths() {
   return publishedCases().map((c) => ({ params: { slug: c.id } }));
@@ -121,6 +122,8 @@ const ghUrl = c.github?.url;
     )}
 
     <div class="prose-page mt-8" set:html={html} />
+
+    <AgentEnvCallout lang="zh" compact />
 
     {c.complianceZh && (
       <section class="mt-10 rounded-xl border border-[var(--color-line)] p-4 text-sm text-[var(--color-muted)]">

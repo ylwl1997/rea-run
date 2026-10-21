@@ -16,6 +16,13 @@ export const SITE = {
   gscVerification: 'zxsrPrghsvVVJ9bk7VaT1XI8xb-DNCbIvwvjTZ8UW4w',
   bingVerification: 'BAAF2C75632898C27CE0B8EF9179004C',
   ga4Id: 'G-0HSZFFGC6C',
+  agentenvBlog: 'https://labs.scale.com/blog/introducing-agentenv',
+  agentenvSpace: 'https://huggingface.co/spaces/earakely-scale/rea-environments',
+  agentenvCollection: 'https://huggingface.co/collections/earakely-scale/rea-environments-on-agentenv',
+  agentenvAttribution:
+    'Environments recorded & published on Hugging Face by earakely-scale (Scale Labs) using REA. rea.run is a community mirror catalog; not affiliated.',
+  agentenvAttributionZh:
+    '环境由 earakely-scale（Scale Labs）用 REA 在 Hugging Face 录制并发布。rea.run 是社区镜像目录，与 Scale 无关联。',
 } as const;
 
 export type Lang = 'en' | 'zh';
@@ -35,6 +42,7 @@ export const NAV = [
   { href: '/learn/what-is-reverse-engineering/', labelEn: 'What is RE', labelZh: '什么是逆向' },
   { href: '/examples/', labelEn: 'Examples', labelZh: '示例' },
   { href: '/showcase/', labelEn: 'Showcase', labelZh: '案例墙' },
+  { href: '/environments/', labelEn: 'Environments', labelZh: 'Environments' },
   { href: '/lab/', labelEn: 'Lab', labelZh: '实验室' },
   { href: '/docs/install/', labelEn: 'Install', labelZh: '安装' },
   { href: '/faq/', labelEn: 'FAQ', labelZh: 'FAQ' },

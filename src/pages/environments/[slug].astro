@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  AGENTENV,
+  CATEGORY_LABEL,
+  CHECKLIST,
+  ENVIRONMENTS,
+  formatLastModified,
+  getEnvironment,
+  type EnvCategory,
+} from '../../data/environments';
+import { pathFor } from '../../lib/site';
+
+export function getStaticPaths() {
+  return ENVIRONMENTS.map((e) => ({ params: { slug: e.slug } }));
+}
+
+const e = getEnvironment(Astro.params.slug!);
+if (!e) throw new Error('missing environment');
+const p = e.parsed;
+const catLabel = CATEGORY_LABEL[e.category as EnvCategory].en;
+const related = ENVIRONMENTS.filter((x) => x.category === e.category && x.slug !== e.slug).slice(0, 6);
+const desc =
+  p.summary ||
+  e.shortDescription ||
+  `${e.title} — REA AgentEnv mirror on rea.run. Dataset on Hugging Face.`;
+---
+<BaseLayout
+  lang="en"
+  title={`${e.title} — AgentEnv environment | rea.run`}
+  description={desc.slice(0, 160)}
+  path={`/environments/${e.slug}/`}
+>
+  <article class="mx-auto max-w-3xl px-4 py-14">
+    <p class="text-sm">
+      <a class="quiet-link" href={pathFor('en', '/environments/')}>← Environments</a>
+    </p>
+
+    <div class="mt-4 flex flex-wrap gap-2">
+      <span class="badge">{e.type === 'space' ? 'HF Space' : 'Dataset env'}</span>
+      <span class="chip">{catLabel}</span>
+      {p.license && <span class="chip">{p.license}</span>}
+    </div>
+
+    <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">{e.title}</h1>
+    <p class="lede mt-4 !max-w-none">
+      {p.summary || e.shortDescription || 'REA-built AgentEnv replay environment mirrored from Hugging Face.'}
+    </p>
+
+    <div class="mt-6 rounded-xl border border-[var(--color-accent)]/30 bg-[var(--color-panel)] p-4 text-sm">
+      <p class="font-semibold text-[var(--color-ink)]">Open on Hugging Face</p>
+      <p class="mt-1 text-[var(--color-muted)]">
+        Datasets and large HAR/parquet stay on HF. This page is a teaching mirror only.
+      </p>
+      <p class="mt-3">
+        <a class="btn" href={e.hfUrl} rel="noopener noreferrer" target="_blank">
+          {e.type === 'space' ? 'Open HF Space ↗' : 'Open HF dataset ↗'}
+        </a>
+      </p>
+    </div>
+
+    <div class="showcase-meta-panel mt-8 grid gap-4 rounded-xl border border-[var(--color-line)] bg-[var(--color-panel)] p-4 text-sm sm:grid-cols-2">
+      <div class="space-y-1.5 text-[var(--color-muted)]">
+        <p class="text-xs uppercase tracking-wider text-[var(--color-ink-soft)]">Recorded target</p>
+        <p>Product: <span class="text-[var(--color-ink)]">{p.productLine ?? '—'}</span></p>
+        <p>License: <span class="text-[var(--color-ink)]">{p.license ?? '—'}</span></p>
+        <p>Hosting: <span class="text-[var(--color-ink)]">{p.hosting ?? '—'}</span></p>
+        <p>Capture: <span class="text-[var(--color-ink)]">{p.capture ?? '—'}</span></p>
+        <p>Updated: <span class="text-[var(--color-ink)]">{formatLastModified(e.lastModified, 'en')}</span> <span class="text-xs">(Asia/Shanghai)</span></p>
+      </div>
+      <div class="space-y-1.5 text-[var(--color-muted)]">
+        <p class="text-xs uppercase tracking-wider text-[var(--color-ink-soft)]">AgentEnv metrics</p>
+        <p>Tools: <span class="text-[var(--color-ink)] font-semibold">{p.tools ?? '—'}</span></p>
+        <p>Retrieval tasks: <span class="text-[var(--color-ink)] font-semibold">{p.tasks ?? '—'}</span></p>
+        <p>Downloads (HF snapshot): <span class="text-[var(--color-ink)]">{e.downloads ?? '—'}</span></p>
+        <p>Likes: <span class="text-[var(--color-ink)]">{e.likes ?? '—'}</span></p>
+        <p class="pt-1 font-mono text-xs break-all">id: {e.id}</p>
+      </div>
+    </div>
+
+    {p.baselines.length > 0 && (
+      <section class="mt-10">
+        <h2 class="text-xl font-semibold text-[var(--color-ink)]">Model baselines</h2>
+        <p class="mt-2 text-sm text-[var(--color-muted)]">Parsed from the HF note (retrieval task scores).</p>
+        <div class="mt-4 overflow-x-auto">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Model</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {p.baselines.map((b) => (
+                <tr>
+                  <td class="font-mono text-sm">{b.model}</td>
+                  <td class="font-mono text-sm">{b.score}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    )}
+
+    <section class="mt-10">
+      <h2 class="text-xl font-semibold text-[var(--color-ink)]">Full note</h2>
+      <p class="mt-3 text-sm leading-7 text-[var(--color-ink-soft)]">{e.note}</p>
+    </section>
+
+    <section class="mt-10 rounded-xl border border-[var(--color-line)] p-5">
+      <h2 class="text-lg font-semibold text-[var(--color-ink)]">Turn a capture into an AgentEnv env</h2>
+      <ol class="mt-4 space-y-3">
+        {CHECKLIST.en.map((step, i) => (
+          <li class="step-card">
+            <span class="step-num">{i + 1}</span>
+            <p class="!mb-0 !text-sm text-[var(--color-muted)]">{step}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="mt-4 text-sm text-[var(--color-muted)]">
+        Training and eval run on AgentEnv + Hugging Face. rea.run does not host the runtime.
+        <a href={pathFor('en', '/faq/agentenv-hosting/')}>Hosting FAQ</a>
+      </p>
+    </section>
+
+    {related.length > 0 && (
+      <section class="mt-10">
+        <p class="kicker">Same category</p>
+        <ul class="mt-3 space-y-2 text-sm">
+          {related.map((r) => (
+            <li>
+              <a href={pathFor('en', `/environments/${r.slug}/`)}>{r.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)]">
+      <p class="text-xs uppercase tracking-wider">Attribution</p>
+      <p class="mt-2">
+        Environments recorded &amp; published on Hugging Face by {AGENTENV.publisher} using REA.
+        rea.run is a community mirror catalog; not affiliated with Scale Labs.
+      </p>
+      <ol class="mt-4 list-decimal space-y-1 pl-5 text-xs">
+        <li><a href={e.hfUrl} rel="noopener noreferrer" target="_blank">{e.hfUrl}</a></li>
+        <li><a href={AGENTENV.collection} rel="noopener noreferrer" target="_blank">REA Environments on AgentEnv collection</a></li>
+        <li><a href={AGENTENV.space} rel="noopener noreferrer" target="_blank">earakely-scale/rea-environments Space</a></li>
+        <li><a href={AGENTENV.blog} rel="noopener noreferrer" target="_blank">Introducing AgentEnv (Scale Labs)</a></li>
+      </ol>
+      <p class="mt-4 text-xs">Authorized use only. <a class="quiet-link" href={pathFor('en', '/compliance/')}>Compliance</a></p>
+    </footer>
+  </article>
+</BaseLayout>
