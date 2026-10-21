@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { faqPageSchema } from '../../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: '这台机器能分析什么？', answer: '原生、JS、Android/JADX、固件与浏览器分析的宿主能力矩阵。' },
+]);
 ---
 <BaseLayout
   lang="zh"
   title="这台机器能分析什么？| rea.run"
   description="原生、JS、Android/JADX、固件与浏览器分析的宿主能力矩阵。"
   path="/faq/what-can-i-analyze/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>

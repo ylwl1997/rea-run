@@ -2,12 +2,17 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { AGENTENV, agentenvBlogHref } from '../../data/environments';
 import { pathFor } from '../../lib/site';
+import { faqPageSchema } from '../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: 'Do you host the AgentEnv RL environments?', answer: 'rea.run hosts a mirror catalog with outbound HF links. Datasets stay on Hugging Face; runtime is AgentEnv — not Pages.' },
+]);
 ---
 <BaseLayout
   lang="en"
   title="Do you host the AgentEnv RL environments? FAQ | rea.run"
   description="rea.run hosts a mirror catalog with outbound HF links. Datasets stay on Hugging Face; runtime is AgentEnv — not Pages."
   path="/faq/agentenv-hosting/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/faq/">← FAQ hub</a></p>

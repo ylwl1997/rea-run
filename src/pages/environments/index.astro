@@ -14,18 +14,33 @@ import {
   type EnvCategory,
 } from '../../data/environments';
 import { pathFor } from '../../lib/site';
+import { itemListSchema } from '../../lib/schema';
 
 const lang = 'en' as const;
 const counts = categoryCounts();
 const total = ENVIRONMENTS.length;
 const datasets = ENVIRONMENTS.filter((e) => e.type === 'dataset').length;
 const intro = INDEX_INTRO.en;
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Environments', path: '/environments/' },
+];
+const listSchema = itemListSchema(
+  lang,
+  'REA → AgentEnv environments',
+  ENVIRONMENTS.filter((e) => e.type === 'dataset').map((e) => ({
+    name: e.slug,
+    path: `/environments/${e.slug}/`,
+  })),
+);
 ---
 <BaseLayout
   lang={lang}
   title="Environments — REA → AgentEnv replay catalog | rea.run"
   description="Community teaching mirror of 50+ REA-built AgentEnv dataset environments on Hugging Face: tools, retrieval tasks, baselines, licenses — parquet/HAR stay on HF."
   path="/environments/"
+  breadcrumbs={crumbs}
+  schema={listSchema}
 >
   <div class="mx-auto max-w-6xl px-4 py-14">
     <header class="max-w-3xl">

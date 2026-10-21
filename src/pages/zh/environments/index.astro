@@ -15,18 +15,33 @@ import {
   type EnvCategory,
 } from '../../../data/environments';
 import { pathFor } from '../../../lib/site';
+import { itemListSchema } from '../../../lib/schema';
 
 const lang = 'zh' as const;
 const counts = categoryCounts();
 const total = ENVIRONMENTS.length;
 const datasets = ENVIRONMENTS.filter((e) => e.type === 'dataset').length;
 const intro = INDEX_INTRO.zh;
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: '环境', path: '/environments/' },
+];
+const listSchema = itemListSchema(
+  lang,
+  'REA → AgentEnv 环境',
+  ENVIRONMENTS.filter((e) => e.type === 'dataset').map((e) => ({
+    name: e.slug,
+    path: `/environments/${e.slug}/`,
+  })),
+);
 ---
 <BaseLayout
   lang={lang}
   title="环境 — REA → AgentEnv 回放目录 | rea.run"
-  description="Hugging Face 上 50+ REA 构建的 AgentEnv 数据集环境社区教学镜像：工具、检索任务、基线、许可——parquet／HAR 仍在 HF。"
+  description="Hugging Face 上 50+ 个用 REA 构建的 AgentEnv 数据集环境社区教学镜像：分类浏览、MCP 工具与检索任务、模型基线与许可说明——parquet／HAR 仍留在 HF，本站不托管运行时。"
   path="/environments/"
+  breadcrumbs={crumbs}
+  schema={listSchema}
 >
   <div class="mx-auto max-w-6xl px-4 py-14">
     <header class="max-w-3xl">

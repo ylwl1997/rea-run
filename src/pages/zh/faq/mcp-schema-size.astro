@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { faqPageSchema } from '../../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: 'MCP tools schema 体积与严格客户端', answer: '巨大的 tools/list 与单 schema 上限——升级与客户端选择。' },
+]);
 ---
 <BaseLayout
   lang="zh"
   title="MCP tools schema 体积与严格客户端 | rea.run"
   description="巨大的 tools/list 与单 schema 上限——升级与客户端选择。"
   path="/faq/mcp-schema-size/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>

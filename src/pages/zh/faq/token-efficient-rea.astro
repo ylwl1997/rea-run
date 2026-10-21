@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { faqPageSchema } from '../../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: '省 token 的 REA：合适大小的 Evidence', answer: '讨论 #1958 实践清单：有界提问、保留 Evidence、摘要／选定视图、compact schema——提效但不编造发现。' },
+]);
 ---
 <BaseLayout
   lang="zh"
   title="省 token 的 REA：合适大小的 Evidence | rea.run"
   description="讨论 #1958 实践清单：有界提问、保留 Evidence、摘要／选定视图、compact schema——提效但不编造发现。"
   path="/faq/token-efficient-rea/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>

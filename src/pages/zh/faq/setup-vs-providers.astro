@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { faqPageSchema } from '../../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: 'setup 会安装 Ghidra／Hopper／IDA 吗？', answer: 'REA setup 注册 MCP，并可能在批准后协助 Hopper——Ghidra／IDA 仍是自备已有安装。社区辟谣 FAQ。' },
+]);
 ---
 <BaseLayout
   lang="zh"
   title="setup 会安装 Ghidra／Hopper／IDA 吗？ | rea.run"
   description="REA setup 注册 MCP，并可能在批准后协助 Hopper——Ghidra／IDA 仍是自备已有安装。社区辟谣 FAQ。"
   path="/faq/setup-vs-providers/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>

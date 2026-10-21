@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { faqPageSchema } from '../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: 'Large Electron/ASAR & JS graph timeouts', answer: 'Silent ASAR analysis, RangeError on huge graphs, MCP ping blocked — how to stage work.' },
+]);
 ---
 <BaseLayout
   lang="en"
   title="Large Electron/ASAR & JS graph timeouts | rea.run"
   description="Silent ASAR analysis, RangeError on huge graphs, MCP ping blocked — how to stage work."
   path="/faq/electron-asar-timeouts/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/faq/">← FAQ hub</a></p>

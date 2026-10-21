@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { faqPageSchema } from '../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: 'macOS Ghidra 12.1.4 native decompiler missing', answer: 'Ghidra 12.1.4 PUBLIC ships linux/win decompilers only — macOS doctor reports native_decompiler missing; community make ghidra_opt recipe. BYO toolchain.' },
+]);
 ---
 <BaseLayout
   lang="en"
   title="macOS Ghidra 12.1.4 native decompiler missing | rea.run"
   description="Ghidra 12.1.4 PUBLIC ships linux/win decompilers only — macOS doctor reports native_decompiler missing; community make ghidra_opt recipe. BYO toolchain."
   path="/faq/macos-ghidra-decompiler/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/faq/">← FAQ hub</a></p>

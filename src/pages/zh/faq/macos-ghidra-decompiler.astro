@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { faqPageSchema } from '../../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: 'macOS 上 Ghidra 12.1.4 缺少原生反编译器', answer: 'Ghidra 12.1.4 PUBLIC 常只带 linux／win 反编译器——macOS doctor 报 native_decompiler 缺失；社区 make ghidra_opt 配方。自备工具链。' },
+]);
 ---
 <BaseLayout
   lang="zh"
   title="macOS 上 Ghidra 12.1.4 缺少原生反编译器 | rea.run"
   description="Ghidra 12.1.4 PUBLIC 常只带 linux／win 反编译器——macOS doctor 报 native_decompiler 缺失；社区 make ghidra_opt 配方。自备工具链。"
   path="/faq/macos-ghidra-decompiler/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>

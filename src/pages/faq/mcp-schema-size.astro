@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { faqPageSchema } from '../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: 'MCP tool schema size vs strict clients', answer: 'Huge tools/list payloads and providers with per-schema caps — upgrade and client choices.' },
+]);
 ---
 <BaseLayout
   lang="en"
   title="MCP tool schema size vs strict clients | rea.run"
   description="Huge tools/list payloads and providers with per-schema caps — upgrade and client choices."
   path="/faq/mcp-schema-size/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/faq/">← FAQ hub</a></p>

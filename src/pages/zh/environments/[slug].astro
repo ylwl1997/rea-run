@@ -7,6 +7,7 @@ import {
   leadFor,
   pageTitleFor,
 } from '../../../data/environments';
+import { softwareApplicationSchema } from '../../../lib/schema';
 
 export function getStaticPaths() {
   return ENVIRONMENTS.map((e) => ({ params: { slug: e.slug } }));
@@ -15,12 +16,25 @@ export function getStaticPaths() {
 const e = getEnvironment(Astro.params.slug!);
 if (!e) throw new Error('missing environment');
 const lead = leadFor(e, 'zh');
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: '环境', path: '/environments/' },
+  { name: e.slug, path: `/environments/${e.slug}/` },
+];
+const appSchema = softwareApplicationSchema({
+  lang: 'zh',
+  path: `/environments/${e.slug}/`,
+  name: e.slug,
+  description: lead.slice(0, 300),
+});
 ---
 <BaseLayout
   lang="zh"
   title={pageTitleFor(e, 'zh')}
   description={lead.slice(0, 160)}
   path={`/environments/${e.slug}/`}
+  breadcrumbs={crumbs}
+  schema={appSchema}
 >
   <EnvironmentDetail lang="zh" entry={e} />
 </BaseLayout>

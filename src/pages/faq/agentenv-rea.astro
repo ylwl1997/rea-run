@@ -2,12 +2,38 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { AGENTENV, CHECKLIST, agentenvBlogHref } from '../../data/environments';
 import { pathFor } from '../../lib/site';
+import { faqPageSchema } from '../../lib/schema';
+
+const faqSchema = faqPageSchema([
+  {
+    question: 'What is AgentEnv + REA?',
+    answer:
+      'REA records authorized browser sessions / HAR. Scale AgentEnv turns those captures into RL-style environments and exposes replay as MCP tools. earakely-scale published 50+ such environments on Hugging Face. rea.run mirrors that catalog for community teaching — not the runtime.',
+  },
+  {
+    question: 'Does rea.run host AgentEnv or the RL runtime?',
+    answer:
+      'No. rea.run is a teaching mirror catalog with HTML index and detail pages that deep-link to Hugging Face. Parquet, HAR, and the AgentEnv runner stay off this site.',
+  },
+  {
+    question: 'Where should I start?',
+    answer:
+      'Authorize the target, install REA, browse the Environments catalog on rea.run, then open the Hugging Face collection or Space for artifacts. See the AgentEnv FAQ hosting page if you need the “we do not host” clarification.',
+  },
+]);
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'FAQ', path: '/faq/' },
+  { name: 'AgentEnv + REA', path: '/faq/agentenv-rea/' },
+];
 ---
 <BaseLayout
   lang="en"
   title="What is AgentEnv + REA? FAQ | rea.run"
   description="REA records authorized browser sessions; Scale AgentEnv exposes replay as MCP tools. rea.run mirrors the HF catalog."
   path="/faq/agentenv-rea/"
+  breadcrumbs={crumbs}
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/faq/">← FAQ hub</a></p>

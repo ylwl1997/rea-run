@@ -2,6 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { BLOG_POSTS, getPost } from '../../../data/blog';
 import { renderBody } from '../../../lib/render';
+import { articleSchema } from '../../../lib/schema';
 
 export function getStaticPaths() {
   return BLOG_POSTS.map((p) => ({ params: { slug: p.slug } }));
@@ -10,8 +11,21 @@ export function getStaticPaths() {
 const post = getPost(Astro.params.slug!);
 if (!post) throw new Error('missing post');
 const html = renderBody(post.zh.body);
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: '博客', path: '/blog/' },
+  { name: post.zh.title, path: `/blog/${post.slug}/` },
+];
+const article = articleSchema({
+  lang: 'zh',
+  path: `/blog/${post.slug}/`,
+  headline: post.zh.title,
+  description: post.zh.description,
+  datePublished: post.date,
+  image: post.cover?.src,
+});
 ---
-<BaseLayout lang="zh" title={`${post.zh.title} | rea.run`} description={post.zh.description} path={`/blog/${post.slug}/`} image={post.cover?.src}>
+<BaseLayout lang="zh" title={`${post.zh.title} | rea.run`} description={post.zh.description} path={`/blog/${post.slug}/`} image={post.cover?.src} ogType="article" breadcrumbs={crumbs} schema={article}>
   <article class="prose-page mx-auto max-w-3xl px-4 py-12">
     <p class="badge">{post.date}</p>
     <h1 class="mt-3 text-3xl font-semibold tracking-tight text-[var(--color-ink)]">{post.zh.h1}</h1>

@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { SITE, pathFor } from '../../lib/site';
 import { EXAMPLES } from '../../data/examples';
 const lang = 'zh' as const;
+const homeCrumbs = [{ name: '首页', path: '/' }];
 const featured = EXAMPLES.slice(0, 2);
 const agentPrompt =
   '用 npx rea-agents@latest setup 为当前智能体安装并连接 REA。先展示 setup 计划供我批准，再验证 MCP 连接。只分析我有权检查的目标。';
@@ -12,8 +13,9 @@ const puzzlePrompt =
 <BaseLayout
   lang={lang}
   title="rea.run — REA（Reverse Engineer Anything）中英社区指南"
-  description="REA 开源 MCP/CLI 的中英双语社区文档：安装、示例、什么是逆向、对比。"
+  description="REA（Reverse Engineer Anything）开源 MCP／CLI 的中英双语社区指南：安装与 doctor、教学示例、AgentEnv 环境目录、FAQ 与案例墙。仅限合法、已授权的逆向与安全研究。"
   path="/"
+  breadcrumbs={homeCrumbs}
 >
   <section class="mx-auto max-w-6xl px-4 pb-8 pt-14">
     <div class="reveal">
@@ -203,6 +205,20 @@ const puzzlePrompt =
         </dl>
         <a class="mt-5 inline-block font-semibold no-underline hover:underline" href={pathFor(lang, `/examples/${featured[1].slug}/`)}>打开示例 →</a>
       </article>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-12" aria-labelledby="zh-home-agentenv">
+    <p class="kicker">AgentEnv</p>
+    <h2 id="zh-home-agentenv" class="display mt-2 text-3xl max-w-3xl">REA 捕获 → AgentEnv 回放目录</h2>
+    <p class="lede mt-4">
+      Scale Labs 在 Hugging Face 发布了 50+ 个用 REA 构建的回放环境。
+      rea.run 提供社区教学镜像目录——不托管 RL 运行时。
+    </p>
+    <div class="cta-row mt-5">
+      <a class="btn" href={pathFor(lang, '/faq/agentenv-rea/')}>什么是 AgentEnv + REA？</a>
+      <a class="btn-secondary" href={pathFor(lang, '/environments/')}>浏览环境</a>
+      <a class="btn-secondary" href={pathFor(lang, '/blog/agentenv-rea/')}>AgentEnv 介绍</a>
     </div>
   </section>
 

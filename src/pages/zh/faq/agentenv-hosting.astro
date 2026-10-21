@@ -2,12 +2,17 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { AGENTENV, agentenvBlogHref } from '../../../data/environments';
 import { pathFor } from '../../../lib/site';
+import { faqPageSchema } from '../../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: '你们托管 AgentEnv RL 环境吗？', answer: 'rea.run 只做镜像目录与 HF 外链。数据集在 Hugging Face；运行时是 AgentEnv——不在 Pages。' },
+]);
 ---
 <BaseLayout
   lang="zh"
   title="你们托管 AgentEnv RL 环境吗？FAQ | rea.run"
   description="rea.run 只做镜像目录与 HF 外链。数据集在 Hugging Face；运行时是 AgentEnv——不在 Pages。"
   path="/faq/agentenv-hosting/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>

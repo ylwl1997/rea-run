@@ -3,6 +3,13 @@ import '../styles/global.css';
 import BrandLogo from '../components/BrandLogo.astro';
 import HeaderSocial from '../components/HeaderSocial.astro';
 import { SITE, type Lang, pathFor, NAV, agentenvBlogHref } from '../lib/site';
+import {
+  organizationSchema,
+  websiteSchema,
+  breadcrumbList,
+  graphDocument,
+  type Crumb,
+} from '../lib/schema';
 
 interface Props {
   lang?: Lang;
@@ -10,11 +17,27 @@ interface Props {
   description: string;
   path: string;
   noindex?: boolean;
-  /** Site-relative image path, e.g. `/media/blog/cover.jpg`. */
+  /** Site-relative image path, e.g. `/media/blog/cover.jpg`. Defaults to brand OG. */
   image?: string;
+  /** Extra schema.org nodes (FAQPage, Article, ItemList, SoftwareApplication, …). */
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+  /** Hub / detail breadcrumbs (Home → …). */
+  breadcrumbs?: Crumb[];
+  ogType?: 'website' | 'article';
 }
-const { lang = 'en', title, description, path, noindex = false, image } = Astro.props;
-const imageUrl = image ? new URL(image, SITE.url).href : undefined;
+const {
+  lang = 'en',
+  title,
+  description,
+  path,
+  noindex = false,
+  image,
+  schema,
+  breadcrumbs,
+  ogType = 'website',
+} = Astro.props;
+const defaultOg = '/brand/og-default.png';
+const imageUrl = new URL(image || defaultOg, SITE.url).href;
 const canonical = new URL(pathFor(lang, path), SITE.url).href;
 const enUrl = new URL(pathFor('en', path), SITE.url).href;
 const zhUrl = new URL(pathFor('zh', path), SITE.url).href;
@@ -24,6 +47,14 @@ const isActive = (href: string) => {
   if (href === '/') return path === '/';
   return path === href || path.startsWith(href);
 };
+
+const extraNodes = schema ? (Array.isArray(schema) ? schema : [schema]) : [];
+const jsonLd = graphDocument([
+  organizationSchema(),
+  websiteSchema(lang),
+  ...(breadcrumbs?.length ? [breadcrumbList(lang, breadcrumbs)] : []),
+  ...extraNodes,
+]);
 ---
 <!doctype html>
 <html lang={lang === 'zh' ? 'zh-CN' : 'en'}>
@@ -37,14 +68,20 @@ const isActive = (href: string) => {
     <link rel="alternate" hreflang="en" href={enUrl} />
     <link rel="alternate" hreflang="zh-CN" href={zhUrl} />
     <link rel="alternate" hreflang="x-default" href={enUrl} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    {imageUrl && <meta property="og:image" content={imageUrl} />}
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${SITE.name} — community guide to REA`} />
     <meta name="twitter:card" content="summary_large_image" />
-    {imageUrl && <meta name="twitter:image" content={imageUrl} />}
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     {SITE.gscVerification && <meta name="google-site-verification" content={SITE.gscVerification} />}
     {SITE.bingVerification && <meta name="msvalidate.01" content={SITE.bingVerification} />}
     {SITE.ga4Id && (

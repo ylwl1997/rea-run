@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { faqPageSchema } from '../../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: '大型 Electron／ASAR 与 JS 图超时', answer: 'ASAR 长时间无输出、超大图 RangeError、MCP ping 被堵——如何分阶段。' },
+]);
 ---
 <BaseLayout
   lang="zh"
   title="大型 Electron／ASAR 与 JS 图超时 | rea.run"
   description="ASAR 长时间无输出、超大图 RangeError、MCP ping 被堵——如何分阶段。"
   path="/faq/electron-asar-timeouts/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>

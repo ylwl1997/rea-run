@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { faqPageSchema } from '../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: 'Legal use boundary', answer: 'Authorization defaults, no unauthorized commercial how-tos, clean-room vs closed apps.' },
+]);
 ---
 <BaseLayout
   lang="en"
   title="Legal use boundary FAQ | rea.run"
   description="Authorization defaults, no unauthorized commercial how-tos, clean-room vs closed apps."
   path="/faq/legal-boundary/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/faq/">← FAQ hub</a></p>

@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { faqPageSchema } from '../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: 'TMPDIR / hidden-directory pitfalls', answer: 'Ghidra headless can reject project paths when TMPDIR contains a dot-prefixed segment.' },
+]);
 ---
 <BaseLayout
   lang="en"
   title="TMPDIR / hidden-directory pitfalls | rea.run"
   description="Ghidra headless can reject project paths when TMPDIR contains a dot-prefixed segment."
   path="/faq/tmpdir-dot-path/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/faq/">← FAQ hub</a></p>

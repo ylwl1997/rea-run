@@ -2,14 +2,21 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { FAQ_LINKS } from '../../../data/faqIndex';
 import { pathFor } from '../../../lib/site';
+import { faqPageSchema } from '../../../lib/schema';
 const lang = 'zh' as const;
 const groups = ['P0', 'P1', 'P2'] as const;
+const crumbs = [{ name: '首页', path: '/' }, { name: 'FAQ', path: '/faq/' }];
+const faqSchema = faqPageSchema(
+  FAQ_LINKS.map((l) => ({ question: l.zh.title, answer: l.zh.blurb })),
+);
 ---
 <BaseLayout
   lang={lang}
   title="FAQ — REA 安装、平台与边界 | rea.run"
-  description="中英 FAQ 枢纽：MCP 客户端、Windows Ghidra、TMPDIR、能力矩阵、合法边界、大二进制、Electron/ASAR、schema 体积。"
+  description="REA 中英 FAQ 枢纽：MCP 客户端矩阵、Windows／macOS Ghidra、TMPDIR 坑、能力范围、合法边界、大二进制与 Electron／ASAR、schema 体积，以及 AgentEnv 相关问答。"
   path="/faq/"
+  breadcrumbs={crumbs}
+  schema={faqSchema}
 >
   <div class="mx-auto max-w-5xl px-4 py-14">
     <p class="badge badge-accent">FAQ</p>

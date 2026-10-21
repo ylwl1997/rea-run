@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { faqPageSchema } from '../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: 'Token-efficient REA: right-sized Evidence', answer: 'Practical checklist from discussion #1958: bounded queries, retain Evidence, summaries/selected views, compact schema — efficiency without fabricating findings.' },
+]);
 ---
 <BaseLayout
   lang="en"
   title="Token-efficient REA: right-sized Evidence | rea.run"
   description="Practical checklist from discussion #1958: bounded queries, retain Evidence, summaries/selected views, compact schema — efficiency without fabricating findings."
   path="/faq/token-efficient-rea/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/faq/">← FAQ hub</a></p>

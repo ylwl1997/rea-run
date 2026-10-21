@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { faqPageSchema } from '../../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: '合法使用边界', answer: '授权默认、不提供未授权商业逆向教程、净室与闭源边界。' },
+]);
 ---
 <BaseLayout
   lang="zh"
   title="合法使用边界 FAQ | rea.run"
   description="授权默认、不提供未授权商业逆向教程、净室与闭源边界。"
   path="/faq/legal-boundary/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>

@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { faqPageSchema } from '../../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: '按域拆分 REA MCP 工具目录的代理', answer: '用 stdio 过滤代理按域组裁剪 REA 的大型 tools/list——schema 体积 FAQ 的配套页。' },
+]);
 ---
 <BaseLayout
   lang="zh"
   title="按域拆分 REA MCP 工具目录的代理 | rea.run"
   description="用 stdio 过滤代理按域组裁剪 REA 的大型 tools/list——schema 体积 FAQ 的配套页。"
   path="/faq/mcp-domain-split/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>

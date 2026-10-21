@@ -2,12 +2,38 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { AGENTENV, CHECKLIST, agentenvBlogHref } from '../../../data/environments';
 import { pathFor } from '../../../lib/site';
+import { faqPageSchema } from '../../../lib/schema';
+
+const faqSchema = faqPageSchema([
+  {
+    question: '什么是 AgentEnv + REA？',
+    answer:
+      'REA 可对你有权分析的目标录制浏览器会话／HAR。Scale AgentEnv 把这些捕获变成类 RL 环境，并以 MCP 工具暴露回放。earakely-scale（Scale Labs）在 Hugging Face 发布了 50+ 此类环境。rea.run 为社区教学镜像该目录——不是运行时。',
+  },
+  {
+    question: 'rea.run 托管 AgentEnv 或 RL 运行时吗？',
+    answer:
+      '不。rea.run 是教学镜像目录，提供 HTML 索引与详情页并深链到 Hugging Face。parquet、HAR 与 AgentEnv runner 不在本站。',
+  },
+  {
+    question: '建议从哪里开始？',
+    answer:
+      '先授权目标，安装 REA，浏览 rea.run 环境目录，再到 Hugging Face 合集或 Space 获取产物。若需「我们不托管」说明，见托管 FAQ。',
+  },
+]);
+const crumbs = [
+  { name: '首页', path: '/' },
+  { name: 'FAQ', path: '/faq/' },
+  { name: 'AgentEnv + REA', path: '/faq/agentenv-rea/' },
+];
 ---
 <BaseLayout
   lang="zh"
   title="什么是 AgentEnv + REA？FAQ | rea.run"
-  description="REA 录制授权浏览器会话；Scale AgentEnv 把回放暴露为 MCP 工具。rea.run 镜像 HF 目录。"
+  description="REA 录制授权浏览器会话；Scale AgentEnv 把回放暴露为 MCP 工具。rea.run 镜像 HF 上的 AgentEnv 环境目录，不托管 RL 运行时。"
   path="/faq/agentenv-rea/"
+  breadcrumbs={crumbs}
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/zh/faq/">← FAQ 枢纽</a></p>

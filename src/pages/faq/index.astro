@@ -2,14 +2,21 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { FAQ_LINKS } from '../../data/faqIndex';
 import { pathFor } from '../../lib/site';
+import { faqPageSchema } from '../../lib/schema';
 const lang = 'en' as const;
 const groups = ['P0', 'P1', 'P2'] as const;
+const crumbs = [{ name: 'Home', path: '/' }, { name: 'FAQ', path: '/faq/' }];
+const faqSchema = faqPageSchema(
+  FAQ_LINKS.map((l) => ({ question: l.en.title, answer: l.en.blurb })),
+);
 ---
 <BaseLayout
   lang={lang}
   title="FAQ — REA install, platforms, boundaries | rea.run"
   description="Bilingual FAQ hub: MCP clients, Windows Ghidra, TMPDIR pitfalls, capability matrix, legal boundary, large binaries, Electron/ASAR, schema size."
   path="/faq/"
+  breadcrumbs={crumbs}
+  schema={faqSchema}
 >
   <div class="mx-auto max-w-5xl px-4 py-14">
     <p class="badge badge-accent">FAQ</p>

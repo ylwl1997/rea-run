@@ -1,11 +1,16 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { faqPageSchema } from '../../lib/schema';
+const faqSchema = faqPageSchema([
+  { question: 'Does setup install Ghidra, Hopper, or IDA?', answer: 'REA setup registers MCP and may offer Hopper with approval — Ghidra/IDA stay bring-your-own existing installs. Mythbust for community questions.' },
+]);
 ---
 <BaseLayout
   lang="en"
   title="Does setup install Ghidra, Hopper, or IDA? | rea.run"
   description="REA setup registers MCP and may offer Hopper with approval — Ghidra/IDA stay bring-your-own existing installs. Mythbust for community questions."
   path="/faq/setup-vs-providers/"
+  schema={faqSchema}
 >
   <article class="prose-page mx-auto max-w-3xl px-4 py-14">
     <p class="text-sm"><a class="quiet-link" href="/faq/">← FAQ hub</a></p>

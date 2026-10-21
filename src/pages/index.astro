@@ -3,13 +3,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE, pathFor } from '../lib/site';
 import { EXAMPLES } from '../data/examples';
 const lang = 'en' as const;
+const homeCrumbs = [{ name: 'Home', path: '/' }];
 const featured = EXAMPLES.slice(0, 2);
 const agentPrompt =
   'Install REA for this agent with npx rea-agents@latest setup. Show the setup plan for my approval, then verify the MCP connection. Use only targets I am authorized to analyze.';
 const puzzlePrompt =
   'Use REA on /abs/path/to/our-job-runner. Why do retries wait 1s, 2s, then 4s and stop? Show the delay function and limits. Do not modify files.';
 ---
-<BaseLayout lang={lang} title={SITE.titleDefault} description={SITE.descriptionDefault} path="/">
+<BaseLayout lang={lang} title={SITE.titleDefault} description={SITE.descriptionDefault} path="/" breadcrumbs={homeCrumbs}>
   <section class="mx-auto max-w-6xl px-4 pb-8 pt-14">
     <div class="reveal">
       <p class="badge badge-accent mb-5">Community guide</p>
@@ -201,6 +202,20 @@ const puzzlePrompt =
         </dl>
         <a class="mt-5 inline-block font-semibold no-underline hover:underline" href={pathFor(lang, `/examples/${featured[1].slug}/`)}>Open example →</a>
       </article>
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-4 py-12" aria-labelledby="home-agentenv">
+    <p class="kicker">AgentEnv</p>
+    <h2 id="home-agentenv" class="display mt-2 text-3xl max-w-3xl">REA captures → AgentEnv replay catalog</h2>
+    <p class="lede mt-4">
+      Scale Labs publishes 50+ REA-built replay environments on Hugging Face.
+      rea.run mirrors the catalog for teaching — not the RL runtime.
+    </p>
+    <div class="cta-row mt-5">
+      <a class="btn" href={pathFor(lang, '/faq/agentenv-rea/')}>What is AgentEnv + REA?</a>
+      <a class="btn-secondary" href={pathFor(lang, '/environments/')}>Browse environments</a>
+      <a class="btn-secondary" href={pathFor(lang, '/blog/agentenv-rea/')}>Introducing AgentEnv</a>
     </div>
   </section>
 

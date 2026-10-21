@@ -5,12 +5,14 @@ import { pathFor } from '../../../lib/site';
 import AgentEnvCallout from '../../../components/AgentEnvCallout.astro';
 const lang = 'zh' as const;
 const live = publishedCases();
+const crumbs = [{ name: '首页', path: '/' }, { name: '案例墙', path: '/showcase/' }];
 ---
 <BaseLayout
   lang={lang}
   title="案例墙 — 本站 REA 案例与 GitHub 项目 | rea.run"
-  description="本站 REA 案例与 GitHub 相关项目目录，含评价。卡片只打开站内详情页。"
+  description="本站 REA 案例研究与 GitHub 相关项目目录：评价、标签与合规备注均在站内详情页。含 AgentEnv 环境入口——卡片只打开 rea.run 页面。"
   path="/showcase/"
+  breadcrumbs={crumbs}
 >
   <div class="mx-auto max-w-6xl px-4 py-14">
     <header class="showcase-hero max-w-3xl">
@@ -66,6 +68,9 @@ const live = publishedCases();
       <p class="mt-3 max-w-2xl text-sm leading-7 text-[#c5cddf]">
         <a class="text-white" href={pathFor(lang, '/examples/')}>示例</a> 是短实验；
         案例墙是更长的叙事与 GitHub 项目介绍——同样托管在本站。
+        想了解 AgentEnv 回放数据集？先看
+        <a class="text-white" href={pathFor(lang, '/faq/agentenv-rea/')}>什么是 AgentEnv + REA？</a>
+        或 <a class="text-white" href={pathFor(lang, '/environments/')}>环境目录</a>。
       </p>
     </section>
 
