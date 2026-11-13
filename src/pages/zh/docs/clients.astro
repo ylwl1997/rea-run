@@ -2,21 +2,21 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ClientMatrix from '../../../components/ClientMatrix.astro';
 import OfficialInstallNotice from '../../../components/OfficialInstallNotice.astro';
-import { CLIENTS_650, MCP_REGISTRY_ID, NODE_ENGINES, REA_PIN } from '../../../data/clients65';
+import { CLIENTS_690, MCP_REGISTRY_ID, NODE_ENGINES, REA_PIN } from '../../../data/clients69';
 const toc = [
   { id: 'pin', label: '钉版本与引擎' },
-  { id: 'matrix', label: `${CLIENTS_650.length} 个客户端 ID` },
+  { id: 'matrix', label: `${CLIENTS_690.length} 个客户端 ID` },
   { id: 'verify', label: '核验单个客户端' },
   { id: 'copilot', label: 'Copilot CLI schema' },
   { id: 'manual', label: '不是 --client 行' },
-  { id: 'added-650', label: '6.5.0 新增' },
+  { id: 'added-690', label: '6.5.0 之后新增' },
   { id: 'related', label: '相关' },
 ];
 ---
 <BaseLayout
   lang="zh"
-  title="REA 6.5.0 客户端矩阵 | rea.run"
-  description="rea-agents@6.5.0 的 24 个 setup --client ID，含 Qoder、Trae、ZCode、DeepSeek Harness、Kimi Code、Factory Droid、WorkBuddy。doctor 检查与 MCP Registry id。"
+  title="REA 6.9.0 客户端矩阵 | rea.run"
+  description="rea-agents@6.9.0 的 28 个 setup --client ID，含 CodeBuddy、Cline、LM Studio、FreeBuff。doctor 检查、未核验行，以及 MCP Registry id。"
   path="/zh/docs/clients/"
 >
   <div class="mx-auto max-w-6xl px-4 py-12">
@@ -27,23 +27,32 @@ const toc = [
       </aside>
       <article class="prose-page">
         <p class="text-sm"><a class="quiet-link" href="/zh/docs/install/">← 安装</a></p>
-        <p class="badge badge-accent mt-4">文档 · 6.5.0</p>
-        <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">rea-agents 6.5.0 客户端矩阵</h1>
+        <p class="badge badge-accent mt-4">文档 · 6.9.0</p>
+        <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">rea-agents 6.9.0 客户端矩阵</h1>
         <p class="lede mt-4 !max-w-none">
-          <code>{REA_PIN}</code> 的 setup 可以把 REA 的本地 stdio MCP 服务器登记到 <strong>{CLIENTS_650.length} 个客户端 ID</strong>。
-          表格与标签 <code>rea-agents-6.5.0</code> 的 <code>docs/installation.md</code> 一致。
+          <code>{REA_PIN}</code> 的 setup 可以把 REA 的本地 stdio MCP 服务器登记到 <strong>{CLIENTS_690.length} 个客户端 ID</strong>。
+          表格与标签 <code>rea-agents-6.9.0</code> 的 <code>docs/getting-started/installation.md</code> 受支持智能体表一致。
           skill 目录陷阱见 <a href="/zh/docs/mcp-clients/">MCP 客户端与 skill 路径</a>。
         </p>
 
         <h2 id="pin">钉版本与引擎</h2>
-        <p>本包的 Node：<code>{NODE_ENGINES}</code>。Registry id：<code>{MCP_REGISTRY_ID}</code>。Registry 条目用 <code>npx</code> 与 <code>mcp</code> 命令启动同一 npm 包，不是第二份发行物。</p>
+        <p>
+          本包的 Node：<code>{NODE_ENGINES}</code>。
+          该字符串是标签 <code>rea-agents-6.9.0</code> 的 <code>package.json</code> 里的 <code>engines.node</code>，也是 <strong>2026-11-13 17:02:45 CST（Asia/Shanghai）</strong> <code>npm view rea-agents@6.9.0 engines</code> 的结果。
+          下限是在 6.8.0 破坏性说明里抬高的：不支持 Node 23 与 25，安装器不升级 Node。
+          Registry id：<code>{MCP_REGISTRY_ID}</code>。Registry 条目用 <code>npx</code> 与 <code>mcp</code> 命令启动同一 npm 包，不是第二份发行物。
+        </p>
         <p class="text-sm">
-          SQLite 快照检查（6.5.0 新增）需要 <strong>Node 24.x ≥24.15 或 26+</strong>，且具备 <code>DatabaseSync.limits</code>。Node 22 与更早的 24 仍可跑包的其余部分；只有该通道会拒绝。
+          那次核对的 npm <code>latest</code> 是 <strong>6.9.0</strong>。本站 runbook 仍然钉版本，因为下一次次版本可能破坏合同（<a href="/zh/docs/breaking/">always-bump-minor</a>）。
+        </p>
+        <p class="text-sm">
+          6.5.0 发行写明 SQLite 快照检查需要 <strong>Node 24.x ≥24.15 或 26+</strong>，且具备 <code>DatabaseSync.limits</code>；Node 22 与更早的 24 不能使用该通道。
+          为本钉版读过的 6.6–6.9 亮点没有说这道门槛已取消。Node 22.23.4 可以安装 6.9.0，同时仍在那条 6.5 SQLite 通道之外。
         </p>
         <OfficialInstallNotice lang="zh" variant="brief" />
-        <pre><code>{`npx -y rea-agents@6.5.0 setup
-npx -y rea-agents@6.5.0 doctor --client codex --json
-npx -y rea-agents@6.5.0 doctor --skill --json`}</code></pre>
+        <pre><code>{`npx -y rea-agents@6.9.0 setup
+npx -y rea-agents@6.9.0 doctor --client codex --json
+npx -y rea-agents@6.9.0 doctor --skill --json`}</code></pre>
         <p>
           <code>rea setup</code> 以多选列出这些智能体。已有 REA 登记默认勾选。新检测到的客户端仍可选，但不默认勾选：检测是上下文，不是写入新登记的许可。
           显式 <code>--client</code> 跳过提问。在 <code>--yes</code> 之前先批准 dry-run。之后重启客户端。持久登记会钉死执行 setup 时的包版本。
@@ -54,71 +63,76 @@ npx -y rea-agents@6.5.0 doctor --skill --json`}</code></pre>
 
         <h2 id="matrix">受支持的 <code>--client</code> 值</h2>
         <p>
-          6.5.0 发行（正文日期 2026-10-13，发布 2026-10-14）为 Qoder、Trae、ZCode、DeepSeek Harness、Kimi Code、Factory Droid、WorkBuddy 增加了 setup
-          （<a href="https://github.com/morluto/rea/pull/1564" rel="noopener noreferrer" target="_blank">#1564</a>、
-          <a href="https://github.com/morluto/rea/pull/1572" rel="noopener noreferrer" target="_blank">#1572</a>、
-          <a href="https://github.com/morluto/rea/pull/1573" rel="noopener noreferrer" target="_blank">#1573</a>、
-          <a href="https://github.com/morluto/rea/pull/1929" rel="noopener noreferrer" target="_blank">#1929</a>、
-          <a href="https://github.com/morluto/rea/pull/2744" rel="noopener noreferrer" target="_blank">#2744</a>、
-          <a href="https://github.com/morluto/rea/pull/2309" rel="noopener noreferrer" target="_blank">#2309</a>、
-          <a href="https://github.com/morluto/rea/pull/3041" rel="noopener noreferrer" target="_blank">#3041</a>）。
-          DeepSeek 自 6.5.0 起包含；上游注明 live Trae 与 DeepSeek API 集成仍未核验。
+          各行跟随 6.9.0 受支持智能体表。点名路径或核验限制的备注来自同一标签的 <code>docs/getting-started/client-configuration.md</code>，或 6.8.0／6.9.0 发行正文。
+          本站 6.5.0 矩阵里没有的 ID：<code>codebuddy</code>、<code>cline</code>、<code>lm_studio</code>、<code>freebuff</code>。
+          该 client-configuration 页仍将 Trae 加载与 live DeepSeek API 兼容性标为未核验。6.8.0 发行将 FreeBuff 原生加载标为未核验。Cline 页记录的是 setup 验收测试，没有写明 live 工具调用。
           在你的机器上用 <code>setup --dry-run</code> 与 <code>doctor</code> 确认每个 ID。
         </p>
         <ClientMatrix lang="zh" />
 
         <h2 id="verify">核验单个客户端</h2>
-        <p>把表中的 ID 代入。先检查再写入。下面用 DeepSeek Harness；Kimi 是 <code>kimi</code>，Factory Droid 是 <code>droid</code>，WorkBuddy 是 <code>workbuddy</code>。</p>
-        <pre><code>npx -y rea-agents@6.5.0 setup --client dsh --dry-run --json
-npx -y rea-agents@6.5.0 setup --client dsh --yes --json
-npx -y rea-agents@6.5.0 doctor --client dsh --json</code></pre>
+        <p>把表中的 ID 代入。先检查再写入。下面用 Cline 的 CLI id。DeepSeek Harness 是 <code>dsh</code>，LM Studio 是 <code>lm_studio</code>，FreeBuff 是 <code>freebuff</code>。</p>
+        <pre><code>npx -y rea-agents@6.9.0 setup --client cline --dry-run --json
+npx -y rea-agents@6.9.0 setup --client cline --yes --json
+npx -y rea-agents@6.9.0 doctor --client cline --json</code></pre>
         <ol>
           <li>Pi 把 <code>mcp.json</code> 当作严格 JSON。注释、尾随逗号、BOM 或空文件均无效。setup 会报告而不是重写。修好成纯 JSON 再重跑。若设置了 <code>PI_CODING_AGENT_DIR</code> 则跟随它。带外编辑后重载已有 Pi 会话。项目级 <code>.pi/mcp.json</code> 可能遮住用户条目。</li>
           <li>Qwen Code：<code>mcpServers.rea</code> 在 <code>~/.qwen/settings.json</code>，或 <code>$QWEN_HOME/settings.json</code>。个人 skill 在 <code>~/.agents/skills</code> 下发现。</li>
           <li>Hermes：<code>config.yaml</code> 中的 <code>mcp_servers.rea</code>，由 <code>HERMES_HOME</code> 或平台默认解析（Windows 为 <code>%LOCALAPPDATA%\hermes</code>，其他为 <code>~/.hermes</code>），含 <code>HERMES_DATA_DIR_SUFFIX</code>。setup 跟随 <code>active_profile</code>。无效的粘性配置档会报告，不会静默写进默认主目录。</li>
           <li>OMP：每个配置档一条登记。需要加载 REA 的每个 <code>OMP_PROFILE</code> 或 <code>PI_PROFILE</code> 下分别跑 setup。<code>disabledServers</code> 会隐藏 <code>rea</code>；setup 从它编辑的文件里去掉该名。</li>
           <li>OpenCode 遵守 <code>OPENCODE_CONFIG_DIR</code>（6.4.0 起已修复）。</li>
-          <li>DeepSeek Harness：遵循上游 <code>docs/client-configuration.md</code> 中的 Cordis 补丁与启动器说明。登记时 <code>!!js</code> 环境表达式保持不求值。</li>
+          <li>DeepSeek Harness：遵循 6.9.0 标签 <code>docs/getting-started/client-configuration.md</code> 中的 Cordis 补丁与启动器说明。该页写明 live DeepSeek API 兼容性仍未核验。</li>
+          <li>Cline：<code>rea setup --client cline</code> 配置 CLI（<code>~/.cline/data/settings/cline_mcp_settings.json</code>，或 <code>CLINE_MCP_SETTINGS_PATH</code>）。VS Code 扩展是 <code>rea mcp add --agent cline</code>，不是这个 setup id。</li>
         </ol>
 
         <h2 id="copilot">Copilot CLI 与 schema 体量</h2>
         <p>
           对 GitHub Copilot CLI 1.0.95，完整 input-schema profile 可能在发出模型请求前就被 <code>gpt-4.1</code> 元数据挡住（<code>compaction_static_context_blocked</code>，<a href="https://github.com/morluto/rea/issues/1554" rel="noopener noreferrer" target="_blank">#1554</a>）。
-          compact profile 在上游的 Linux loopback 夹具上通过了原生聊天与分析（完整工具清单）。setup 之后，把下面这项加到 Copilot <code>mcp-config.json</code> 里 <code>mcpServers.rea</code> 的 <code>env</code> 对象，保留其他设置，然后重启：
+          自 <strong>6.8.0</strong> 起，输入广告<strong>默认 compact</strong>。需要先前的完整广告时设 <code>REA_MCP_INPUT_SCHEMA_PROFILE=full</code>（<a href="https://github.com/morluto/rea/pull/5975" rel="noopener noreferrer" target="_blank">#5975</a>）。
+          在那个较早的议题里，compact profile 于上游的 Linux loopback 夹具上通过了原生聊天与分析（完整工具清单）。若某条登记仍要把变量写明，把下面这项加到 Copilot <code>mcp-config.json</code> 里 <code>mcpServers.rea</code> 的 <code>env</code> 对象，保留其他设置，然后重启：
         </p>
         <pre><code>{`"REA_MCP_INPUT_SCHEMA_PROFILE": "compact"`}</code></pre>
-        <p>compact 广告可能丢掉嵌套 schema 约束。REA 仍按规范输入做校验。同一环境变量也是其他体量受限主机（Kimi / Moonshot）的开关。它不是改发你未选用工具的许可。</p>
+        <p>compact 广告可能丢掉嵌套 schema 约束。REA 仍按规范输入做校验。同一环境变量也是其他体量受限主机（Kimi／Moonshot）的开关。它不是改发你未选用工具的许可。</p>
 
-        <h2 id="manual">Grok Bot 不是这 {CLIENTS_650.length} 行之一</h2>
+        <h2 id="manual">不是这 {CLIENTS_690.length} 行 setup 之一</h2>
         <p>
-          6.5.0 安装文档把 Grok Bot（<code>grok_bot</code>）写成手动托管连接器。setup 不调用账户连接器 API，也不把 <code>~/.grokbot</code> 视为已对齐。
-          在 Grok Bot 对话里添加名为 <code>rea</code>、在 Bot 电脑上运行的自定义 MCP 服务器：<code>npx -y rea-agents@6.5.0 mcp</code>。
+          6.9.0 安装文档仍把 Grok Bot 写成手动托管连接器。setup 不调用账户连接器 API，也不把 <code>~/.grokbot</code> 视为已对齐。
+          在 Grok Bot 对话里添加名为 <code>rea</code>、在 Bot 电脑上运行的自定义 MCP 服务器：<code>npx -y rea-agents@6.9.0 mcp</code>。
           不要把凭证写进该命令。<code>rea doctor --client grok_bot</code> 会报告该手动步骤。<code>rea uninstall</code> 不会移除账户连接器。
           Grok Build（<code>grok_build</code>）不同：它是表中的一行，使用本地 <code>config.toml</code>。
         </p>
-
-        <h2 id="added-650">npm 6.5.0 新增</h2>
         <p>
-          这些 ID 在 6.4.0 之后曾待定，现已是 6.5.0 受支持智能体表中的行：
-          Factory Droid（<code>droid</code>）、DeepSeek Harness（<code>dsh</code>）、Qoder（<code>qoder</code>）、Trae（<code>trae</code>）、ZCode（<code>zcode</code>）、Kimi Code（<code>kimi</code>）、WorkBuddy（<code>workbuddy</code>）。
-          上游仍注明 live Trae 与 DeepSeek API 集成未核验。把登记视为对齐之前先 dry-run 与 doctor。
+          llama.cpp 的 llama-server 可以通过它自己的 stdio MCP 配置启动 REA。6.9.0 安装文档把这称为手动连接，不是自动 setup 客户端 ID。它不是上表中的一行。
         </p>
+
+        <h2 id="added-690">相对 6.5.0 矩阵新增</h2>
+        <p>
+          6.5.0 的表已经包含 Factory Droid（<code>droid</code>）、DeepSeek Harness（<code>dsh</code>）、Qoder（<code>qoder</code>）、Trae（<code>trae</code>）、ZCode（<code>zcode</code>）、Kimi Code（<code>kimi</code>）和 WorkBuddy（<code>workbuddy</code>）。
+          这些行还在。6.9.0 的 client-configuration 页仍将 Trae 加载与 live DeepSeek API 兼容性标为未核验，并将 WorkBuddy 与 CodeBuddy 的工具调用标为已核验。
+        </p>
+        <ul>
+          <li><code>freebuff</code> — 6.8.0 首次出现（<a href="https://github.com/morluto/rea/pull/2736" rel="noopener noreferrer" target="_blank">#2736</a>）。原生 FreeBuff 加载与 skill 发现仍未核验。更早的发行会拒绝该 id。</li>
+          <li><code>codebuddy</code> 与 <code>lm_studio</code> — 在 6.9.0 变更列表里一起点名。<code>lm_studio</code> 需要 6.8.0 之后的发行。已写明的核验是 macOS 上的 LM Studio <strong>0.4.26</strong>；Linux 与 Windows 仍未核验。</li>
+          <li><code>cline</code> — 6.9.0 的 setup 登记（<a href="https://github.com/morluto/rea/pull/10128" rel="noopener noreferrer" target="_blank">#10128</a>）。<code>--client cline</code> 只对应 CLI。没有写明 live 工具调用核验。</li>
+        </ul>
 
         <h2 id="related">相关</h2>
         <ul>
           <li><a href="/zh/docs/install/">安装指南</a></li>
           <li><a href="/zh/docs/mcp-clients/">skill 路径与 Claude Code 目录陷阱</a></li>
-          <li><a href="/zh/docs/breaking/">跨越 6.0–6.5 时的升级手册</a></li>
-          <li><a href="/zh/changelog/">直到 6.5.0 的更新日志</a></li>
+          <li><a href="/zh/docs/breaking/">6.0–6.9.0 升级手册</a></li>
+          <li><a href="/zh/changelog/">直到 6.9.0 的更新日志</a></li>
+          <li><a href="/zh/blog/rea-agents-6-9-0/">6.9.0 运维长文</a></li>
           <li><a href="/zh/faq/setup-vs-providers/">setup 不安装分析引擎</a></li>
         </ul>
 
         <footer class="mt-12 border-t border-[var(--color-line)] pt-6 text-sm text-[var(--color-muted)] not-prose">
           <p class="text-xs uppercase tracking-wider">来源</p>
           <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
-            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.5.0/docs/installation.md" rel="noopener noreferrer" target="_blank">docs/installation.md at rea-agents-6.5.0</a> — 受支持智能体表与 MCP Registry 节</li>
-            <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.5.0" rel="noopener noreferrer" target="_blank">6.5.0 发行</a> — 新客户端 setup；893 commits / 529 merged PRs</li>
-            <li><a href="https://www.npmjs.com/package/rea-agents" rel="noopener noreferrer" target="_blank">npm rea-agents</a> — 2026-10-15 的 latest 为 6.5.0</li>
+            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.9.0/docs/getting-started/installation.md" rel="noopener noreferrer" target="_blank">rea-agents-6.9.0 的 docs/getting-started/installation.md</a> — 受支持智能体表与 MCP Registry 节</li>
+            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.9.0/docs/getting-started/client-configuration.md" rel="noopener noreferrer" target="_blank">同一标签的 client-configuration.md</a> — 路径与核验限制</li>
+            <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.9.0" rel="noopener noreferrer" target="_blank">6.9.0 发行</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.8.0" rel="noopener noreferrer" target="_blank">6.8.0 发行</a>（FreeBuff、compact 默认、Node 引擎）</li>
+            <li><a href="https://www.npmjs.com/package/rea-agents" rel="noopener noreferrer" target="_blank">npm rea-agents</a> — 2026-11-13 17:02:45 CST 的 latest 为 6.9.0</li>
           </ol>
           <p class="mt-4"><a class="quiet-link" href="/zh/compliance/">合规</a></p>
         </footer>

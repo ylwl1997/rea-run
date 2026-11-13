@@ -16,14 +16,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
     <h2>Setup in one line</h2>
     <p>Most hosts should use the package runner so the version matches what you expect:</p>
-    <pre><code>npx -y rea-agents@6.5.0 setup</code></pre>
-    <p>Review the plan, approve changes, then <strong>restart or reconnect</strong> the client. README / FAQ debt notes that docs sometimes say <code>rea setup</code> after a global install — both shapes exist; pin a version when you need reproducibility.</p>
+    <pre><code>npx -y rea-agents@6.9.0 setup</code></pre>
+    <p>Review the plan, approve changes, then <strong>restart or reconnect</strong> the client. README / FAQ debt notes that docs sometimes say <code>rea setup</code> after a global install — both shapes exist; pin a version when you need reproducibility. npm <code>latest</code> checked on <strong>2026-11-13 17:02:45 CST (Asia/Shanghai)</strong> was <strong>6.9.0</strong>. The next minor can still break contracts (<a href="/docs/breaking/">always-bump-minor</a>).</p>
 
     <h2>Client IDs live on the matrix page</h2>
     <p>
-      <code>rea-agents@6.5.0</code> setup accepts 24 <code>--client</code> values, including Qoder, Trae, ZCode, DeepSeek Harness (<code>dsh</code>), Kimi Code (<code>kimi</code>), Factory Droid (<code>droid</code>), and WorkBuddy.
+      <code>rea-agents@6.9.0</code> setup accepts 28 <code>--client</code> values, including CodeBuddy, Cline, LM Studio, and FreeBuff, plus the 6.5.0 set (Qoder, Trae, ZCode, DeepSeek Harness, Kimi Code, Factory Droid, WorkBuddy).
       The full table and config paths are on <a href="/docs/clients/">the client matrix</a>.
-      Confirm a registration with <code>npx -y rea-agents@6.5.0 doctor --client … --json</code>.
+      Confirm a registration with <code>npx -y rea-agents@6.9.0 doctor --client … --json</code>.
     </p>
     <h2>Skill path pitfall</h2>
     <p>Setup may write an investigation skill to a directory the <em>package</em> considers canonical (for example under <code>~/.agents/skills</code>), while a specific client only auto-loads skills from its own tree (for example Claude Code reading <code>~/.claude/skills</code>). Symptom: MCP tools appear, but the agent never picks up REA’s workflow instructions.</p>
@@ -32,15 +32,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <li>If the client ignores that path, copy or symlink into the client’s skills directory — or re-run setup after upgrading past fixes that align discovery.</li>
       <li>Third-party skill installers (for example skills.sh-style flows) may install <strong>instructions only</strong> and <strong>do not</strong> register the MCP server. You still need MCP registration via setup or manual JSON.</li>
     </ul>
-    <pre><code>npx -y rea-agents@6.5.0 doctor --client claude_code --json
-npx -y rea-agents@6.5.0 doctor --skill --json</code></pre>
+    <pre><code>npx -y rea-agents@6.9.0 doctor --client claude_code --json
+npx -y rea-agents@6.9.0 doctor --skill --json</code></pre>
 
     <h2>Manual MCP shape</h2>
     <pre><code>{`{
   "mcpServers": {
     "rea": {
       "command": "npx",
-      "args": ["-y", "rea-agents@6.5.0", "mcp"]
+      "args": ["-y", "rea-agents@6.9.0", "mcp"]
     }
   }
 }`}</code></pre>
@@ -52,7 +52,7 @@ npx -y rea-agents@6.5.0 doctor --skill --json</code></pre>
           <li><a href="https://github.com/morluto/rea/issues/1337" rel="noopener noreferrer" target="_blank">Issue #1337 — skill install path vs Claude Code load path</a></li>
           <li><a href="https://github.com/morluto/rea/issues/1459" rel="noopener noreferrer" target="_blank">Issue #1459 — skill discoverability</a></li>
           <li><a href="https://github.com/morluto/rea/issues/1353" rel="noopener noreferrer" target="_blank">Issue #1353 — setup command FAQ / docs</a></li>
-          <li><a href="https://github.com/morluto/rea/blob/main/docs/installation.md" rel="noopener noreferrer" target="_blank">Upstream installation docs</a></li>
+          <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.9.0/docs/getting-started/installation.md" rel="noopener noreferrer" target="_blank">Installation docs at rea-agents-6.9.0</a></li>
       </ol>
       <p class="mt-4"><a class="quiet-link" href="/compliance/">Compliance</a></p>
     </footer>

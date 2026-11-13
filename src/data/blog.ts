@@ -2,6 +2,7 @@ import { BLOOMBERG_TERMINAL_POST } from './blogBloombergTerminal';
 import { DUAL_AGENT_WORKTREE_POST } from './blogDualAgentWorktree';
 import { TRADING_RESEARCH_POST } from './blogTradingResearchDesk';
 import { REA_AGENTS_650_POST } from './blogReaAgents650';
+import { REA_AGENTS_690_POST } from './blogReaAgents690';
 import { OPEN_CLAUDE_UI_POST } from './blogOpenClaudeUi';
 import { HERMES_REA_PLUGIN_POST } from './blogHermesReaPlugin';
 import { DX_BALL_POST } from './blogDxBall';
@@ -33,6 +34,7 @@ export type BlogPost = {
 };
 
 export const BLOG_POSTS: BlogPost[] = [
+  REA_AGENTS_690_POST,
   CLAUDE_CODE_QUANT_TEAM_POST,
   REA_OPENCODE_DUAL_MODEL_POST,
   REA_CLAUDE_CODE_SURFACES_POST,

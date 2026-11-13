@@ -10,13 +10,17 @@ const toc = [
   { id: 'captures', label: '6.3 capture accounting' },
   { id: 'sockets', label: '6.4 WebSocket field' },
   { id: 'nulls', label: '6.5 nulls & contracts' },
+  { id: 'kuna', label: '6.6 Evidence & ADB' },
+  { id: 'six-seven', label: '6.7 no own breaks' },
+  { id: 'formats', label: '6.8 Node & schemas' },
+  { id: 'desktop', label: '6.9 contracts' },
   { id: 'related', label: 'Related' },
 ];
 ---
 <BaseLayout
   lang="en"
-  title="REA upgrade runbook: breaking changes 6.0–6.5.0 | rea.run"
-  description="Operator runbook for rea-agents 6.0 through 6.5.0: absolute MCP paths, Evidence normalized_result, capture accounting, websocket_connections, attached/null contracts, call-graph shape, and always-bump-minor."
+  title="REA upgrade runbook: breaking changes 6.0–6.9.0 | rea.run"
+  description="Operator runbook for rea-agents 6.0 through 6.9.0: absolute MCP paths, Evidence shape, the 6.8 Node floor, compact MCP schemas by default, and the 6.9 field contracts. 6.7 has no breaking section of its own."
   path="/docs/breaking/"
 >
   <div class="mx-auto max-w-6xl px-4 py-12">
@@ -27,35 +31,35 @@ const toc = [
       </aside>
       <article class="prose-page">
         <p class="text-sm"><a class="quiet-link" href="/changelog/">← Changelog</a></p>
-        <p class="badge badge-accent mt-4">Docs · pin 6.5.0</p>
+        <p class="badge badge-accent mt-4">Docs · pin 6.9.0</p>
         <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">Upgrade without breaking your runbooks</h1>
         <p class="lede mt-4 !max-w-none">
-          From <strong>6.0.0</strong> (2026-10-08) through <strong>6.5.0</strong> (2026-10-14), several minor releases changed MCP inputs, Evidence shape, and saved captures.
-          This page is the operator checklist for those breaks. Dates are GitHub release <code>published_at</code> values. The teaching pin on rea.run is <code>rea-agents@6.5.0</code>.
+          From <strong>6.0.0</strong> (2026-10-08) through <strong>6.9.0</strong> (2026-11-12), several minor releases changed MCP inputs, Evidence shape, Node engines, and saved captures.
+          This page is the operator checklist for those breaks. Dates are GitHub release <code>published_at</code> values. The teaching pin on rea.run is <code>rea-agents@6.9.0</code>.
         </p>
 
         <h2 id="policy">always-bump-minor is not a compatibility promise</h2>
         <p>
           Upstream’s 6.2 migration guide states the policy in one sentence: the repository uses <code>always-bump-minor</code>, <strong>including breaking releases</strong>. A minor number does not mean old scripts, old Evidence files, or old captures still validate.
-          npm <code>latest</code> checked on <strong>2026-10-15</strong> was <code>6.5.0</code>. Floating <code>@latest</code> in a runbook will pick up the next minor whenever it publishes, breaks included.
+          npm <code>latest</code> checked on <strong>2026-11-13 17:02:45 CST (Asia/Shanghai)</strong> was <code>6.9.0</code>. Floating <code>@latest</code> in a runbook will pick up the next minor whenever it publishes, breaks included.
         </p>
         <p>
-          Client IDs added in 6.5.0 (Qoder, Trae, ZCode, DeepSeek Harness, Kimi Code, Factory Droid, WorkBuddy) are on the <a href="/docs/clients/">client matrix</a>. Confirm with doctor before treating a registration as aligned.
+          The 6.9.0 client matrix is on the <a href="/docs/clients/">client page</a> (28 <code>--client</code> ids). Confirm with doctor before treating a registration as aligned. 6.6.0 is a GitHub tag that npm does not publish; installing npm 6.7.0 is how those 6.6 breaks arrive.
         </p>
 
         <h2 id="steps">Upgrade steps</h2>
         <ol>
           <li>Record the pin you run today: the version in MCP <code>args</code>, and <code>npm view rea-agents version</code> if you use a global CLI. They can differ.</li>
-          <li>Read every row you will cross in the table below. Jumping 6.1 → 6.5.0 still includes the 6.2, 6.3, and 6.4 contracts.</li>
+          <li>Read every row you will cross in the table below. Jumping 6.1 → 6.9.0 still includes the 6.2 through 6.8 contracts. Move Node to <code>^22.23.4 || ^24.22.1 || &gt;=26.12.1</code> before you install 6.8.0 or 6.9.0. The 6.8.0 note says the installer does not upgrade Node, and that Node 23 and 25 are unsupported.</li>
           <li>Copy Evidence bundles, analysis snapshots, and process captures to a side directory. Do not rewrite them in place.</li>
           <li>
             Point the client at the pin and approve a scoped setup plan:
-            <pre><code>{`npx -y rea-agents@6.5.0 setup --client codex --dry-run --json
+            <pre><code>{`npx -y rea-agents@6.9.0 setup --client codex --dry-run --json
 # review, then:
-npx -y rea-agents@6.5.0 setup --client codex --yes --json`}</code></pre>
+npx -y rea-agents@6.9.0 setup --client codex --yes --json`}</code></pre>
           </li>
           <li>Restart or reconnect the agent. Cached <code>tools/list</code> schemas from the previous package are a common first failure.</li>
-          <li>Run <code>npx -y rea-agents@6.5.0 doctor --json</code> and attach the JSON to the change ticket.</li>
+          <li>Run <code>npx -y rea-agents@6.9.0 doctor --json</code> and attach the JSON to the change ticket. Record <code>node -v</code> next to it.</li>
           <li>Re-run one authorized target you already understand. Diff field names before you trust a dashboard or a script.</li>
           <li>If a consumer still reads <code>structuredContent.result</code>, switch it to <code>normalized_result</code> (6.2). If it reads <code>network.websocket_events</code>, switch it to <code>network.websocket_connections</code> (6.4). There is no legacy alias for the WebSocket field.</li>
         </ol>
@@ -64,12 +68,12 @@ npx -y rea-agents@6.5.0 setup --client codex --yes --json`}</code></pre>
   "mcpServers": {
     "rea": {
       "command": "npx",
-      "args": ["-y", "rea-agents@6.5.0", "mcp"]
+      "args": ["-y", "rea-agents@6.9.0", "mcp"]
     }
   }
 }`}</code></pre>
 
-        <h2 id="map">Operator-relevant breaks, 6.0 through 6.5.0</h2>
+        <h2 id="map">Operator-relevant breaks, 6.0 through 6.9.0</h2>
         <div class="not-prose overflow-x-auto my-6">
           <table class="compare-table">
             <thead>
@@ -106,6 +110,26 @@ npx -y rea-agents@6.5.0 setup --client codex --yes --json`}</code></pre>
                 <td>2026-10-14 12:32</td>
                 <td><code>attached</code> / source name / segment length / <code>command_path</code> may be null; <code>--filter-output</code> emits JSON null; call-graph <code>{"{"} graph, limitations {"}"}</code>; <code>binary_session</code> drops repeated tools catalog; ADB <code>replace_requested</code> / nullable <code>replaced</code>.</td>
               </tr>
+              <tr>
+                <td>6.6.0</td>
+                <td>2026-10-18 03:40</td>
+                <td>GitHub only (not npm). Saved Evidence must be regenerated. ADB <code>version_code</code> is a decimal string. <a href="#kuna">Steps</a>.</td>
+              </tr>
+              <tr>
+                <td>6.7.0</td>
+                <td>2026-10-18 07:45</td>
+                <td>No <code>BREAKING CHANGES</code> heading of its own. npm 6.7.0 is the first published package that includes the 6.6 breaks. <a href="#six-seven">Steps</a>.</td>
+              </tr>
+              <tr>
+                <td>6.8.0</td>
+                <td>2026-10-25 08:36</td>
+                <td>Node floor moves. MCP input ads default to compact. <code>analyze_function</code> defaults to a summary. JSON Lines gains a metadata record. <a href="#formats">Steps</a>.</td>
+              </tr>
+              <tr>
+                <td>6.9.0</td>
+                <td>2026-11-12 08:59</td>
+                <td>Settings use <code>update_mode</code>. <code>rea mcp add --command</code> is local stdio only. Many Evidence readers must accept nulls, new unions, and the 1,024-element MCP input default. <a href="#desktop">Steps</a>.</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -135,7 +159,7 @@ npx -y rea-agents@6.5.0 setup --client codex --yes --json`}</code></pre>
 const value = reply.structuredContent.result;
 const evidence = reply.structuredContent.evidence;
 
-// 6.2 and later, including 6.5.0
+// 6.2 and later, including the 6.9.0 pin
 const evidence = reply.structuredContent;
 const value = evidence.normalized_result;
 const evidenceId = evidence.evidence_id;`}</code></pre>
@@ -157,7 +181,7 @@ const evidenceId = evidence.evidence_id;`}</code></pre>
         </p>
         <h3>Snapshots and artifact roles</h3>
         <p>Snapshots require <code>workflow_entries</code> and a profile-bound Evidence record for every cached query. Import rejects incomplete bindings. Keep the old snapshot and write a new path, for example:</p>
-        <pre><code>npx -y rea-agents@6.5.0 analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program-6.4.json</code></pre>
+        <pre><code>npx -y rea-agents@6.9.0 analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program-6.4.json</code></pre>
         <p>In MCP, open without the incompatible <code>snapshot_path</code>, run the queries, then save through <code>close_binary.snapshot_path</code>. Do not invent missing provider profiles.</p>
         <div class="not-prose overflow-x-auto my-6">
           <table class="compare-table">
@@ -227,7 +251,7 @@ const evidenceId = evidence.evidence_id;`}</code></pre>
           Body date 2026-10-13; GitHub <code>published_at</code> 2026-10-14 12:32 UTC (2026-10-14 20:32 UTC+8).
           Release: <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.5.0" rel="noopener noreferrer" target="_blank">rea-agents-6.5.0</a>.
           Contribution record in the release footer: <strong>893</strong> commits and <strong>529</strong> merged PRs.
-          npm <code>latest</code> checked on this site on <strong>2026-10-15</strong> was <strong>6.5.0</strong>.
+          On <strong>2026-10-15</strong> this site’s check recorded npm <code>latest</code> as <strong>6.5.0</strong>. The current check (2026-11-13) is 6.9.0; see the top of this page.
           Rows below are paraphrased from the release <code>BREAKING CHANGES</code> section — do not invent additional breaks.
         </p>
         <div class="not-prose overflow-x-auto my-6">
@@ -284,11 +308,149 @@ const evidenceId = evidence.evidence_id;`}</code></pre>
         </p>
         <p>Also update ADB result readers: see <a href="/docs/android-adb/">Android ADB</a>. Call-graph and MCP discovery consumers should re-check field paths before trusting dashboards built on 6.4.0 shapes.</p>
 
+        <h2 id="kuna">6.6.0 — saved Evidence, browser limits, ADB version codes</h2>
+        <p>
+          GitHub <code>published_at</code> 2026-10-18 03:40 UTC. Body date 2026-10-18.
+          Release: <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.6.0" rel="noopener noreferrer" target="_blank">rea-agents-6.6.0</a>.
+          Footer: <strong>571</strong> commits and <strong>236</strong> merged PRs.
+          This tag is <strong>not on npm</strong>. <code>npm view rea-agents@6.6.0</code> returned 404 on 2026-11-13, and the 6.7.0 release says the tag was not published.
+          The bullets below are the 6.6.0 <code>BREAKING CHANGES</code> section, shortened to the contract.
+        </p>
+        <ul>
+          <li><strong>Saved Evidence.</strong> Evidence and analysis snapshots require explicit nullable <code>relationship_coverage</code>. Artifact inventories require scoped coverage and explicit <code>integrity_contradictions</code>. Obsolete <code>coverage_status</code> and prose-based coverage inference are removed. Regenerate old Evidence, snapshots, and inventory observations. Saved files are not migrated, and omitted facts are not filled with guessed defaults (db8128d, 0405c9d, a9588be).</li>
+          <li><strong>Browser capture results.</strong> Retain resolved capture limits, event families, and omission facts. Omitted caller inputs still select defaults, but stored observations must report the resolved values. Admitted content reads queue behind bounded concurrency (57a23f0).</li>
+          <li><strong>Android version codes.</strong> <code>inspect_adb_package.version_code</code> is a decimal string, not a JSON number. Read it as a string, or use <code>BigInt</code> for numeric comparison (<a href="https://github.com/morluto/rea/pull/3485" rel="noopener noreferrer" target="_blank">#3485</a>).</li>
+          <li><strong>Native UI failures.</strong> Failed or cancelled native UI scenarios return typed errors with the collected report in <code>partial_observation</code>. Do not expect a successful result that contains failed steps (d909919).</li>
+          <li><strong>Provider status.</strong> <code>binary_session</code> candidate availability can be unknown during owner finalization. Preserve that state rather than treating it as unavailable (150e996).</li>
+          <li><strong>Swift symbol locations.</strong> <code>swift_symbols</code> entries may have a null <code>address</code> when the provider supplies no location. Optional <code>evidence.reported_address</code> retains the original provider value (8116dc0).</li>
+          <li><strong>Linux Hopper admission.</strong> Older builds previously admitted by a fixed allowlist need retained publisher-signed package evidence or an approved update to the current public demo. Update explicit <code>HOPPER_LAUNCHER_PATH</code> selections. The official RPM metadata mismatch remains unresolved and is refused (<a href="https://github.com/morluto/rea/pull/3590" rel="noopener noreferrer" target="_blank">#3590</a>).</li>
+        </ul>
+
+        <h2 id="six-seven">6.7.0 — no breaking section of its own</h2>
+        <p>
+          GitHub <code>published_at</code> 2026-10-18 07:45 UTC. npm time 2026-10-18T08:12:05Z.
+          Release: <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.7.0" rel="noopener noreferrer" target="_blank">rea-agents-6.7.0</a>.
+          Footer of the 6.7-only note: <strong>4</strong> commits and <strong>1</strong> merged PR.
+        </p>
+        <p>
+          The 6.7.0 heading has <strong>no</strong> <code>BREAKING CHANGES</code> section. Its Changes section says the release includes the 6.6.0 changes and migration notes, and that 6.6.0 was tagged but not published to npm.
+          Installing npm <code>6.7.0</code> is therefore the first published package that carries the 6.6 breaks above. Do not invent a separate 6.7 field break.
+          The 6.7-only fix, which the release does not label breaking, is that setup edits the last repeated JSON/JSONC member and refuses a removal that would reactivate a shadowed duplicate (<a href="https://github.com/morluto/rea/pull/4957" rel="noopener noreferrer" target="_blank">#4957</a>).
+        </p>
+
+        <h2 id="formats">6.8.0 — Node floor, compact schemas, summaries, JSON Lines</h2>
+        <p>
+          GitHub <code>published_at</code> 2026-10-25 08:36 UTC. Body date 2026-10-25. npm time 2026-10-25T09:07:31Z.
+          Release: <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.8.0" rel="noopener noreferrer" target="_blank">rea-agents-6.8.0</a>.
+          Footer: <strong>1740</strong> commits and <strong>497</strong> merged PRs.
+          The same Node string is still <code>engines.node</code> in the 6.9.0 package. Rows below are that release’s <code>BREAKING CHANGES</code> bullets.
+        </p>
+        <ul>
+          <li><strong>Function analysis.</strong> <code>analyze_function</code> defaults to a retained summary. Set <code>detail: "complete"</code> for the previous inline dossier. The CLI keeps its complete default and requires <code>--evidence_output</code> when selecting a summary (<a href="https://github.com/morluto/rea/pull/5660" rel="noopener noreferrer" target="_blank">#5660</a>).</li>
+          <li><strong>Accessibility.</strong> Accept JSON numbers and booleans in node <code>value</code>, alongside strings and null (cc90771, <a href="https://github.com/morluto/rea/pull/6759" rel="noopener noreferrer" target="_blank">#6759</a>).</li>
+          <li><strong>JSON Lines.</strong> <code>--format jsonl</code> emits object-collection rows followed by a <code>$rea: "jsonl/v1"</code>, <code>type: "metadata"</code> record. Scalar selections and unsupported reports are refused. Use <code>--format json</code> for the previous whole-document output (<a href="https://github.com/morluto/rea/pull/5629" rel="noopener noreferrer" target="_blank">#5629</a>).</li>
+          <li><strong>Interface Builder.</strong> Keyed-archive graph identities use decimal table UIDs instead of authored <code>objectID</code> / <code>object-id</code>. ibtool and native NIBArchive identities keep their source semantics (6fbe67d).</li>
+          <li><strong>Frida.</strong> <code>instrument-with-frida</code> JSON returns the canonical Evidence directly. Read <code>normalized_result.cleanup_error</code> instead of the former top-level wrapper field (48f700e).</li>
+          <li><strong>Reconstruction proof.</strong> ID-array proof records no longer establish verified or ready ledgers. Supply implementation/revision bindings and individual claim outcomes (f8b65e7).</li>
+          <li><strong>Mach-O imports.</strong> Handle a null import <code>name</code> when identity is ambiguous. Use <code>raw_name</code> and <code>name_status</code> (5d0d243, 169512a).</li>
+          <li><strong>Node.js.</strong> Use a runtime satisfying <code>^22.23.4 || ^24.22.1 || &gt;=26.12.1</code>. Node 23 and 25 are unsupported. Upgrade Node before installing or updating REA. The installer does not upgrade it (<a href="https://github.com/morluto/rea/pull/6315" rel="noopener noreferrer" target="_blank">#6315</a>).</li>
+          <li><strong>Browser storage.</strong> Historical hashed storage remains readable, but comparisons stay unknown until both captures are recaptured in the new representation (<a href="https://github.com/morluto/rea/pull/6341" rel="noopener noreferrer" target="_blank">#6341</a>).</li>
+          <li><strong>Environment serving.</strong> <code>environment-serve</code> serves derived state by default, including write tools whose effects are confirmed by recorded evidence. Use <code>--replay-only</code> for stateless replay. Read stop-summary <code>state</code> instead of <code>state_evidence_id</code> (<a href="https://github.com/morluto/rea/pull/5351" rel="noopener noreferrer" target="_blank">#5351</a>, <a href="https://github.com/morluto/rea/pull/6158" rel="noopener noreferrer" target="_blank">#6158</a>).</li>
+          <li><strong>MCP schemas.</strong> Input advertisements default to compact. Set <code>REA_MCP_INPUT_SCHEMA_PROFILE=full</code> for complete advertised guidance and nested constraints (<a href="https://github.com/morluto/rea/pull/5975" rel="noopener noreferrer" target="_blank">#5975</a>).</li>
+          <li><strong>Browser console arguments.</strong> Accept null <code>argument_types</code> and <code>text_capture.status: "unavailable"</code> when the protocol argument inventory is omitted or malformed (<a href="https://github.com/morluto/rea/pull/6016" rel="noopener noreferrer" target="_blank">#6016</a>).</li>
+          <li><strong>Reconstruction summaries.</strong> <code>summary.by_evidence_authority</code> is keyed by Evidence authority. Read the former source-state counts from required <code>summary.by_source_state</code> (<a href="https://github.com/morluto/rea/pull/5875" rel="noopener noreferrer" target="_blank">#5875</a>).</li>
+          <li><strong>Swift bindings.</strong> Conformance <code>type_name</code> and <code>protocol_name</code> may be null. Consume typed <code>type_binding</code> / <code>protocol_binding</code>. The former Objective-C-specific import-binding type is replaced by <code>MachoImportBinding</code> (d0067ba).</li>
+          <li><strong>WebSocket frames.</strong> Accept null opcodes and preserve unknown frame facts. Numeric opcodes are restricted to the four-bit protocol range (0bc2b42).</li>
+          <li><strong>Resource-only inspection.</strong> Evidence subjects and executable digests may be null. Use <code>resource_root</code> and each resource’s reported provenance (6a6adf7).</li>
+          <li><strong>Browser timestamps.</strong> Console and session-timeline timestamps may be null when the protocol supplies no finite/comparable time (690fc51, 2a0410f).</li>
+          <li><strong>Reference sources.</strong> Read failed root enumeration from <code>rootFailure</code> rather than a synthetic failed child at <code>"."</code> (6296fdf).</li>
+          <li><strong>Filesystem capture.</strong> Accept <code>entry_unavailable</code> and <code>identity_changed</code> enumeration omission reasons in addition to the previous reason literals (c85b44e).</li>
+          <li><strong>APK locales.</strong> Replace numeric legacy selectors such as <code>es-r419</code> with <code>es-419</code> or <code>b+es+419</code>. Two-letter regions remain supported (29910d1).</li>
+          <li><strong>XML plist scalars.</strong> Recognize <code>$plist_type: "unknown"</code> and read <code>element</code>, <code>literal</code>, and <code>reason</code>. Supported extended UTC years preserve their timestamp (3537e58).</li>
+        </ul>
+
+        <h2 id="desktop">6.9.0 — settings, local MCP add, Evidence readers</h2>
+        <p>
+          Body date 2026-11-11. GitHub <code>published_at</code> 2026-11-12 08:59 UTC (2026-11-12 16:59 UTC+8). npm time 2026-11-12T09:53:32Z.
+          Release: <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.9.0" rel="noopener noreferrer" target="_blank">rea-agents-6.9.0</a>.
+          Footer: <strong>1848</strong> commits and <strong>1073</strong> merged PRs.
+          npm <code>latest</code> on 2026-11-13 17:02:45 CST was 6.9.0.
+          Every bullet in that release’s <code>BREAKING CHANGES</code> section is listed below, shortened to the contract. The release body is the full wording. Nothing here is an extra break.
+        </p>
+        <ul>
+          <li>Settings clients replace <code>effect</code>, <code>rea_restart_required</code>, <code>restart_required</code>, and <code>restartRequired</code> with <code>update_mode</code> (<code>runtime</code>, <code>restart</code>, <code>parameter</code>) and <code>pending_restart</code>. Parameter-supplied limits cannot be changed by the runtime setter (<a href="https://github.com/morluto/rea/pull/9885" rel="noopener noreferrer" target="_blank">#9885</a>).</li>
+          <li>Process and desktop callers inspect <code>details.secondary_failures</code> / <code>secondaryFailures</code>. Mixed batches keep physical/provider failures primary. Retained descriptors can produce <code>cleanup_incomplete</code>. Custom adapters consume owner-issued facts and retain cleanup scopes until release succeeds (<a href="https://github.com/morluto/rea/pull/10141" rel="noopener noreferrer" target="_blank">#10141</a>, <a href="https://github.com/morluto/rea/pull/10113" rel="noopener noreferrer" target="_blank">#10113</a>, <a href="https://github.com/morluto/rea/pull/10109" rel="noopener noreferrer" target="_blank">#10109</a>).</li>
+          <li><code>rea mcp add --command</code> accepts a local stdio launcher only. HTTP(S) executable URLs are rejected before settings writes, and package acquisition is removed. Configure remote transports in each client’s native settings (<a href="https://github.com/morluto/rea/pull/10102" rel="noopener noreferrer" target="_blank">#10102</a>).</li>
+          <li>Runtime-instance graph identities require <code>identity.capture_evidence_id</code> in addition to the capture digest and runtime key. Regenerate reconciliation Evidence (<a href="https://github.com/morluto/rea/pull/10063" rel="noopener noreferrer" target="_blank">#10063</a>).</li>
+          <li>Retained process symlinks require their stored target bytes. Recapture legacy observations that only described a link (<a href="https://github.com/morluto/rea/pull/10082" rel="noopener noreferrer" target="_blank">#10082</a>).</li>
+          <li>Function dossiers record Swift literal inventory and its omissions together. Regenerate one-sided observations. Both-absent unsupported observations remain valid (<a href="https://github.com/morluto/rea/pull/10068" rel="noopener noreferrer" target="_blank">#10068</a>).</li>
+          <li>Conformance manifest schema v2 separates exact string markers from fragments and rejects the old ambiguous <code>strings</code> field. Regenerate unversioned fixtures with <code>npm run build:fixtures</code> (<a href="https://github.com/morluto/rea/pull/9977" rel="noopener noreferrer" target="_blank">#9977</a>).</li>
+          <li>Unavailable native/BEAM/Go/Rust view collections return <code>items.rows: null</code>, <code>coverage.status: "unavailable"</code>, <code>coverage.total: null</code>, and <code>coverage.exhausted: false</code>. Recorded empty collections still return <code>rows: []</code> (<a href="https://github.com/morluto/rea/pull/9893" rel="noopener noreferrer" target="_blank">#9893</a>).</li>
+          <li>Desktop witnessing requires the current generated verifier. Re-export old bundles. Pre-6.9 captures missing required <code>state.baseline_non_files</code> are rejected before inspection, drafting, or export (<a href="https://github.com/morluto/rea/pull/9898" rel="noopener noreferrer" target="_blank">#9898</a>, <a href="https://github.com/morluto/rea/pull/9470" rel="noopener noreferrer" target="_blank">#9470</a>).</li>
+          <li>New browser captures record <code>save: []</code> for request actions that save nothing, which changes scenario/Evidence digests. Keep historical digests with historical captures (<a href="https://github.com/morluto/rea/pull/9896" rel="noopener noreferrer" target="_blank">#9896</a>).</li>
+          <li>Selected SQLite rows require <code>row_offset</code> and <code>next_row_offset</code>. <code>rows.order</code> is <code>rowid</code>, <code>primary_key</code>, or <code>unspecified</code>. A null next offset means either no continuation or no stated order. An unordered sample can still have <code>truncated: true</code> (<a href="https://github.com/morluto/rea/pull/9331" rel="noopener noreferrer" target="_blank">#9331</a>).</li>
+          <li>Windows entropy Evidence uses the admitted filesystem path spelling, so a differently cased caller path can change <code>evidence_id</code> (<a href="https://github.com/morluto/rea/pull/9393" rel="noopener noreferrer" target="_blank">#9393</a>).</li>
+          <li><code>caller_input_paths</code> values may be ordered arrays of strings as well as strings (<a href="https://github.com/morluto/rea/pull/9626" rel="noopener noreferrer" target="_blank">#9626</a>).</li>
+          <li><code>observe_javascript_runtime</code> adds required <code>execution_context_id</code> on scripts and contexts. <code>context_key</code> is an opaque capture-local identity, not a reusable protocol ID (<a href="https://github.com/morluto/rea/pull/9471" rel="noopener noreferrer" target="_blank">#9471</a>).</li>
+          <li>Refresh cached <code>inspect_address_context</code> schemas: unavailable facets may carry typed input or resource-constraint errors while sibling facets stay available (<a href="https://github.com/morluto/rea/pull/8444" rel="noopener noreferrer" target="_blank">#8444</a>).</li>
+          <li><code>analyze_function</code> / <code>trace_native_values</code> require <code>native_value_flow.limitations</code> on available and unavailable variants. Ghidra memory effects cover explicit high-p-code <code>LOAD</code>/<code>STORE</code> only. Empty effects do not prove no memory access. The <code>value_flow_effect_scope</code> profile commitment invalidates older snapshots (<a href="https://github.com/morluto/rea/pull/8651" rel="noopener noreferrer" target="_blank">#8651</a>).</li>
+          <li>Ghidra byte searches require <code>skipped_overlays</code>. Loaded overlays no longer count as not loaded. Reopen targets and save a fresh snapshot after the profile/search-policy changes (<a href="https://github.com/morluto/rea/pull/8608" rel="noopener noreferrer" target="_blank">#8608</a>).</li>
+          <li><code>compare_functions</code> adds <code>function_match.method: "same-evidence"</code> when both inputs authenticate to one Evidence ID and entry comparison is unavailable. Do not infer complete equivalence (<a href="https://github.com/morluto/rea/pull/8442" rel="noopener noreferrer" target="_blank">#8442</a>).</li>
+          <li>Kuna <code>analyze_function</code> can return <code>native_value_flow: {"{"} available: false, reason, limitations {"}"}</code> instead of null. Null means procedure-scoped unrecorded unknown, not confirmed absence. Older trace Evidence must be rerun to satisfy current replay (<a href="https://github.com/morluto/rea/pull/8785" rel="noopener noreferrer" target="_blank">#8785</a>).</li>
+          <li>The opt-in hot/cold MCP catalog no longer preloads <code>inspect_analysis_view</code>. Discover it before use, or batch it with its producer. The default full catalog remains available (<a href="https://github.com/morluto/rea/pull/9151" rel="noopener noreferrer" target="_blank">#9151</a>).</li>
+          <li><code>batch_decompile</code> and retained batch views use <code>items[].status: "unavailable"</code> with <code>reason: "no_pseudocode"</code> for null pseudocode, replacing the former <code>error</code> / <code>capability_unavailable</code> item. Empty or non-text values remain <code>status: "error"</code> with <code>unreadable_output</code>. Both count toward <code>failed</code> (<a href="https://github.com/morluto/rea/pull/8737" rel="noopener noreferrer" target="_blank">#8737</a>).</li>
+          <li><code>import_evidence_bundle</code> / CLI <code>evidence-import</code> reject snapshot-shaped JSON with <code>invalid_request</code> instead of <code>evidence_integrity_mismatch</code>. Restore a snapshot with <code>open_binary.snapshot_path</code> or a compatible CLI <code>--snapshot</code> (<a href="https://github.com/morluto/rea/pull/8867" rel="noopener noreferrer" target="_blank">#8867</a>).</li>
+          <li>REA-launched Chromium keeps its sandbox. If launch fails on root/container hosts, enable host sandbox support first. <code>REA_BROWSER_NO_SANDBOX=true</code> disables Chromium’s sandbox and does not establish an REA isolation boundary (<a href="https://github.com/morluto/rea/pull/8738" rel="noopener noreferrer" target="_blank">#8738</a>).</li>
+          <li>Fresh objdump Evidence changes provider identity from <code>gnu.objdump</code> / <code>GNU objdump</code> to <code>{"{"} id: "objdump.command", name: "objdump command", version: null {"}"}</code>. Historical Evidence stays readable (<a href="https://github.com/morluto/rea/pull/8824" rel="noopener noreferrer" target="_blank">#8824</a>).</li>
+          <li>Kuna verification policy is separate from analysis identity. Earlier snapshots and resumable directory exports are incompatible even with the same executable. Preserve old files and save a fresh snapshot or export directory (<a href="https://github.com/morluto/rea/pull/8699" rel="noopener noreferrer" target="_blank">#8699</a>). The release points at <code>docs/kuna-provider.md</code> on the repository for extracting embedded Evidence as history.</li>
+          <li><code>inspect_analysis_view</code> rejects mismatched native parent predicates with <code>invalid_request</code> at <code>source.predicate_type</code>. Function/inventory/observation views require <code>rea.analysis</code>. Matching views require <code>rea.native-function-matching</code> (<a href="https://github.com/morluto/rea/pull/8451" rel="noopener noreferrer" target="_blank">#8451</a>).</li>
+          <li><code>trace_feature</code> can succeed when xrefs exist but owner lookup is unavailable. Accept <code>references[].containing_procedure.status: "unavailable"</code>. <code>truncated: false</code> does not establish resolved ownership (<a href="https://github.com/morluto/rea/pull/8368" rel="noopener noreferrer" target="_blank">#8368</a>).</li>
+          <li><code>close_binary</code> retains investigation records. Use <code>reset_investigation</code> to clear them. Cross-process recovery requires an explicitly acknowledged Evidence-bundle checkpoint (<a href="https://github.com/morluto/rea/pull/8361" rel="noopener noreferrer" target="_blank">#8361</a>).</li>
+          <li><code>compare_functions</code> also adds matched <code>function_match.method: "same-entry"</code> with required <code>entry_address</code> when artifact, architecture, mapping, slice, and entry commitments agree despite a rename (<a href="https://github.com/morluto/rea/pull/8263" rel="noopener noreferrer" target="_blank">#8263</a>).</li>
+          <li><code>inspect_native_load_image</code> NativeAOT <code>metadata_recovery</code> uses a status-discriminated union. Complete reports require <code>reason: null</code>. Partial/not-applicable reports carry <code>{"{"} code, ... {"}"}</code> instead of prose reasons. Invalid budgets produce typed input/resource errors (<a href="https://github.com/morluto/rea/pull/8053" rel="noopener noreferrer" target="_blank">#8053</a>).</li>
+          <li><code>trace_javascript_semantics</code> adds <code>influences</code> edges and moves direct literal-argument seeds from call-site to expression nodes. Relevant unknown dependencies can change <code>found</code> to <code>partial</code> (<a href="https://github.com/morluto/rea/pull/7939" rel="noopener noreferrer" target="_blank">#7939</a>).</li>
+          <li><code>inspect_managed_members</code> changes <code>signature_resolution</code> from <code>type-names-v1</code> to <code>type-names-v2</code> and appends readable names to signature operands. Signature digests are unchanged. <code>InternalCall</code> methods remain runtime-provided boundaries (<a href="https://github.com/morluto/rea/pull/5309" rel="noopener noreferrer" target="_blank">#5309</a>, <a href="https://github.com/morluto/rea/pull/9547" rel="noopener noreferrer" target="_blank">#9547</a>).</li>
+          <li>MCP calls default to <strong>1,024</strong> combined array elements and object members. Excess input is rejected before dispatch as nonretryable <code>resource_constraint</code>, <code>resource: "transport"</code>. Set <code>REA_MCP_MAX_INPUT_ELEMENTS</code> to a digit-only positive decimal safe integer (1–9007199254740991) and restart, or select retained/file inputs. Inputs are never truncated (<a href="https://github.com/morluto/rea/pull/7905" rel="noopener noreferrer" target="_blank">#7905</a>).</li>
+          <li><code>inspect_macho</code> text names/paths can be null for non-UTF-8 bytes, with hex companion fields. Unsafe numeric sizes/offsets/alignments can be null with exact companion fields. Delayed-init <code>options</code> are numeric (<a href="https://github.com/morluto/rea/pull/7952" rel="noopener noreferrer" target="_blank">#7952</a>).</li>
+          <li>Environment file-source errors move from the generic <code>evidence</code> issue path to <code>capture</code> for <code>environment-build</code> and <code>source.path</code> for environment bundle build/export. Missing or invalid sources return <code>invalid_request</code> (<a href="https://github.com/morluto/rea/pull/7900" rel="noopener noreferrer" target="_blank">#7900</a>).</li>
+          <li>Selected unpaired UTF-16 surrogates make TOON, Markdown, CSV, and TSV output fail with <code>invalid_request</code> even after a successful operation. Markdown also refuses NUL. Use <code>--format json</code> or <code>--format yaml</code> to preserve the values (<a href="https://github.com/morluto/rea/pull/7852" rel="noopener noreferrer" target="_blank">#7852</a>).</li>
+          <li>Reconstruction <code>evidence_bundle</code> inputs reject authenticated standalone records as <code>invalid_request</code> instead of treating them as damaged bundles. Supply a canonical bundle from <code>export_evidence_bundle</code> (<a href="https://github.com/morluto/rea/pull/7895" rel="noopener noreferrer" target="_blank">#7895</a>).</li>
+          <li>Environment coverage can use <code>method-replay</code> for non-GET safe reads. Clock-generating write plans without a global clock anchor return <code>served: false</code>, <code>reason: "unknown-clock"</code> (<a href="https://github.com/morluto/rea/pull/7834" rel="noopener noreferrer" target="_blank">#7834</a>).</li>
+          <li>Ghidra returns <code>not-in-listing</code> for in-memory addresses lacking listed instructions or defined data, replacing the former <code>undecodable</code> interpretation (<a href="https://github.com/morluto/rea/pull/7823" rel="noopener noreferrer" target="_blank">#7823</a>).</li>
+          <li><code>capture_process_scenario</code> / CLI process capture rejects <code>columns: 1</code> before target launch. Terminal widths must be at least 2. Sensitive interaction <code>data</code> is empty with <code>sensitive</code> / <code>input_bytes</code>, and raw echoes are redacted (<a href="https://github.com/morluto/rea/pull/7848" rel="noopener noreferrer" target="_blank">#7848</a>, <a href="https://github.com/morluto/rea/pull/7804" rel="noopener noreferrer" target="_blank">#7804</a>).</li>
+          <li>Managed setup registrations bind the selected absolute runtime and REA entry script, including package-runner cache paths. Setup no longer returns <code>prewarm</code> or emits its progress events (c77735fa83a6).</li>
+          <li>macOS Hopper launch paths and arguments reject double quotes, backslashes, and line breaks before handoff (<a href="https://github.com/morluto/rea/pull/7732" rel="noopener noreferrer" target="_blank">#7732</a>).</li>
+          <li>New JavaScript application graphs omit the derived package <code>renderer</code> property. Use <code>renderer_declarations</code> and package-load edges. Historical Evidence remains readable (5cf7133f823b).</li>
+          <li>Replace Cutter <code>--json=true/false</code> with <code>--json-output=true/false</code>. Bare <code>--json</code> still selects CLI result formatting. Replace <code>rea compare-bundles</code> with <code>rea compare</code>. MCP <code>compare_bundles</code> is unchanged (567ea4b1e8bb, 3515b262218f).</li>
+          <li>JEB engine refusals report <code>execution_failure</code> rather than <code>unsupported_target</code> (c4cdb7658b0e).</li>
+          <li>ASAR file occurrences may contain <code>unpacked: false</code>. Absent historical fields remain unknown (60834e391c3f).</li>
+          <li>Non-loopback MCP HTTP binds require <code>MCP_ALLOWED_HOSTS</code> or <code>rea mcp --http --allowed-hosts</code>. Bundle names must be unchanged HTTP hostnames within the 63-octet DNS-label limit (<a href="https://github.com/morluto/rea/pull/7172" rel="noopener noreferrer" target="_blank">#7172</a>).</li>
+          <li><code>binary_session {"{}"}</code> is compact by default and omits provider availability, target-support diagnostics, and tool-group surface. Request <code>{"{"} "detail": "complete" {"}"}</code> for those facts (<a href="https://github.com/morluto/rea/pull/7127" rel="noopener noreferrer" target="_blank">#7127</a>).</li>
+          <li>Native input errors include <code>details.operation</code> and field-level <code>details.issues</code>. <code>trace_native_values.procedure</code> must be nonempty (<a href="https://github.com/morluto/rea/pull/7889" rel="noopener noreferrer" target="_blank">#7889</a>).</li>
+          <li>Readable JavaScript members that normalize to one logical path stop <code>analyze_javascript_application</code> with <code>artifact_operation_failed</code>, <code>details.reason: "path"</code>, and a partial inventory (<a href="https://github.com/morluto/rea/pull/7864" rel="noopener noreferrer" target="_blank">#7864</a>).</li>
+          <li><code>trace_web_module_imports</code> with an empty or relative <code>REA_BROWSER_EXECUTABLE</code> reports <code>capability_unavailable</code> with <code>invalid_browser_executable</code> instead of <code>missing_browser_executable</code>. An unset selection still means missing (<a href="https://github.com/morluto/rea/pull/7903" rel="noopener noreferrer" target="_blank">#7903</a>).</li>
+          <li>Unresolvable <code>import-reference-source</code> roots, capture scenario files, and web-network capture/Protobuf descriptor paths (<code>ELOOP</code> / <code>ENAMETOOLONG</code>) report <code>invalid_request</code> / <code>invalid_input</code> (<a href="https://github.com/morluto/rea/pull/7847" rel="noopener noreferrer" target="_blank">#7847</a>, <a href="https://github.com/morluto/rea/pull/7814" rel="noopener noreferrer" target="_blank">#7814</a>).</li>
+          <li><code>close_binary</code> with <code>snapshot_path</code> on a profileless/archive target returns nonretryable <code>capability_unavailable</code> instead of <code>evidence_integrity_mismatch</code>, writes no snapshot, and leaves the session open (<a href="https://github.com/morluto/rea/pull/7837" rel="noopener noreferrer" target="_blank">#7837</a>).</li>
+          <li>adb local-file refusals occur before device commands. Missing or non-file <code>local_path</code> / <code>apk_path</code>, and a file-blocked <code>output_directory</code>, return <code>invalid_request</code> (<a href="https://github.com/morluto/rea/pull/7885" rel="noopener noreferrer" target="_blank">#7885</a>).</li>
+          <li>Evidence writes failing with <code>EFBIG</code>, <code>ENOSPC</code>, or <code>EDQUOT</code> report nonretryable <code>resource_constraint</code>, <code>details.reason: "storage-limit"</code>. A failed staged-file cleanup remains <code>cleanup_incomplete</code> (<a href="https://github.com/morluto/rea/pull/7887" rel="noopener noreferrer" target="_blank">#7887</a>).</li>
+          <li>PE signers add optional nullable <code>unsigned_attribute_oids</code>. Fresh null means absent. An OID array means present. Omission in old Evidence is unrecorded. Unsigned attributes produce <code>coverage.status: "partial"</code> (<a href="https://github.com/morluto/rea/pull/7920" rel="noopener noreferrer" target="_blank">#7920</a>).</li>
+          <li>Valid ASN.1 exceeding certificate nesting or OID allowances returns nonretryable <code>resource_constraint</code> rather than <code>invalid_request</code>, with <code>max_asn1_depth</code> / <code>max_oid_bytes</code>. Those bounds have no runtime override (<a href="https://github.com/morluto/rea/pull/9932" rel="noopener noreferrer" target="_blank">#9932</a>).</li>
+          <li><code>trace_call_path</code> / <code>build_call_path</code> require discovery and observed-result fields in <code>search_scope</code>. An exhausted observed graph can still yield <code>goal_status: "unknown"</code> when provider discovery is incomplete (<a href="https://github.com/morluto/rea/pull/8443" rel="noopener noreferrer" target="_blank">#8443</a>).</li>
+          <li><code>inspect_native_instruction</code> adds <code>containing_instruction</code> for <code>not-instruction-boundary</code> and <code>containing_data</code> for <code>data</code>. The Ghidra profile changes: reopen and save a fresh snapshot (<a href="https://github.com/morluto/rea/pull/8777" rel="noopener noreferrer" target="_blank">#8777</a>).</li>
+          <li><code>trace_native_values</code> adds required <code>page_truncated</code> and tagged <code>traversal</code> coverage. <code>truncated</code> combines page omission with traversal truncation. Exactly filling a budget alone no longer proves truncation (<a href="https://github.com/morluto/rea/pull/8309" rel="noopener noreferrer" target="_blank">#8309</a>).</li>
+          <li><code>batch_decompile.addresses</code> has a separate hard ceiling of <strong>20,000</strong> entries. Raising the MCP transport allowance cannot remove it (<a href="https://github.com/morluto/rea/pull/5937" rel="noopener noreferrer" target="_blank">#5937</a>).</li>
+          <li><code>close_binary</code> can retire the target while retaining cleanup owners. <code>cleanup_incomplete</code> may have <code>recovery.kind: "retry_cleanup"</code> despite <code>retryable: false</code>. Call <code>close_binary</code> again without <code>snapshot_path</code> on the same connection (<a href="https://github.com/morluto/rea/pull/8329" rel="noopener noreferrer" target="_blank">#8329</a>).</li>
+          <li>Unconfirmed cleanup in <code>inspect_address_context</code>, <code>get_call_graph</code>, or <code>trace_call_path</code> produces tool-level <code>cleanup_incomplete</code> rather than a successful partial result (<a href="https://github.com/morluto/rea/pull/8417" rel="noopener noreferrer" target="_blank">#8417</a>, <a href="https://github.com/morluto/rea/pull/8516" rel="noopener noreferrer" target="_blank">#8516</a>).</li>
+          <li><code>inspect_ntfs_journal</code> omits detailed <code>mftMetadata.record_headers</code> by default and leaves continuation at the first omitted record. Select <code>mft_record_limit</code> from 1 to 32 when those details are needed (1a8a9b749a).</li>
+          <li>Desktop state directories use <code>application.state_directories[].exists_at_start: null</code> plus <code>existence_error</code> when inspection fails. Accept the tri-state field (<a href="https://github.com/morluto/rea/pull/9899" rel="noopener noreferrer" target="_blank">#9899</a>).</li>
+        </ul>
+
         <h2 id="related">Related</h2>
         <ul>
-          <li><a href="/changelog/">Changelog, 3.2.0 through 6.5.0</a></li>
-          <li><a href="/docs/install/">Install, pinned to 6.5.0</a></li>
-          <li><a href="/docs/clients/">Client matrix for 6.5.0</a></li>
+          <li><a href="/changelog/">Changelog, 3.2.0 through 6.9.0</a></li>
+          <li><a href="/docs/install/">Install, pinned to 6.9.0</a></li>
+          <li><a href="/docs/clients/">Client matrix for 6.9.0</a></li>
+          <li><a href="/blog/rea-agents-6-9-0/">6.9.0 operator guide</a></li>
           <li><a href="/blog/rea-agents-6-5-0/">6.5.0 operator guide (JS paths, retained Evidence, offline lanes)</a></li>
           <li><a href="/blog/rea-agents-6-4-0/">6.4.0 operator guide (ADB, JEB, compact schema)</a></li>
           <li><a href="/docs/jeb/">JEB, bring your own license</a></li>
@@ -299,8 +461,8 @@ const evidenceId = evidence.evidence_id;`}</code></pre>
           <p class="text-xs uppercase tracking-wider">Sources</p>
           <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
             <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.5.0/docs/migration-6.2.md" rel="noopener noreferrer" target="_blank">docs/migration-6.2.md at rea-agents-6.5.0</a></li>
-            <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.0.0" rel="noopener noreferrer" target="_blank">6.0.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.1.0" rel="noopener noreferrer" target="_blank">6.1.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.2.0" rel="noopener noreferrer" target="_blank">6.2.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.3.0" rel="noopener noreferrer" target="_blank">6.3.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">6.4.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.5.0" rel="noopener noreferrer" target="_blank">6.5.0</a></li>
-            <li>npm <code>rea-agents</code> latest checked 2026-10-15: 6.5.0</li>
+            <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.0.0" rel="noopener noreferrer" target="_blank">6.0.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.1.0" rel="noopener noreferrer" target="_blank">6.1.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.2.0" rel="noopener noreferrer" target="_blank">6.2.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.3.0" rel="noopener noreferrer" target="_blank">6.3.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">6.4.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.5.0" rel="noopener noreferrer" target="_blank">6.5.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.6.0" rel="noopener noreferrer" target="_blank">6.6.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.7.0" rel="noopener noreferrer" target="_blank">6.7.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.8.0" rel="noopener noreferrer" target="_blank">6.8.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.9.0" rel="noopener noreferrer" target="_blank">6.9.0</a></li>
+            <li>npm <code>rea-agents</code> latest checked 2026-11-13 17:02:45 CST: 6.9.0. <code>rea-agents@6.6.0</code> was 404 the same day.</li>
           </ol>
           <p class="mt-4"><a class="quiet-link" href="/compliance/">Compliance</a></p>
         </footer>
