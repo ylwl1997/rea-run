@@ -10,13 +10,17 @@ const toc = [
   { id: 'captures', label: '6.3 捕获记账' },
   { id: 'sockets', label: '6.4 WebSocket 字段' },
   { id: 'nulls', label: '6.5 空值与合同' },
+  { id: 'kuna', label: '6.6 Evidence 与 ADB' },
+  { id: 'six-seven', label: '6.7 自身无破坏节' },
+  { id: 'formats', label: '6.8 Node 与 schema' },
+  { id: 'desktop', label: '6.9 合同' },
   { id: 'related', label: '相关' },
 ];
 ---
 <BaseLayout
   lang="zh"
-  title="REA 升级手册：6.0–6.5.0 破坏性变更 | rea.run"
-  description="rea-agents 6.0 至 6.5.0 运维手册：MCP 绝对路径、Evidence 的 normalized_result、捕获记账、websocket_connections、attached/空值合同、调用图形状，以及 always-bump-minor。"
+  title="REA 升级手册：6.0–6.9.0 破坏性变更 | rea.run"
+  description="rea-agents 6.0 至 6.9.0 运维手册：MCP 绝对路径、Evidence 形状、6.8 的 Node 下限、默认 compact 的 MCP schema，以及 6.9 的字段合同。6.7 自身没有破坏性一节。"
   path="/zh/docs/breaking/"
 >
   <div class="mx-auto max-w-6xl px-4 py-12">
@@ -27,35 +31,35 @@ const toc = [
       </aside>
       <article class="prose-page">
         <p class="text-sm"><a class="quiet-link" href="/zh/changelog/">← 更新日志</a></p>
-        <p class="badge badge-accent mt-4">文档 · 钉 6.5.0</p>
+        <p class="badge badge-accent mt-4">文档 · 钉 6.9.0</p>
         <h1 class="display mt-4 text-4xl text-[var(--color-ink)]">升级时怎样不弄坏 runbook</h1>
         <p class="lede mt-4 !max-w-none">
-          从 <strong>6.0.0</strong>（2026-10-08）到 <strong>6.5.0</strong>（2026-10-14），几次次版本发行改了 MCP 输入、Evidence 形状和已保存的捕获。
-          本页是这些破坏性变更的运维清单。日期取自 GitHub 发行的 <code>published_at</code>。rea.run 的教学钉版本是 <code>rea-agents@6.5.0</code>。
+          从 <strong>6.0.0</strong>（2026-10-08）到 <strong>6.9.0</strong>（2026-11-12），几次次版本发行改了 MCP 输入、Evidence 形状、Node 引擎和已保存的捕获。
+          本页是这些破坏性变更的运维清单。日期取自 GitHub 发行的 <code>published_at</code>。rea.run 的教学钉版本是 <code>rea-agents@6.9.0</code>。
         </p>
 
         <h2 id="policy">always-bump-minor 不是兼容承诺</h2>
         <p>
           上游 6.2 迁移指南用一句话写了策略：仓库使用 <code>always-bump-minor</code>，<strong>包括破坏性发行</strong>。次版本号并不表示旧脚本、旧 Evidence 文件或旧捕获仍然能通过校验。
-          本站于 <strong>2026-10-15</strong> 核对时 npm <code>latest</code> 为 <code>6.5.0</code>。runbook 里漂浮的 <code>@latest</code> 会在下一次次版本发布时跟上，破坏性变更也一起跟上。
+          本站于 <strong>2026-11-13 17:02:45 CST（Asia/Shanghai）</strong> 核对时 npm <code>latest</code> 为 <code>6.9.0</code>。runbook 里漂浮的 <code>@latest</code> 会在下一次次版本发布时跟上，破坏性变更也一起跟上。
         </p>
         <p>
-          6.5.0 新增的客户端 ID（Qoder、Trae、ZCode、DeepSeek Harness、Kimi Code、Factory Droid、WorkBuddy）见 <a href="/zh/docs/clients/">客户端矩阵</a>。把登记视为对齐之前先用 doctor 确认。
+          6.9.0 客户端矩阵在 <a href="/zh/docs/clients/">客户端页</a>（28 个 <code>--client</code> id）。把登记视为对齐之前先用 doctor 确认。6.6.0 是 GitHub 标签，npm 不发布它；安装 npm 6.7.0 才会带上那些 6.6 破坏项。
         </p>
 
         <h2 id="steps">升级步骤</h2>
         <ol>
           <li>记下你今天跑的钉版本：MCP <code>args</code> 里的版本，以及全局 CLI 的 <code>npm view rea-agents version</code>。两者可以不同。</li>
-          <li>读下面表格里你将跨过的每一行。从 6.1 直接跳到 6.5.0，仍然包含 6.2、6.3 和 6.4 的合同。</li>
+          <li>读下面表格里你将跨过的每一行。从 6.1 直接跳到 6.9.0，仍然包含 6.2 至 6.8 的合同。安装 6.8.0 或 6.9.0 之前，先把 Node 换到 <code>^22.23.4 || ^24.22.1 || &gt;=26.12.1</code>。6.8.0 说明写明安装器不升级 Node，且不支持 Node 23 与 25。</li>
           <li>把 Evidence 包、分析快照和进程捕获复制到旁边的目录。不要就地改写。</li>
           <li>
             把客户端指到该钉版本，并批准一份有范围的 setup 计划：
-            <pre><code>{`npx -y rea-agents@6.5.0 setup --client codex --dry-run --json
+            <pre><code>{`npx -y rea-agents@6.9.0 setup --client codex --dry-run --json
 # 审阅后再：
-npx -y rea-agents@6.5.0 setup --client codex --yes --json`}</code></pre>
+npx -y rea-agents@6.9.0 setup --client codex --yes --json`}</code></pre>
           </li>
           <li>重启或重连智能体。上一包缓存的 <code>tools/list</code> schema 是常见的第一处失败。</li>
-          <li>运行 <code>npx -y rea-agents@6.5.0 doctor --json</code>，把 JSON 附在变更单上。</li>
+          <li>运行 <code>npx -y rea-agents@6.9.0 doctor --json</code>，把 JSON 附在变更单上。</li>
           <li>对一个你已经理解的授权目标重跑一次。先比对字段名，再相信仪表板或脚本。</li>
           <li>若消费者仍读取 <code>structuredContent.result</code>，改为 <code>normalized_result</code>（6.2）。若仍读取 <code>network.websocket_events</code>，改为 <code>network.websocket_connections</code>（6.4）。WebSocket 字段没有旧别名。</li>
         </ol>
@@ -64,12 +68,12 @@ npx -y rea-agents@6.5.0 setup --client codex --yes --json`}</code></pre>
   "mcpServers": {
     "rea": {
       "command": "npx",
-      "args": ["-y", "rea-agents@6.5.0", "mcp"]
+      "args": ["-y", "rea-agents@6.9.0", "mcp"]
     }
   }
 }`}</code></pre>
 
-        <h2 id="map">运维会碰到的破坏，6.0 至 6.5.0</h2>
+        <h2 id="map">运维会碰到的破坏，6.0 至 6.9.0</h2>
         <div class="not-prose overflow-x-auto my-6">
           <table class="compare-table">
             <thead>
@@ -106,6 +110,26 @@ npx -y rea-agents@6.5.0 setup --client codex --yes --json`}</code></pre>
                 <td>2026-10-14 12:32</td>
                 <td><code>attached</code>／源名／段长度／<code>command_path</code> 可为 null；<code>--filter-output</code> 输出 JSON null；调用图 <code>{"{"} graph, limitations {"}"}</code>；<code>binary_session</code> 不再重复 tools 目录；ADB <code>replace_requested</code>／可空的 <code>replaced</code>。</td>
               </tr>
+              <tr>
+                <td>6.6.0</td>
+                <td>2026-10-18 03:40</td>
+                <td>仅 GitHub（不在 npm）。已保存 Evidence 必须重新生成。ADB <code>version_code</code> 是十进制字符串。<a href="#kuna">步骤</a>。</td>
+              </tr>
+              <tr>
+                <td>6.7.0</td>
+                <td>2026-10-18 07:45</td>
+                <td>自身没有 <code>BREAKING CHANGES</code> 标题。npm 6.7.0 是第一份包含 6.6 破坏项的已发布包。<a href="#six-seven">步骤</a>。</td>
+              </tr>
+              <tr>
+                <td>6.8.0</td>
+                <td>2026-10-25 08:36</td>
+                <td>Node 下限上移。MCP 输入广告默认 compact。<code>analyze_function</code> 默认摘要。JSON Lines 增加元数据记录。<a href="#formats">步骤</a>。</td>
+              </tr>
+              <tr>
+                <td>6.9.0</td>
+                <td>2026-11-12 08:59</td>
+                <td>设置改用 <code>update_mode</code>。<code>rea mcp add --command</code> 仅限本地 stdio。许多 Evidence 阅读方必须接受 null、新的联合类型，以及 1,024 元素的 MCP 输入默认值。<a href="#desktop">步骤</a>。</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -135,7 +159,7 @@ npx -y rea-agents@6.5.0 setup --client codex --yes --json`}</code></pre>
 const value = reply.structuredContent.result;
 const evidence = reply.structuredContent.evidence;
 
-// 6.2 及以后，包括 6.5.0
+// 6.2 及以后，包括 6.9.0 钉版
 const evidence = reply.structuredContent;
 const value = evidence.normalized_result;
 const evidenceId = evidence.evidence_id;`}</code></pre>
@@ -157,7 +181,7 @@ const evidenceId = evidence.evidence_id;`}</code></pre>
         </p>
         <h3>快照与制品角色</h3>
         <p>快照要求 <code>workflow_entries</code>，并且每个缓存查询都有一条绑定 profile 的 Evidence。导入会拒绝不完整的绑定。保留旧快照，写到新路径，例如：</p>
-        <pre><code>npx -y rea-agents@6.5.0 analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program-6.4.json</code></pre>
+        <pre><code>npx -y rea-agents@6.9.0 analyze /absolute/path/to/program --provider ghidra --snapshot /absolute/path/to/analysis/program-6.4.json</code></pre>
         <p>在 MCP 中，打开时不要带上不兼容的 <code>snapshot_path</code>，跑完查询后经 <code>close_binary.snapshot_path</code> 保存。不要编造缺失的提供者 profile。</p>
         <div class="not-prose overflow-x-auto my-6">
           <table class="compare-table">
@@ -227,7 +251,7 @@ const evidenceId = evidence.evidence_id;`}</code></pre>
           正文日期 2026-10-13；GitHub <code>published_at</code> 2026-10-14 12:32 UTC（2026-10-14 20:32 UTC+8）。
           发行：<a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.5.0" rel="noopener noreferrer" target="_blank">rea-agents-6.5.0</a>。
           发行页脚贡献记录：<strong>893</strong> commits 与 <strong>529</strong> 个已合并 PR。
-          本站于 <strong>2026-10-15</strong> 核对 npm <code>latest</code> 为 <strong>6.5.0</strong>。
+          <strong>2026-10-15</strong> 本站核对记录的 npm <code>latest</code> 是 <strong>6.5.0</strong>。当前核对（2026-11-13）是 6.9.0，见本页开头。
           下表是发行 <code>BREAKING CHANGES</code> 节的运维转述——不要自行发明额外破坏项。
         </p>
         <div class="not-prose overflow-x-auto my-6">
@@ -284,11 +308,149 @@ const evidenceId = evidence.evidence_id;`}</code></pre>
         </p>
         <p>同时更新 ADB 结果读取器：见 <a href="/zh/docs/android-adb/">Android ADB</a>。调用图与 MCP 发现的消费者在相信基于 6.4.0 形状的仪表板之前，应重新核对字段路径。</p>
 
+        <h2 id="kuna">6.6.0 — 已保存 Evidence、浏览器限制、ADB 版本号</h2>
+        <p>
+          GitHub <code>published_at</code> 2026-10-18 03:40 UTC。正文日期 2026-10-18。
+          发行：<a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.6.0" rel="noopener noreferrer" target="_blank">rea-agents-6.6.0</a>。
+          页脚：<strong>571</strong> 次提交、<strong>236</strong> 个已合并 PR。
+          该标签<strong>不在 npm</strong>。2026-11-13 <code>npm view rea-agents@6.6.0</code> 返回 404，6.7.0 发行也写明该标签未发布。
+          下面是 6.6.0 <code>BREAKING CHANGES</code> 缩短后的合同。
+        </p>
+        <ul>
+          <li><strong>已保存 Evidence。</strong> Evidence 与分析快照要求显式可空的 <code>relationship_coverage</code>。制品清单要求带范围的覆盖和显式的 <code>integrity_contradictions</code>。过时的 <code>coverage_status</code> 与基于散文的覆盖推断被移除。重新生成旧 Evidence、快照和清单观察。已保存文件不会迁移，缺掉的事实也不会用猜测的默认值填上（db8128d、0405c9d、a9588be）。</li>
+          <li><strong>浏览器捕获结果。</strong> 保留已解析的捕获限制、事件族与省略事实。省略的调用方输入仍会选用默认值，但存储的观察必须报告解析后的值。获准的内容读取在有界并发之后排队（57a23f0）。</li>
+          <li><strong>Android 版本号。</strong> <code>inspect_adb_package.version_code</code> 是十进制字符串，不是 JSON 数字。按字符串读取，或用 <code>BigInt</code> 做数值比较（<a href="https://github.com/morluto/rea/pull/3485" rel="noopener noreferrer" target="_blank">#3485</a>）。</li>
+          <li><strong>原生 UI 失败。</strong> 失败或取消的原生 UI 场景返回带类型的错误，收集到的报告在 <code>partial_observation</code>。不要期待一个里面装着失败步骤的成功结果（d909919）。</li>
+          <li><strong>提供者状态。</strong> 所有者收尾期间，<code>binary_session</code> 候选可用性可以为未知。保留该状态，不要把它当成不可用（150e996）。</li>
+          <li><strong>Swift 符号位置。</strong> 提供者没有给出位置时，<code>swift_symbols</code> 条目的 <code>address</code> 可为 null。可选的 <code>evidence.reported_address</code> 保留提供者原值（8116dc0）。</li>
+          <li><strong>Linux Hopper 准入。</strong> 先前靠固定允许列表准入的旧构建，需要保留的发布者签名包证据，或获准更新到当前公开演示版。迁移时更新显式的 <code>HOPPER_LAUNCHER_PATH</code>。官方 RPM 元数据不匹配仍未解决并被拒绝（<a href="https://github.com/morluto/rea/pull/3590" rel="noopener noreferrer" target="_blank">#3590</a>）。</li>
+        </ul>
+
+        <h2 id="six-seven">6.7.0 — 自身没有破坏性一节</h2>
+        <p>
+          GitHub <code>published_at</code> 2026-10-18 07:45 UTC。npm 时间 2026-10-18T08:12:05Z。
+          发行：<a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.7.0" rel="noopener noreferrer" target="_blank">rea-agents-6.7.0</a>。
+          仅 6.7 那一节的页脚：<strong>4</strong> 次提交、<strong>1</strong> 个已合并 PR。
+        </p>
+        <p>
+          6.7.0 标题下<strong>没有</strong> <code>BREAKING CHANGES</code>。它的 Changes 写明该发行包含 6.6.0 的变更与迁移说明，并且 6.6.0 已打标签但未发布到 npm。
+          因此安装 npm <code>6.7.0</code> 是第一份带上上面那些 6.6 破坏项的已发布包。不要另编一条 6.7 字段破坏。
+          6.7 仅有的修复——发行说明没有把它标成破坏性——是 setup 编辑最后一次重复的 JSON／JSONC 成员，并拒绝会重新激活被遮住的重复项的删除（<a href="https://github.com/morluto/rea/pull/4957" rel="noopener noreferrer" target="_blank">#4957</a>）。
+        </p>
+
+        <h2 id="formats">6.8.0 — Node 下限、compact schema、摘要、JSON Lines</h2>
+        <p>
+          GitHub <code>published_at</code> 2026-10-25 08:36 UTC。正文日期 2026-10-25。npm 时间 2026-10-25T09:07:31Z。
+          发行：<a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.8.0" rel="noopener noreferrer" target="_blank">rea-agents-6.8.0</a>。
+          页脚：<strong>1740</strong> 次提交、<strong>497</strong> 个已合并 PR。
+          同一 Node 字符串仍是 6.9.0 包的 <code>engines.node</code>。下面是该发行 <code>BREAKING CHANGES</code> 的条目。
+        </p>
+        <ul>
+          <li><strong>函数分析。</strong> <code>analyze_function</code> 默认返回保留摘要。要先前的内联档案请设 <code>detail: "complete"</code>。CLI 仍默认完整结果，选择摘要时需要 <code>--evidence_output</code>（<a href="https://github.com/morluto/rea/pull/5660" rel="noopener noreferrer" target="_blank">#5660</a>）。</li>
+          <li><strong>无障碍。</strong> 节点 <code>value</code> 接受 JSON 数字和布尔，以及字符串和 null（cc90771，<a href="https://github.com/morluto/rea/pull/6759" rel="noopener noreferrer" target="_blank">#6759</a>）。</li>
+          <li><strong>JSON Lines。</strong> <code>--format jsonl</code> 先输出对象集合的行，再输出一条 <code>$rea: "jsonl/v1"</code>、<code>type: "metadata"</code> 记录。标量选择与不受支持的报告会被拒绝。要先前的整份文档用 <code>--format json</code>（<a href="https://github.com/morluto/rea/pull/5629" rel="noopener noreferrer" target="_blank">#5629</a>）。</li>
+          <li><strong>Interface Builder。</strong> 键控归档的图身份改用十进制表 UID，而不是编写时的 <code>objectID</code>／<code>object-id</code>。ibtool 与原生 NIBArchive 身份保持其来源语义（6fbe67d）。</li>
+          <li><strong>Frida。</strong> <code>instrument-with-frida</code> 的 JSON 直接返回规范 Evidence。读 <code>normalized_result.cleanup_error</code>，而不是先前的顶层包装字段（48f700e）。</li>
+          <li><strong>重建证明。</strong> ID 数组证明记录不再建立已核验或就绪的账本。提供实现／修订绑定和逐条主张结果（f8b65e7）。</li>
+          <li><strong>Mach-O 导入。</strong> 身份含糊时导入 <code>name</code> 可为 null。使用 <code>raw_name</code> 与 <code>name_status</code>（5d0d243、169512a）。</li>
+          <li><strong>Node.js。</strong> 使用满足 <code>^22.23.4 || ^24.22.1 || &gt;=26.12.1</code> 的运行时。不支持 Node 23 与 25。安装或更新 REA 之前先升级 Node。安装器不升级它（<a href="https://github.com/morluto/rea/pull/6315" rel="noopener noreferrer" target="_blank">#6315</a>）。</li>
+          <li><strong>浏览器存储。</strong> 历史哈希存储仍可读，但在两边都用新表示重新捕获之前，比较保持未知（<a href="https://github.com/morluto/rea/pull/6341" rel="noopener noreferrer" target="_blank">#6341</a>）。</li>
+          <li><strong>环境服务。</strong> <code>environment-serve</code> 默认提供派生状态，包括效果已由记录 Evidence 确认的写入工具。无状态重放用 <code>--replay-only</code>。读停止摘要的 <code>state</code>，而不是 <code>state_evidence_id</code>（<a href="https://github.com/morluto/rea/pull/5351" rel="noopener noreferrer" target="_blank">#5351</a>、<a href="https://github.com/morluto/rea/pull/6158" rel="noopener noreferrer" target="_blank">#6158</a>）。</li>
+          <li><strong>MCP schema。</strong> 输入广告默认 compact。要完整广告指导与嵌套约束，设 <code>REA_MCP_INPUT_SCHEMA_PROFILE=full</code>（<a href="https://github.com/morluto/rea/pull/5975" rel="noopener noreferrer" target="_blank">#5975</a>）。</li>
+          <li><strong>浏览器控制台参数。</strong> 协议参数清单被省略或畸形时，接受 null 的 <code>argument_types</code> 与 <code>text_capture.status: "unavailable"</code>（<a href="https://github.com/morluto/rea/pull/6016" rel="noopener noreferrer" target="_blank">#6016</a>）。</li>
+          <li><strong>重建摘要。</strong> <code>summary.by_evidence_authority</code> 以 Evidence 权威为键。先前的源状态计数改从必需的 <code>summary.by_source_state</code> 读取（<a href="https://github.com/morluto/rea/pull/5875" rel="noopener noreferrer" target="_blank">#5875</a>）。</li>
+          <li><strong>Swift 绑定。</strong> 一致性的 <code>type_name</code> 与 <code>protocol_name</code> 可为 null。消费有类型的 <code>type_binding</code>／<code>protocol_binding</code>。先前专用于 Objective-C 的导入绑定类型换成 <code>MachoImportBinding</code>（d0067ba）。</li>
+          <li><strong>WebSocket 帧。</strong> 接受 null 操作码并保留未知帧事实。数字操作码限制在四位协议范围（0bc2b42）。</li>
+          <li><strong>仅资源检查。</strong> Evidence 主体与可执行文件摘要可为 null。使用 <code>resource_root</code> 和每项资源报告的来源（6a6adf7）。</li>
+          <li><strong>浏览器时间戳。</strong> 协议没有给出有限、可比较的时间时，控制台与会话时间线的时间戳可为 null（690fc51、2a0410f）。</li>
+          <li><strong>参考源。</strong> 从 <code>rootFailure</code> 读取失败的根枚举，而不是 <code>"."</code> 上合成的失败子项（6296fdf）。</li>
+          <li><strong>文件系统捕获。</strong> 除先前的原因字面量外，还接受 <code>entry_unavailable</code> 与 <code>identity_changed</code>（c85b44e）。</li>
+          <li><strong>APK 区域。</strong> 把 <code>es-r419</code> 这类数字旧选择器换成 <code>es-419</code> 或 <code>b+es+419</code>。两字母区域仍受支持（29910d1）。</li>
+          <li><strong>XML plist 标量。</strong> 识别 <code>$plist_type: "unknown"</code>，并读取 <code>element</code>、<code>literal</code>、<code>reason</code>。受支持的扩展 UTC 年份保留其时间戳（3537e58）。</li>
+        </ul>
+
+        <h2 id="desktop">6.9.0 — 设置、本地 MCP add、Evidence 阅读方</h2>
+        <p>
+          正文日期 2026-11-11。GitHub <code>published_at</code> 2026-11-12 08:59 UTC（2026-11-12 16:59 UTC+8）。npm 时间 2026-11-12T09:53:32Z。
+          发行：<a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.9.0" rel="noopener noreferrer" target="_blank">rea-agents-6.9.0</a>。
+          页脚：<strong>1848</strong> 次提交、<strong>1073</strong> 个已合并 PR。
+          2026-11-13 17:02:45 CST 的 npm <code>latest</code> 是 6.9.0。
+          下面列出该发行 <code>BREAKING CHANGES</code> 的每一条，缩短为合同。完整措辞在发行正文。这里没有额外编造的破坏项。英文同页逐条对照：<a href="/docs/breaking/#desktop">/docs/breaking/#desktop</a>。
+        </p>
+        <ul>
+          <li>设置客户端把 <code>effect</code>、<code>rea_restart_required</code>、<code>restart_required</code>、<code>restartRequired</code> 换成 <code>update_mode</code>（<code>runtime</code>、<code>restart</code>、<code>parameter</code>）与 <code>pending_restart</code>。运行时设置器不能改由参数提供的限制（<a href="https://github.com/morluto/rea/pull/9885" rel="noopener noreferrer" target="_blank">#9885</a>）。</li>
+          <li>进程与桌面调用方检查 <code>details.secondary_failures</code>／<code>secondaryFailures</code>。混合批次以物理／提供者失败为主。保留的描述符可以产生 <code>cleanup_incomplete</code>（<a href="https://github.com/morluto/rea/pull/10141" rel="noopener noreferrer" target="_blank">#10141</a>、<a href="https://github.com/morluto/rea/pull/10113" rel="noopener noreferrer" target="_blank">#10113</a>、<a href="https://github.com/morluto/rea/pull/10109" rel="noopener noreferrer" target="_blank">#10109</a>）。</li>
+          <li><code>rea mcp add --command</code> 只接受本地 stdio 启动器。HTTP(S) 可执行 URL 在写入设置前被拒绝，包获取已移除（<a href="https://github.com/morluto/rea/pull/10102" rel="noopener noreferrer" target="_blank">#10102</a>）。</li>
+          <li>运行时实例图身份除捕获摘要与运行时键外，还要求 <code>identity.capture_evidence_id</code>。重新生成对账 Evidence（<a href="https://github.com/morluto/rea/pull/10063" rel="noopener noreferrer" target="_blank">#10063</a>）。</li>
+          <li>保留的进程符号链接需要存储的目标字节。只描述了链接、没有保留目标的旧观察要重新捕获（<a href="https://github.com/morluto/rea/pull/10082" rel="noopener noreferrer" target="_blank">#10082</a>）。</li>
+          <li>函数档案把 Swift 字面量清单和它的省略一起记录。重新生成只有一边的观察。两边都缺的不受支持观察仍然有效（<a href="https://github.com/morluto/rea/pull/10068" rel="noopener noreferrer" target="_blank">#10068</a>）。</li>
+          <li>一致性清单 schema v2 把精确字符串标记与片段分开，并拒绝旧的含糊 <code>strings</code> 字段。用 <code>npm run build:fixtures</code> 重新生成无版本夹具（<a href="https://github.com/morluto/rea/pull/9977" rel="noopener noreferrer" target="_blank">#9977</a>）。</li>
+          <li>不可用的原生／BEAM／Go／Rust 视图集合返回 <code>items.rows: null</code>、<code>coverage.status: "unavailable"</code>、<code>coverage.total: null</code>、<code>coverage.exhausted: false</code>。已记录的空集合仍返回 <code>rows: []</code>（<a href="https://github.com/morluto/rea/pull/9893" rel="noopener noreferrer" target="_blank">#9893</a>）。</li>
+          <li>桌面见证需要当前生成的校验器。重新导出旧包。缺少必需 <code>state.baseline_non_files</code> 的 6.9 之前捕获，会在检查、起草或导出之前被拒绝（<a href="https://github.com/morluto/rea/pull/9898" rel="noopener noreferrer" target="_blank">#9898</a>、<a href="https://github.com/morluto/rea/pull/9470" rel="noopener noreferrer" target="_blank">#9470</a>）。</li>
+          <li>新的浏览器捕获对什么都不保存的请求动作记录 <code>save: []</code>，从而改变场景／Evidence 摘要。历史摘要留在历史捕获上（<a href="https://github.com/morluto/rea/pull/9896" rel="noopener noreferrer" target="_blank">#9896</a>）。</li>
+          <li>选定的 SQLite 行要求 <code>row_offset</code> 与 <code>next_row_offset</code>。<code>rows.order</code> 为 <code>rowid</code>、<code>primary_key</code> 或 <code>unspecified</code>。下一偏移为 null 表示没有续页，或没有声明顺序。无序样本仍可以 <code>truncated: true</code>（<a href="https://github.com/morluto/rea/pull/9331" rel="noopener noreferrer" target="_blank">#9331</a>）。</li>
+          <li>Windows 熵 Evidence 使用获准的文件系统路径拼写，因此大小写不同的调用方路径可以改变 <code>evidence_id</code>（<a href="https://github.com/morluto/rea/pull/9393" rel="noopener noreferrer" target="_blank">#9393</a>）。</li>
+          <li><code>caller_input_paths</code> 的值可以是有序字符串数组，也可以是字符串（<a href="https://github.com/morluto/rea/pull/9626" rel="noopener noreferrer" target="_blank">#9626</a>）。</li>
+          <li><code>observe_javascript_runtime</code> 为脚本和上下文增加必需的 <code>execution_context_id</code>。<code>context_key</code> 是不透明的捕获本地身份，不是可复用的协议 ID（<a href="https://github.com/morluto/rea/pull/9471" rel="noopener noreferrer" target="_blank">#9471</a>）。</li>
+          <li>刷新缓存的 <code>inspect_address_context</code> schema：不可用的切面可以带有类型化的输入或资源约束错误，而兄弟切面仍然可用（<a href="https://github.com/morluto/rea/pull/8444" rel="noopener noreferrer" target="_blank">#8444</a>）。</li>
+          <li><code>analyze_function</code>／<code>trace_native_values</code> 在可用与不可用变体上都要求 <code>native_value_flow.limitations</code>。Ghidra 内存效果只覆盖显式的高阶 p-code <code>LOAD</code>／<code>STORE</code>。空效果不证明没有内存访问。<code>value_flow_effect_scope</code> 使旧快照失效（<a href="https://github.com/morluto/rea/pull/8651" rel="noopener noreferrer" target="_blank">#8651</a>）。</li>
+          <li>Ghidra 字节搜索要求 <code>skipped_overlays</code>。已加载的覆盖不再算作未加载。配置／搜索策略变化后重新打开目标并保存新快照（<a href="https://github.com/morluto/rea/pull/8608" rel="noopener noreferrer" target="_blank">#8608</a>）。</li>
+          <li>两个输入都认证到同一 Evidence ID 且入口比较不可用时，<code>compare_functions</code> 增加 <code>function_match.method: "same-evidence"</code>。不要推断完全等价（<a href="https://github.com/morluto/rea/pull/8442" rel="noopener noreferrer" target="_blank">#8442</a>）。</li>
+          <li>Kuna 的 <code>analyze_function</code> 可以返回 <code>native_value_flow: {"{"} available: false, reason, limitations {"}"}</code> 而不是 null。null 表示过程范围内未记录的未知，不是确认缺席。旧跟踪 Evidence 必须重跑才能满足当前重放（<a href="https://github.com/morluto/rea/pull/8785" rel="noopener noreferrer" target="_blank">#8785</a>）。</li>
+          <li>可选的冷热 MCP 目录不再预加载 <code>inspect_analysis_view</code>。使用前先发现它，或与其生产者一起批处理。默认的完整目录仍然可用（<a href="https://github.com/morluto/rea/pull/9151" rel="noopener noreferrer" target="_blank">#9151</a>）。</li>
+          <li><code>batch_decompile</code> 与保留的批量视图对 null 伪代码使用 <code>items[].status: "unavailable"</code>、<code>reason: "no_pseudocode"</code>，取代先前的 <code>error</code>／<code>capability_unavailable</code>。空或非文本值仍是 <code>status: "error"</code> 与 <code>unreadable_output</code>。两者都计入 <code>failed</code>（<a href="https://github.com/morluto/rea/pull/8737" rel="noopener noreferrer" target="_blank">#8737</a>）。</li>
+          <li><code>import_evidence_bundle</code>／CLI <code>evidence-import</code> 用 <code>invalid_request</code> 拒绝快照形状的 JSON，而不是 <code>evidence_integrity_mismatch</code>。用 <code>open_binary.snapshot_path</code> 或兼容的 CLI <code>--snapshot</code> 恢复快照（<a href="https://github.com/morluto/rea/pull/8867" rel="noopener noreferrer" target="_blank">#8867</a>）。</li>
+          <li>REA 启动的 Chromium 保持其沙箱。在 root／容器宿主上启动失败时，先启用宿主沙箱支持。<code>REA_BROWSER_NO_SANDBOX=true</code> 会关闭 Chromium 的沙箱，并且不建立 REA 隔离边界（<a href="https://github.com/morluto/rea/pull/8738" rel="noopener noreferrer" target="_blank">#8738</a>）。</li>
+          <li>新的 objdump Evidence 把提供者身份从 <code>gnu.objdump</code>／<code>GNU objdump</code> 改为 <code>{"{"} id: "objdump.command", name: "objdump command", version: null {"}"}</code>。历史 Evidence 仍可读（<a href="https://github.com/morluto/rea/pull/8824" rel="noopener noreferrer" target="_blank">#8824</a>）。</li>
+          <li>Kuna 核验策略与分析身份分开。即便可执行文件相同，更早的快照和可恢复目录导出也不兼容。保留旧文件，保存新快照或新导出目录（<a href="https://github.com/morluto/rea/pull/8699" rel="noopener noreferrer" target="_blank">#8699</a>）。发行说明指向仓库里的 <code>docs/kuna-provider.md</code>，用于把嵌入 Evidence 当作历史提取。</li>
+          <li><code>inspect_analysis_view</code> 在 <code>source.predicate_type</code> 上以 <code>invalid_request</code> 拒绝不匹配的原生父谓词。函数／清单／观察视图要求 <code>rea.analysis</code>。匹配视图要求 <code>rea.native-function-matching</code>（<a href="https://github.com/morluto/rea/pull/8451" rel="noopener noreferrer" target="_blank">#8451</a>）。</li>
+          <li>存在 xref 但所有者查找不可用时，<code>trace_feature</code> 仍可成功。接受 <code>references[].containing_procedure.status: "unavailable"</code>。<code>truncated: false</code> 不建立已解析的所有权（<a href="https://github.com/morluto/rea/pull/8368" rel="noopener noreferrer" target="_blank">#8368</a>）。</li>
+          <li><code>close_binary</code> 保留调查记录。用 <code>reset_investigation</code> 清除。跨进程恢复需要显式确认的 Evidence 包检查点（<a href="https://github.com/morluto/rea/pull/8361" rel="noopener noreferrer" target="_blank">#8361</a>）。</li>
+          <li>制品、架构、映射、切片与入口承诺一致、只是改了名时，<code>compare_functions</code> 还增加匹配的 <code>function_match.method: "same-entry"</code>，并要求 <code>entry_address</code>（<a href="https://github.com/morluto/rea/pull/8263" rel="noopener noreferrer" target="_blank">#8263</a>）。</li>
+          <li><code>inspect_native_load_image</code> 的 NativeAOT <code>metadata_recovery</code> 使用按状态区分的联合。完整报告要求 <code>reason: null</code>。部分／不适用报告携带 <code>{"{"} code, ... {"}"}</code>，而不是散文原因。无效预算产生类型化的输入／资源错误（<a href="https://github.com/morluto/rea/pull/8053" rel="noopener noreferrer" target="_blank">#8053</a>）。</li>
+          <li><code>trace_javascript_semantics</code> 增加 <code>influences</code> 边，并把直接字面量参数种子从调用点移到表达式节点。相关的未知依赖可以把 <code>found</code> 变成 <code>partial</code>（<a href="https://github.com/morluto/rea/pull/7939" rel="noopener noreferrer" target="_blank">#7939</a>）。</li>
+          <li><code>inspect_managed_members</code> 把 <code>signature_resolution</code> 从 <code>type-names-v1</code> 改为 <code>type-names-v2</code>，并在签名操作数后附加可读名称。签名摘要不变。<code>InternalCall</code> 方法仍是运行时提供的边界（<a href="https://github.com/morluto/rea/pull/5309" rel="noopener noreferrer" target="_blank">#5309</a>、<a href="https://github.com/morluto/rea/pull/9547" rel="noopener noreferrer" target="_blank">#9547</a>）。</li>
+          <li>MCP 调用默认合计 <strong>1,024</strong> 个数组元素与对象成员。超出的输入在分发前被拒绝，为不可重试的 <code>resource_constraint</code>，<code>resource: "transport"</code>。把 <code>REA_MCP_MAX_INPUT_ELEMENTS</code> 设为仅数字的正十进制安全整数（1–9007199254740991）并重启，或改用保留／文件输入。输入不会被截断（<a href="https://github.com/morluto/rea/pull/7905" rel="noopener noreferrer" target="_blank">#7905</a>）。</li>
+          <li>非 UTF-8 字节时 <code>inspect_macho</code> 的文本名／路径可为 null，并带十六进制伴随字段。不安全的数值尺寸／偏移／对齐可为 null，并带精确伴随字段。延迟初始化的 <code>options</code> 是数字（<a href="https://github.com/morluto/rea/pull/7952" rel="noopener noreferrer" target="_blank">#7952</a>）。</li>
+          <li>环境文件源错误从通用的 <code>evidence</code> 问题路径移走：<code>environment-build</code> 用 <code>capture</code>，环境包构建／导出用 <code>source.path</code>。缺失或无效的源返回 <code>invalid_request</code>（<a href="https://github.com/morluto/rea/pull/7900" rel="noopener noreferrer" target="_blank">#7900</a>）。</li>
+          <li>选定的未配对 UTF-16 代理项会使 TOON、Markdown、CSV、TSV 输出以 <code>invalid_request</code> 失败，即便操作本身成功。Markdown 还拒绝 NUL。要保留这些值用 <code>--format json</code> 或 <code>--format yaml</code>（<a href="https://github.com/morluto/rea/pull/7852" rel="noopener noreferrer" target="_blank">#7852</a>）。</li>
+          <li>重建的 <code>evidence_bundle</code> 输入把已认证的独立记录拒绝为 <code>invalid_request</code>，而不是当成损坏的包。提供来自 <code>export_evidence_bundle</code> 的规范包（<a href="https://github.com/morluto/rea/pull/7895" rel="noopener noreferrer" target="_blank">#7895</a>）。</li>
+          <li>环境覆盖可以对非 GET 的安全读取使用 <code>method-replay</code>。没有全局时钟锚点的、会生成时钟的写入计划返回 <code>served: false</code>、<code>reason: "unknown-clock"</code>（<a href="https://github.com/morluto/rea/pull/7834" rel="noopener noreferrer" target="_blank">#7834</a>）。</li>
+          <li>内存地址没有列出的指令或已定义数据时，Ghidra 返回 <code>not-in-listing</code>，取代先前的 <code>undecodable</code> 解释（<a href="https://github.com/morluto/rea/pull/7823" rel="noopener noreferrer" target="_blank">#7823</a>）。</li>
+          <li><code>capture_process_scenario</code>／CLI 进程捕获在启动目标前拒绝 <code>columns: 1</code>。终端宽度至少为 2。敏感交互的 <code>data</code> 为空，并带 <code>sensitive</code>／<code>input_bytes</code>，原始回显被涂掉（<a href="https://github.com/morluto/rea/pull/7848" rel="noopener noreferrer" target="_blank">#7848</a>、<a href="https://github.com/morluto/rea/pull/7804" rel="noopener noreferrer" target="_blank">#7804</a>）。</li>
+          <li>托管的 setup 登记绑定选定的绝对运行时和 REA 入口脚本，包括包运行器缓存路径。setup 不再返回 <code>prewarm</code>，也不再发出其进度事件（c77735fa83a6）。</li>
+          <li>macOS Hopper 启动路径和参数在交接前拒绝双引号、反斜杠和换行（<a href="https://github.com/morluto/rea/pull/7732" rel="noopener noreferrer" target="_blank">#7732</a>）。</li>
+          <li>新的 JavaScript 应用图省略派生的包 <code>renderer</code> 属性。使用 <code>renderer_declarations</code> 与包加载边。历史 Evidence 仍可读（5cf7133f823b）。</li>
+          <li>把 Cutter 的 <code>--json=true/false</code> 换成 <code>--json-output=true/false</code>。单独的 <code>--json</code> 仍选择 CLI 结果格式。把 <code>rea compare-bundles</code> 换成 <code>rea compare</code>。MCP <code>compare_bundles</code> 不变（567ea4b1e8bb、3515b262218f）。</li>
+          <li>JEB 引擎拒绝报告 <code>execution_failure</code>，而不是 <code>unsupported_target</code>（c4cdb7658b0e）。</li>
+          <li>ASAR 文件出现位置可以包含 <code>unpacked: false</code>。历史字段缺席仍是未知（60834e391c3f）。</li>
+          <li>非环回的 MCP HTTP 绑定需要 <code>MCP_ALLOWED_HOSTS</code> 或 <code>rea mcp --http --allowed-hosts</code>。包名必须是未改动的 HTTP 主机名，且在 63 八位组的 DNS 标签限制内（<a href="https://github.com/morluto/rea/pull/7172" rel="noopener noreferrer" target="_blank">#7172</a>）。</li>
+          <li><code>binary_session {"{}"}</code> 默认紧凑，并省略提供者可用性、目标支持诊断和工具组表面。要这些事实请请求 <code>{"{"} "detail": "complete" {"}"}</code>（<a href="https://github.com/morluto/rea/pull/7127" rel="noopener noreferrer" target="_blank">#7127</a>）。</li>
+          <li>原生输入错误包含 <code>details.operation</code> 与字段级 <code>details.issues</code>。<code>trace_native_values.procedure</code> 必须非空（<a href="https://github.com/morluto/rea/pull/7889" rel="noopener noreferrer" target="_blank">#7889</a>）。</li>
+          <li>规范化到同一逻辑路径的可读 JavaScript 成员会使 <code>analyze_javascript_application</code> 以 <code>artifact_operation_failed</code>、<code>details.reason: "path"</code> 和一份部分清单停止（<a href="https://github.com/morluto/rea/pull/7864" rel="noopener noreferrer" target="_blank">#7864</a>）。</li>
+          <li><code>REA_BROWSER_EXECUTABLE</code> 为空或相对路径时，<code>trace_web_module_imports</code> 报告 <code>capability_unavailable</code> 与 <code>invalid_browser_executable</code>，而不是 <code>missing_browser_executable</code>。未设置的选择仍表示缺失（<a href="https://github.com/morluto/rea/pull/7903" rel="noopener noreferrer" target="_blank">#7903</a>）。</li>
+          <li>无法解析的 <code>import-reference-source</code> 根、捕获场景文件，以及网页网络捕获／Protobuf 描述符路径（<code>ELOOP</code>／<code>ENAMETOOLONG</code>）报告 <code>invalid_request</code>／<code>invalid_input</code>（<a href="https://github.com/morluto/rea/pull/7847" rel="noopener noreferrer" target="_blank">#7847</a>、<a href="https://github.com/morluto/rea/pull/7814" rel="noopener noreferrer" target="_blank">#7814</a>）。</li>
+          <li>在无配置／归档目标上带 <code>snapshot_path</code> 的 <code>close_binary</code> 返回不可重试的 <code>capability_unavailable</code>，而不是 <code>evidence_integrity_mismatch</code>，不写快照，并保持会话打开（<a href="https://github.com/morluto/rea/pull/7837" rel="noopener noreferrer" target="_blank">#7837</a>）。</li>
+          <li>adb 本地文件拒绝发生在设备命令之前。缺失或非文件的 <code>local_path</code>／<code>apk_path</code>，以及被文件挡住的 <code>output_directory</code>，返回 <code>invalid_request</code>（<a href="https://github.com/morluto/rea/pull/7885" rel="noopener noreferrer" target="_blank">#7885</a>）。</li>
+          <li>以 <code>EFBIG</code>、<code>ENOSPC</code> 或 <code>EDQUOT</code> 失败的 Evidence 写入报告不可重试的 <code>resource_constraint</code>，<code>details.reason: "storage-limit"</code>。失败的暂存文件清理仍是 <code>cleanup_incomplete</code>（<a href="https://github.com/morluto/rea/pull/7887" rel="noopener noreferrer" target="_blank">#7887</a>）。</li>
+          <li>PE 签名者增加可选可空的 <code>unsigned_attribute_oids</code>。新的 null 表示缺席。OID 数组表示存在。旧 Evidence 里的省略是未记录。未签名属性产生 <code>coverage.status: "partial"</code>（<a href="https://github.com/morluto/rea/pull/7920" rel="noopener noreferrer" target="_blank">#7920</a>）。</li>
+          <li>超出证书嵌套或 OID 限额的有效 ASN.1 返回不可重试的 <code>resource_constraint</code>，而不是 <code>invalid_request</code>，并带 <code>max_asn1_depth</code>／<code>max_oid_bytes</code>。这些界限没有运行时覆盖（<a href="https://github.com/morluto/rea/pull/9932" rel="noopener noreferrer" target="_blank">#9932</a>）。</li>
+          <li><code>trace_call_path</code>／<code>build_call_path</code> 要求 <code>search_scope</code> 里有发现与已观察结果字段。观察到的图耗尽时，若提供者发现不完整，仍可得到 <code>goal_status: "unknown"</code>（<a href="https://github.com/morluto/rea/pull/8443" rel="noopener noreferrer" target="_blank">#8443</a>）。</li>
+          <li><code>inspect_native_instruction</code> 为 <code>not-instruction-boundary</code> 增加 <code>containing_instruction</code>，为 <code>data</code> 增加 <code>containing_data</code>。Ghidra 配置会变：重新打开并保存新快照（<a href="https://github.com/morluto/rea/pull/8777" rel="noopener noreferrer" target="_blank">#8777</a>）。</li>
+          <li><code>trace_native_values</code> 增加必需的 <code>page_truncated</code> 和带标签的 <code>traversal</code> 覆盖。<code>truncated</code> 把页省略与遍历截断合在一起。仅仅填满预算不再证明截断（<a href="https://github.com/morluto/rea/pull/8309" rel="noopener noreferrer" target="_blank">#8309</a>）。</li>
+          <li><code>batch_decompile.addresses</code> 另有 <strong>20,000</strong> 条的硬上限。提高 MCP 传输限额去不掉它（<a href="https://github.com/morluto/rea/pull/5937" rel="noopener noreferrer" target="_blank">#5937</a>）。</li>
+          <li><code>close_binary</code> 可以在保留清理所有者的同时退役目标。<code>cleanup_incomplete</code> 可以有 <code>recovery.kind: "retry_cleanup"</code>，即便 <code>retryable: false</code>。在同一连接上不带 <code>snapshot_path</code> 再调一次 <code>close_binary</code>（<a href="https://github.com/morluto/rea/pull/8329" rel="noopener noreferrer" target="_blank">#8329</a>）。</li>
+          <li><code>inspect_address_context</code>、<code>get_call_graph</code> 或 <code>trace_call_path</code> 里未确认的清理会产生工具级 <code>cleanup_incomplete</code>，而不是成功的部分结果（<a href="https://github.com/morluto/rea/pull/8417" rel="noopener noreferrer" target="_blank">#8417</a>、<a href="https://github.com/morluto/rea/pull/8516" rel="noopener noreferrer" target="_blank">#8516</a>）。</li>
+          <li><code>inspect_ntfs_journal</code> 默认省略详细的 <code>mftMetadata.record_headers</code>，并把续页留在第一条被省略的记录。需要这些细节时把 <code>mft_record_limit</code> 选在 1 到 32（1a8a9b749a）。</li>
+          <li>检查失败时，桌面状态目录使用 <code>application.state_directories[].exists_at_start: null</code> 加上 <code>existence_error</code>。接受这个三态字段（<a href="https://github.com/morluto/rea/pull/9899" rel="noopener noreferrer" target="_blank">#9899</a>）。</li>
+        </ul>
+
         <h2 id="related">相关</h2>
         <ul>
-          <li><a href="/zh/changelog/">更新日志，3.2.0 至 6.5.0</a></li>
-          <li><a href="/zh/docs/install/">安装，钉在 6.5.0</a></li>
-          <li><a href="/zh/docs/clients/">6.5.0 客户端矩阵</a></li>
+          <li><a href="/zh/changelog/">更新日志，3.2.0 至 6.9.0</a></li>
+          <li><a href="/zh/docs/install/">安装，钉在 6.9.0</a></li>
+          <li><a href="/zh/docs/clients/">6.9.0 客户端矩阵</a></li>
+          <li><a href="/zh/blog/rea-agents-6-9-0/">6.9.0 运维长文</a></li>
           <li><a href="/zh/blog/rea-agents-6-5-0/">6.5.0 运维指南（JS 路径、保留 Evidence、离线通道）</a></li>
           <li><a href="/zh/blog/rea-agents-6-4-0/">6.4.0 运维指南（ADB、JEB、compact schema）</a></li>
           <li><a href="/zh/docs/jeb/">JEB，自备许可</a></li>
@@ -299,8 +461,8 @@ const evidenceId = evidence.evidence_id;`}</code></pre>
           <p class="text-xs uppercase tracking-wider">来源</p>
           <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
             <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.5.0/docs/migration-6.2.md" rel="noopener noreferrer" target="_blank">rea-agents-6.5.0 的 docs/migration-6.2.md</a></li>
-            <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.0.0" rel="noopener noreferrer" target="_blank">6.0.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.1.0" rel="noopener noreferrer" target="_blank">6.1.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.2.0" rel="noopener noreferrer" target="_blank">6.2.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.3.0" rel="noopener noreferrer" target="_blank">6.3.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">6.4.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.5.0" rel="noopener noreferrer" target="_blank">6.5.0</a></li>
-            <li>2026-10-15 核对的 npm <code>rea-agents</code> latest：6.5.0</li>
+            <li><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.0.0" rel="noopener noreferrer" target="_blank">6.0.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.1.0" rel="noopener noreferrer" target="_blank">6.1.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.2.0" rel="noopener noreferrer" target="_blank">6.2.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.3.0" rel="noopener noreferrer" target="_blank">6.3.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.4.0" rel="noopener noreferrer" target="_blank">6.4.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.5.0" rel="noopener noreferrer" target="_blank">6.5.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.6.0" rel="noopener noreferrer" target="_blank">6.6.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.7.0" rel="noopener noreferrer" target="_blank">6.7.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.8.0" rel="noopener noreferrer" target="_blank">6.8.0</a> · <a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.9.0" rel="noopener noreferrer" target="_blank">6.9.0</a></li>
+            <li>2026-11-13 17:02:45 CST 核对的 npm <code>rea-agents</code> latest：6.9.0。同一天 <code>rea-agents@6.6.0</code> 为 404。</li>
           </ol>
           <p class="mt-4"><a class="quiet-link" href="/zh/compliance/">合规</a></p>
         </footer>

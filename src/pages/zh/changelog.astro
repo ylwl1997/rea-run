@@ -2,16 +2,17 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 const toc = [
   { id: 'pin', label: '钉版本' },
-  { id: 'velocity', label: '3.2.0–6.5.0' },
+  { id: 'velocity', label: '3.2.0–6.9.0' },
   { id: 'policy', label: '次版本' },
   { id: 'added-650', label: '6.5.0 新增' },
+  { id: 'added-690', label: '6.9.0 新增' },
   { id: 'read', label: '接着读' },
 ];
 ---
 <BaseLayout
   lang="zh"
-  title="REA 运维更新日志（3.2.0–6.5.0）| rea.run"
-  description="rea-agents 从 3.2.0 到 npm 6.5.0 的运维更新日志，含发布时间与 always-bump-minor 说明。不是逐条 PR 粘贴。"
+  title="REA 运维更新日志（3.2.0–6.9.0）| rea.run"
+  description="rea-agents 从 3.2.0 到 npm 6.9.0 的运维更新日志，含发布时间与 always-bump-minor 说明。不是逐条 PR 粘贴。"
   path="/zh/changelog/"
 >
   <div class="mx-auto max-w-6xl px-4 py-12">
@@ -22,20 +23,23 @@ const toc = [
       </aside>
       <article class="prose-page">
         <p class="badge">更新日志</p>
-        <h1 class="mt-4 text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">发过什么，直到 rea-agents 6.5.0</h1>
+        <h1 class="mt-4 text-3xl font-semibold tracking-tight text-[var(--color-ink)] sm:text-4xl">发过什么，直到 rea-agents 6.9.0</h1>
         <p class="mt-4 max-w-2xl text-base leading-7 text-[var(--color-muted)]">
-          这是 GitHub 发行从 <strong>3.2.0</strong>（2026-10-03）到 <strong>6.5.0</strong>（2026-10-14）的社区索引。
-          时间为发行 <code>published_at</code>，UTC。<strong>2026-10-15</strong> 核对的 npm <code>latest</code> 是 <strong>6.5.0</strong>。
+          这是 GitHub 发行从 <strong>3.2.0</strong>（2026-10-03）到 <strong>6.9.0</strong>（2026-11-12）的社区索引。
+          时间为发行 <code>published_at</code>，UTC。<strong>2026-11-13 17:02:45 CST（Asia/Shanghai）</strong> 核对的 npm <code>latest</code> 是 <strong>6.9.0</strong>。
           功能句缩短自那些发行正文。升级步骤在 <a href="/zh/docs/breaking/">破坏性变更手册</a>。
         </p>
 
         <h2 id="pin">本站教学用的钉版本</h2>
-        <pre><code>npx -y rea-agents@6.5.0 setup
-npx -y rea-agents@6.5.0 doctor --json</code></pre>
+        <pre><code>npx -y rea-agents@6.9.0 setup
+npx -y rea-agents@6.9.0 doctor --json</code></pre>
         <p>
-          该 tarball 的 Node 引擎：<code>^22.19.0 || ^24.11.0 || &gt;=26.0.0</code>。
+          该 tarball 的 Node 引擎：<code>^22.23.4 || ^24.22.1 || &gt;=26.12.1</code>
+          （标签 <code>rea-agents-6.9.0</code> 的 <code>package.json</code>，以及上面那次 <code>npm view rea-agents@6.9.0 engines</code>）。
+          6.8.0 发行写明不支持 Node 23 与 25，安装器不升级 Node。
           MCP Registry 标识：<code>io.github.morluto/rea</code>（注册表安装的是同一个 npm 包，不是第二份制品）。
-          客户端 ID：<a href="/zh/docs/clients/">6.5.0 矩阵</a>。
+          客户端 ID：<a href="/zh/docs/clients/">6.9.0 矩阵</a>。
+          不要钉未发布的 <code>main</code>。2026-11-13 它是 <code>5cddc69c51a0fb18d021417199046314581ba9c2</code>，<code>package.json</code> 版本仍是 6.9.0。
         </p>
 
         <h2 id="velocity">发行索引</h2>
@@ -103,14 +107,34 @@ npx -y rea-agents@6.5.0 doctor --json</code></pre>
               <tr>
                 <td><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.5.0">6.5.0</a></td>
                 <td>2026-10-14 12:32</td>
-                <td>当前 npm latest（2026-10-15 核对）。正文日期 2026-10-13。JS 精确选择／保留 Evidence 分页；包／信号／HAR／QUIC／SAZ；SQLite（Node ≥24.15 或 26+）；WASM／Rust／Electron fuses；新客户端（Qoder、Trae、ZCode、dsh、kimi、droid、workbuddy）。破坏性：可空的 <code>attached</code>／源名；<code>--filter-output</code> 输出 null；调用图 <code>{"{"} graph, limitations {"}"}</code>；ADB <code>replace_requested</code>。发行页脚：893 commits／529 PRs。<a href="/zh/docs/breaking/#nulls">步骤</a>。</td>
+                <td>2026-10-15 核对时的 npm latest（不是当前钉版）。正文日期 2026-10-13。JS 精确选择／保留 Evidence 分页；包／信号／HAR／QUIC／SAZ；SQLite（Node ≥24.15 或 26+）；WASM／Rust／Electron fuses；新客户端（Qoder、Trae、ZCode、dsh、kimi、droid、workbuddy）。破坏性：可空的 <code>attached</code>／源名；<code>--filter-output</code> 输出 null；调用图 <code>{"{"} graph, limitations {"}"}</code>；ADB <code>replace_requested</code>。发行页脚：893 commits／529 PRs。<a href="/zh/docs/breaking/#nulls">步骤</a>。</td>
+              </tr>
+              <tr>
+                <td><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.6.0">6.6.0</a></td>
+                <td>2026-10-18 03:40</td>
+                <td>只有 GitHub 标签。2026-11-13 <code>npm view rea-agents@6.6.0</code> 返回 404；6.7.0 说明写明该标签未发布到 npm。Kuna（调用方自备，记录为 Linux 上的 Kuna 1.833）、选定 JS 事实查询、多区域 APK 表、Windows ARM PE 与原始 m68k。有破坏性一节（已保存 Evidence 身份；ADB <code>version_code</code> 为十进制字符串）。页脚：571 commits／236 PRs。<a href="/zh/docs/breaking/#kuna">步骤</a>。</td>
+              </tr>
+              <tr>
+                <td><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.7.0">6.7.0</a></td>
+                <td>2026-10-18 07:45</td>
+                <td>第一份包含 6.6 说明的 npm 包（npm 时间 2026-10-18T08:12:05Z）。自身亮点：setup 编辑最后一次重复的 JSON／JSONC 成员（#4957）。6.7 标题下<strong>没有</strong> <code>BREAKING CHANGES</code>；正文重复 6.6 说明。页脚：4 commits／1 PR。<a href="/zh/docs/breaking/#six-seven">步骤</a>。</td>
+              </tr>
+              <tr>
+                <td><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.8.0">6.8.0</a></td>
+                <td>2026-10-25 08:36</td>
+                <td>npm 时间 2026-10-25T09:07:31Z。从捕获、场景或提示构建智能体环境；更多已交付格式；保留摘要。破坏性：Node 引擎 <code>^22.23.4 || ^24.22.1 || &gt;=26.12.1</code>（不支持 Node 23 与 25）；MCP 输入广告默认 compact；<code>analyze_function</code> 默认保留摘要；JSON Lines 分帧。FreeBuff setup，原生加载未核验。页脚：1740 commits／497 PRs。<a href="/zh/docs/breaking/#formats">步骤</a>。</td>
+              </tr>
+              <tr>
+                <td><a href="https://github.com/morluto/rea/releases/tag/rea-agents-6.9.0">6.9.0</a></td>
+                <td>2026-11-12 08:59</td>
+                <td>当前 npm latest（2026-11-13 17:02:45 CST 核对）。正文日期 2026-11-11。从已记录应用状态做桌面任务；离线包、固件、NTFS 取证、API 合同、V8 code-cache；分页保留 Evidence，显式覆盖与可恢复限制。相对本站 6.5.0 矩阵新增的 setup id：<code>codebuddy</code>、<code>cline</code>、<code>lm_studio</code>、<code>freebuff</code>。有破坏性一节。页脚：1848 commits／1073 PRs。<a href="/zh/docs/breaking/#desktop">步骤</a>。<a href="/zh/blog/rea-agents-6-9-0/">运维长文</a>。</td>
               </tr>
             </tbody>
           </table>
         </div>
         <p>
-          从 10 月 3 日的 3.2.0 到 10 月 8 日的 6.0.0 共七个标签，然后 6.1.0–6.4.0 落在 10 月 9–11 日，6.5.0 落在 10 月 14 日。
-          所以 CI 里漂浮的安装是行为变化，不是一次刷新。
+          从 10 月 3 日的 3.2.0 到 10 月 8 日的 6.0.0 共七个标签，然后 6.1.0–6.4.0 落在 10 月 9–11 日，6.5.0 落在 10 月 14 日，6.6.0 与 6.7.0 落在 10 月 18 日，6.8.0 落在 10 月 25 日，6.9.0 落在 11 月 12 日。
+          所以 CI 里漂浮的安装是行为变化，不是一次刷新。6.6.0 在 GitHub 索引里，不在 npm 上。
         </p>
 
         <h2 id="policy">怎样读一次次版本</h2>
@@ -130,11 +154,25 @@ npx -y rea-agents@6.5.0 doctor --json</code></pre>
         </p>
         <p>
           Pi、Hermes、Qwen Code 已在 6.4.0（17 个 ID）中交付。6.5.0 把矩阵扩到 24 个 <code>--client</code> 值。Grok Bot 仍是手动托管连接器，不是 setup 行。
+          6.9.0 的 client-configuration 页仍将 Trae 加载与 live DeepSeek API 兼容性标为未核验。
+        </p>
+
+        <h2 id="added-690">npm 6.9.0 新增</h2>
+        <p>
+          6.9.0 的亮点是三行：从已记录的应用状态构建并测试桌面任务（下载的 Linux 应用、可复用的构建计算机、一次捕获上的多个任务）；离线检查更多已交付制品（独立应用包、嵌入式固件、NTFS 取证、API 合同、V8 code-cache 容器）；让原生与运行时调查落在已保留 Evidence 上（分页结果、显式覆盖、可恢复的资源限制）。
+          正文日期 2026-11-11。<code>published_at</code> 2026-11-12T08:59:13Z。页脚：1848 次提交／1073 个已合并 PR。
+        </p>
+        <p>
+          6.9.0 受支持智能体表有 28 个 <code>--client</code> id。相对本站 6.5.0 矩阵，新行是 <code>codebuddy</code>、<code>cline</code>、<code>lm_studio</code> 与 <code>freebuff</code>（FreeBuff 首次出现在 6.8.0；原生加载仍未核验）。
+          6.9.0 tarball 的 Node 引擎就是上面的 6.8.0 下限。6.6.0、6.8.0、6.9.0 各自有 <code>BREAKING CHANGES</code>；6.7.0 自己的标题下没有。
+          运维长文：<a href="/zh/blog/rea-agents-6-9-0/">6.9.0 指南</a>。字段清单：<a href="/zh/docs/breaking/">手册</a>。
         </p>
 
         <h2 id="read">接着读</h2>
         <ul>
-          <li><a href="/zh/docs/breaking/">升级手册，6.0–6.5.0</a></li>
+          <li><a href="/zh/docs/breaking/">升级手册，6.0–6.9.0</a></li>
+          <li><a href="/zh/blog/rea-agents-6-9-0/">6.9.0 运维指南</a> — 桌面任务、离线制品、保留 Evidence</li>
+          <li><a href="/zh/blog/rea-agents-6-5-0/">6.5.0 运维指南</a> — JS 路径、保留 Evidence、离线通道</li>
           <li><a href="/zh/blog/rea-agents-6-4-0/">6.4.0 运维指南</a> — ADB、JEB、compact schema、Evidence 视图</li>
           <li><a href="/zh/docs/install/">安装</a> · <a href="/zh/docs/clients/">客户端</a> · <a href="/zh/docs/jeb/">JEB</a> · <a href="/zh/docs/android-adb/">Android ADB</a></li>
           <li><a href="/zh/showcase/aegis-totp/">Aegis 登录码研究</a>，钉在 <code>rea-agents@6.4.0</code></li>
@@ -144,8 +182,9 @@ npx -y rea-agents@6.5.0 doctor --json</code></pre>
           <p class="text-xs uppercase tracking-wider">来源</p>
           <ol class="mt-3 list-decimal space-y-1 pl-5 text-xs">
             <li><a href="https://github.com/morluto/rea/releases" rel="noopener noreferrer" target="_blank">morluto/rea 的 GitHub 发行</a> — 表中的发布时间</li>
-            <li><a href="https://www.npmjs.com/package/rea-agents" rel="noopener noreferrer" target="_blank">npm rea-agents</a> — 2026-10-15 的 latest 为 6.5.0</li>
-            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.5.0/docs/migration-6.2.md" rel="noopener noreferrer" target="_blank">rea-agents-6.5.0 的 docs/migration-6.2.md</a></li>
+            <li><a href="https://www.npmjs.com/package/rea-agents" rel="noopener noreferrer" target="_blank">npm rea-agents</a> — 2026-11-13 17:02:45 CST 的 latest 为 6.9.0；同一天 <code>rea-agents@6.6.0</code> 为 404</li>
+            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.9.0/package.json" rel="noopener noreferrer" target="_blank">rea-agents-6.9.0 的 package.json</a> — 引擎 <code>^22.23.4 || ^24.22.1 || &gt;=26.12.1</code></li>
+            <li><a href="https://github.com/morluto/rea/blob/rea-agents-6.5.0/docs/migration-6.2.md" rel="noopener noreferrer" target="_blank">rea-agents-6.5.0 的 docs/migration-6.2.md</a> — <code>always-bump-minor</code></li>
           </ol>
           <p class="mt-4"><a class="quiet-link" href="/zh/compliance/">合规</a></p>
         </footer>
